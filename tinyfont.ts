@@ -11,7 +11,7 @@ namespace tinyFont {
     export function print(image: Image, text: string, x: number, y: number, color: number = 1) {
         for (let i = 0; i < text.length; i++) {
             const code = text.charCodeAt(i)
-            let glyph
+            let glyph: Image
 
             if (code >= CODE_LOWERCASE_A && code <= CODE_LOWERCASE_Z) {
                 glyph = FONT3_ALPHA[code - CODE_LOWERCASE_A]
