@@ -5,6 +5,7 @@ enum CardLayoutSubjects {
     Value,
     Picture,
     Text,
+    Space,
 }
 
 enum CardLayoutAlignments {
@@ -22,7 +23,7 @@ namespace cardKit {
     //     ) {}
     // }
 
-    export class Card {        
+    export class CardData {        
         title: string
         description: string
         icon: string
@@ -62,19 +63,36 @@ namespace cardKit {
     }
 
     export class CardLayoutData {
-        background: Image
+        frontImage: Image
+        backImage: Image
+        stackFrame: game.BaseDialog
+        stackImageHeight: number
         constructor(
             public width: number,
             public height: number,
-            frame: Image,
+            front: Image,
+            back: Image,
+            private stack: Image,
+            public cardsPerPixel: number,
+            public maxStackHeight: number,
+            public shadowColor: number,
             public icons: { [id: string]: Image },
             public valueText: string[],
             public rows: LayoutRowData[],
             public margin: number,
             public spacing: number,       
         ) {
-            const dialog = new game.BaseDialog(width, height, frame)
-            this.background = dialog.image
+            let dialog = new game.BaseDialog(width, height, front)
+            this.frontImage = dialog.image
+            dialog = new game.BaseDialog(width, height, back)
+            this.backImage = dialog.image
+            this.stackFrame = new game.BaseDialog(width, height, stack)
+            this.stackImageHeight = height + maxStackHeight
+        }
+
+        resizeStack(cardStackSize: number) {
+            const stackHeight = Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel))) + this.height
+            this.stackFrame.resize(this.width, stackHeight, this.stack)
         }
     }
 
@@ -126,8 +144,18 @@ namespace cardKit {
         }
     }
 
-    export function drawCard(card: Card, layout: CardLayoutData, x: number, y: number, image: Image) {
-        image.drawTransparentImage(layout.background, x, y)
+    function getSpaceData(width: number, height: number): DrawData {
+        return {
+            width: width,
+            height: height,
+            image: null,
+            lines: null,
+            color: 0
+        }
+    }
+
+    export function drawCard(card: CardData, layout: CardLayoutData, image: Image, x: number, y: number) {
+        image.drawTransparentImage(layout.frontImage, x, y)
         let top = y + layout.margin
         layout.rows.forEach(row => {
             let columnDrawData: DrawData[] = []
@@ -154,10 +182,13 @@ namespace cardKit {
                     case CardLayoutSubjects.Text:
                         columnDrawData.push(getTextDrawData(data.text, data.color, data.textRowLimit, data.textColumnLimit))
                         break
+                    case CardLayoutSubjects.Space:
+                        columnDrawData.push(getSpaceData(data.textColumnLimit - layout.spacing, data.textRowLimit - layout.spacing))
+                        break
                 }
 
                 width += columnDrawData[columnDrawData.length - 1].width
-                height += Math.max(columnDrawData[columnDrawData.length - 1].height, height)
+                height = Math.max(columnDrawData[columnDrawData.length - 1].height, height)
             })
 
             let left = x
@@ -177,12 +208,14 @@ namespace cardKit {
                 if(!!drawData.image) {
                     image.drawTransparentImage(drawData.image, x + left, y + top)
                     top += drawData.height
-                } else {
+                } else if (!!drawData.lines) {
                     drawData.lines.forEach(line => {
                         tinyFont.print(image, line, x + left, y + top, drawData.color)
                         top += 6
                     })
                     top -= 1
+                } else {
+                    left += drawData.width
                 }
                 left += layout.spacing
                 top += layout.spacing
@@ -190,23 +223,68 @@ namespace cardKit {
         })
     }
 
-    export function createSingleCardImage(card: Card, layout: CardLayoutData): Image {
+    export function drawDeck(deck: CardData[], layout: CardLayoutData, faceUp: boolean, image: Image, x: number, y: number) {
+        if(deck.length > 1) {
+            layout.resizeStack(deck.length)
+            y = y + layout.stackImageHeight - layout.stackFrame.image.height
+            image.drawTransparentImage(layout.stackFrame.image, x, y)
+        } else if (deck.length === 1) {
+            y = y + layout.stackImageHeight - layout.height
+        } else {
+            return
+        }
+        if(faceUp) {
+            drawCard(deck[0], layout, image, x, y)
+        } else {
+            image.drawTransparentImage(layout.backImage, x, y)
+        }
+    }
+
+    export function createCardImage(card: CardData, layout: CardLayoutData): Image {
         const cardImage = image.create(layout.width, layout.height)
-        drawCard(card, layout, 0, 0, cardImage)
+        drawCard(card, layout, cardImage, 0, 0)
         return cardImage
+    }
+
+    export function createDeckImage(deck: CardData[], layout: CardLayoutData): Image {
+        const deckImage = image.create(layout.width, layout.stackImageHeight)
+        drawDeck(deck, layout, false, deckImage, 0, 0)
+        return deckImage
+    }
+
+    export function createPileImage(deck: CardData[], layout: CardLayoutData): Image {
+        const pileImage = image.create(layout.width, layout.stackImageHeight)
+        drawDeck(deck, layout, true, pileImage, 0, 0)
+        return pileImage
     }
 
     let playingCardLayout = new CardLayoutData(
         12,
         20,
         img`
-            . 1 1 1 1 .
-            1 1 1 1 1 1
-            1 1 1 1 1 1
-            1 1 1 1 1 1
-            1 1 1 1 1 1
-            . 1 1 1 1 .
-            `,
+            . c c c c .
+            c b 1 1 b c
+            c 1 1 1 1 c
+            c 1 1 1 1 c
+            c b 1 1 b c
+            . c c c c .
+        `,
+        img`
+            . 2 2 2 2 .
+            2 4 d d 4 2
+            2 d 2 3 d 2
+            2 d 3 2 d 2
+            2 4 d d 4 2
+            . 2 2 2 2 .
+        `,
+        img`
+            . e .
+            e e e
+            . e .
+        `,
+        5,
+        4,
+        12,
         {
             'heart': img`
             . 2 . 2 .
@@ -244,30 +322,38 @@ namespace cardKit {
         ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
         [
             new LayoutRowData(
-                CardLayoutAlignments.Left,
+                CardLayoutAlignments.Center,
                 [
-                    new LayoutColumnData(CardLayoutSubjects.Value, '', 15, 2, 1)
-                ]                
+                    new LayoutColumnData(CardLayoutSubjects.Value, '', 15, 2, 1),
+                    new LayoutColumnData(CardLayoutSubjects.Space, null, 0, 2, 0),
+                ]
             ),
             new LayoutRowData(
-                CardLayoutAlignments.Left,
+                CardLayoutAlignments.Center,
                 [
-                    new LayoutColumnData(CardLayoutSubjects.Icon)
+                    new LayoutColumnData(CardLayoutSubjects.Icon),
+                    new LayoutColumnData(CardLayoutSubjects.Space, null, 0, 2, 0),
                 ]
             )
         ],
-        1,
+        2,
         1,
     )
 
-    let aceOfSpades = new Card(
-        'Ace of Spades',
-        'Ace of Spades',
-        'spades',
-        1
-    )
+    let playingCardDeck = []
+    for(const suit of ['heart', 'diamond', 'club', 'spades']) {
+        for(let rank=1; rank<=13; rank++) {
+            playingCardDeck.push(new CardData(
+                playingCardLayout.valueText[rank]+suit.charAt(0).toUpperCase(),
+                `${playingCardLayout.valueText[rank]} of ${suit}`,
+                suit,
+                rank
+            ))
+        }
+    }
 
-    let mySprite = sprites.create(cardKit.createSingleCardImage(aceOfSpades, playingCardLayout), SpriteKind.Player)
+    let deckSprite = sprites.create(cardKit.createPileImage(playingCardDeck, playingCardLayout))
+    // let mySprite = sprites.create(cardKit.createSingleCardImage(aceOfSpades, playingCardLayout), SpriteKind.Player)
 }
 
 
