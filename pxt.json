@@ -10,7 +10,7 @@
         "README.md",
         "assets.json",
         "tinyfont.ts",
-        "cardkit.ts"
+        "base.ts"
     ],
     "testFiles": [
         "test.ts"
