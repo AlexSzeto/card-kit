@@ -241,7 +241,7 @@ namespace cardKit {
         image.drawTransparentImage(layout.backImage, x, y)
     }
 
-    export function drawDeck(deck: CardData[], layout: CardLayoutData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, image: Image, x: number, y: number) {
+    export function drawStack(deck: CardData[], layout: CardLayoutData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, image: Image, x: number, y: number) {
         if (deck.length > 1) {
             const stackImage = layout.getStackImage(deck.length, isStackFaceUp)
             y = y + layout.stackImageHeight - stackImage.height

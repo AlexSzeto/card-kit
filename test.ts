@@ -98,11 +98,12 @@ for (const suit of ['heart', 'diamond', 'club', 'spades']) {
     }
 }
 
-// const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false, false)
-// while(deck.data.length > 0) {
-//     let card = deck.createCard()
-//     card.vx = 100
-//     card.ax = 200
-//     card.lifespan = 500
-//     pause(50)
-// }
+const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false, false)
+while(deck.data.length > 0) {
+    let card = deck.createCard()
+    card.vx = 50
+    card.ax = 50
+    card.lifespan = 1000
+    
+    pause(500)
+}

@@ -10,7 +10,8 @@
         "README.md",
         "assets.json",
         "tinyfont.ts",
-        "base.ts"
+        "base.ts",
+        "sprites.ts"
     ],
     "testFiles": [
         "test.ts"
