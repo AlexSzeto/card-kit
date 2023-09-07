@@ -11,7 +11,8 @@
         "assets.json",
         "tinyfont.ts",
         "base.ts",
-        "sprites.ts"
+        "sprites.ts",
+        "slide.ts"
     ],
     "testFiles": [
         "test.ts"

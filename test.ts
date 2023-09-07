@@ -87,7 +87,7 @@ const playingCardLayout = new cardKit.CardLayoutData(
 )
 
 const playingCardDeckData = []
-for (const suit of ['heart', 'diamond', 'club', 'spades']) {
+for (const suit of ['spades', 'diamond', 'club', 'heart']) {
     for (let rank = 1; rank <= 13; rank++) {
         playingCardDeckData.push(new cardKit.CardData(
             playingCardLayout.valueText[rank] + suit.charAt(0).toUpperCase(),
@@ -99,11 +99,19 @@ for (const suit of ['heart', 'diamond', 'club', 'spades']) {
 }
 
 const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false, false)
-while(deck.data.length > 0) {
+const hand = new cardKit.CardSpread([], scene.screenWidth() / 2, scene.screenHeight() - 30, true, 1)
+
+controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+    hand.selectPrevious()
+})
+
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    hand.selectNext()
+})
+
+while (deck.data.length > 0 && hand.cards.length < 10) {
     let card = deck.createCard()
-    card.vx = 50
-    card.ax = 50
-    card.lifespan = 1000
-    
+    hand.cards.push(card)
+    hand.reposition()
     pause(500)
 }
