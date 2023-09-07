@@ -8,7 +8,11 @@ namespace cardKit {
             .forEach(h => h.handler(sprite));
     }
 
+    const FLIP_SCALES = [0.6, 0.3, 0.1]
+
     export class Card extends Sprite {
+        private flipStage: number
+        private flipTimer: number
         constructor(
             public layout: cardKit.CardLayoutData,
             public data: cardKit.CardData,
@@ -16,6 +20,7 @@ namespace cardKit {
         ) {
             super(createCardImage(data, layout))
             this.redraw()
+            this.flipStage = -1
             activate(this)
         }
 
@@ -25,6 +30,32 @@ namespace cardKit {
             } else {
                 drawBack(this.layout, this.image, 0, 0)
             }
+        }
+
+        flip() {
+            if(this.flipStage >= 0) {
+                this.flipStage = FLIP_SCALES.length * 2 - this.flipStage - 1
+                return
+            }
+            this.flipStage = 0
+            this.flipTimer = setInterval(() => {
+                this.flipStage++
+                if(this.flipStage >= FLIP_SCALES.length * 2) {
+                    this.sx = 1.0
+                    this.flipStage = -1
+                    clearInterval(this.flipTimer)
+                } else {
+                    if(this.flipStage == FLIP_SCALES.length) {
+                        this.isFaceUp = !this.isFaceUp
+                        this.redraw()
+                    }
+                    if(this.flipStage >= FLIP_SCALES.length) {
+                        this.sx = FLIP_SCALES[FLIP_SCALES.length * 2 - this.flipStage - 1]
+                    } else {
+                        this.sx = FLIP_SCALES[this.flipStage]
+                    }
+                }
+            }, 50)
         }
     }
 
@@ -99,6 +130,63 @@ namespace cardKit {
         }
     }
 
+    export class CardGrid {
+        private currentLine: number
+        private scrollTimer: number
+        private scrollToLine: number
+        constructor(
+            public cards: cardKit.Card[],
+            public x: number,
+            public y: number,
+            public rows: number,
+            public columns: number,
+            public isLeftRightScrolling: boolean,
+            public spacing: number,            
+        ) {
+            this.currentLine = 0
+            this.scrollToLine = 0
+            this.reposition()
+        }
+
+        reposition() {
+            if(this.cards.length < 1) {
+                return
+            }            
+            const width = (this.cards[0].layout.width + this.spacing) * this.columns - this.spacing
+            const height = (this.cards[0].layout.height + this.spacing) * this.rows - this.spacing
+            let columnLeft = this.x - width / 2 + this.cards[0].layout.width / 2
+            let rowTop = this.y - height / 2 + this.cards[0].layout.height / 2
+            let row = 0
+            let column = 0
+            let index = this.isLeftRightScrolling 
+                ? this.currentLine * this.rows 
+                : this.currentLine * this.columns
+            const lastIndex = index + this.rows * this.columns
+            do {
+                smoothMoves.slide(
+                    this.cards[index],
+                    columnLeft + column * (this.cards[index].layout.width + this.spacing),
+                    rowTop + row * (this.cards[index].layout.height + this.spacing),
+                    500
+                )
+                if (this.isLeftRightScrolling) {
+                    row++
+                    if(row >= this.rows) {
+                        column++
+                        row = 0
+                    }
+                } else {
+                    column++
+                    if(column >= this.columns) {
+                        row++
+                        column = 0
+                    }
+                }
+                index++
+            } while(index < this.cards.length && index < lastIndex)
+        }
+    }
+
     let selectedCard: Card = null
     const cursor = sprites.create(img`
         . . . . . . . . .
@@ -127,5 +215,9 @@ namespace cardKit {
     export function selectCard(card: Card) {
         selectedCard = card
         cursor.follow(card, 200, 800)
+    }
+
+    export function getSelectedCard(): Card {
+        return selectedCard
     }
 }

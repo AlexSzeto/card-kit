@@ -99,19 +99,30 @@ for (const suit of ['spades', 'diamond', 'club', 'heart']) {
 }
 
 const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false, false)
-const hand = new cardKit.CardSpread([], scene.screenWidth() / 2, scene.screenHeight() - 30, true, 1)
+// const hand = new cardKit.CardSpread([], scene.screenWidth() / 2, scene.screenHeight() - 30, true, 1)
 
-controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-    hand.selectPrevious()
-})
+// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+//     hand.selectPrevious()
+// })
 
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    hand.selectNext()
-})
+// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+//     hand.selectNext()
+// })
 
-while (deck.data.length > 0 && hand.cards.length < 10) {
+// controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
+//     if(!!cardKit.getSelectedCard()) {
+//         cardKit.getSelectedCard().flip()
+//     }
+// })
+// while (deck.data.length > 0 && hand.cards.length < 10) {
+//     let card = deck.createCard()
+//     hand.cards.push(card)
+//     hand.reposition()
+//     pause(500)
+// }
+
+const grid = new cardKit.CardGrid([], scene.screenWidth() / 2, scene.screenHeight() / 2, 4, 6, false, 1)
+while (deck.data.length > 0 && grid.cards.length < 24) {
     let card = deck.createCard()
-    hand.cards.push(card)
-    hand.reposition()
-    pause(500)
+    grid.cards.push(card)
 }
