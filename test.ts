@@ -122,7 +122,23 @@ const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false
 // }
 
 const grid = new cardKit.CardGrid([], scene.screenWidth() / 2, scene.screenHeight() / 2, 4, 6, false, 1)
-while (deck.data.length > 0 && grid.cards.length < 24) {
+while (deck.data.length > 0) { // && grid.cards.length < 24) {
     let card = deck.createCard()
     grid.cards.push(card)
 }
+grid.reposition()
+
+controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+    grid.selectLeft()
+})
+
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    grid.selectRight()
+})
+controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
+    grid.selectUp()
+})
+
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    grid.selectDown()
+})

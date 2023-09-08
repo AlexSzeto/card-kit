@@ -162,13 +162,23 @@ namespace cardKit {
                 ? this.currentLine * this.rows 
                 : this.currentLine * this.columns
             const lastIndex = index + this.rows * this.columns
+            this.cards.forEach((card, i) => {
+                if(i < index || i >= index + this.rows * this.columns) {
+                    card.setFlag(SpriteFlag.Invisible, true)
+                }
+            })
             do {
-                smoothMoves.slide(
-                    this.cards[index],
-                    columnLeft + column * (this.cards[index].layout.width + this.spacing),
-                    rowTop + row * (this.cards[index].layout.height + this.spacing),
-                    500
-                )
+                const x = columnLeft + column * (this.cards[index].layout.width + this.spacing)
+                const y = rowTop + row * (this.cards[index].layout.height + this.spacing)
+                if(!!(this.cards[index].flags & SpriteFlag.Invisible)) {
+                    this.cards[index].setFlag(SpriteFlag.Invisible, false)
+                    this.cards[index].x = x
+                    this.cards[index].y = y
+                    this.cards[index].z = 1
+                } else {
+                    this.cards[index].z = 2
+                    smoothMoves.slide(this.cards[index], x, y, 500)
+                }
                 if (this.isLeftRightScrolling) {
                     row++
                     if(row >= this.rows) {
@@ -184,6 +194,60 @@ namespace cardKit {
                 }
                 index++
             } while(index < this.cards.length && index < lastIndex)
+        }
+
+        selectIndex(index: number) {                        
+            index = Math.max(0, Math.min(index, this.cards.length - 1))
+            if(this.isLeftRightScrolling) {
+                if(index < this.currentLine * this.rows) {
+                    this.scrollToLine = Math.floor(index / this.rows)
+                } else if(index > (this.currentLine + this.columns - 1) * this.rows) {
+                    this.scrollToLine = Math.floor(index / this.rows - (this.columns - 1))
+                }
+            } else {
+                if(index < this.currentLine * this.columns) {
+                    this.scrollToLine = Math.floor(index / this.columns)
+                } else if(index > (this.currentLine + this.rows - 1) * this.columns) {
+                    this.scrollToLine = Math.floor(index / this.columns - (this.rows - 1))
+                }
+            }
+            if(this.currentLine !== this.scrollToLine) {
+                this.currentLine = this.scrollToLine
+                this.reposition()
+            }
+            selectCard(this.cards[index])
+        }
+
+        selectLeft() {
+            if (this.isLeftRightScrolling) {
+                this.selectIndex(this.cards.indexOf(selectedCard) - this.rows)
+            } else {
+                this.selectIndex(this.cards.indexOf(selectedCard) - 1)
+            }
+        }
+
+        selectRight() {
+            if (this.isLeftRightScrolling) {
+                this.selectIndex(this.cards.indexOf(selectedCard) + this.rows)
+            } else {
+                this.selectIndex(this.cards.indexOf(selectedCard) + 1)
+            }
+        }
+
+        selectUp() {
+            if (this.isLeftRightScrolling) {
+                this.selectIndex(this.cards.indexOf(selectedCard) - 1)
+            } else {
+                this.selectIndex(this.cards.indexOf(selectedCard) - this.columns)
+            }
+        }
+
+        selectDown() {
+            if(this.isLeftRightScrolling) {
+                this.selectIndex(this.cards.indexOf(selectedCard) + 1)
+            } else {
+                this.selectIndex(this.cards.indexOf(selectedCard) + this.columns)
+            }
         }
     }
 

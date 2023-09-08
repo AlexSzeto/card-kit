@@ -127,7 +127,6 @@ namespace cardKit {
             index += columnLimit
         }
         lines.push(text.substr(index, columnLimit))
-        console.log(lines)
 
         return {
             width: (lines.length > 1 ? columnLimit : text.length) * 4 - 1,
