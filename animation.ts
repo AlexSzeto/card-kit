@@ -14,6 +14,14 @@ namespace smoothMoves {
         }
     }
     
+    export function spriteHasActiveAnimation(sprite: Sprite): boolean {
+        return slideTrackers.some(tracker => tracker.sprite === sprite)
+    }
+    
+    export function spriteKindHasActiveAnimation(kind: number): boolean {
+        return slideTrackers.some(tracker => tracker.sprite.kind() === kind)
+    }
+
     export function slide(sprite: Sprite, x: number, y: number, timeInMs: number) {
         const t = timeInMs / 1000
         const v = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y)) / t
@@ -28,11 +36,11 @@ namespace smoothMoves {
         } else {
             const t = timeInMs / 1000
             const ax = -2 * (x - sprite.x) / (t * t)
-            sprite.vx = -Math.floor(ax * t) * 1.02
+            sprite.vx = -Math.floor(ax * t)
             sprite.fx = Math.ceil(Math.abs(ax))
             sprite.ax = 0
             const ay = -2 * (y - sprite.y) / (t * t)
-            sprite.vy = -Math.floor(ay * t) * 1.02
+            sprite.vy = -Math.floor(ay * t)
             sprite.fy = Math.ceil(Math.abs(ay))
             sprite.ay = 0
         }

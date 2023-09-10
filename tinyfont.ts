@@ -7,8 +7,9 @@ namespace tinyFont {
     const CODE_9 = '9'.charCodeAt(0)
 
     const CHAR_WIDTH = 4
+    const CHAR_HEIGHT = 6
 
-    export function print(image: Image, text: string, x: number, y: number, color: number = 1) {
+    export function print(image: Image, x: number, y: number, text: string, color: number = 1) {
         for (let i = 0; i < text.length; i++) {
             const code = text.charCodeAt(i)
             let glyph: Image
@@ -30,6 +31,9 @@ namespace tinyFont {
             }
         }
     }
+
+    export function charWidth(): number { return CHAR_WIDTH}
+    export function charHeight(): number { return CHAR_HEIGHT}
 
     const FONT3_DIGITS = [
         img`

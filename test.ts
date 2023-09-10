@@ -1,144 +1,93 @@
 // tests go here; this will not be compiled when this package is used as an extension.
-const playingCardLayout = new cardKit.CardLayoutData(
-    12,
-    20,
-    img`
-            . c c c c .
-            c b 1 1 b c
-            c 1 1 1 1 c
-            c 1 1 1 1 c
-            c b 1 1 b c
-            . c c c c .
-        `,
-    img`
-            . 2 2 2 2 .
-            2 4 d d 4 2
-            2 d 2 3 d 2
-            2 d 3 2 d 2
-            2 4 d d 4 2
-            . 2 2 2 2 .
-        `,
-    img`
-            . b .
-            b b b
-            . b .
-        `,
-    img`
-            . e .
-            e e e
-            . e .
-        `,
-    5,
-    10,
-    12,
-    {
-        'heart': img`
-            . 2 . 2 .
-            2 2 2 2 2
-            2 2 2 2 2
-            2 2 2 2 2
-            . 2 2 2 .
-            . . 2 . .
-            `,
-        'diamond': img`
-            . . 2 . .
-            . 2 2 2 .
-            2 2 2 2 2
-            2 2 2 2 2
-            . 2 2 2 .
-            . . 2 . .
-            `,
-        'club': img`
-            . f f f .
-            f f f f f
-            f f f f f
-            f . f . f
-            . . f . .
-            . f f f .
-            `,
-        'spades': img`
-            . . f . .
-            . f f f .
-            f f f f f
-            f f f f f
-            . . f . .
-            . f f f .
-            `,
-    },
-    ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
-    [
-        new cardKit.LayoutRowData(
-            CardLayoutAlignments.Center,
-            [
-                new cardKit.LayoutColumnData(CardLayoutSubjects.Value, '', 15, 2, 1),
-                new cardKit.LayoutColumnData(CardLayoutSubjects.Space, null, 0, 2, 0),
-            ]
-        ),
-        new cardKit.LayoutRowData(
-            CardLayoutAlignments.Center,
-            [
-                new cardKit.LayoutColumnData(CardLayoutSubjects.Icon),
-                new cardKit.LayoutColumnData(CardLayoutSubjects.Space, null, 0, 2, 0),
-            ]
-        )
-    ],
-    2,
+const deck = cardKit.createPlayingCards()
+
+controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
+    if(!!cardKitCore.getSelectedCard()) {
+        cardKitCore.getSelectedCard().flip()
+    }
+})
+
+/*
+Spread Test
+*/
+
+// Horizontal
+// const hand = new cardKitCore.CardSpread(
+//     scene.screenWidth() / 2,
+//     scene.screenHeight() - 20,
+//     1, [], 12, 20,
+//     true,
+//     1, -10, true
+// )
+// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+//     hand.selectPreviousCard()
+// })
+// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+//     hand.selectNextCard()
+// })
+
+// Vertical
+// const hand = new cardKitCore.CardSpread(
+//     20,
+//     scene.screenHeight() / 2,
+//     1, [], 12, 20,
+//     false,
+//     1, 6, true
+// )
+// controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
+//     hand.selectPreviousCard()
+// })
+// controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+//     hand.selectNextCard()
+// })
+
+// hand.insertCardsFrom(deck, 5)
+
+/*
+Grid Test
+*/
+const grid = new cardKitCore.CardGrid(
+    scene.screenWidth() / 2,
+    scene.screenHeight() / 2,
     1,
+    [],
+    12, 20,
+    4, 6,
+    false,
+    1,
+    false,
+    sprites.create(img`
+    . . . f f . . .
+    . . f 1 1 f . .
+    . f 1 1 1 1 f .
+    f 1 1 1 1 1 1 f
+    f b b b b b b f
+    . f f f f f f .
+    `),
+    sprites.create(img`
+    . f f f f f f .
+    f 1 1 1 1 1 1 f
+    f b 1 1 1 1 b f
+    . f b 1 1 b f .
+    . . f b b f . .
+    . . . f f . . .
+    `)
 )
 
-const playingCardDeckData = []
-for (const suit of ['spades', 'diamond', 'club', 'heart']) {
-    for (let rank = 1; rank <= 13; rank++) {
-        playingCardDeckData.push(new cardKit.CardData(
-            playingCardLayout.valueText[rank] + suit.charAt(0).toUpperCase(),
-            `${playingCardLayout.valueText[rank]} of ${suit}`,
-            suit,
-            rank
-        ))
-    }
-}
-
-const deck = new cardKit.CardStack(playingCardLayout, playingCardDeckData, false, false)
-// const hand = new cardKit.CardSpread([], scene.screenWidth() / 2, scene.screenHeight() - 30, true, 1)
-
-// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-//     hand.selectPrevious()
-// })
-
-// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-//     hand.selectNext()
-// })
-
-// controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-//     if(!!cardKit.getSelectedCard()) {
-//         cardKit.getSelectedCard().flip()
-//     }
-// })
-// while (deck.data.length > 0 && hand.cards.length < 10) {
-//     let card = deck.createCard()
-//     hand.cards.push(card)
-//     hand.reposition()
-//     pause(500)
-// }
-
-const grid = new cardKit.CardGrid([], scene.screenWidth() / 2, scene.screenHeight() / 2, 4, 6, false, 1)
-while (deck.data.length > 0) { // && grid.cards.length < 24) {
-    let card = deck.createCard()
-    grid.cards.push(card)
-}
-grid.reposition()
+deck.flipCardsUp()
+grid.insertCardsFrom(deck, 52)
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-    grid.selectLeft()
+    grid.selectPreviousColumnCard()
 })
 
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    grid.selectRight()
+    grid.selectNextColumnCard()
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
-    grid.selectUp()
+    grid.selectPreviousRowCard()
 })
 
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    grid.selectDown()
+    grid.selectNextRowCard()
 })
