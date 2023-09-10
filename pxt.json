@@ -13,7 +13,8 @@
         "core.ts",
         "sprites.ts",
         "animation.ts",
-        "playingcards.ts"
+        "playingcards.ts",
+        "blocks.ts"
     ],
     "testFiles": [
         "test.ts"

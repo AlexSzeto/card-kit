@@ -33,7 +33,6 @@ namespace cardKit {
                 `,
             5,
             10,
-            12,
             [
                 new cardKitCore.LayoutRow(
                     CardZoneAlignments.Center,

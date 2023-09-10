@@ -112,7 +112,6 @@ namespace cardKitCore {
     export class CardLayout {
         frontImage: Image
         backImage: Image
-        shadowImage: Image
         private frontStackResizableImage: game.BaseDialog
         private backStackResizableImage: game.BaseDialog
 
@@ -125,18 +124,21 @@ namespace cardKitCore {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
-            shadowColor: number,
             public rows: LayoutRow[],
             public margin: number,
             public spacing: number,
         ) {
             let frame = new game.BaseDialog(width, height, frontFrame)
-            this.frontImage = frame.image
-            frame.resize(width, height, backFrame)
-            this.backImage = frame.image
-            this.shadowImage = this.backImage.clone()
-            for (let color = 1; color < 16; color++) {
-                this.shadowImage.replace(color, shadowColor)
+            if (frontFrame.width === width && frontFrame.height === height) {
+                this.frontImage = frontFrame
+            } else {
+                this.frontImage = frame.image
+            }
+            if (backFrame.width === width && backFrame.height === height) {
+                this.backImage = backFrame
+            } else {
+                frame.resize(width, height, backFrame)
+                this.backImage = frame.image
             }
             this.frontStackResizableImage = new game.BaseDialog(width, height, frontStackFrame)
             this.backStackResizableImage = new game.BaseDialog(width, height, backStackFrame)
