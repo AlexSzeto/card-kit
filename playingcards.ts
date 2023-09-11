@@ -1,9 +1,9 @@
 namespace cardKit {
-    let playingCardsDeckData: cardKitCore.CardData[]
-    export function createPlayingCards(): cardKitCore.CardStack {
+    let playingCardsDeckData: cardKit.CardData[]
+    
+    export function createPlayingCards(): cardKit.CardStack {
         const rankToTextLookupTable = ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-        const rankToDescriptionLookupTable = ['Joker', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
-        const playingCardLayout = new cardKitCore.CardLayout(
+        const playingCardLayout = new cardKit.CardLayout(
             12, 20,
             img`
                     . c c c c .
@@ -34,20 +34,20 @@ namespace cardKit {
             5,
             10,
             [
-                new cardKitCore.LayoutRow(
+                new cardKit.LayoutRow(
                     CardZoneAlignments.Center,
                     [
-                        cardKitCore.createAttributeAsLookupTextLayout('rank', 15, 2, 1,
-                        cardKitCore.createNumberToTextLookupTable(rankToTextLookupTable)
+                        cardKit.createAttributeAsLookupTextLayout('rank', 15, 2, 1,
+                        cardKit.createNumberToTextLookupTable(rankToTextLookupTable)
                         ),
-                        cardKitCore.createEmptySpaceLayout(2, 0),
+                        cardKit.createEmptySpaceLayout(2, 0),
                     ]
                 ),
-                new cardKitCore.LayoutRow(
+                new cardKit.LayoutRow(
                     CardZoneAlignments.Center,
                     [
-                        cardKitCore.createAttributeAsLookupImageLayout('suit', [
-                            new cardKitCore.LayoutLookup('spades', img`
+                        cardKit.createAttributeAsLookupImageLayout('suit', [
+                            new cardKit.LayoutLookup('spades', img`
                             . . f . .
                             . f f f .
                             f f f f f
@@ -55,7 +55,7 @@ namespace cardKit {
                             . . f . .
                             . f f f .
                             `),
-                            new cardKitCore.LayoutLookup('diamond', img`
+                            new cardKit.LayoutLookup('diamond', img`
                             . . 2 . .
                             . 2 2 2 .
                             2 2 2 2 2
@@ -63,15 +63,15 @@ namespace cardKit {
                             . 2 2 2 .
                             . . 2 . .
                             `),
-                            new cardKitCore.LayoutLookup('club', img`
+                            new cardKit.LayoutLookup('club', img`
                             . f f f .
                             f f f f f
                             f f f f f
-                            f . f . f
+                            f f f f f
                             . . f . .
                             . f f f .
                             `),
-                            new cardKitCore.LayoutLookup('heart', img`
+                            new cardKit.LayoutLookup('heart', img`
                             . 2 . 2 .
                             2 2 2 2 2
                             2 2 2 2 2
@@ -80,7 +80,7 @@ namespace cardKit {
                             . . 2 . .
                             `),
                         ]),
-                        cardKitCore.createEmptySpaceLayout(2, 0),
+                        cardKit.createEmptySpaceLayout(2, 0),
                     ]
                 )
             ],
@@ -91,9 +91,7 @@ namespace cardKit {
         const playingCardDeckData = []
         for (const suit of ['spades', 'diamond', 'club', 'heart']) {
             for (let rank = 1; rank <= 13; rank++) {
-                const cardData = new cardKitCore.CardData(
-                    rankToTextLookupTable[rank] + suit.charAt(0).toUpperCase(),
-                    `${rankToDescriptionLookupTable[rank]} of ${suit.charAt(0).toUpperCase()}${suit.substr(1)}`,
+                const cardData = new cardKit.CardData(
                     null
                 )
                 cardData.setAttribute('suit', suit)
@@ -102,7 +100,7 @@ namespace cardKit {
             }
         }
 
-        return new cardKitCore.CardStack(
+        return new cardKit.CardStack(
             playingCardLayout,
             playingCardDeckData,
             false,

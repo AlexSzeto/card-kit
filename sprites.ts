@@ -12,9 +12,10 @@ enum CardCursorAnchors {
 
 namespace SpriteKind {
     export const Card = SpriteKind.create()
+    export const Cursor = SpriteKind.create()
 }
 
-namespace cardKitCore {
+namespace cardKit {
     const FLIP_SCALES = [0.6, 0.3, 0.1]
 
     let flipAnimationDuration = 300
@@ -101,14 +102,11 @@ namespace cardKitCore {
         }
     }
 
-    type TransferrableCards = Card | CardData
-    export interface CardContainer {
+    interface CardContainer {
         getCardCount(): number,
         insertCardAt(index: number, card: Card): void
         removeCardAt(index: number, isFaceUp: boolean): Card
         insertCardsFrom(source: CardContainer, count: number): void
-        flipCardsUp(): void
-        flipCardsDown(): void
 
         removeCardsAsData(count: number): CardData[]
         removeCardsAsSprite(count: number): Card[]
@@ -159,15 +157,9 @@ namespace cardKitCore {
             this.cards = data.concat(this.cards)
         }
 
-        flipCardsUp(): void {
-            this.isStackFaceUp = true
-            this.isTopCardFaceUp = true
-            this.refreshImage()
-        }
-
-        flipCardsDown(): void {
-            this.isStackFaceUp = false
-            this.isTopCardFaceUp = false
+        flipStack(isFaceUp: boolean): void {
+            this.isStackFaceUp = isFaceUp
+            this.isTopCardFaceUp = isFaceUp
             this.refreshImage()
         }
 
@@ -267,22 +259,6 @@ namespace cardKitCore {
             this.repositionSprites()
         }
 
-        flipCardsUp(): void {
-            this.cards.forEach(card => {
-                if (!card.isFaceUp) {
-                    card.flip()
-                }
-            })
-        }
-
-        flipCardsDown(): void {
-            this.cards.forEach(card => {
-                if (card.isFaceUp) {
-                    card.flip()
-                }
-            })
-        }
-
         removeCardsAsData(count: number): CardData[] {
             return this.removeCardsAsSprite(count).map(card => {
                 const data = card.getData()
@@ -347,7 +323,7 @@ namespace cardKitCore {
             private columns: number,
             private isScrollingLeftRight: boolean,
             private spacing: number,            
-            private isWrappingSelection: boolean,
+            public isWrappingSelection: boolean,
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
@@ -461,22 +437,6 @@ namespace cardKitCore {
             this.repositionSprites()
         }
 
-        flipCardsUp(): void {
-            this.cards.forEach(card => {
-                if (!card.isFaceUp) {
-                    card.flip()
-                }
-            })
-        }
-
-        flipCardsDown(): void {
-            this.cards.forEach(card => {
-                if (card.isFaceUp) {
-                    card.flip()
-                }
-            })
-        }
-
         removeCardsAsData(count: number): CardData[] {
             return this.removeCardsAsSprite(count).map(card => {
                 const data = card.getData()
@@ -588,6 +548,9 @@ namespace cardKitCore {
         }
     }
 
+    let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
+    let cursorOffsetX = 0
+    let cursorOffsetY = 0
     let cursorTarget: Sprite = null
     const cursor = sprites.create(img`
         . . . f f . . . .
@@ -600,13 +563,9 @@ namespace cardKitCore {
         . f d 1 1 1 1 1 f
         . . f d 1 1 1 d f
         . . . f f f f f .
-    `)
+    `, SpriteKind.Cursor)
     cursor.z = 1000
     cursor.setFlag(SpriteFlag.Invisible, true)
-
-    let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
-    let cursorOffsetX = 0
-    let cursorOffsetY = 0
 
     game.onUpdate(() => {
         if (!!cursor) {
@@ -658,16 +617,12 @@ namespace cardKitCore {
         }
     }
 
-    export function getSelectedCard(): Card {
-        if (!!cursorTarget && cursorTarget instanceof Card) {
-            return cursorTarget
-        } else {
-            return null
-        }
+    export function getSelection(): Sprite {
+        return cursorTarget
     }
 
-    export function getSelectedStack(): CardStack {
-        if (!!cursorTarget && cursorTarget instanceof CardStack) {
+    export function getSelectedCard(): Card {
+        if (!!cursorTarget && cursorTarget instanceof Card) {
             return cursorTarget
         } else {
             return null

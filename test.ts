@@ -2,8 +2,8 @@
 const deck = cardKit.createPlayingCards()
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-    if(!!cardKitCore.getSelectedCard()) {
-        cardKitCore.getSelectedCard().flip()
+    if(!!cardKit.getSelectedCard()) {
+        cardKit.getSelectedCard().flip()
     }
 })
 
@@ -12,7 +12,7 @@ Spread Test
 */
 
 // Horizontal
-// const hand = new cardKitCore.CardSpread(
+// const hand = new cardKit.CardSpread(
 //     scene.screenWidth() / 2,
 //     scene.screenHeight() - 20,
 //     1, [], 12, 20,
@@ -27,7 +27,7 @@ Spread Test
 // })
 
 // Vertical
-// const hand = new cardKitCore.CardSpread(
+// const hand = new cardKit.CardSpread(
 //     20,
 //     scene.screenHeight() / 2,
 //     1, [], 12, 20,
@@ -46,7 +46,7 @@ Spread Test
 /*
 Grid Test
 */
-const grid = new cardKitCore.CardGrid(
+const grid = new cardKit.CardGrid(
     scene.screenWidth() / 2,
     scene.screenHeight() / 2,
     1,
@@ -74,7 +74,6 @@ const grid = new cardKitCore.CardGrid(
     `)
 )
 
-deck.flipCardsUp()
 grid.insertCardsFrom(deck, 52)
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function() {

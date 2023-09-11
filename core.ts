@@ -4,7 +4,7 @@ enum CardZoneAlignments {
     Right
 }
 
-namespace cardKitCore {
+namespace cardKit {
 
     type CardAttributeValues = string | number
     export class CardAttribute {
@@ -18,8 +18,6 @@ namespace cardKitCore {
         private attributes: CardAttribute[]
 
         constructor(
-            public title?: string,
-            public description?: string,
             public picture?: Image,
         ) {
             this.attributes = []
@@ -45,13 +43,11 @@ namespace cardKitCore {
     }
 
     enum ZoneTypes {
-        CardTitleAsText,
-        CardDescriptionAsText,
-        CardPictureAsImage,
-        AttributeAsPlainText,
-        AttributeAsRepeatImage,
-        AttributeAsLookupText,
-        AttributeAsLookupImage,
+        CardPicture,
+        AttributeText,
+        RepeatImage,
+        LookupAttributeAsText,
+        LookupAttributeAsImage,
         Text,
         Image,
         EmptySpace,
@@ -152,7 +148,7 @@ namespace cardKitCore {
             return Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel))) + this.height
         }
 
-        getStackImage(cardStackSize: number, isFaceUp: boolean): Image {
+        private getStackImage(cardStackSize: number, isFaceUp: boolean): Image {
             const stackHeight = this.getStackHeight(cardStackSize)
             if (isFaceUp) {
                 this.frontStackResizableImage.resize(this.width, stackHeight, this.frontStackFrame)
@@ -242,16 +238,10 @@ namespace cardKitCore {
                         case ZoneTypes.EmptySpace:
                             drawZone = createSpaceDrawZone(zone.width - this.spacing, zone.height - this.spacing)
                             break
-                        case ZoneTypes.CardTitleAsText:
-                            drawZone = createTextDrawZone(card.title, zone.color, zone.height, zone.width)
-                            break
-                        case ZoneTypes.CardDescriptionAsText:
-                            drawZone = createTextDrawZone(card.description, zone.color, zone.height, zone.width)
-                            break
-                        case ZoneTypes.CardPictureAsImage:
+                        case ZoneTypes.CardPicture:
                             drawZone = createImageDrawZone(card.picture, 1)
                             break
-                        case ZoneTypes.AttributeAsPlainText:
+                        case ZoneTypes.AttributeText:
                             attribute = card.getAttribute(zone.text)
                             if (typeof attribute === 'number') {
                                 drawZone = createTextDrawZone(attribute.toString(), zone.color, zone.height, zone.width)
@@ -259,20 +249,20 @@ namespace cardKitCore {
                                 drawZone = createTextDrawZone(attribute, zone.color, zone.height, zone.width)
                             }
                             break
-                        case ZoneTypes.AttributeAsRepeatImage:
+                        case ZoneTypes.RepeatImage:
                             attribute = card.getAttribute(zone.text)
                             if (typeof attribute === 'number') {
                                 drawZone = createImageDrawZone(zone.image, attribute)
                             }
                             break
-                        case ZoneTypes.AttributeAsLookupText:
-                        case ZoneTypes.AttributeAsLookupImage:
+                        case ZoneTypes.LookupAttributeAsText:
+                        case ZoneTypes.LookupAttributeAsImage:
                             attribute = card.getAttribute(zone.text)
                             const lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
                             if (!!lookupValue) {
-                                if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.AttributeAsLookupText) {
+                                if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.LookupAttributeAsText) {
                                     drawZone = createTextDrawZone(lookupValue.drawable, zone.color, zone.height, zone.width)
-                                } else if (zone.zoneType === ZoneTypes.AttributeAsLookupImage) {
+                                } else if (zone.zoneType === ZoneTypes.LookupAttributeAsImage) {
                                     drawZone = createImageDrawZone(lookupValue.drawable as Image, 1)
                                 }
                             }
@@ -339,34 +329,28 @@ namespace cardKitCore {
         }
     }
 
-    export function createTextLayout(text: string, color: number, columns: number, rows: number) {
+    export function createTextLayout(text: string, color: number, columns: number, rows: number): LayoutColumn {
         return new LayoutColumn(ZoneTypes.Text, text, color, columns, rows, null, null)
     }
-    export function createImageLayout(image: Image) {
+    export function createImageLayout(image: Image): LayoutColumn {
         return new LayoutColumn(ZoneTypes.Image, null, 0, 0, 0, image, null)
     }
-    export function createEmptySpaceLayout(width: number, height: number) {
+    export function createEmptySpaceLayout(width: number, height: number): LayoutColumn {
         return new LayoutColumn(ZoneTypes.EmptySpace, null, null, width, height, null, null)
     }
-    export function createTitleLayout(color: number, columns: number, rows: number) {
-        return new LayoutColumn(ZoneTypes.CardTitleAsText, null, color, columns, rows, null, null)
+    export function createPictureLayout(): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.CardPicture, null, 0, 0, 0, null, null)
     }
-    export function createDescriptionLayout(color: number, columns: number, rows: number) {
-        return new LayoutColumn(ZoneTypes.CardDescriptionAsText, null, color, columns, rows, null, null)
+    export function createAttributeAsPlainTextLayout(group: string, color: number, columns: number, rows: number): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.AttributeText, group, color, columns, rows, null, null)
     }
-    export function createPictureLayout() {
-        return new LayoutColumn(ZoneTypes.CardPictureAsImage, null, 0, 0, 0, null, null)
+    export function createAttributeAsRepeatImageLayout(group: string, image: Image): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.RepeatImage, group, 0, 0, 0, image, null)
     }
-    export function createAttributeAsPlainTextLayout(group: string, color: number, columns: number, rows: number) {
-        return new LayoutColumn(ZoneTypes.AttributeAsPlainText, group, color, columns, rows, null, null)
+    export function createAttributeAsLookupTextLayout(group: string, color: number, columns: number, rows: number, lookupTable: LayoutLookup[]): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.LookupAttributeAsText, group, color, columns, rows, null, lookupTable)
     }
-    export function createAttributeAsRepeatImageLayout(group: string, image: Image) {
-        return new LayoutColumn(ZoneTypes.AttributeAsRepeatImage, group, 0, 0, 0, image, null)
-    }
-    export function createAttributeAsLookupTextLayout(group: string, color: number, columns: number, rows: number, lookupTable: LayoutLookup[]) {
-        return new LayoutColumn(ZoneTypes.AttributeAsLookupText, group, color, columns, rows, null, lookupTable)
-    }
-    export function createAttributeAsLookupImageLayout(group: string, lookupTable: LayoutLookup[]) {
-        return new LayoutColumn(ZoneTypes.AttributeAsLookupImage, group, 0, 0, 0, null, lookupTable)
+    export function createAttributeAsLookupImageLayout(group: string, lookupTable: LayoutLookup[]): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.LookupAttributeAsImage, group, 0, 0, 0, null, lookupTable)
     }
 }
