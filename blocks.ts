@@ -25,7 +25,7 @@ namespace cardBuilder {
 
     //% shim=ENUM_GET
     //% blockId="attributePicker"
-    //% block="Attribute $arg"
+    //% block="Card $arg"
     //% enumName="CardAttributes"
     //% enumMemberName="attribute"
     //% enumPromptHint="e.g. Name, Cost, Power..."
@@ -101,7 +101,7 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="reset $layout layout zones"
+    //% block="reset $layout zones"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function resetLayoutZones(layout: CardLayoutTemplate) {
         layout.rows = []
@@ -109,7 +109,7 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="edit $layout next layout row"
+    //% block="edit $layout next row"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function editNextLayoutRow(layout: CardLayoutTemplate) {
         layout.rows.push(new cardKit.LayoutRow(CardZoneAlignments.Center, []))
@@ -127,7 +127,7 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="add $layout empty space width $width height $height to current row"
+    //% block="add to current row in $layout empty space width $width height $height"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutEmptySpaceZone(layout: CardLayoutTemplate, width: number, height: number) {
         addLayoutColumn(layout, cardKit.createEmptySpaceLayout(width, height))
@@ -135,7 +135,7 @@ namespace cardBuilder {
 
     //% group="Layout"
     //% inlineInputMode=inline
-    //% block="add $layout text $text in $color to current row|| limit line length $charsPerLine max lines $maxLines"
+    //% block="add to current row in $layout text $text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=0 maxLines.defl=1
@@ -144,22 +144,22 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="add $layout image $image to current row"
+    //% block="add to current row in $layout image $image"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutStaticImageZone(layout: CardLayoutTemplate, image: Image) {
         addLayoutColumn(layout, cardKit.createImageLayout(image))
     }
 
     //% group="Layout"
-    //% block="add $layout card picture to current row"
+    //% block="add to current row in $layout card picture"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutPictureZone(layout: CardLayoutTemplate, ) {
         addLayoutColumn(layout, cardKit.createPictureLayout())
     }
 
     //% group="Layout"
-    //% inlineInputMode=inline
-    //% block="add $layout image $image to current row repeat number attribute $attribute times"
+    //% inlineInputMode="inline"
+    //% block="add to current row in $layout image $image repeat $attribute times"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     export function createLayoutRepeatedImageZone(layout: CardLayoutTemplate, attribute: number, image: Image) {
@@ -167,8 +167,8 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% inlineInputMode=inline
-    //% block="add $layout attribute $attribute as text in $color to current row|| limit line length $charsPerLine max lines $maxLines"
+    //% inlineInputMode="inline"
+    //% block="add to current row in $layout attribute $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -178,7 +178,7 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="$layout add text to current row| in $color use number attribute $attribute to index value from $textLookupTable|| limit line length $charsPerLine max lines $maxLines"
+    //% block="add to current row in $layout use index value $attribute to get text from $textLookupTable|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -188,16 +188,16 @@ namespace cardBuilder {
     }
 
     //% group="Layout"
-    //% block="$layout add image to current row| use number attribute $attribute to index value from $imageLookupTable"
-     //% layout.shadow="variables_get" layout.defl="myCardLayout"
+    //% block="add to current row in $layout use index value $attribute to get image from $imageLookupTable"
+    //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
-   //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
+    //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function createLayoutAttributeNumberToImageZone(layout: CardLayoutTemplate, attribute: number, imageLookupTable: Image[]) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
     //% group="Layout"
-    //% block="$layout add image to current row| use text attribute $attribute and change $lookupTable"
+    //% block="add to current row in $layout use $attribute and change $lookupTable"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
