@@ -88,20 +88,20 @@ namespace cardBuilder {
         }
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="reset $layout layout zones"
     export function resetLayoutZones(layout: CardLayoutTemplate) {
         layout.rows = []
         editNextLayoutRow(layout)
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="edit $layout next layout row"
     export function editNextLayoutRow(layout: CardLayoutTemplate) {
         layout.rows.push(new cardKit.LayoutRow(CardZoneAlignments.Center, []))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="align $layout current row to $alignment"
     export function changeLayoutCurrentRowAlignment(layout: CardLayoutTemplate, alignment: CardZoneAlignments) {
         layout.rows[layout.rows.length - 1].align = alignment
@@ -111,13 +111,13 @@ namespace cardBuilder {
         layout.rows[layout.rows.length - 1].columns.push(column)
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="add $layout empty space width $width height $height to current row"
     export function createLayoutEmptySpaceZone(layout: CardLayoutTemplate, width: number, height: number) {
         addLayoutColumn(layout, cardKit.createEmptySpaceLayout(width, height))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% inlineInputMode=inline
     //% block="add $layout text $text in $color to current row|| limit line length $charsPerLine max lines $maxLines"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -126,26 +126,26 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createTextLayout(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="add $layout image $image to current row"
     export function createLayoutStaticImageZone(layout: CardLayoutTemplate, image: Image) {
         addLayoutColumn(layout, cardKit.createImageLayout(image))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="add $layout card picture to current row"
     export function createLayoutPictureZone(layout: CardLayoutTemplate, ) {
         addLayoutColumn(layout, cardKit.createPictureLayout())
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% inlineInputMode=inline
     //% block="add $layout image $image to current row repeat number attribute $attribute times"
     export function createLayoutRepeatedImageZone(layout: CardLayoutTemplate, attribute: string, image: Image) {
         addLayoutColumn(layout, cardKit.createAttributeAsRepeatImageLayout(attribute, image))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% inlineInputMode=inline
     //% block="add $layout attribute $attribute as text in $color to current row|| limit line length $charsPerLine max lines $maxLines"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -154,7 +154,7 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsPlainTextLayout(attribute, color, charsPerLine, maxLines))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="$layout add text to current row| in $color use number attribute $attribute to index value from $textLookupTable|| limit line length $charsPerLine max lines $maxLines"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
@@ -162,14 +162,14 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupTextLayout(attribute, color, charsPerLine, maxLines, cardKit.createNumberToTextLookupTable(textLookupTable)))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="$layout add image to current row| use number attribute $attribute to index value from $imageLookupTable"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function createLayoutAttributeNumberToImageZone(layout: CardLayoutTemplate, attribute: string, imageLookupTable: Image[]) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Layout"
     //% block="$layout add image to current row| use text attribute $attribute and change $lookupTable"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
     export function createLayoutAttributeTextToImageZone(layout: CardLayoutTemplate, attribute: string, lookupTable: cardKit.LayoutLookup[]) {
