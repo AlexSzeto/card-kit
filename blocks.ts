@@ -31,7 +31,13 @@ namespace cardBuilder {
         return new cardKit.LayoutLookup(text, image)
     }
 
-    class CardLayoutTemplate {
+    //% group="Layout" blockSetVariable="myCardLayout"
+    //% block="set $this to "
+    export function createCardLayoutTemplate(): CardLayoutTemplate {
+        return new CardLayoutTemplate()
+    }
+
+    export class CardLayoutTemplate {
         //% group="Layout" blockSetVariable="myCardLayout"
         //% blockCombine block="width"
         width: number
