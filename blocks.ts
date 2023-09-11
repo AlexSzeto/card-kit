@@ -1,6 +1,6 @@
 //% color="#333333" icon="\uf06d" block="Card Builder"
-//% groups="['Layout', 'Data']"
-namespace cardBuilder {
+//% groups="['Create', 'Edit']"
+namespace cardLayout {
 
     const DEFAULT_CARD_FRONT = img`
     . c c c c .
@@ -25,12 +25,13 @@ namespace cardBuilder {
 
     //% shim=ENUM_GET
     //% blockId="attributePicker"
+    //% blockHidden=true
     //% block="Card $arg"
     //% enumName="CardAttributes"
     //% enumMemberName="attribute"
     //% enumPromptHint="e.g. Name, Cost, Power..."
-    //% enumInitialMembers="Suit, Rank"
-    export function _attributeEnumShim(arg: number) {
+    //% enumInitialMembers="Rank, Suit"
+    export function _cardAttributeEnumShim(arg: number) {
         // This function should do nothing, but must take in a single
         // argument of type number and return a number value.
         return arg;
@@ -43,41 +44,41 @@ namespace cardBuilder {
         return new cardKit.LayoutLookup(text, image)
     }
 
-    //% group="Layout" blockSetVariable="myCardLayout"
+    //% group="Create" blockSetVariable="myCardLayout"
     //% block="set $this to "
     export function createCardLayoutTemplate(): CardLayoutTemplate {
         return new CardLayoutTemplate()
     }
 
     export class CardLayoutTemplate {
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="width"
         width: number
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="height"
         height: number
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="card front frame"
         frontFrame: Image
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="card back frame"
         backFrame: Image
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="card front stack frame"
         frontStackFrame: Image
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="card back stack frame"
         backStackFrame: Image
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="cards per pixel on stack"
         cardsPerPixel: number
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="max stack height"
         maxStackHeight: number
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="margin"
         margin: number
-        //% group="Layout" blockSetVariable="myCardLayout"
+        //% group="Edit" blockSetVariable="myCardLayout"
         //% blockCombine block="spacing"
         spacing: number
 
@@ -100,7 +101,7 @@ namespace cardBuilder {
         }
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="reset $layout zones"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function resetLayoutZones(layout: CardLayoutTemplate) {
@@ -108,14 +109,14 @@ namespace cardBuilder {
         editNextLayoutRow(layout)
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="edit $layout next row"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function editNextLayoutRow(layout: CardLayoutTemplate) {
         layout.rows.push(new cardKit.LayoutRow(CardZoneAlignments.Center, []))
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="align $layout current row to $alignment"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function changeLayoutCurrentRowAlignment(layout: CardLayoutTemplate, alignment: CardZoneAlignments) {
@@ -126,14 +127,14 @@ namespace cardBuilder {
         layout.rows[layout.rows.length - 1].columns.push(column)
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="add to current row in $layout empty space width $width height $height"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutEmptySpaceZone(layout: CardLayoutTemplate, width: number, height: number) {
         addLayoutColumn(layout, cardKit.createEmptySpaceLayout(width, height))
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% inlineInputMode=inline
     //% block="add to current row in $layout text $text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
@@ -143,21 +144,21 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createTextLayout(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines))
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="add to current row in $layout image $image"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutStaticImageZone(layout: CardLayoutTemplate, image: Image) {
         addLayoutColumn(layout, cardKit.createImageLayout(image))
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% block="add to current row in $layout card picture"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutPictureZone(layout: CardLayoutTemplate, ) {
         addLayoutColumn(layout, cardKit.createPictureLayout())
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% inlineInputMode="inline"
     //% block="add to current row in $layout image $image repeat $attribute times"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
@@ -166,9 +167,9 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsRepeatImageLayout(attribute, image))
     }
 
-    //% group="Layout"
+    //% group="Edit"
     //% inlineInputMode="inline"
-    //% block="add to current row in $layout attribute $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines"
+    //% block="add to current row in $layout $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -177,8 +178,8 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsPlainTextLayout(attribute, color, charsPerLine, maxLines))
     }
 
-    //% group="Layout"
-    //% block="add to current row in $layout use index value $attribute to get text from $textLookupTable|| in $color limit line length $charsPerLine max lines $maxLines"
+    //% group="Edit"
+    //% block="add to current row in $layout text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -187,8 +188,8 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupTextLayout(attribute, color, charsPerLine, maxLines, cardKit.createNumberToTextLookupTable(textLookupTable)))
     }
 
-    //% group="Layout"
-    //% block="add to current row in $layout use index value $attribute to get image from $imageLookupTable"
+    //% group="Edit"
+    //% block="add to current row in $layout image from $imageLookupTable index $attribute"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
@@ -196,8 +197,8 @@ namespace cardBuilder {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
-    //% group="Layout"
-    //% block="add to current row in $layout use $attribute and change $lookupTable"
+    //% group="Edit"
+    //% block="add to current row in $layout image take $attribute and change $lookupTable"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"

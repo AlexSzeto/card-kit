@@ -37,7 +37,7 @@ namespace cardKit {
                 new cardKit.LayoutRow(
                     CardZoneAlignments.Center,
                     [
-                        cardKit.createAttributeAsLookupTextLayout(1, 15, 2, 1,
+                        cardKit.createAttributeAsLookupTextLayout(0, 15, 2, 1,
                         cardKit.createNumberToTextLookupTable(rankToTextLookupTable)
                         ),
                         cardKit.createEmptySpaceLayout(2, 0),
@@ -46,7 +46,7 @@ namespace cardKit {
                 new cardKit.LayoutRow(
                     CardZoneAlignments.Center,
                     [
-                        cardKit.createAttributeAsLookupImageLayout(0, [
+                        cardKit.createAttributeAsLookupImageLayout(1, [
                             new cardKit.LayoutLookup('spades', img`
                             . . f . .
                             . f f f .
@@ -94,8 +94,8 @@ namespace cardKit {
                 const cardData = new cardKit.CardData(
                     null
                 )
-                cardData.setAttribute(0, suit)
-                cardData.setAttribute(1, rank)
+                cardData.setAttribute(0, rank)
+                cardData.setAttribute(1, suit)
                 playingCardDeckData.push(cardData)
             }
         }
