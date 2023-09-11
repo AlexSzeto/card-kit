@@ -1,4 +1,7 @@
+//% color="#333333" icon="\uf06d" block="Card Builder"
+//% groups="['Layout', 'Data']"
 namespace cardBuilder {
+
     function createFlatColorImage(image: Image, color: number): Image {
         const result = image.clone()
         for (let c = 0; c < 16; c++) {
