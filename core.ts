@@ -9,7 +9,7 @@ namespace cardKit {
     type CardAttributeValues = string | number
     export class CardAttribute {
         constructor(
-            public group: string,
+            public name: string,
             public value: CardAttributeValues,
         ) {}
     }
@@ -23,8 +23,8 @@ namespace cardKit {
             this.attributes = []
         }
 
-        getAttribute(group: string): CardAttributeValues {
-            const attribute = this.attributes.find(attr => attr.group === group)
+        getAttribute(name: string): CardAttributeValues {
+            const attribute = this.attributes.find(attr => attr.name === name)
             if (!!attribute) {
                 return attribute.value
             } else {
@@ -32,12 +32,12 @@ namespace cardKit {
             }
         }
 
-        setAttribute(group: string, value: CardAttributeValues): void {
-            const attribute = this.attributes.find(attr => attr.group === group)
+        setAttribute(name: string, value: CardAttributeValues): void {
+            const attribute = this.attributes.find(attr => attr.name === name)
             if (!!attribute) {
                 attribute.value = value
             } else {
-                this.attributes.push(new CardAttribute(group, value))
+                this.attributes.push(new CardAttribute(name, value))
             }
         }
     }
@@ -341,16 +341,16 @@ namespace cardKit {
     export function createPictureLayout(): LayoutColumn {
         return new LayoutColumn(ZoneTypes.CardPicture, null, 0, 0, 0, null, null)
     }
-    export function createAttributeAsPlainTextLayout(group: string, color: number, columns: number, rows: number): LayoutColumn {
-        return new LayoutColumn(ZoneTypes.AttributeText, group, color, columns, rows, null, null)
+    export function createAttributeAsPlainTextLayout(attribute: string, color: number, columns: number, rows: number): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.AttributeText, attribute, color, columns, rows, null, null)
     }
-    export function createAttributeAsRepeatImageLayout(group: string, image: Image): LayoutColumn {
-        return new LayoutColumn(ZoneTypes.RepeatImage, group, 0, 0, 0, image, null)
+    export function createAttributeAsRepeatImageLayout(attribute: string, image: Image): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.RepeatImage, attribute, 0, 0, 0, image, null)
     }
-    export function createAttributeAsLookupTextLayout(group: string, color: number, columns: number, rows: number, lookupTable: LayoutLookup[]): LayoutColumn {
-        return new LayoutColumn(ZoneTypes.LookupAttributeAsText, group, color, columns, rows, null, lookupTable)
+    export function createAttributeAsLookupTextLayout(attribute: string, color: number, columns: number, rows: number, lookupTable: LayoutLookup[]): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.LookupAttributeAsText, attribute, color, columns, rows, null, lookupTable)
     }
-    export function createAttributeAsLookupImageLayout(group: string, lookupTable: LayoutLookup[]): LayoutColumn {
-        return new LayoutColumn(ZoneTypes.LookupAttributeAsImage, group, 0, 0, 0, null, lookupTable)
+    export function createAttributeAsLookupImageLayout(attribute: string, lookupTable: LayoutLookup[]): LayoutColumn {
+        return new LayoutColumn(ZoneTypes.LookupAttributeAsImage, attribute, 0, 0, 0, null, lookupTable)
     }
 }
