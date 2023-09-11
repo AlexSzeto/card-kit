@@ -162,7 +162,7 @@ namespace cardBuilder {
     //% block="add $layout image $image to current row repeat number attribute $attribute times"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
-    export function createLayoutRepeatedImageZone(layout: CardLayoutTemplate, attribute: string, image: Image) {
+    export function createLayoutRepeatedImageZone(layout: CardLayoutTemplate, attribute: number, image: Image) {
         addLayoutColumn(layout, cardKit.createAttributeAsRepeatImageLayout(attribute, image))
     }
 
@@ -173,7 +173,7 @@ namespace cardBuilder {
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
-    export function createLayoutAttributeTextZone(layout: CardLayoutTemplate, attribute: string, color: number, charsPerLine: number, maxLines: number) {
+    export function createLayoutAttributeTextZone(layout: CardLayoutTemplate, attribute: number, color: number, charsPerLine: number, maxLines: number) {
         addLayoutColumn(layout, cardKit.createAttributeAsPlainTextLayout(attribute, color, charsPerLine, maxLines))
     }
 
@@ -183,7 +183,7 @@ namespace cardBuilder {
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
-    export function createLayoutAttributeNumberToTextZone(layout: CardLayoutTemplate, attribute: string, textLookupTable: string[], color: number, charsPerLine: number, maxLines: number) {
+    export function createLayoutAttributeNumberToTextZone(layout: CardLayoutTemplate, attribute: number, textLookupTable: string[], color: number, charsPerLine: number, maxLines: number) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupTextLayout(attribute, color, charsPerLine, maxLines, cardKit.createNumberToTextLookupTable(textLookupTable)))
     }
 
@@ -192,7 +192,7 @@ namespace cardBuilder {
      //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
    //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
-    export function createLayoutAttributeNumberToImageZone(layout: CardLayoutTemplate, attribute: string, imageLookupTable: Image[]) {
+    export function createLayoutAttributeNumberToImageZone(layout: CardLayoutTemplate, attribute: number, imageLookupTable: Image[]) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
@@ -201,7 +201,7 @@ namespace cardBuilder {
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function createLayoutAttributeTextToImageZone(layout: CardLayoutTemplate, attribute: string, lookupTable: cardKit.LayoutLookup[]) {
+    export function createLayoutAttributeTextToImageZone(layout: CardLayoutTemplate, attribute: number, lookupTable: cardKit.LayoutLookup[]) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, lookupTable))
     }
 }
