@@ -1,5 +1,5 @@
 //% color="#333333" icon="\uf06d" block="Card Layout"
-//% groups="['Create', 'Edit Row', 'Edit Column', 'Graphics', 'Dimensions']"
+//% groups="['Create', 'Add Row', 'Add Text', 'Add Image', 'Add Misc', 'Graphics', 'Dimensions']"
 namespace cardLayout {
 
     const DEFAULT_CARD_FRONT = img`
@@ -102,7 +102,8 @@ namespace cardLayout {
         }
     }
 
-    //% group="Edit Row"
+    //% group="Add Row"
+    //% weight=100
     //% block="reset $layout zones"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function resetLayoutZones(layout: CardLayoutTemplate) {
@@ -110,14 +111,16 @@ namespace cardLayout {
         editNextLayoutRow(layout)
     }
 
-    //% group="Edit Row"
+    //% group="Add Row"
+    //% weight=99
     //% block="edit $layout next row"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function editNextLayoutRow(layout: CardLayoutTemplate) {
         layout.rows.push(new cardKit.LayoutRow(CardZoneAlignments.Center, []))
     }
 
-    //% group="Edit Row"
+    //% group="Add Row"
+    //% weight=98
     //% block="align $layout current row $alignment"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function changeLayoutCurrentRowAlignment(layout: CardLayoutTemplate, alignment: CardZoneAlignments) {
@@ -128,14 +131,7 @@ namespace cardLayout {
         layout.rows[layout.rows.length - 1].columns.push(column)
     }
 
-    //% group="Edit Column"
-    //% block="add to current row in $layout empty space width $width height $height"
-    //% layout.shadow="variables_get" layout.defl="myCardLayout"
-    export function createLayoutEmptySpaceZone(layout: CardLayoutTemplate, width: number, height: number) {
-        addLayoutColumn(layout, cardKit.createEmptySpaceLayout(width, height))
-    }
-
-    //% group="Edit Column"
+    //% group="Add Text"
     //% inlineInputMode=inline
     //% block="add to current row in $layout text $text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
@@ -145,21 +141,21 @@ namespace cardLayout {
         addLayoutColumn(layout, cardKit.createTextLayout(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines))
     }
 
-    //% group="Edit Column"
+    //% group="Add Image"
     //% block="add to current row in $layout image $image"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutStaticImageZone(layout: CardLayoutTemplate, image: Image) {
         addLayoutColumn(layout, cardKit.createImageLayout(image))
     }
 
-    //% group="Edit Column"
+    //% group="Add Image"
     //% block="add to current row in $layout card picture"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     export function createLayoutPictureZone(layout: CardLayoutTemplate, ) {
         addLayoutColumn(layout, cardKit.createPictureLayout())
     }
 
-    //% group="Edit Column"
+    //% group="Add Image"
     //% inlineInputMode="inline"
     //% block="add to current row in $layout image $image repeat $attribute times"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
@@ -168,7 +164,7 @@ namespace cardLayout {
         addLayoutColumn(layout, cardKit.createAttributeAsRepeatImageLayout(attribute, image))
     }
 
-    //% group="Edit Column"
+    //% group="Add Text"
     //% inlineInputMode="inline"
     //% block="add to current row in $layout $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
@@ -179,7 +175,7 @@ namespace cardLayout {
         addLayoutColumn(layout, cardKit.createAttributeAsPlainTextLayout(attribute, color, charsPerLine, maxLines))
     }
 
-    //% group="Edit Column"
+    //% group="Add Text"
     //% block="add to current row in $layout text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
@@ -189,7 +185,7 @@ namespace cardLayout {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupTextLayout(attribute, color, charsPerLine, maxLines, cardKit.createNumberToTextLookupTable(textLookupTable)))
     }
 
-    //% group="Edit Column"
+    //% group="Add Image"
     //% block="add to current row in $layout image from $imageLookupTable index $attribute"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
@@ -198,7 +194,7 @@ namespace cardLayout {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
-    //% group="Edit Column"
+    //% group="Add Image"
     //% block="add to current row in $layout image take $attribute and change $lookupTable"
     //% layout.shadow="variables_get" layout.defl="myCardLayout"
     //% attribute.shadow="attributePicker"
@@ -206,4 +202,12 @@ namespace cardLayout {
     export function createLayoutAttributeTextToImageZone(layout: CardLayoutTemplate, attribute: number, lookupTable: cardKit.LayoutLookup[]) {
         addLayoutColumn(layout, cardKit.createAttributeAsLookupImageLayout(attribute, lookupTable))
     }
+
+    //% group="Add Misc"
+    //% block="add to current row in $layout empty space width $width height $height"
+    //% layout.shadow="variables_get" layout.defl="myCardLayout"
+    export function createLayoutEmptySpaceZone(layout: CardLayoutTemplate, width: number, height: number) {
+        addLayoutColumn(layout, cardKit.createEmptySpaceLayout(width, height))
+    }
+
 }
