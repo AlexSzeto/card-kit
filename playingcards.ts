@@ -2,8 +2,8 @@ namespace cardKit {
     let playingCardsDeckData: cardKit.CardData[]
     
     export function createPlayingCards(): cardKit.CardStack {
-        let template = cardDesign.createCardDesignTemplate()
-        template.backFrame = img`
+        let design = cardDesign.createCardDesignTemplate()
+        design.backFrame = img`
         . 2 2 2 2 .
         2 4 d d 4 2
         2 d 2 3 d 2
@@ -11,10 +11,10 @@ namespace cardKit {
         2 4 d d 4 2
         . 2 2 2 2 .
         `
-        cardDesign.addAttributeIndexText(template, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
-        cardDesign.addEmptySpace(template, 2, 0)
-        cardDesign.editNextRow(template)
-        cardDesign.addAttributeTextToImage(template, 1, [
+        cardDesign.addAttributeIndexText(design, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
+        cardDesign.addEmptySpace(design, 2, 0)
+        cardDesign.editNextRow(design)
+        cardDesign.addAttributeTextToImage(design, 1, [
             cardDesign.createTextToImageLookupPair('spades', img`
             . . f . .
             . f f f .
@@ -48,25 +48,16 @@ namespace cardKit {
             . . 2 . .
             `),
         ])
-        cardDesign.addEmptySpace(template, 2, 0)
+        cardDesign.addEmptySpace(design, 2, 0)
 
-        const playingCardDeckData = []
-        for (const suit of ['spades', 'diamond', 'club', 'heart']) {
-            for (let rank = 1; rank <= 13; rank++) {
-                const cardData = new cardKit.CardData(
-                    null
-                )
-                cardData.setAttribute(0, rank)
-                cardData.setAttribute(1, suit)
-                playingCardDeckData.push(cardData)
-            }
-        }
+        let deck = cards.createEmptyDeck(design)
+        let card = cards.createCard(design)
+        cards.addCardVariantsToDeck(deck, card, [
+            cards.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
+            cards.createNumberAttributeVariations(0, 1, 13)
+        ])
+        card.destroy()
 
-        return new cardKit.CardStack(
-            template.export(),
-            playingCardDeckData,
-            false,
-            false
-        )
+        return deck
     }
 }

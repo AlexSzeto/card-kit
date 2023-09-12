@@ -234,34 +234,58 @@ namespace cards {
         return arg;
     }
 
-    export function createEmptyDeck(design: cardKit.CardDesign): cardKit.CardStack {
-        return new cardKit.CardStack(design, [], false, false)
+    //% group="Create" blockSetVariable="myCardDeck"
+    //% block="new $design design deck"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function createEmptyDeck(design: cardDesign.CardDesignTemplate): cardKit.CardStack {
+        return new cardKit.CardStack(design.export(), [], false, false)
     }
 
-    export function createCard(design: cardKit.CardDesign, picture: Image = null): cardKit.Card {
+    //% group="Create" blockSetVariable="myCard"
+    //% block="new $design design card|| with picture $picture"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function createCard(design: cardDesign.CardDesignTemplate, picture: Image = null): cardKit.Card {
         return new cardKit.Card(
-            design,
+            design.export(),
             new cardKit.CardData(picture),
             true
         )        
     }
 
+    //% group="Edit"
+    //% block="set $card picture $picture"
+    //% card.shadow="variables_get" card.defl="myCard"
     export function setCardPicture(card: cardKit.Card, picture: Image) {
         card.getData().picture = picture
     }
 
+    //% group="Edit"
+    //% block="$card picture"
+    //% card.shadow="variables_get" card.defl="myCard"
     export function getCardPicture(card: cardKit.Card): Image {
         return card.getData().picture
     }
     
+    //% group="Edit"
+    //% block="set $card $attribute to number $value"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
     export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
         card.getData().setAttribute(attribute, value)
     }
 
+    //% group="Edit"
+    //% block="set $card $attribute to text $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
     export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
         card.getData().setAttribute(attribute, text)
     }
 
+    //% group="Edit"
+    //% block="$card $attribute number"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
     export function getCardNumberAttribute(card: cardKit.Card, attribute: number) {
         const value = card.getData().getAttribute(attribute)
         if(typeof value == "number") {
@@ -271,6 +295,10 @@ namespace cards {
         }
     }
 
+    //% group="Edit"
+    //% block="$card $attribute text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
     export function getCardTextAttribute(card: cardKit.Card, attribute: number) {
         const value = card.getData().getAttribute(attribute)
         if (typeof value == "string") {
@@ -283,33 +311,58 @@ namespace cards {
     class CardAttributeVariation {
         constructor(
             public attribute: number,
-            public variations: cardKit.CardAttributeValues[]
+            public values: cardKit.CardAttributeValues[]
         ) {}
     }
 
-    export function createNumberAttributeVariations(attribute: number, values: number[]): CardAttributeVariation {
+    //% blockId="numberVariationsPicker"
+    //% block="$attribute between $startNumber and $endNumber"
+    export function createNumberAttributeVariations(attribute: number, startNumber: number, endNumber: number): CardAttributeVariation {
+        const values: number[] = []
+        let direction: number = startNumber > endNumber ? -1 : 1
+        for (let v = startNumber; v <= endNumber; v += direction) {
+            values.push(v)
+        }
         return new CardAttributeVariation(attribute, values)
     }
 
+    //% blockId="numberListVariationsPicker"
+    //% block="$attribute between $values"
+    //% attribute.shadow="attributePicker"
+    export function createNumberListAttributeVariations(attribute: number, values: number[]): CardAttributeVariation {
+        return new CardAttributeVariation(attribute, values)
+    }
+
+    //% blockId="textVariationsPicker"
+    //% block="$attribute between $texts"
+    //% attribute.shadow="attributePicker"
     export function createTextAttributeVariations(attribute: number, texts: string[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, texts)
     }
 
-    export function addCardVariationsToDeck(deck: cardKit.CardStack, card: cardKit.Card, attributes: CardAttributeVariation[], copies: number) {
-        const insertData: cardKit.CardData[] = []
-        function addCardVariationsFromIndex(cardVariant: cardKit.CardData, index: number) {
-            attributes[index].variations.forEach(value => { 
-                cardVariant.setAttribute(attributes[index].attribute, value)
-                if (index + 1 < attributes.length) {
-                    addCardVariationsFromIndex(cardVariant, index + 1)
-                } else {
-                    for (let i = 0; i < copies; i++) {
-                        insertData.push(cardVariant.clone())
-                    }
+    function __addCardVariationsFromIndex(deckData: cardKit.CardData[], cardData: cardKit.CardData, attributes: CardAttributeVariation[], attrIndex: number, copies: number) {
+        const variation = attributes[attrIndex]
+        for (let i = 0; i < variation.values.length; i++) {
+            cardData.setAttribute(variation.attribute, variation.values[i])
+            if(attrIndex + 1 < attributes.length) {
+                __addCardVariationsFromIndex(deckData, cardData, attributes, attrIndex + 1, copies)
+            } else {
+                for (let c = 0; c < copies; c++) {
+                    deckData.push(cardData.clone())
                 }
-            })
+            }
         }
-        addCardVariationsFromIndex(card.getData().clone(), 0)
+    }
+
+    //% group="Duplicate"
+    //% block="add to $deck modify $card add every combination of $variations|| $copies copies each"
+    //% deck.shadow="variables_get" deck.defl="myCardDeck"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% variations.shadow="lists_create_with" variations.defl="numberVariationsPicker"
+    //% copies.defl=1
+    export function addCardVariantsToDeck(deck: cardKit.CardStack, card: cardKit.Card, variations: CardAttributeVariation[], copies: number = 1) {
+        const insertData: cardKit.CardData[] = []
+        __addCardVariationsFromIndex(insertData, card.getData().clone(), variations, 0, copies)
         deck.insertCardData(insertData)
     }
     
