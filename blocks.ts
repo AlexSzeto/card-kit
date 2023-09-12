@@ -418,22 +418,46 @@ namespace cards {
         )
     }
 
-    sprites.create(img`
-    . . . f f . . .
-    . . f 1 1 f . .
-    . f 1 1 1 1 f .
-    f 1 1 1 1 1 1 f
-    f b b b b b b f
-    . f f f f f f .
-    `),
-    sprites.create(img`
-    . f f f f f f .
-    f 1 1 1 1 1 1 f
-    f b 1 1 1 1 b f
-    . f b 1 1 b f .
-    . . f b b f . .
-    . . . f f . . .
-    `)
+    const DEFAULT_SCROLL_UP = img`
+        . . . . . . . .
+        . . . f f . . .
+        . . f d d f . .
+        . f d 1 1 d f .
+        f 1 1 1 1 1 1 f
+        f b b b b b b f
+        . f f f f f f .
+        . . . . . . . .
+    `
+    const DEFAULT_SCROLL_DOWN = img`
+        . . . . . . . .
+        . f f f f f f .
+        f d 1 1 1 1 d f
+        f 1 1 1 1 1 1 f
+        . f b 1 1 b f .
+        . . f b b f . .
+        . . . f f . . .
+        . . . . . . . .
+    `
+    const DEFAULT_SCROLL_LEFT = img`
+        . . . . f f . .
+        . . . f 1 b f .
+        . . f 1 1 b f .
+        . f 1 1 1 b f .
+        . f d 1 1 b f .
+        . . f d 1 b f .
+        . . . f d b f .
+        . . . . f f . .
+    `
+    const DEFAULT_SCROLL_RIGHT = img`
+        . . f f . . . .
+        . f 1 d f . . .
+        . f 1 1 d f . .
+        . f 1 1 1 b f .
+        . f 1 1 1 b f .
+        . f 1 1 b f . .
+        . f 1 b f . . .
+        . . f f . . . .
+    `
 
     export function createEmptyGrid(
         design: cardDesign.CardDesignTemplate,
@@ -448,8 +472,12 @@ namespace cards {
             rows, columns,
             isScrollingLeftRight,
             1, false,
-            null,
-            null
+            isScrollingLeftRight 
+                ? sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor) 
+                : sprites.create(DEFAULT_SCROLL_UP, SpriteKind.Cursor),
+            isScrollingLeftRight 
+                ? sprites.create(DEFAULT_SCROLL_RIGHT, SpriteKind.Cursor)
+                : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
         )
     }
 }
