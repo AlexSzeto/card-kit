@@ -2,7 +2,7 @@ namespace cardKit {
     let playingCardsDeckData: cardKit.CardData[]
     
     export function createPlayingCards(): cardKit.CardStack {
-        let template = cardLayout.createCardLayoutTemplate()
+        let template = cardDesign.createCardDesignTemplate()
         template.backFrame = img`
         . 2 2 2 2 .
         2 4 d d 4 2
@@ -11,11 +11,11 @@ namespace cardKit {
         2 4 d d 4 2
         . 2 2 2 2 .
         `
-        cardLayout.addAttributeIndexText(template, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
-        cardLayout.addEmptySpace(template, 2, 0)
-        cardLayout.editNextRow(template)
-        cardLayout.addAttributeTextToImage(template, 1, [
-            cardLayout.createTextToImageLookupPair('spades', img`
+        cardDesign.addAttributeIndexText(template, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
+        cardDesign.addEmptySpace(template, 2, 0)
+        cardDesign.editNextRow(template)
+        cardDesign.addAttributeTextToImage(template, 1, [
+            cardDesign.createTextToImageLookupPair('spades', img`
             . . f . .
             . f f f .
             f f f f f
@@ -23,7 +23,7 @@ namespace cardKit {
             . . f . .
             . f f f .
             `),
-            cardLayout.createTextToImageLookupPair('diamond', img`
+            cardDesign.createTextToImageLookupPair('diamond', img`
             . . 2 . .
             . 2 2 2 .
             2 2 2 2 2
@@ -31,7 +31,7 @@ namespace cardKit {
             . 2 2 2 .
             . . 2 . .
             `),
-            cardLayout.createTextToImageLookupPair('club', img`
+            cardDesign.createTextToImageLookupPair('club', img`
             . f f f .
             f f f f f
             f f f f f
@@ -39,7 +39,7 @@ namespace cardKit {
             . . f . .
             . f f f .
             `),
-            cardLayout.createTextToImageLookupPair('heart', img`
+            cardDesign.createTextToImageLookupPair('heart', img`
             . 2 . 2 .
             2 2 2 2 2
             2 2 2 2 2
@@ -48,7 +48,7 @@ namespace cardKit {
             . . 2 . .
             `),
         ])
-        cardLayout.addEmptySpace(template, 2, 0)
+        cardDesign.addEmptySpace(template, 2, 0)
 
         const playingCardDeckData = []
         for (const suit of ['spades', 'diamond', 'club', 'heart']) {

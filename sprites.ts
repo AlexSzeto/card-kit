@@ -33,13 +33,15 @@ namespace cardKit {
     export class Card extends Sprite {
         private flipStage: number
         private flipTimer: number
+        private __isFaceUp: boolean
 
         constructor(
-            private layout: CardLayout,
+            private design: CardDesign,
             private card: CardData,
-            private __isFaceUp: boolean
+            isFaceUp: boolean
         ) {
-            super(layout.createCardBaseImage())
+            super(design.createCardBaseImage())
+            this.__isFaceUp = isFaceUp
             this.flipStage = -1
             this.refreshImage()
             activate(this)
@@ -48,9 +50,9 @@ namespace cardKit {
         private refreshImage() {
             this.image.fill(0)
             if(this.__isFaceUp) {
-                this.layout.drawCardFront(this.image, 0, 0, this.card)
+                this.design.drawCardFront(this.image, 0, 0, this.card)
             } else {
-                this.layout.drawCardBack(this.image, 0, 0)
+                this.design.drawCardBack(this.image, 0, 0)
             }
         }
 
@@ -114,23 +116,28 @@ namespace cardKit {
 
     export class CardStack extends Sprite implements CardContainer {
         constructor(
-            private layout: CardLayout,
+            private design: CardDesign,
             private cards: CardData[],
             private isStackFaceUp: boolean,
             private isTopCardFaceUp: boolean,
         ) {
-            super(layout.createStackBaseimage())
+            super(design.createStackBaseimage())
             this.refreshImage()
             activate(this)
         }
 
         private refreshImage() {
             this.image.fill(0)
-            this.layout.drawCardStack(this.image, 0, 0, this.cards, this.isStackFaceUp, this.isTopCardFaceUp)
+            this.design.drawCardStack(this.image, 0, 0, this.cards, this.isStackFaceUp, this.isTopCardFaceUp)
         }
 
         getCardCount(): number {
             return this.cards.length
+        }
+
+        insertCardData(data: CardData[]) {
+            this.cards = data.concat(this.cards)
+            this.refreshImage()
         }
 
         insertCardAt(index: number, card: Card): void {
@@ -145,8 +152,8 @@ namespace cardKit {
         }
 
         removeCardAt(index: number, isFaceUp: boolean): Card {
-            const card = new Card(this.layout, this.cards[index], isFaceUp)
-            card.setPosition(this.x, this.y + this.layout.getStackTopYOffset(this.cards.length))
+            const card = new Card(this.design, this.cards[index], isFaceUp)
+            card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
             this.cards.splice(index, 1)
             this.refreshImage()
             return card
@@ -155,6 +162,7 @@ namespace cardKit {
         insertCardsFrom(source: CardContainer, count: number): void {
             const data = source.removeCardsAsData(count)
             this.cards = data.concat(this.cards)
+            this.refreshImage()
         }
 
         flipStack(isFaceUp: boolean): void {
@@ -178,8 +186,8 @@ namespace cardKit {
         removeCardsAsSprite(count: number): Card[] {            
             return this.removeCardsAsData(count).map(
                 data => {
-                    const card = new Card(this.layout, data, this.isTopCardFaceUp)
-                    card.setPosition(this.x, this.y + this.layout.getStackTopYOffset(this.cards.length))
+                    const card = new Card(this.design, data, this.isTopCardFaceUp)
+                    card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
                     return card
                 }
             )
