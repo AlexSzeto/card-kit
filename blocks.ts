@@ -392,29 +392,29 @@ enum SelectedCardMoveDirections {
     Right
 }
 
-function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections, width: number, height: number): number {
+function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): number {
     switch (moveDirection) {
-        case SelectedCardMoveDirections.Up: return -height / 2
-        case SelectedCardMoveDirections.Down: return height / 2
-        case SelectedCardMoveDirections.Left: return -width / 2
-        case SelectedCardMoveDirections.Right: return width / 2
+        case SelectedCardMoveDirections.Up: return -10
+        case SelectedCardMoveDirections.Down: return 10
+        case SelectedCardMoveDirections.Left: return -10
+        case SelectedCardMoveDirections.Right: return 10
     }
 }
 
 namespace cards {
     export function createEmptyHand(
-        design: cardDesign.CardDesignTemplate,
         x: number, y: number,
         isSpreadingLeftRight: boolean,
-        selectedCardMoveDirection: SelectedCardMoveDirections
+        selectedCardMoveDirection: SelectedCardMoveDirections,
+        isWrappingSelection: boolean
     ): cardKit.CardSpread {
         return new cardKit.CardSpread(
             x, y, 1, [],
-            design.width,
-            design.height,
+            -1,
+            -1,
             isSpreadingLeftRight, 1,
-            getSelectedCardOffset(selectedCardMoveDirection, design.width, design.height),
-            false
+            getSelectedCardOffset(selectedCardMoveDirection),
+            isWrappingSelection
         )
     }
 
@@ -460,18 +460,17 @@ namespace cards {
     `
 
     export function createEmptyGrid(
-        design: cardDesign.CardDesignTemplate,
         x: number, y: number,
         columns: number, rows: number,
-        isScrollingLeftRight: boolean
+        isScrollingLeftRight: boolean,
+        isWrappingSelection: boolean,
     ): cardKit.CardGrid {
         return new cardKit.CardGrid(
             x, y, 1, [],
-            design.width,
-            design.height,
+            -1, -1,
             rows, columns,
             isScrollingLeftRight,
-            1, false,
+            1, isWrappingSelection,
             isScrollingLeftRight 
                 ? sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor) 
                 : sprites.create(DEFAULT_SCROLL_UP, SpriteKind.Cursor),
