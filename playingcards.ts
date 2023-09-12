@@ -50,11 +50,11 @@ namespace cardKit {
         ])
         cardDesign.addEmptySpace(design, 2, 0)
 
-        let deck = cards.createEmptyDeck(design)
-        let card = cards.createCard(design)
-        cards.addCardVariantsToDeck(deck, card, [
-            cards.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
-            cards.createNumberAttributeVariations(0, 1, 13)
+        let deck = deckBuilder.createEmptyDeck(design)
+        let card = deckBuilder.createCard(design)
+        deckBuilder.addCardVariantsToDeck(deck, card, [
+            deckBuilder.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
+            deckBuilder.createNumberAttributeVariations(0, 1, 13)
         ])
         card.destroy()
 

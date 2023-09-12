@@ -216,9 +216,9 @@ namespace cardDesign {
 
 }
 
-//% color="#ff3333" icon="\uf249" block="Cards"
-//% groups=['Create', 'Card Attributes', 'Variations', 'Duplicate', 'Controls']
-namespace cards {
+//% color="#ff3333" icon="\uf249" block="Deck Builder"
+//% groups=['Create', 'Attributes', 'Variations', 'Add Card']
+namespace deckBuilder {
 
     //% shim=ENUM_GET
     //% blockId="attributePicker"
@@ -252,21 +252,21 @@ namespace cards {
         )        
     }
 
-    //% group="Card Attributes"
-    //% block="set $card picture $picture"
+    //% group="Attributes"
+    //% block="set $card picture to $picture"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardPicture(card: cardKit.Card, picture: Image) {
         card.getData().picture = picture
     }
 
-    //% group="Card Attributes"
+    //% group="Attributes"
     //% block="$card picture"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardPicture(card: cardKit.Card): Image {
         return card.getData().picture
     }
     
-    //% group="Card Attributes"
+    //% group="Attributes"
     //% block="set $card $attribute to number $value"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -274,7 +274,7 @@ namespace cards {
         card.getData().setAttribute(attribute, value)
     }
 
-    //% group="Card Attributes"
+    //% group="Attributes"
     //% block="set $card $attribute to text $text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -282,7 +282,7 @@ namespace cards {
         card.getData().setAttribute(attribute, text)
     }
 
-    //% group="Card Attributes"
+    //% group="Attributes"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -295,7 +295,7 @@ namespace cards {
         }
     }
 
-    //% group="Card Attributes"
+    //% group="Attributes"
     //% block="$card $attribute text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -359,7 +359,7 @@ namespace cards {
         }
     }
 
-    //% group="Duplicate"
+    //% group="Add Card"
     //% block="add to $deck modify $card add every combination of $variations|| $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -371,7 +371,7 @@ namespace cards {
         deck.insertCardData(insertData)
     }
     
-    //% group="Duplicate"
+    //% group="Add Card"
     //% block="add to $deck $copies copies of $card"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -382,5 +382,74 @@ namespace cards {
             insertData.push(card.getData().clone())
         }
         deck.insertCardData(insertData)
+    }
+}
+
+enum SelectedCardMoveDirections {
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections, width: number, height: number): number {
+    switch (moveDirection) {
+        case SelectedCardMoveDirections.Up: return -height / 2
+        case SelectedCardMoveDirections.Down: return height / 2
+        case SelectedCardMoveDirections.Left: return -width / 2
+        case SelectedCardMoveDirections.Right: return width / 2
+    }
+}
+
+namespace cards {
+    export function createEmptyHand(
+        design: cardDesign.CardDesignTemplate,
+        x: number, y: number,
+        isSpreadingLeftRight: boolean,
+        selectedCardMoveDirection: SelectedCardMoveDirections
+    ): cardKit.CardSpread {
+        return new cardKit.CardSpread(
+            x, y, 1, [],
+            design.width,
+            design.height,
+            isSpreadingLeftRight, 1,
+            getSelectedCardOffset(selectedCardMoveDirection, design.width, design.height),
+            false
+        )
+    }
+
+    sprites.create(img`
+    . . . f f . . .
+    . . f 1 1 f . .
+    . f 1 1 1 1 f .
+    f 1 1 1 1 1 1 f
+    f b b b b b b f
+    . f f f f f f .
+    `),
+    sprites.create(img`
+    . f f f f f f .
+    f 1 1 1 1 1 1 f
+    f b 1 1 1 1 b f
+    . f b 1 1 b f .
+    . . f b b f . .
+    . . . f f . . .
+    `)
+
+    export function createEmptyGrid(
+        design: cardDesign.CardDesignTemplate,
+        x: number, y: number,
+        columns: number, rows: number,
+        isScrollingLeftRight: boolean
+    ): cardKit.CardGrid {
+        return new cardKit.CardGrid(
+            x, y, 1, [],
+            design.width,
+            design.height,
+            rows, columns,
+            isScrollingLeftRight,
+            1, false,
+            null,
+            null
+        )
     }
 }
