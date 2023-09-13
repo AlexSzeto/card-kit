@@ -1,4 +1,4 @@
-//% color="#333333" icon="\uf249" block="Card Design"
+//% color="#183f4e" icon="\uf249" block="Card Design"
 //% groups="['Create', 'Add Row', 'Add Text', 'Add Image', 'Add Misc', 'Graphics', 'Dimensions']"
 namespace cardDesign {
 
@@ -37,6 +37,17 @@ namespace cardDesign {
         return new CardDesignTemplate()
     }
 
+    enum CardDesignFrameTypes {
+        //% block="front"
+        Front,
+        //% block="back"
+        Back,
+        //% block="front stack"
+        FrontStack,
+        //% block="back stack"
+        BackStack
+    }
+
     export class CardDesignTemplate {
         //% group="Dimensions" blockSetVariable="myCardDesign"
         //% blockCombine block="width"
@@ -57,17 +68,9 @@ namespace cardDesign {
         //% blockCombine block="max deck size"
         maxDeckSize: number
 
-        //% group="Graphics" blockSetVariable="myCardDesign"
-        //% blockCombine block="card front frame"
         frontFrame: Image
-        //% group="Graphics" blockSetVariable="myCardDesign"
-        //% blockCombine block="card back frame"
         backFrame: Image
-        //% group="Graphics" blockSetVariable="myCardDesign"
-        //% blockCombine block="card front stack frame"
         frontStackFrame: Image
-        //% group="Graphics" blockSetVariable="myCardDesign"
-        //% blockCombine block="card back stack frame"
         backStackFrame: Image
 
         rows: cardKit.DesignRow[]
@@ -104,6 +107,19 @@ namespace cardDesign {
                 this.margin,
                 this.spacing
             )
+        }
+    }
+
+    //% group="Graphics" blockSetVariable="myCardDesign"
+    //% blockCombine block="set $design $frameType frame to $image"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% image.shadow="screen_image_picker"
+    export function setDesignGraphics(design: CardDesignTemplate, frameType: CardDesignFrameTypes, image: Image) {
+        switch (frameType) {
+            case CardDesignFrameTypes.Front: design.frontFrame = image; break;
+            case CardDesignFrameTypes.Back: design.backFrame = image; break;
+            case CardDesignFrameTypes.FrontStack: design.frontStackFrame = image; break;
+            case CardDesignFrameTypes.BackStack: design.backStackFrame = image; break;
         }
     }
 
@@ -207,7 +223,7 @@ namespace cardDesign {
 
 }
 
-//% color="#336666" icon="\uf249" block="Deck Builder"
+//% color="#255f74" icon="\uf044" block="Deck Builder"
 //% groups=['Deck Builder']
 namespace deckBuilder {
 
@@ -257,7 +273,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
-    //% block="modifier $attribute each number between $startNumber and $endNumber"
+    //% block="modifier $attribute each number from $startNumber to $endNumber"
     //% attribute.shadow="attributePicker"
     //% startNumber.defl=1 endNumber.defl=10
     export function createNumberAttributeVariations(attribute: number, startNumber: number, endNumber: number): CardAttributeVariation {
@@ -300,7 +316,7 @@ namespace deckBuilder {
     }
 
     //% group="Deck Builder"
-    //% block="add to $deck every combination from $variations|| $copies copies each"
+    //% block="add to $deck every combination between $variations|| $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="numberVariationsPicker"
@@ -328,6 +344,8 @@ function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): numbe
     }
 }
 
+//% color="#307d9c" icon="\uf2bb" block="Card Sprites"
+//% groups=['Attributes']
 namespace cards {
     
     //% group="Attributes"
