@@ -31,7 +31,7 @@ namespace cardDesign {
     }
 
     //% group="Create" blockSetVariable="myCardDesign"
-    //% block="card design"
+    //% block="blank design"
     export function createCardDesignTemplate(): CardDesignTemplate {
         return new CardDesignTemplate()
     }
@@ -216,7 +216,7 @@ namespace cardDesign {
 
 }
 
-//% color="#ff3333" icon="\uf249" block="Deck Builder"
+//% color="#336666" icon="\uf249" block="Deck Builder"
 //% groups=['Create', 'Attributes', 'Variations', 'Add Card']
 namespace deckBuilder {
 
@@ -235,7 +235,7 @@ namespace deckBuilder {
     }
 
     //% group="Create" blockSetVariable="myCardDeck"
-    //% block="$design deck"
+    //% block="empty $design deck"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     export function createEmptyDeck(design: cardDesign.CardDesignTemplate): cardKit.CardStack {
         return new cardKit.CardStack(design.export(), [], false, false)
@@ -259,11 +259,26 @@ namespace deckBuilder {
 
     //% blockId="cardDataPicker"
     //% blockHidden=true
-    //% block="card set number attributes $numbers text attributes $texts|| picture $picture"
+    //% block="card set|number attributes $numbers|text attributes $texts|| picture $picture"
+    //% numbers.shadow="lists_create_with" numbers.defl="numberAttributePicker"
+    //% texts.shadow="lists_create_with" texts.defl="textAttributePicker"
     export function createCardData(numbers?: cardKit.CardAttribute[], texts?: cardKit.CardAttribute[], picture?: Image): cardKit.CardData {
         numbers = !!numbers ? numbers : []
         texts = !!texts ? texts : []
         return new cardKit.CardData(picture, numbers.concat(texts))
+    }
+    
+    //% group="Add Card"
+    //% block="add to $deck $card|| $copies copies"
+    //% deck.shadow="variables_get" deck.defl="myCardDeck"
+    //% card.shadow="cardDataPicker"
+    //% copies.defl=1
+    export function addCardCopiesToDeck(deck: cardKit.CardStack, card: cardKit.CardData, copies: number = 1) {
+        const insertData: cardKit.CardData[] = []
+        for (let i = 0; i < copies; i++) {
+            insertData.push(card)
+        }
+        deck.insertCardData(insertData)
     }
 
     class CardAttributeVariation {
@@ -326,19 +341,6 @@ namespace deckBuilder {
     export function addCardVariantsToDeck(deck: cardKit.CardStack, card: cardKit.CardData, variations: CardAttributeVariation[], copies: number = 1) {
         const insertData: cardKit.CardData[] = []
         __addCardVariationsFromIndex(insertData, card, variations, 0, copies)
-        deck.insertCardData(insertData)
-    }
-    
-    //% group="Add Card"
-    //% block="add to $deck $card|| $copies copies"
-    //% deck.shadow="variables_get" deck.defl="myCardDeck"
-    //% card.shadow="cardDataPicker"
-    //% copies.defl=1
-    export function addCardCopiesToDeck(deck: cardKit.CardStack, card: cardKit.CardData, copies: number = 1) {
-        const insertData: cardKit.CardData[] = []
-        for (let i = 0; i < copies; i++) {
-            insertData.push(card)
-        }
         deck.insertCardData(insertData)
     }
 }
