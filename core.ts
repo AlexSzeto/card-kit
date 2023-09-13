@@ -15,16 +15,17 @@ namespace cardKit {
     }
 
     export class CardData {
-        private attributes: CardAttribute[]
+        private __attributes: CardAttribute[]
 
         constructor(
             public picture?: Image,
+            public attributes?: CardAttribute[],
         ) {
-            this.attributes = []
+            this.__attributes = attributes ? attributes : []
         }
 
         getAttribute(id: number): CardAttributeValues {
-            const attribute = this.attributes.find(attr => attr.id === id)
+            const attribute = this.__attributes.find(attr => attr.id === id)
             if (!!attribute) {
                 return attribute.value
             } else {
@@ -33,18 +34,18 @@ namespace cardKit {
         }
 
         setAttribute(id: number, value: CardAttributeValues): void {
-            const attribute = this.attributes.find(attr => attr.id === id)
+            const attribute = this.__attributes.find(attr => attr.id === id)
             if (!!attribute) {
                 attribute.value = value
             } else {
-                this.attributes.push(new CardAttribute(id, value))
+                this.__attributes.push(new CardAttribute(id, value))
             }
         }
 
         clone(): CardData {
             const clone = new CardData()
             clone.picture = this.picture
-            this.attributes.forEach(attribute => {
+            this.__attributes.forEach(attribute => {
                 clone.setAttribute(attribute.id, attribute.value)
             })
             return clone

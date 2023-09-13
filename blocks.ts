@@ -241,71 +241,29 @@ namespace deckBuilder {
         return new cardKit.CardStack(design.export(), [], false, false)
     }
 
-    //% group="Create" blockSetVariable="myCard"
-    //% block="$design card|| with picture $picture"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function createCard(design: cardDesign.CardDesignTemplate, picture: Image = null): cardKit.Card {
-        return new cardKit.Card(
-            design.export(),
-            new cardKit.CardData(picture),
-            true
-        )        
-    }
-
-    //% group="Attributes"
-    //% block="set $card picture to $picture"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function setCardPicture(card: cardKit.Card, picture: Image) {
-        card.getData().picture = picture
-    }
-
-    //% group="Attributes"
-    //% block="$card picture"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardPicture(card: cardKit.Card): Image {
-        return card.getData().picture
-    }
-    
-    //% group="Attributes"
-    //% block="set $card $attribute to number $value"
-    //% card.shadow="variables_get" card.defl="myCard"
+    //% blockId="numberAttributePicker"
+    //% blockHidden=true
+    //% block="$attribute to $value"
     //% attribute.shadow="attributePicker"
-    export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
-        card.getData().setAttribute(attribute, value)
+    export function createCardNumberAttribute(attribute: number, value: number): cardKit.CardAttribute {
+        return new cardKit.CardAttribute(attribute, value)
     }
 
-    //% group="Attributes"
-    //% block="set $card $attribute to text $text"
-    //% card.shadow="variables_get" card.defl="myCard"
+    //% blockId="textAttributePicker"
+    //% blockHidden=true
+    //% block="$attribute to $text"
     //% attribute.shadow="attributePicker"
-    export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
-        card.getData().setAttribute(attribute, text)
+    export function createCardTextAttribute(attribute: number, text: string): cardKit.CardAttribute {
+        return new cardKit.CardAttribute(attribute, text)
     }
 
-    //% group="Attributes"
-    //% block="$card $attribute number"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardNumberAttribute(card: cardKit.Card, attribute: number) {
-        const value = card.getData().getAttribute(attribute)
-        if(typeof value == "number") {
-            return value
-        } else {
-            return 0
-        }
-    }
-
-    //% group="Attributes"
-    //% block="$card $attribute text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardTextAttribute(card: cardKit.Card, attribute: number) {
-        const value = card.getData().getAttribute(attribute)
-        if (typeof value == "string") {
-            return value
-        } else {
-            return value.toString()
-        }
+    //% blockId="cardDataPicker"
+    //% blockHidden=true
+    //% block="card set number attributes $numbers text attributes $texts|| picture $picture"
+    export function createCardData(numbers?: cardKit.CardAttribute[], texts?: cardKit.CardAttribute[], picture?: Image): cardKit.CardData {
+        numbers = !!numbers ? numbers : []
+        texts = !!texts ? texts : []
+        return new cardKit.CardData(picture, numbers.concat(texts))
     }
 
     class CardAttributeVariation {
@@ -362,24 +320,24 @@ namespace deckBuilder {
     //% group="Add Card"
     //% block="add to $deck modify $card add every combination of $variations|| $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
-    //% card.shadow="variables_get" card.defl="myCard"
+    //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="numberVariationsPicker"
     //% copies.defl=1
-    export function addCardVariantsToDeck(deck: cardKit.CardStack, card: cardKit.Card, variations: CardAttributeVariation[], copies: number = 1) {
+    export function addCardVariantsToDeck(deck: cardKit.CardStack, card: cardKit.CardData, variations: CardAttributeVariation[], copies: number = 1) {
         const insertData: cardKit.CardData[] = []
-        __addCardVariationsFromIndex(insertData, card.getData().clone(), variations, 0, copies)
+        __addCardVariationsFromIndex(insertData, card, variations, 0, copies)
         deck.insertCardData(insertData)
     }
     
     //% group="Add Card"
-    //% block="add to $deck $copies copies of $card"
+    //% block="add to $deck $card|| $copies copies"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
-    //% card.shadow="variables_get" card.defl="myCard"
+    //% card.shadow="cardDataPicker"
     //% copies.defl=1
-    export function addCardCopiesToDeck(deck: cardKit.CardStack, card: cardKit.Card, copies: number = 1) {
+    export function addCardCopiesToDeck(deck: cardKit.CardStack, card: cardKit.CardData, copies: number = 1) {
         const insertData: cardKit.CardData[] = []
         for (let i = 0; i < copies; i++) {
-            insertData.push(card.getData().clone())
+            insertData.push(card)
         }
         deck.insertCardData(insertData)
     }
@@ -402,6 +360,63 @@ function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): numbe
 }
 
 namespace cards {
+
+    //% group="Attributes"
+    //% block="set $card picture to $picture"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function setCardPicture(card: cardKit.Card, picture: Image) {
+        card.getData().picture = picture
+    }
+
+    //% group="Attributes"
+    //% block="$card picture"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardPicture(card: cardKit.Card): Image {
+        return card.getData().picture
+    }
+    
+    //% group="Attributes"
+    //% block="set $card $attribute to number $value"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
+        card.getData().setAttribute(attribute, value)
+    }
+
+    //% group="Attributes"
+    //% block="set $card $attribute to text $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
+        card.getData().setAttribute(attribute, text)
+    }
+
+    //% group="Attributes"
+    //% block="$card $attribute number"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardNumberAttribute(card: cardKit.Card, attribute: number) {
+        const value = card.getData().getAttribute(attribute)
+        if(typeof value == "number") {
+            return value
+        } else {
+            return 0
+        }
+    }
+
+    //% group="Attributes"
+    //% block="$card $attribute text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardTextAttribute(card: cardKit.Card, attribute: number) {
+        const value = card.getData().getAttribute(attribute)
+        if (typeof value == "string") {
+            return value
+        } else {
+            return value.toString()
+        }
+    }
+    
     export function createEmptyHand(
         x: number, y: number,
         isSpreadingLeftRight: boolean,
