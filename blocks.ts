@@ -121,19 +121,11 @@ namespace cardDesign {
     //% block="edit $design next row"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     export function editNextRow(design: CardDesignTemplate) {
-        design.rows.push(new cardKit.DesignRow(CardZoneAlignments.Center, []))
-    }
-
-    //% group="Add Row"
-    //% weight=98
-    //% block="align $design current row $alignment"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function changeDesignCurrentRowAlignment(design: CardDesignTemplate, alignment: CardZoneAlignments) {
-        design.rows[design.rows.length - 1].align = alignment
+        design.rows.push([])
     }
 
     function addDesignColumn(design: CardDesignTemplate, column: cardKit.DesignColumn) {
-        design.rows[design.rows.length - 1].columns.push(column)
+        design.rows[design.rows.length - 1].push(column)
     }
 
     //% group="Add Text"
@@ -143,8 +135,8 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=0 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addStaticText(design: CardDesignTemplate, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createTextColumn(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
+    export function addStaticText(design: CardDesignTemplate, align: CardZoneAlignments, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createTextColumn(align, text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Text"
@@ -155,8 +147,8 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addAttributeText(design: CardDesignTemplate, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createAttributeAsPlainTextColumn(attribute, color, charsPerLine, maxLines, !isFixedSize))
+    export function addAttributeText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createAttributeAsPlainTextColumn(align, attribute, color, charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Text"
@@ -166,16 +158,16 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addAttributeIndexText(design: CardDesignTemplate, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupTextColumn(attribute, cardKit.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
+    export function addAttributeIndexText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createAttributeAsLookupTextColumn(align, attribute, cardKit.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Image"
     //% block="add to current row in $design image $image"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% image.shadow="screen_image_picker"
-    export function addStaticImage(design: CardDesignTemplate, image: Image) {
-        addDesignColumn(design, cardKit.createImageColumn(image))
+    export function addStaticImage(design: CardDesignTemplate, align: CardZoneAlignments, image: Image) {
+        addDesignColumn(design, cardKit.createImageColumn(align, image))
     }
 
     //% group="Add Image"
@@ -184,8 +176,8 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% image.shadow="screen_image_picker"
-    export function addRepeatImage(design: CardDesignTemplate, attribute: number, image: Image) {
-        addDesignColumn(design, cardKit.createAttributeAsRepeatImageColumn(attribute, image))
+    export function addRepeatImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, image: Image) {
+        addDesignColumn(design, cardKit.createAttributeAsRepeatImageColumn(align, attribute, image))
     }
 
     //% group="Add Image"
@@ -193,8 +185,8 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
-    export function addAttributeIndexImage(design: CardDesignTemplate, attribute: number, imageLookupTable: Image[]) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
+    export function addAttributeIndexImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, imageLookupTable: Image[]) {
+        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(align, attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
     }
 
     //% group="Add Image"
@@ -202,15 +194,15 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function addAttributeTextToImage(design: CardDesignTemplate, attribute: number, lookupTable: cardKit.DesignLookup[]) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(attribute, lookupTable))
+    export function addAttributeTextToImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, lookupTable: cardKit.DesignLookup[]) {
+        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(align, attribute, lookupTable))
     }
 
     //% group="Add Misc"
     //% block="add to current row in $design empty space width $width height $height"
     //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function addEmptySpace(design: CardDesignTemplate, width: number, height: number) {
-        addDesignColumn(design, cardKit.createEmptySpaceColumn(width, height))
+    export function addEmptySpace(design: CardDesignTemplate, align: CardZoneAlignments, width: number, height: number) {
+        addDesignColumn(design, cardKit.createEmptySpaceColumn(align, width, height))
     }
 
 }

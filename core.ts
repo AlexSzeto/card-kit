@@ -89,6 +89,7 @@ namespace cardKit {
     export class DesignColumn {
         constructor(
             public zoneType: ZoneTypes,
+            public align: CardZoneAlignments,
             public id?: number,
             public text?: string,
             public color?: number,
@@ -100,11 +101,12 @@ namespace cardKit {
         ) { }
     }
 
-    export class DesignRow {
-        constructor(
-            public align: CardZoneAlignments,
-            public columns: DesignColumn[]
-        ) { }
+    export type DesignRow = DesignColumn[]
+
+    type DrawRowSection = {
+        align: CardZoneAlignments
+        width: number
+        zones: DrawZone[]
     }
 
     type DrawZone = {
@@ -236,16 +238,22 @@ namespace cardKit {
             image.drawTransparentImage(this.frontImage, x, y)
             let top = y + this.margin
             this.rows.forEach(row => {
-                let columns: DrawZone[] = []
+                let sections: DrawRowSection[] = []
+                for (let align = 0; align < 3; align++) {                    
+                    sections.push({
+                        align: align,
+                        width: 0,
+                        zones: []
+                    })
+                }
                 let drawZone: DrawZone
-                let rowWidth: number = (row.columns.length - 1) * this.spacing
                 let rowHeight: number = 0
                 let attribute: CardAttributeValues
-                row.columns.forEach(zone => {
+                row.forEach(zone => {
                     drawZone = null
                     switch (zone.zoneType) {
                         case ZoneTypes.Text:
-                            drawZone = createTextDrawZone(zone.text, zone.color, zone.height, zone.width)
+                            drawZone = createTextDrawZone(zone.text, zone.color, zone.height, zone.width, zone.isDynamic)
                             break
                         case ZoneTypes.Image:
                             drawZone = createImageDrawZone(zone.image, 1)
@@ -256,9 +264,9 @@ namespace cardKit {
                         case ZoneTypes.AttributeText:
                             attribute = card.getAttribute(zone.id)
                             if (typeof attribute === 'number') {
-                                drawZone = createTextDrawZone(attribute.toString(), zone.color, zone.height, zone.width)
+                                drawZone = createTextDrawZone(attribute.toString(), zone.color, zone.height, zone.width, zone.isDynamic)
                             } else if (attribute != null) {
-                                drawZone = createTextDrawZone(attribute, zone.color, zone.height, zone.width)
+                                drawZone = createTextDrawZone(attribute, zone.color, zone.height, zone.width, zone.isDynamic)
                             }
                             break
                         case ZoneTypes.RepeatImage:
@@ -273,7 +281,7 @@ namespace cardKit {
                             const lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
                             if (!!lookupValue) {
                                 if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.LookupAttributeAsText) {
-                                    drawZone = createTextDrawZone(lookupValue.drawable, zone.color, zone.height, zone.width)
+                                    drawZone = createTextDrawZone(lookupValue.drawable, zone.color, zone.height, zone.width, zone.isDynamic)
                                 } else if (zone.zoneType === ZoneTypes.LookupAttributeAsImage) {
                                     drawZone = createImageDrawZone(lookupValue.drawable as Image, 1)
                                 }
@@ -283,38 +291,41 @@ namespace cardKit {
                     if (drawZone === null) {
                         drawZone = createSpaceDrawZone(-this.spacing, 0)                    
                     }
-                    rowWidth += drawZone.width
+                    sections[zone.align].width += drawZone.width + this.spacing
                     rowHeight = Math.max(drawZone.height, rowHeight)
-                    columns.push(drawZone)
+                    sections[zone.align].zones.push(drawZone)
                 })
-    
-                let left = x
-                switch (row.align) {
-                    case CardZoneAlignments.Left:
-                        left += this.margin
-                        break
-                    case CardZoneAlignments.Center:
-                        left += (this.width - rowWidth) / 2
-                        break
-                    case CardZoneAlignments.Right:
-                        left += this.width - this.margin - rowWidth
-                        break
-                }
-    
-                columns.forEach(drawZone => {
-                    if (!!drawZone.image) {
-                        for (let repeat = 0; repeat < drawZone.repeats; repeat++) {
-                            image.drawTransparentImage(drawZone.image, left, top)
-                            left += drawZone.image.width
-                        }
-                    } else if (!!drawZone.lines) {
-                        drawZone.lines.forEach((text, line) => {
-                            tinyFont.print(image, left, top + line * tinyFont.charHeight(), text, drawZone.color)
-                        })
-                        left += drawZone.width
+
+                sections.forEach(section => {
+                    let left = x
+                    switch (section.align) {
+                        case CardZoneAlignments.Left:
+                            left += this.margin
+                            break
+                        case CardZoneAlignments.Center:
+                            left += (this.width - section.width) / 2
+                            break
+                        case CardZoneAlignments.Right:
+                            left += this.width - this.margin - section.width
+                            break
                     }
-                    left += this.spacing
+        
+                    section.zones.forEach(drawZone => {
+                        if (!!drawZone.image) {
+                            for (let repeat = 0; repeat < drawZone.repeats; repeat++) {
+                                image.drawTransparentImage(drawZone.image, left, top)
+                                left += drawZone.image.width
+                            }
+                        } else if (!!drawZone.lines) {
+                            drawZone.lines.forEach((text, line) => {
+                                tinyFont.print(image, left, top + line * tinyFont.charHeight(), text, drawZone.color)
+                            })
+                            left += drawZone.width
+                        }
+                        left += this.spacing
+                    })
                 })
+
                 top += rowHeight + this.spacing
             })
         }        
@@ -341,25 +352,25 @@ namespace cardKit {
         }
     }
 
-    export function createEmptySpaceColumn(width: number, height: number): DesignColumn {
-        return new DesignColumn(ZoneTypes.EmptySpace, 0, null, null, width, height, false, null, null)
+    export function createEmptySpaceColumn(align: CardZoneAlignments, width: number, height: number): DesignColumn {
+        return new DesignColumn(ZoneTypes.EmptySpace, align, 0, null, null, width, height, false, null, null)
     }
-    export function createTextColumn(text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return new DesignColumn(ZoneTypes.Text, 0, text, color, columns, rows, isDynamic, null, null)
+    export function createTextColumn(align: CardZoneAlignments, text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.Text, align, 0, text, color, columns, rows, isDynamic, null, null)
     }
-    export function createAttributeAsPlainTextColumn(attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return new DesignColumn(ZoneTypes.AttributeText, attribute, null, color, columns, rows, isDynamic, null, null)
+    export function createAttributeAsPlainTextColumn(align: CardZoneAlignments, attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.AttributeText, align, attribute, null, color, columns, rows, isDynamic, null, null)
     }
-    export function createAttributeAsLookupTextColumn(attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return new DesignColumn(ZoneTypes.LookupAttributeAsText, attribute, null, color, columns, rows, isDynamic, null, lookupTable)
+    export function createAttributeAsLookupTextColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.LookupAttributeAsText, align, attribute, null, color, columns, rows, isDynamic, null, lookupTable)
     }
-    export function createImageColumn(image: Image): DesignColumn {
-        return new DesignColumn(ZoneTypes.Image, 0, null, 0, 0, 0, false, image, null)
+    export function createImageColumn(align: CardZoneAlignments, image: Image): DesignColumn {
+        return new DesignColumn(ZoneTypes.Image, align, 0, null, 0, 0, 0, false, image, null)
     }
-    export function createAttributeAsRepeatImageColumn(attribute: number, image: Image): DesignColumn {
-        return new DesignColumn(ZoneTypes.RepeatImage, attribute, null, 0, 0, 0, false, image, null)
+    export function createAttributeAsRepeatImageColumn(align: CardZoneAlignments, attribute: number, image: Image): DesignColumn {
+        return new DesignColumn(ZoneTypes.RepeatImage, align, attribute, null, 0, 0, 0, false, image, null)
     }
-    export function createAttributeAsLookupImageColumn(attribute: number, lookupTable: DesignLookup[]): DesignColumn {
-        return new DesignColumn(ZoneTypes.LookupAttributeAsImage, attribute, null, 0, 0, 0, false, null, lookupTable)
+    export function createAttributeAsLookupImageColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[]): DesignColumn {
+        return new DesignColumn(ZoneTypes.LookupAttributeAsImage, align, attribute, null, 0, 0, 0, false, null, lookupTable)
     }
 }
