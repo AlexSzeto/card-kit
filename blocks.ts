@@ -152,7 +152,7 @@ namespace cardDesign {
     }
 
     //% group="Add Text"
-    //% block="add to current row in $design align $align text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% block="add to current row in $design align $align index $attribute text from $textLookupTable|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -181,7 +181,7 @@ namespace cardDesign {
     }
 
     //% group="Add Image"
-    //% block="add to current row in $design align $align image from $imageLookupTable index $attribute"
+    //% block="add to current row in $design align $align index $attribute image from $imageLookupTable"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
@@ -190,7 +190,7 @@ namespace cardDesign {
     }
 
     //% group="Add Image"
-    //% block="add to current row in $design align $align image take $attribute and change $lookupTable"
+    //% block="add to current row in $design align $align take $attribute and change $lookupTable"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
