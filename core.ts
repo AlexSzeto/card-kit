@@ -18,7 +18,6 @@ namespace cardKit {
         private __attributes: CardAttribute[]
 
         constructor(
-            public picture?: Image,
             public attributes?: CardAttribute[],
         ) {
             this.__attributes = attributes ? attributes : []
@@ -44,7 +43,6 @@ namespace cardKit {
 
         clone(): CardData {
             const clone = new CardData()
-            clone.picture = this.picture
             this.__attributes.forEach(attribute => {
                 clone.setAttribute(attribute.id, attribute.value)
             })
@@ -53,7 +51,6 @@ namespace cardKit {
     }
 
     enum ZoneTypes {
-        CardPicture,
         AttributeText,
         RepeatImage,
         LookupAttributeAsText,
@@ -249,9 +246,6 @@ namespace cardKit {
                         case ZoneTypes.EmptySpace:
                             drawZone = createSpaceDrawZone(zone.width - this.spacing, zone.height - this.spacing)
                             break
-                        case ZoneTypes.CardPicture:
-                            drawZone = createImageDrawZone(card.picture, 1)
-                            break
                         case ZoneTypes.AttributeText:
                             attribute = card.getAttribute(zone.id)
                             if (typeof attribute === 'number') {
@@ -348,9 +342,6 @@ namespace cardKit {
     }
     export function createEmptySpaceColumn(width: number, height: number): DesignColumn {
         return new DesignColumn(ZoneTypes.EmptySpace, 0, null, null, width, height, null, null)
-    }
-    export function createPictureColumn(): DesignColumn {
-        return new DesignColumn(ZoneTypes.CardPicture, 0, null, 0, 0, 0, null, null)
     }
     export function createAttributeAsPlainTextColumn(attribute: number, color: number, columns: number, rows: number): DesignColumn {
         return new DesignColumn(ZoneTypes.AttributeText, attribute, null, color, columns, rows, null, null)

@@ -26,6 +26,7 @@ namespace cardDesign {
     //% blockId="textToImageLookupPicker"
     //% blockHidden=true
     //% block="text $text to image $image"
+    //% image.shadow="screen_image_picker"
     export function createTextToImageLookupPair(text: string, image: Image): cardKit.DesignLookup {
         return new cardKit.DesignLookup(text, image)
     }
@@ -148,15 +149,9 @@ namespace cardDesign {
     //% group="Add Image"
     //% block="add to current row in $design image $image"
     //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% image.shadow="screen_image_picker"
     export function addStaticImage(design: CardDesignTemplate, image: Image) {
         addDesignColumn(design, cardKit.createImageColumn(image))
-    }
-
-    //% group="Add Image"
-    //% block="add to current row in $design card picture"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function addCardPicture(design: CardDesignTemplate, ) {
-        addDesignColumn(design, cardKit.createPictureColumn())
     }
 
     //% group="Add Image"
@@ -164,6 +159,7 @@ namespace cardDesign {
     //% block="add to current row in $design image $image repeat $attribute times"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
+    //% image.shadow="screen_image_picker"
     export function addRepeatImage(design: CardDesignTemplate, attribute: number, image: Image) {
         addDesignColumn(design, cardKit.createAttributeAsRepeatImageColumn(attribute, image))
     }
@@ -338,20 +334,6 @@ function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): numbe
 }
 
 namespace cards {
-
-    //% group="Attributes"
-    //% block="set $card picture to $picture"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function setCardPicture(card: cardKit.Card, picture: Image) {
-        card.getData().picture = picture
-    }
-
-    //% group="Attributes"
-    //% block="$card picture"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardPicture(card: cardKit.Card): Image {
-        return card.getData().picture
-    }
     
     //% group="Attributes"
     //% block="set $card $attribute to number $value"
