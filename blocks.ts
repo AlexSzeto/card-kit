@@ -217,7 +217,7 @@ namespace cardDesign {
 }
 
 //% color="#336666" icon="\uf249" block="Deck Builder"
-//% groups=['Create', 'Add Card', 'Add Variations']
+//% groups=['Deck Builder']
 namespace deckBuilder {
 
     //% shim=ENUM_GET
@@ -234,7 +234,7 @@ namespace deckBuilder {
         return arg;
     }
 
-    //% group="Create" blockSetVariable="myCardDeck"
+    //% group="Deck Builder" blockSetVariable="myCardDeck"
     //% block="empty $design deck"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     export function createEmptyDeck(design: cardDesign.CardDesignTemplate): cardKit.CardStack {
@@ -248,25 +248,25 @@ namespace deckBuilder {
         ) {}
     }
 
-    //% group="Add Card"
+    //% group="Deck Builder"
     //% blockId="numberAttributePicker"
-    //% block="$attribute $value"
+    //% block="variant $attribute $value"
     //% attribute.shadow="attributePicker"
     export function createCardNumberAttribute(attribute: number, value: number): CardAttributeVariation {
         return new CardAttributeVariation(attribute, [value])
     }
 
-    //% group="Add Card"
+    //% group="Deck Builder"
     //% blockId="textAttributePicker"
-    //% block="$attribute $text"
+    //% block="variant $attribute $text"
     //% attribute.shadow="attributePicker"
     export function createCardTextAttribute(attribute: number, text: string): CardAttributeVariation {
         return new CardAttributeVariation(attribute, [text])
     }
 
-    //% group="Add Variations" color="#3333ff"
+    //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
-    //% block="every $attribute between $startNumber and $endNumber"
+    //% block="variants $attribute between $startNumber and $endNumber"
     //% attribute.shadow="attributePicker"
     //% startNumber.defl=1 endNumber.defl=10
     export function createNumberAttributeVariations(attribute: number, startNumber: number, endNumber: number): CardAttributeVariation {
@@ -278,17 +278,17 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% group="Add Variations" color="#3333ff"
+    //% group="Deck Builder"
     //% blockId="numberListVariationsPicker"
-    //% block="every $attribute from $values"
+    //% block="variants $attribute from $values"
     //% attribute.shadow="attributePicker"
     export function createNumberListAttributeVariations(attribute: number, values: number[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% group="Add Variations" color="#3333ff"
+    //% group="Deck Builder"
     //% blockId="textVariationsPicker"
-    //% block="every $attribute from $texts"
+    //% block="variants $attribute from $texts"
     //% attribute.shadow="attributePicker"
     export function createTextAttributeVariations(attribute: number, texts: string[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, texts)
@@ -308,7 +308,7 @@ namespace deckBuilder {
         }
     }
 
-    //% group="Add Variations"
+    //% group="Deck Builder"
     //% block="add to $deck every combination from $variations|| $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
     //% card.shadow="cardDataPicker"
