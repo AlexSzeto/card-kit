@@ -130,7 +130,7 @@ namespace cardDesign {
 
     //% group="Add Text"
     //% inlineInputMode=inline
-    //% block="add to current row in $design text $text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% block="add to current row in $design align $align text $text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=0 maxLines.defl=1
@@ -141,7 +141,7 @@ namespace cardDesign {
 
     //% group="Add Text"
     //% inlineInputMode="inline"
-    //% block="add to current row in $design $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% block="add to current row in $design align $align $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -152,7 +152,7 @@ namespace cardDesign {
     }
 
     //% group="Add Text"
-    //% block="add to current row in $design text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% block="add to current row in $design align $align text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% color.shadow="colorindexpicker" color.defl=15
@@ -163,7 +163,7 @@ namespace cardDesign {
     }
 
     //% group="Add Image"
-    //% block="add to current row in $design image $image"
+    //% block="add to current row in $design align $align image $image"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% image.shadow="screen_image_picker"
     export function addStaticImage(design: CardDesignTemplate, align: CardZoneAlignments, image: Image) {
@@ -172,7 +172,7 @@ namespace cardDesign {
 
     //% group="Add Image"
     //% inlineInputMode="inline"
-    //% block="add to current row in $design image $image repeat $attribute times"
+    //% block="add to current row in $design align $align image $image repeat $attribute times"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% image.shadow="screen_image_picker"
@@ -181,7 +181,7 @@ namespace cardDesign {
     }
 
     //% group="Add Image"
-    //% block="add to current row in $design image from $imageLookupTable index $attribute"
+    //% block="add to current row in $design align $align image from $imageLookupTable index $attribute"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
@@ -190,7 +190,7 @@ namespace cardDesign {
     }
 
     //% group="Add Image"
-    //% block="add to current row in $design image take $attribute and change $lookupTable"
+    //% block="add to current row in $design align $align image take $attribute and change $lookupTable"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
@@ -199,7 +199,7 @@ namespace cardDesign {
     }
 
     //% group="Add Misc"
-    //% block="add to current row in $design empty space width $width height $height"
+    //% block="add to current row in $design align $align empty space width $width height $height"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     export function addEmptySpace(design: CardDesignTemplate, align: CardZoneAlignments, width: number, height: number) {
         addDesignColumn(design, cardKit.createEmptySpaceColumn(align, width, height))
