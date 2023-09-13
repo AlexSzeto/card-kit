@@ -217,7 +217,7 @@ namespace cardDesign {
 }
 
 //% color="#336666" icon="\uf249" block="Deck Builder"
-//% groups=['Create', 'Attributes', 'Variations', 'Add Card']
+//% groups=['Create', 'Add Card', 'Add Variations']
 namespace deckBuilder {
 
     //% shim=ENUM_GET
@@ -241,46 +241,6 @@ namespace deckBuilder {
         return new cardKit.CardStack(design.export(), [], false, false)
     }
 
-    //% blockId="numberAttributePicker"
-    //% blockHidden=true
-    //% block="$attribute to $value"
-    //% attribute.shadow="attributePicker"
-    export function createCardNumberAttribute(attribute: number, value: number): cardKit.CardAttribute {
-        return new cardKit.CardAttribute(attribute, value)
-    }
-
-    //% blockId="textAttributePicker"
-    //% blockHidden=true
-    //% block="$attribute to $text"
-    //% attribute.shadow="attributePicker"
-    export function createCardTextAttribute(attribute: number, text: string): cardKit.CardAttribute {
-        return new cardKit.CardAttribute(attribute, text)
-    }
-
-    //% blockId="cardDataPicker"
-    //% blockHidden=true
-    //% block="card set|number attributes $numbers|text attributes $texts|| picture $picture"
-    //% numbers.shadow="lists_create_with" numbers.defl="numberAttributePicker"
-    //% texts.shadow="lists_create_with" texts.defl="textAttributePicker"
-    export function createCardData(numbers?: cardKit.CardAttribute[], texts?: cardKit.CardAttribute[], picture?: Image): cardKit.CardData {
-        numbers = !!numbers ? numbers : []
-        texts = !!texts ? texts : []
-        return new cardKit.CardData(picture, numbers.concat(texts))
-    }
-    
-    //% group="Add Card"
-    //% block="add to $deck $card|| $copies copies"
-    //% deck.shadow="variables_get" deck.defl="myCardDeck"
-    //% card.shadow="cardDataPicker"
-    //% copies.defl=1
-    export function addCardCopiesToDeck(deck: cardKit.CardStack, card: cardKit.CardData, copies: number = 1) {
-        const insertData: cardKit.CardData[] = []
-        for (let i = 0; i < copies; i++) {
-            insertData.push(card)
-        }
-        deck.insertCardData(insertData)
-    }
-
     class CardAttributeVariation {
         constructor(
             public attribute: number,
@@ -288,9 +248,25 @@ namespace deckBuilder {
         ) {}
     }
 
-    //% group="Variations" color="#3333ff"
+    //% group="Add Card"
+    //% blockId="numberAttributePicker"
+    //% block="$attribute $value"
+    //% attribute.shadow="attributePicker"
+    export function createCardNumberAttribute(attribute: number, value: number): CardAttributeVariation {
+        return new CardAttributeVariation(attribute, [value])
+    }
+
+    //% group="Add Card"
+    //% blockId="textAttributePicker"
+    //% block="$attribute $text"
+    //% attribute.shadow="attributePicker"
+    export function createCardTextAttribute(attribute: number, text: string): CardAttributeVariation {
+        return new CardAttributeVariation(attribute, [text])
+    }
+
+    //% group="Add Variations" color="#3333ff"
     //% blockId="numberVariationsPicker"
-    //% block="$attribute between $startNumber and $endNumber"
+    //% block="every $attribute between $startNumber and $endNumber"
     //% attribute.shadow="attributePicker"
     //% startNumber.defl=1 endNumber.defl=10
     export function createNumberAttributeVariations(attribute: number, startNumber: number, endNumber: number): CardAttributeVariation {
@@ -302,17 +278,17 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% group="Variations" color="#3333ff"
+    //% group="Add Variations" color="#3333ff"
     //% blockId="numberListVariationsPicker"
-    //% block="$attribute between $values"
+    //% block="every $attribute from $values"
     //% attribute.shadow="attributePicker"
     export function createNumberListAttributeVariations(attribute: number, values: number[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% group="Variations" color="#3333ff"
+    //% group="Add Variations" color="#3333ff"
     //% blockId="textVariationsPicker"
-    //% block="$attribute between $texts"
+    //% block="every $attribute from $texts"
     //% attribute.shadow="attributePicker"
     export function createTextAttributeVariations(attribute: number, texts: string[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, texts)
@@ -332,15 +308,15 @@ namespace deckBuilder {
         }
     }
 
-    //% group="Add Card"
-    //% block="add to $deck modify $card add every combination of $variations|| $copies copies each"
+    //% group="Add Variations"
+    //% block="add to $deck every combination from $variations|| $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="numberVariationsPicker"
     //% copies.defl=1
-    export function addCardVariantsToDeck(deck: cardKit.CardStack, card: cardKit.CardData, variations: CardAttributeVariation[], copies: number = 1) {
+    export function addCardVariantsToDeck(deck: cardKit.CardStack, variations: CardAttributeVariation[], copies: number = 1) {
         const insertData: cardKit.CardData[] = []
-        __addCardVariationsFromIndex(insertData, card, variations, 0, copies)
+        __addCardVariationsFromIndex(insertData, new cardKit.CardData(), variations, 0, copies)
         deck.insertCardData(insertData)
     }
 }

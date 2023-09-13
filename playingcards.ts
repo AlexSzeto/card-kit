@@ -52,7 +52,6 @@ namespace cardKit {
 
         let deck = deckBuilder.createEmptyDeck(design)
         deckBuilder.addCardVariantsToDeck(deck,
-            deckBuilder.createCardData(),
             [
                 deckBuilder.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
                 deckBuilder.createNumberAttributeVariations(0, 1, 13)
