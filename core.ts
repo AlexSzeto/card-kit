@@ -51,13 +51,15 @@ namespace cardKit {
     }
 
     enum ZoneTypes {
-        AttributeText,
-        RepeatImage,
-        LookupAttributeAsText,
-        LookupAttributeAsImage,
-        Text,
-        Image,
         EmptySpace,
+
+        Text,
+        AttributeText,
+        LookupAttributeAsText,
+
+        Image,
+        RepeatImage,
+        LookupAttributeAsImage,
     }
         
     type AttributeLookupDrawables = string | Image
@@ -92,6 +94,7 @@ namespace cardKit {
             public color?: number,
             public width?: number,
             public height?: number,
+            public isDynamic?: boolean,
             public image?: Image,
             public lookupTable?: DesignLookup[]
         ) { }
@@ -181,7 +184,7 @@ namespace cardKit {
 
         drawCardFront(image: Image, x: number, y: number, card: CardData) {
 
-            function createTextDrawZone(text: string, color: number, rowLimit: number, columnLimit: number): DrawZone {
+            function createTextDrawZone(text: string, color: number, rowLimit: number, columnLimit: number, isDynamic: boolean): DrawZone {
                 let lines = []
                 let index = 0
         
@@ -191,8 +194,12 @@ namespace cardKit {
                 }
         
                 return {
-                    width: (lines.length > 1 ? columnLimit : text.length) * tinyFont.charWidth() - 1,
-                    height: lines.length * tinyFont.charHeight() - 1,
+                    width: isDynamic
+                        ? (lines.length > 1 ? columnLimit : text.length) * tinyFont.charWidth() - 1
+                        : columnLimit * tinyFont.charWidth() - 1,
+                    height: isDynamic
+                        ? lines.length * tinyFont.charHeight() - 1
+                        : rowLimit * tinyFont.charHeight() - 1,
                     image: null,
                     repeats: 0,
                     lines: lines,
@@ -334,25 +341,25 @@ namespace cardKit {
         }
     }
 
-    export function createTextColumn(text: string, color: number, columns: number, rows: number): DesignColumn {
-        return new DesignColumn(ZoneTypes.Text, 0, text, color, columns, rows, null, null)
+    export function createEmptySpaceColumn(width: number, height: number): DesignColumn {
+        return new DesignColumn(ZoneTypes.EmptySpace, 0, null, null, width, height, false, null, null)
+    }
+    export function createTextColumn(text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.Text, 0, text, color, columns, rows, isDynamic, null, null)
+    }
+    export function createAttributeAsPlainTextColumn(attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.AttributeText, attribute, null, color, columns, rows, isDynamic, null, null)
+    }
+    export function createAttributeAsLookupTextColumn(attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return new DesignColumn(ZoneTypes.LookupAttributeAsText, attribute, null, color, columns, rows, isDynamic, null, lookupTable)
     }
     export function createImageColumn(image: Image): DesignColumn {
-        return new DesignColumn(ZoneTypes.Image, 0, null, 0, 0, 0, image, null)
-    }
-    export function createEmptySpaceColumn(width: number, height: number): DesignColumn {
-        return new DesignColumn(ZoneTypes.EmptySpace, 0, null, null, width, height, null, null)
-    }
-    export function createAttributeAsPlainTextColumn(attribute: number, color: number, columns: number, rows: number): DesignColumn {
-        return new DesignColumn(ZoneTypes.AttributeText, attribute, null, color, columns, rows, null, null)
+        return new DesignColumn(ZoneTypes.Image, 0, null, 0, 0, 0, false, image, null)
     }
     export function createAttributeAsRepeatImageColumn(attribute: number, image: Image): DesignColumn {
-        return new DesignColumn(ZoneTypes.RepeatImage, attribute, null, 0, 0, 0, image, null)
-    }
-    export function createAttributeAsLookupTextColumn(attribute: number, color: number, columns: number, rows: number, lookupTable: DesignLookup[]): DesignColumn {
-        return new DesignColumn(ZoneTypes.LookupAttributeAsText, attribute, null, color, columns, rows, null, lookupTable)
+        return new DesignColumn(ZoneTypes.RepeatImage, attribute, null, 0, 0, 0, false, image, null)
     }
     export function createAttributeAsLookupImageColumn(attribute: number, lookupTable: DesignLookup[]): DesignColumn {
-        return new DesignColumn(ZoneTypes.LookupAttributeAsImage, attribute, null, 0, 0, 0, null, lookupTable)
+        return new DesignColumn(ZoneTypes.LookupAttributeAsImage, attribute, null, 0, 0, 0, false, null, lookupTable)
     }
 }

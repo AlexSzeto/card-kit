@@ -138,12 +138,36 @@ namespace cardDesign {
 
     //% group="Add Text"
     //% inlineInputMode=inline
-    //% block="add to current row in $design text $text|| in $color limit line length $charsPerLine max lines $maxLines"
+    //% block="add to current row in $design text $text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=0 maxLines.defl=1
-    export function addStaticText(design: CardDesignTemplate, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1) {
-        addDesignColumn(design, cardKit.createTextColumn(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines))
+    //% isFixedSize.defl=false
+    export function addStaticText(design: CardDesignTemplate, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createTextColumn(text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
+    }
+
+    //% group="Add Text"
+    //% inlineInputMode="inline"
+    //% block="add to current row in $design $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% attribute.shadow="attributePicker"
+    //% color.shadow="colorindexpicker" color.defl=15
+    //% charsPerLine.defl=5 maxLines.defl=1
+    //% isFixedSize.defl=false
+    export function addAttributeText(design: CardDesignTemplate, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createAttributeAsPlainTextColumn(attribute, color, charsPerLine, maxLines, !isFixedSize))
+    }
+
+    //% group="Add Text"
+    //% block="add to current row in $design text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% attribute.shadow="attributePicker"
+    //% color.shadow="colorindexpicker" color.defl=15
+    //% charsPerLine.defl=5 maxLines.defl=1
+    //% isFixedSize.defl=false
+    export function addAttributeIndexText(design: CardDesignTemplate, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+        addDesignColumn(design, cardKit.createAttributeAsLookupTextColumn(attribute, cardKit.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Image"
@@ -162,27 +186,6 @@ namespace cardDesign {
     //% image.shadow="screen_image_picker"
     export function addRepeatImage(design: CardDesignTemplate, attribute: number, image: Image) {
         addDesignColumn(design, cardKit.createAttributeAsRepeatImageColumn(attribute, image))
-    }
-
-    //% group="Add Text"
-    //% inlineInputMode="inline"
-    //% block="add to current row in $design $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    //% attribute.shadow="attributePicker"
-    //% color.shadow="colorindexpicker" color.defl=15
-    //% charsPerLine.defl=5 maxLines.defl=1
-    export function addAttributeText(design: CardDesignTemplate, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1) {
-        addDesignColumn(design, cardKit.createAttributeAsPlainTextColumn(attribute, color, charsPerLine, maxLines))
-    }
-
-    //% group="Add Text"
-    //% block="add to current row in $design text from $textLookupTable index $attribute|| in $color limit line length $charsPerLine max lines $maxLines"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    //% attribute.shadow="attributePicker"
-    //% color.shadow="colorindexpicker" color.defl=15
-    //% charsPerLine.defl=5 maxLines.defl=1
-    export function addAttributeIndexText(design: CardDesignTemplate, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupTextColumn(attribute, color, charsPerLine, maxLines, cardKit.createNumberToTextLookupTable(textLookupTable)))
     }
 
     //% group="Add Image"
@@ -246,7 +249,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="numberAttributePicker"
-    //% block="variant $attribute $value"
+    //% block="modifier $attribute $value"
     //% attribute.shadow="attributePicker"
     export function createCardNumberAttribute(attribute: number, value: number): CardAttributeVariation {
         return new CardAttributeVariation(attribute, [value])
@@ -254,7 +257,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="textAttributePicker"
-    //% block="variant $attribute $text"
+    //% block="modifier $attribute $text"
     //% attribute.shadow="attributePicker"
     export function createCardTextAttribute(attribute: number, text: string): CardAttributeVariation {
         return new CardAttributeVariation(attribute, [text])
@@ -262,7 +265,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
-    //% block="variants $attribute between $startNumber and $endNumber"
+    //% block="modifier $attribute each number between $startNumber and $endNumber"
     //% attribute.shadow="attributePicker"
     //% startNumber.defl=1 endNumber.defl=10
     export function createNumberAttributeVariations(attribute: number, startNumber: number, endNumber: number): CardAttributeVariation {
@@ -276,7 +279,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="numberListVariationsPicker"
-    //% block="variants $attribute from $values"
+    //% block="modifier $attribute each number from $values"
     //% attribute.shadow="attributePicker"
     export function createNumberListAttributeVariations(attribute: number, values: number[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, values)
@@ -284,7 +287,7 @@ namespace deckBuilder {
 
     //% group="Deck Builder"
     //% blockId="textVariationsPicker"
-    //% block="variants $attribute from $texts"
+    //% block="modifier $attribute each text from $texts"
     //% attribute.shadow="attributePicker"
     export function createTextAttributeVariations(attribute: number, texts: string[]): CardAttributeVariation {
         return new CardAttributeVariation(attribute, texts)
