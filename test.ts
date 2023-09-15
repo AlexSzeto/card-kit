@@ -1,11 +1,11 @@
 // tests go here; this will not be compiled when this package is used as an extension.
 const deck = cardKit.createPlayingCards()
 
-controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-    if(!!cardKit.getSelectedCard()) {
-        cardKit.getSelectedCard().flip()
-    }
-})
+// controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
+//     if(!!cardKit.getSelectedCard()) {
+//         cardKit.getSelectedCard().flip()
+//     }
+// })
 
 /*
 Spread Test
@@ -46,35 +46,17 @@ Spread Test
 /*
 Grid Test
 */
-const grid = new cardKit.CardGrid(
+const grid = cards.createEmptyGrid(
+    'grid',
     scene.screenWidth() / 2,
     scene.screenHeight() / 2,
-    1,
-    [],
-    12, 20,
-    4, 6,
-    false,
-    1,
-    false,
-    sprites.create(img`
-    . . . f f . . .
-    . . f 1 1 f . .
-    . f 1 1 1 1 f .
-    f 1 1 1 1 1 1 f
-    f b b b b b b f
-    . f f f f f f .
-    `),
-    sprites.create(img`
-    . f f f f f f .
-    f 1 1 1 1 1 1 f
-    f b 1 1 1 1 b f
-    . f b 1 1 b f .
-    . . f b b f . .
-    . . . f f . . .
-    `)
+    6, 4,
+    false, false
 )
 
-grid.insertCardsFrom(deck, 52)
+while (deck.getCardCount() > 0) {
+    grid.insertCard(deck.removeCard(), -1)
+}
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
     grid.selectPreviousColumnCard()

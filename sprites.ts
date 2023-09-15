@@ -31,6 +31,7 @@ namespace cardKit {
     }
 
     export class Card extends Sprite {
+        location: CardContainer
         private flipStage: number
         private flipTimer: number
         private __isFaceUp: boolean
@@ -41,6 +42,7 @@ namespace cardKit {
             isFaceUp: boolean
         ) {
             super(design.createCardBaseImage())
+            this.location = null
             this.__isFaceUp = isFaceUp
             this.flipStage = -1
             this.refreshImage()
@@ -104,24 +106,50 @@ namespace cardKit {
         }
     }
 
-    interface CardContainer {
-        getCardCount(): number,
-        insertCardAt(index: number, card: Card): void
-        removeCardAt(index: number, isFaceUp: boolean): Card
-        insertCardsFrom(source: CardContainer, count: number): void
+    type CardEventCondition = cardKit.CardAttribute
+    type CardEventHandler = (card: Card) => void
+    type CardEvent = {
+        condition: CardEventCondition
+        handler: CardEventHandler
+    }
 
-        removeCardsAsData(count: number): CardData[]
-        removeCardsAsSprite(count: number): Card[]
+    function resolveEvents(card: Card, target: CardContainer, events: CardEvent[]) {
+        const origin = card.location
+        for (let event of events) {
+            if(card.getData().getAttribute(event.condition.id) === event.condition.value) {
+                event.handler(card)
+                if(card.location !== origin || (card.flags & sprites.Flag.Destroyed)) {
+                    return false
+                }
+            }
+        }
+        card.location = target
+        return true
+    }
+
+    interface CardContainer {
+        getId(): string
+        getCardCount(): number,
+
+        setPosition(x: number, y: number): void
+        setLayer(z: number): void
+
+        addEvent(condition: CardEventCondition, handler: CardEventHandler): void
+        insertCard(card: Card, index: number): void
+        removeCard(index: number): Card
     }
 
     export class CardStack extends Sprite implements CardContainer {
+        private events: CardEvent[]
         constructor(
+            private containerId: string,
             private design: CardDesign,
             private cards: CardData[],
             private isStackFaceUp: boolean,
             private isTopCardFaceUp: boolean,
         ) {
             super(design.createStackBaseimage())
+            this.events = []
             this.refreshImage()
             activate(this)
         }
@@ -131,36 +159,7 @@ namespace cardKit {
             this.design.drawCardStack(this.image, 0, 0, this.cards, this.isStackFaceUp, this.isTopCardFaceUp)
         }
 
-        getCardCount(): number {
-            return this.cards.length
-        }
-
         insertCardData(data: CardData[]) {
-            this.cards = data.concat(this.cards)
-            this.refreshImage()
-        }
-
-        insertCardAt(index: number, card: Card): void {
-            const cardData = card.getData()
-            if (index < 0) {
-                this.cards.push(cardData)
-            } else {
-                this.cards.insertAt(index, cardData)
-            }
-            sprites.destroy(card)
-            this.refreshImage()
-        }
-
-        removeCardAt(index: number, isFaceUp: boolean): Card {
-            const card = new Card(this.design, this.cards[index], isFaceUp)
-            card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
-            this.cards.splice(index, 1)
-            this.refreshImage()
-            return card
-        }
-
-        insertCardsFrom(source: CardContainer, count: number): void {
-            const data = source.removeCardsAsData(count)
             this.cards = data.concat(this.cards)
             this.refreshImage()
         }
@@ -176,43 +175,130 @@ namespace cardKit {
             this.refreshImage()
         }
 
-        removeCardsAsData(count: number): CardData[] {
-            const data = this.cards.slice(0, count)
-            this.cards.splice(0, count)
-            this.refreshImage()
-            return data
+        setLayer(z: number): void {
+            this.z = z
         }
 
-        removeCardsAsSprite(count: number): Card[] {            
-            return this.removeCardsAsData(count).map(
-                data => {
-                    const card = new Card(this.design, data, this.isTopCardFaceUp)
-                    card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
-                    return card
+        getId(): string {
+            return this.containerId
+        }
+
+        getCardCount(): number {
+            return this.cards.length
+        }
+
+        addEvent(condition: CardAttribute, handler: CardEventHandler): void {
+            this.events.push({ condition: condition, handler: handler })
+        }
+
+        insertCard(card: Card, index: number = -1): void {
+            if (resolveEvents(card, this, this.events)) {
+                const cardData = card.getData()
+                if (index < 0) {
+                    this.cards.push(cardData)
+                } else {
+                    this.cards.insertAt(index, cardData)
                 }
-            )
-        }        
+                sprites.destroy(card)
+                this.refreshImage()                    
+            }
+        }
+
+        removeCard(index: number = 0): Card {
+            const card = new Card(this.design, this.cards[index], this.isStackFaceUp)
+            card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
+            this.cards.splice(index, 1)
+            this.refreshImage()
+            return card
+        }
     }
 
-    export class CardSpread implements CardContainer {
+    class BaseLayoutContainer implements CardContainer {
+        private events: CardEvent[]
         constructor(
-            private x: number,
-            private y: number,
-            private z: number,
-            private cards: Card[],
-            private cardWidth: number,
-            private cardHeight: number,
+            private id: string,
+            protected x: number,
+            protected y: number,
+            protected z: number,
+            protected cards: Card[]
+        ) { 
+            this.events = []
+            this.reposition()
+        }
+
+        getId(): string {
+            return this.id
+        }
+
+        getCardCount(): number {
+            return this.cards.length
+        }
+
+        setPosition(x: number, y: number): void {
+            this.x = x
+            this.y = y
+            this.reposition()
+        }
+
+        setLayer(z: number): void {
+            this.z = z
+            this.reposition()
+        }
+
+        addEvent(condition: CardEventCondition, handler: CardEventHandler): void {
+            this.events.push({ condition: condition, handler: handler })
+        }
+
+        insertCard(card: Card, index: number = -1): void {
+            if (resolveEvents(card, this, this.events)) {
+                if (index < 0) {
+                    this.cards.push(card)
+                } else {
+                    this.cards.insertAt(index, card)
+                }
+                this.reposition()
+            }
+        }
+
+        removeCard(index: number = 0): Card {
+            const card = this.cards[index]
+            this.cards.splice(index, 1)
+            this.reposition()
+            return card
+        }
+        
+        protected reposition(): void {}
+    }
+
+    export class CardSpread extends BaseLayoutContainer {
+        private cardWidth: number
+        private cardHeight: number
+
+        constructor(
+            id: string,
+            x: number,
+            y: number,
+            z: number,
+            cards: Card[],
             private isSpreadingLeftRight: boolean,
             private spacing: number,
             private selectedCardOffset: number,
             public isWrappingSelection: boolean
         ) {
-            this.repositionSprites()
+            super(id, x, y, z, cards)
+            this.cardWidth = -1
+            this.cardHeight = -1
         }
 
-        private repositionSprites() {
+        protected reposition() {
             if (this.cards.length === 0) {
                 return
+            }
+            if (this.cardWidth < 0) {
+                this.cardWidth = this.cards[0].width
+            }
+            if (this.cardHeight < 0) {
+                this.cardHeight = this.cards[0].height
             }
             if(this.isSpreadingLeftRight) {
                 const width = (this.cardWidth + this.spacing) * this.cards.length  - this.spacing
@@ -241,47 +327,6 @@ namespace cardKit {
             }
         }
 
-        getCardCount(): number {
-            return this.cards.length
-        }
-
-        insertCardAt(index: number, card: Card): void {
-            if (index < 1) {
-                this.cards.push(card)
-            } else {
-                this.cards.insertAt(index, card)
-            }
-            this.repositionSprites()
-        }
-
-        removeCardAt(index: number, isFaceUp: boolean): Card {
-            const card = this.cards[index]
-            this.cards.splice(index, 1)
-            this.repositionSprites()
-            return card
-        }
-
-        insertCardsFrom(source: CardContainer, count: number): void {
-            const cards = source.removeCardsAsSprite(count)
-            this.cards = cards.concat(this.cards)
-            this.repositionSprites()
-        }
-
-        removeCardsAsData(count: number): CardData[] {
-            return this.removeCardsAsSprite(count).map(card => {
-                const data = card.getData()
-                sprites.destroy(card)
-                return data
-            })
-        }
-
-        removeCardsAsSprite(count: number): Card[] {
-            const cards = this.cards.slice(0, count)
-            this.cards.splice(0, count)
-            this.repositionSprites()
-            return cards
-        }
-
         selectCardAt(index: number) {
             if (index >= 0 && index < this.cards.length) {
                 pointCursorAt(this.cards[index])                
@@ -305,7 +350,7 @@ namespace cardKit {
             } else {
                 this.selectCardAt(-1)
             }
-            this.repositionSprites()
+            this.reposition()
         }
 
         selectPreviousCard() {
@@ -317,16 +362,17 @@ namespace cardKit {
         }
     }
 
-    export class CardGrid {
+    export class CardGrid extends BaseLayoutContainer {
         private firstLine: number
+        private cardWidth: number
+        private cardHeight: number
 
         constructor(
-            private x: number,
-            private y: number,
-            private z: number,
-            private cards: Card[],
-            private cardWidth: number,
-            private cardHeight: number,
+            id: string,
+            x: number,
+            y: number,
+            z: number,
+            cards: Card[],
             private rows: number,
             private columns: number,
             private isScrollingLeftRight: boolean,
@@ -335,37 +381,48 @@ namespace cardKit {
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
+            super(id, x, y, z, cards)
             this.firstLine = 0
-            const width = (this.cardWidth + this.spacing) * this.columns - this.spacing
-            const height = (this.cardHeight + this.spacing) * this.rows - this.spacing
-            if (isScrollingLeftRight) {
-                if (!!scrollBackIndicator) {
-                    scrollBackIndicator.x = x - width / 2 - scrollBackIndicator.width / 2 - this.spacing
-                    scrollBackIndicator.y = y
-                }
-                if (!!scrollForwardIndicator) {
-                    scrollForwardIndicator.x = x + width / 2 + scrollForwardIndicator.width / 2 + this.spacing
-                    scrollForwardIndicator.y = y
-                }               
-            } else {
-                if (!!scrollBackIndicator) {
-                    scrollBackIndicator.x = x
-                    scrollBackIndicator.y = y - height / 2 - scrollBackIndicator.height / 2 - this.spacing
-                }
-                if (!!scrollForwardIndicator) {
-                    scrollForwardIndicator.x = x
-                    scrollForwardIndicator.y = y + height / 2 + scrollForwardIndicator.height / 2 + this.spacing
-                }               
-            }
-            this.repositionSprites()            
+            this.cardWidth = -1
+            this.cardHeight = -1
+            this.reposition()            
         }
 
-        repositionSprites() {
-            if(this.cards.length === 0) {
+        protected reposition() {
+            if (this.cards.length === 0) {
+                this.scrollBackIndicator.setFlag(SpriteFlag.Invisible, true)
+                this.scrollForwardIndicator.setFlag(SpriteFlag.Invisible, true)
                 return
-            }            
+            }
+            if (this.cardWidth < 0) {
+                this.cardWidth = this.cards[0].width
+            }
+            if (this.cardHeight < 0) {
+                this.cardHeight = this.cards[0].height
+            }
             const width = (this.cardWidth + this.spacing) * this.columns - this.spacing
             const height = (this.cardHeight + this.spacing) * this.rows - this.spacing
+
+            if (this.isScrollingLeftRight) {
+                if (!!this.scrollBackIndicator) {
+                    this.scrollBackIndicator.x = this.x - width / 2 - this.scrollBackIndicator.width / 2 - this.spacing
+                    this.scrollBackIndicator.y = this.y
+                }
+                if (!!this.scrollForwardIndicator) {
+                    this.scrollForwardIndicator.x = this.x + width / 2 + this.scrollForwardIndicator.width / 2 + this.spacing
+                    this.scrollForwardIndicator.y = this.y
+                }               
+            } else {
+                if (!!this.scrollBackIndicator) {
+                    this.scrollBackIndicator.x = this.x
+                    this.scrollBackIndicator.y = this.y - height / 2 - this.scrollBackIndicator.height / 2 - this.spacing
+                }
+                if (!!this.scrollForwardIndicator) {
+                    this.scrollForwardIndicator.x = this.x
+                    this.scrollForwardIndicator.y = this.y + height / 2 + this.scrollForwardIndicator.height / 2 + this.spacing
+                }               
+            }
+
             let columnLeft = this.x - width / 2 + this.cardWidth / 2
             let rowTop = this.y - height / 2 + this.cardHeight / 2
             let row = 0
@@ -419,47 +476,6 @@ namespace cardKit {
             }
         }
 
-        getCardCount(): number {
-            return this.cards.length
-        }
-
-        insertCardAt(index: number, card: Card): void {
-            if (index < 1) {
-                this.cards.push(card)
-            } else {
-                this.cards.insertAt(index, card)
-            }
-            this.repositionSprites()
-        }
-
-        removeCardAt(index: number, isFaceUp: boolean): Card {
-            const card = this.cards[index]
-            this.cards.splice(index, 1)
-            this.repositionSprites()
-            return card
-        }
-
-        insertCardsFrom(source: CardContainer, count: number): void {
-            const cards = source.removeCardsAsSprite(count)
-            this.cards = cards.concat(this.cards)
-            this.repositionSprites()
-        }
-
-        removeCardsAsData(count: number): CardData[] {
-            return this.removeCardsAsSprite(count).map(card => {
-                const data = card.getData()
-                sprites.destroy(card)
-                return data
-            })
-        }
-
-        removeCardsAsSprite(count: number): Card[] {
-            const cards = this.cards.slice(0, count)
-            this.cards.splice(0, count)
-            this.repositionSprites()
-            return cards
-        }
-
         selectCardAt(index: number) {
             if (this.cards.length === 0) {
                 return
@@ -483,7 +499,7 @@ namespace cardKit {
             }
             if(this.firstLine !== scrollToLine) {
                 this.firstLine = scrollToLine
-                this.repositionSprites()
+                this.reposition()
             }
             pointCursorAt(this.cards[index])
         }

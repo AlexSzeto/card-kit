@@ -39,7 +39,7 @@ namespace cardDesign {
     //% block="text $text to image $image"
     //% image.shadow="screen_image_picker"
     export function createTextToImageLookupPair(text: string, image: Image): cardKit.DesignLookup {
-        return new cardKit.DesignLookup(text, image)
+        return { value: text, drawable: image }
     }
 
     //% group="Create" blockSetVariable="myCardDesign"
@@ -249,10 +249,10 @@ namespace deckBuilder {
     }
 
     //% group="Deck Builder" blockSetVariable="myCardDeck"
-    //% block="empty $design deck"
+    //% block="empty $design deck named $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function createEmptyDeck(design: cardDesign.CardDesignTemplate): cardKit.CardStack {
-        return new cardKit.CardStack(design.export(), [], false, false)
+    export function createEmptyDeck(design: cardDesign.CardDesignTemplate, id: string): cardKit.CardStack {
+        return new cardKit.CardStack(id, design.export(), [], false, false)
     }
 
     class CardAttributeVariation {
@@ -397,16 +397,14 @@ namespace cards {
         }
     }
     
-    export function createEmptyHand(
-        x: number, y: number,
+    export function createEmptySpread(
+        id: string, x: number, y: number,
         isSpreadingLeftRight: boolean,
         selectedCardMoveDirection: SelectedCardMoveDirections,
         isWrappingSelection: boolean
     ): cardKit.CardSpread {
         return new cardKit.CardSpread(
-            x, y, 1, [],
-            -1,
-            -1,
+            id, x, y, 1, [],
             isSpreadingLeftRight, 1,
             getSelectedCardOffset(selectedCardMoveDirection),
             isWrappingSelection
@@ -455,14 +453,13 @@ namespace cards {
     `
 
     export function createEmptyGrid(
-        x: number, y: number,
+        id: string, x: number, y: number,
         columns: number, rows: number,
         isScrollingLeftRight: boolean,
         isWrappingSelection: boolean,
     ): cardKit.CardGrid {
         return new cardKit.CardGrid(
-            x, y, 1, [],
-            -1, -1,
+            id, x, y, 1, [],
             rows, columns,
             isScrollingLeftRight,
             1, isWrappingSelection,
