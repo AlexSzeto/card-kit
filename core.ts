@@ -82,10 +82,20 @@ namespace cardKit {
         return lookupTable
     }
 
+    export type StampLookup = {
+        value: CardAttributeValues
+        image: Image
+    }
+
+    export type Stamp = {
+        attribute: number,
+        lookupTable: StampLookup[]
+    }
+
     export type DesignColumn = {
         zoneType: ZoneTypes
         align: CardZoneAlignments
-        id?: number
+        attribute?: number
         text?: string
         color?: number
         width?: number
@@ -94,7 +104,6 @@ namespace cardKit {
         image?: Image
         lookupTable?: DesignLookup[]
     }
-
     export type DesignRow = DesignColumn[]
 
     type DrawRowSection = {
@@ -127,7 +136,9 @@ namespace cardKit {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
+            public cardFrontStamps: Stamp[],
             public rows: DesignRow[],
+            public indicatorStamps: Stamp[],
             public margin: number,
             public spacing: number,
         ) {
@@ -178,8 +189,16 @@ namespace cardKit {
             return image.create(this.width, this.getStackImageFullHeight())
         }
 
-        drawCardFront(image: Image, x: number, y: number, card: CardData) {
+        private drawStamps(image: Image, data: CardData, stamps: Stamp[]) {
+            stamps.forEach(stamp => {
+                const match = stamp.lookupTable.find(lookup => data.getAttribute(stamp.attribute) === lookup.value)
+                if (!!match) {
+                    image.drawTransparentImage(match.image, (this.width - match.image.width) / 2, (this.height - match.image.height) / 2)
+                }
+            })
+        }
 
+        drawCardFront(image: Image, x: number, y: number, card: CardData) {
             function createTextDrawZone(text: string, color: number, rowLimit: number, columnLimit: number, isDynamic: boolean): DrawZone {
                 let lines = []
                 let index = 0
@@ -230,6 +249,7 @@ namespace cardKit {
             }
     
             image.drawTransparentImage(this.frontImage, x, y)
+            this.drawStamps(image, card, this.cardFrontStamps)
             let top = y + this.margin
             this.rows.forEach(row => {
                 let sections: DrawRowSection[] = []
@@ -256,7 +276,7 @@ namespace cardKit {
                             drawZone = createSpaceDrawZone(zone.width - this.spacing, zone.height - this.spacing)
                             break
                         case ZoneTypes.AttributeText:
-                            attribute = card.getAttribute(zone.id)
+                            attribute = card.getAttribute(zone.attribute)
                             if (typeof attribute === 'number') {
                                 drawZone = createTextDrawZone(attribute.toString(), zone.color, zone.height, zone.width, zone.isDynamic)
                             } else if (attribute != null) {
@@ -264,14 +284,14 @@ namespace cardKit {
                             }
                             break
                         case ZoneTypes.RepeatImage:
-                            attribute = card.getAttribute(zone.id)
+                            attribute = card.getAttribute(zone.attribute)
                             if (typeof attribute === 'number') {
                                 drawZone = createImageDrawZone(zone.image, attribute)
                             }
                             break
                         case ZoneTypes.LookupAttributeAsText:
                         case ZoneTypes.LookupAttributeAsImage:
-                            attribute = card.getAttribute(zone.id)
+                            attribute = card.getAttribute(zone.attribute)
                             const lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
                             if (!!lookupValue) {
                                 if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.LookupAttributeAsText) {
@@ -322,10 +342,12 @@ namespace cardKit {
 
                 top += rowHeight + this.spacing
             })
+            this.drawStamps(image, card, this.indicatorStamps)
         }        
 
-        drawCardBack(image: Image, x: number, y: number) {
+        drawCardBack(image: Image, x: number, y: number, card: CardData) {
             image.drawTransparentImage(this.backImage, x, y)
+            this.drawStamps(image, card, this.indicatorStamps)
         }
     
         drawCardStack(image: Image, x: number, y: number, cards: CardData[], isStackFaceUp: boolean, isTopCardFaceUp: boolean, ) {
@@ -333,7 +355,7 @@ namespace cardKit {
                 const stackImage = this.getStackImage(cards.length, isStackFaceUp)
                 y = y + this.getStackImageFullHeight() - stackImage.height
                 image.drawTransparentImage(stackImage, x, y)
-            } else if (cards.length === 1) { 
+            } else if (cards.length === 1) {
                 y = y + this.getStackImageFullHeight() - this.height
             } else {
                 return
@@ -341,7 +363,7 @@ namespace cardKit {
             if (isTopCardFaceUp) {
                 this.drawCardFront(image, x, y, cards[0])
             } else {
-                this.drawCardBack(image, x, y)
+                this.drawCardBack(image, x, y, cards[0])
             }
         }
     }
@@ -350,7 +372,7 @@ namespace cardKit {
         return {
             zoneType: zoneType,
             align: align,
-            id: id,
+            attribute: id,
             text: text,
             color: color,
             width: width,
