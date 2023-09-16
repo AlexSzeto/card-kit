@@ -28,7 +28,7 @@ namespace cardDesign {
     `
     function createFlatColorImage(image: Image, color: number): Image {
         const result = image.clone()
-        for (let c = 0; c < 16; c++) {
+        for (let c = 1; c < 16; c++) {
             result.replace(c, color)
         }
         return result

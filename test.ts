@@ -7,16 +7,12 @@ discard.x = scene.screenWidth() - 30
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
     if (!!cardKit.getCursorCard()) {
-        // if (cardKit.getCursorCard().isFaceUp) {
-        //     cardKit.getCursorCard().flip()
-        // } else {
-        let card = grid.removeCard(grid.getCursorIndex())
-        hand.insertCard(card, -1)
+        cardKit.getCursorCard().flip()
+        // let card = grid.removeCard(grid.getCursorIndex())
+        // hand.insertCard(card, -1)
         
-        if (hand.getCardCount() > 6) {
-            discard.insertCard(hand.removeCard(0), 0)
-        }
-
+        // if (hand.getCardCount() > 6) {
+        //     discard.insertCard(hand.removeCard(0), 0)
         // }
     }
 })
@@ -83,10 +79,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     grid.moveCursorDown()
 })
 
-while (true) {
-    if (deck.getCardCount() > 0) {
-        grid.insertCard(deck.removeCard(), -1)
-    }
-    pause(500)            
+while (deck.getCardCount() > 0) {
+    grid.insertCard(deck.removeCard(), -1)
 }
 

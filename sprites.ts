@@ -16,9 +16,9 @@ namespace SpriteKind {
 }
 
 namespace cardKit {
-    const FLIP_SCALES = [0.6, 0.3, 0.1]
-    const COLLAPSE_SCALE = [0.9, 0.4, 0.2, 0.1]
-    const EXPAND_SCALE = [0.1, 0.6, 0.8, 0.9]
+    const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
+    const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
+    const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
 
     let flipAnimationDuration = 300
     let slideAnimationDuration = 500
@@ -35,9 +35,7 @@ namespace cardKit {
     export class Card extends Sprite {
         location: CardContainer
         indicator: string
-        private flipStage: number
-        private flipTimer: number
-        private __isFaceUp: boolean
+        private _isFaceUp: boolean
 
         constructor(
             private design: CardDesign,
@@ -46,15 +44,14 @@ namespace cardKit {
         ) {
             super(design.createCardBaseImage())
             this.location = null
-            this.__isFaceUp = isFaceUp
-            this.flipStage = -1
+            this._isFaceUp = isFaceUp
             this.refreshImage()
             activate(this)
         }
 
         private refreshImage() {
             this.image.fill(0)
-            if(this.__isFaceUp) {
+            if(this._isFaceUp) {
                 this.design.drawCardFront(this.image, 0, 0, this.card)
                 this.design.drawStamp(this.image, this.indicator)
             } else {
@@ -66,47 +63,36 @@ namespace cardKit {
             return this.card
         }
 
-        private stopFlipAnimation() {
-            if (this.flipStage >= 0) {
-                this.flipStage = -1
-                this.sx = 1.0
-                clearInterval(this.flipTimer)
-            }
-        }
-
         set isFaceUp(value: boolean) {
-            if(this.flipStage >= 0) {
-                this.stopFlipAnimation()
-            }            
-            if (value != this.__isFaceUp) {
-                this.__isFaceUp = value
+            extraAnimations.clearAnimations(this, true)
+            if (value != this._isFaceUp) {
+                this._isFaceUp = value
                 this.refreshImage()
             }
         }
-        get isFaceUp(): boolean { return this.__isFaceUp}
+        get isFaceUp(): boolean { return this._isFaceUp }        
 
         flip() {
-            if(this.flipStage >= 0) {
-                this.flipStage = FLIP_SCALES.length * 2 - this.flipStage - 1
-                return
+            if (extraAnimations.hasFixedFrameAnimation(this)) {
+                extraAnimations.reverseFixedFrameAnimation(this)
             }
-            this.flipStage = 0
-            this.flipTimer = setInterval(() => {
-                this.flipStage++
-                if(this.flipStage >= FLIP_SCALES.length * 2) {
-                    this.stopFlipAnimation()
-                } else {
-                    if(this.flipStage == FLIP_SCALES.length) {
-                        this.__isFaceUp = !this.__isFaceUp
+            extraAnimations.fixedFrameAnimate(
+                this,
+                flipAnimationDuration,
+                FLIP_SCALES.length,
+                null,
+                null,
+                FLIP_SCALES,
+                null,
+                (step) => {
+                    if (step == FLIP_SCALES.length / 2) {
+                        this._isFaceUp = !this._isFaceUp
                         this.refreshImage()
                     }
-                    if(this.flipStage >= FLIP_SCALES.length) {
-                        this.sx = FLIP_SCALES[FLIP_SCALES.length * 2 - this.flipStage - 1]
-                    } else {
-                        this.sx = FLIP_SCALES[this.flipStage]
-                    }
-                }
-            }, flipAnimationDuration / (FLIP_SCALES.length * 2))
+                },
+                false,
+                false
+            )
         }
     }
 
@@ -228,7 +214,6 @@ namespace cardKit {
             public isInsertFaceUp: boolean,
         ) { 
             this.events = []
-            this.reposition()
         }
 
         getId(): string {
@@ -303,6 +288,7 @@ namespace cardKit {
             super(id, x, y, z, cards, isInsertFaceUp)
             this.cardWidth = -1
             this.cardHeight = -1
+            this.reposition()
         }
 
         protected reposition() {
@@ -319,7 +305,7 @@ namespace cardKit {
                 const width = (this.cardWidth + this.spacing) * this.cards.length  - this.spacing
                 let x = this.x - width / 2
                 this.cards.forEach((card, index) => {
-                    smoothMoves.slide(
+                    extraAnimations.slide(
                         card,
                         x + this.cardWidth / 2,
                         this.y + (cursorTarget === card ? this.selectedCardOffset : 0),
@@ -331,7 +317,7 @@ namespace cardKit {
                 const height = (this.cardHeight + this.spacing) * this.cards.length  - this.spacing
                 let y = this.y - height / 2
                 this.cards.forEach((card, index) => {
-                    smoothMoves.slide(
+                    extraAnimations.slide(
                         card,
                         this.x + (cursorTarget === card ? this.selectedCardOffset : 0),
                         y + this.cardHeight / 2,
@@ -373,16 +359,25 @@ namespace cardKit {
         }
     }
 
+    type GridLayoutPosition = {
+        x: number,
+        y: number,
+        animated: boolean,
+        xFrames: number[],
+        yFrames: number[],
+        sxFrames: number[],
+        syFrames: number[],
+
+    }
+
     export class CardGrid extends BaseLayoutContainer {
         private firstLine: number
+        private scrollToLine: number
         private cardWidth: number
         private cardHeight: number
 
-        private scrollTimer: number
-        private scrollStage: number
-        private expandCards: Card[]
-        private expandFinalPos: number
-        private collapseCards: Card[]
+        private collapsePositions: number[]
+        private expandPositions: number[]
 
         constructor(
             id: string,
@@ -401,13 +396,9 @@ namespace cardKit {
         ) {
             super(id, x, y, z, cards, isInsertFaceUp)
             this.firstLine = 0
+            this.scrollToLine = 0
             this.cardWidth = -1
             this.cardHeight = -1
-
-            this.expandCards = []
-            this.collapseCards = []
-            this.scrollTimer = -1
-            this.scrollStage = -1
 
             this.reposition()            
         }
@@ -418,14 +409,30 @@ namespace cardKit {
                 this.scrollForwardIndicator.setFlag(SpriteFlag.Invisible, true)
                 return
             }
+
             if (this.cardWidth < 0) {
                 this.cardWidth = this.cards[0].width
             }
             if (this.cardHeight < 0) {
                 this.cardHeight = this.cards[0].height
             }
+
+            const isScrolling: boolean = Math.abs(this.firstLine - this.scrollToLine) == 1
+            const scrollDirection = this.scrollToLine - this.firstLine
+            this.firstLine = this.scrollToLine
+
             const width = (this.cardWidth + this.spacing) * this.columns - this.spacing
             const height = (this.cardHeight + this.spacing) * this.rows - this.spacing
+
+            const columnLeft = this.x - width / 2 + this.cardWidth / 2
+            const rowTop = this.y - height / 2 + this.cardHeight / 2
+            const columnRight = columnLeft + (this.columns - 1) * (this.cardWidth + this.spacing)
+            const columnBottom = rowTop + (this.rows - 1) * (this.cardHeight + this.spacing)
+
+            let index = this.isScrollingLeftRight
+                ? this.firstLine * this.rows 
+                : this.firstLine * this.columns
+            const lastIndex = index + this.rows * this.columns
 
             if (this.isScrollingLeftRight) {
                 if (!!this.scrollBackIndicator) {
@@ -447,47 +454,70 @@ namespace cardKit {
                 }               
             }
 
-            let columnLeft = this.x - width / 2 + this.cardWidth / 2
-            let rowTop = this.y - height / 2 + this.cardHeight / 2
+            const isVisible = (card: Card): boolean => !(card.flags & SpriteFlag.Invisible)
+            const createPositionLookup = (scales: number[], center: number, size: number, direction: number): number[] => scales.map(scale =>
+                center + (size / 2 * direction) - (size * scale / 2 * direction)
+            )
+
+            if (isScrolling) {
+                if (this.isScrollingLeftRight) {
+                    if (scrollDirection > 0) {
+                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnLeft, this.cardWidth, -1)
+                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnRight, this.cardWidth, 1)
+                    } else {
+                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnRight, this.cardWidth, 1)
+                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnLeft, this.cardWidth, -1)
+                    }
+                } else {
+                    if (scrollDirection > 0) {
+                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, rowTop, this.cardHeight, -1)
+                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnBottom, this.cardHeight, 1)
+                    } else {
+                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnBottom, this.cardHeight, 1)
+                        this.expandPositions = createPositionLookup(EXPAND_SCALE, rowTop, this.cardHeight, -1)
+                    }
+                }
+            }
+            
             let row = 0
             let column = 0
-            let index = this.isScrollingLeftRight 
-                ? this.firstLine * this.rows 
-                : this.firstLine * this.columns
-            const lastIndex = index + this.rows * this.columns
-            
+                
             this.cards.forEach((card, i) => {
-                if (i < index || i >= index + this.rows * this.columns) {
-                    if (!(card.flags & SpriteFlag.Invisible)) {
-                        if (this.scrollStage < 0) {
-                            card.setFlag(SpriteFlag.Invisible, true)
+                if ((i < index || i >= index + this.rows * this.columns) && isVisible(card)) {
+                    if (isScrolling) {
+                        extraAnimations.clearAnimations(card, true)
+                        if (this.isScrollingLeftRight) {
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, this.collapsePositions, null, COLLAPSE_SCALE, null, null, true, false)
                         } else {
-                            this.collapseCards.push(card)
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, null, this.collapsePositions, null, COLLAPSE_SCALE, null, true, false)
                         }
-                    } 
+                    } else {
+                        card.setFlag(SpriteFlag.Invisible, true)
+                    }
                 }
             })
 
             do {
                 const x = columnLeft + column * (this.cardWidth + this.spacing)
                 const y = rowTop + row * (this.cardHeight + this.spacing)
-                if(!!(this.cards[index].flags & SpriteFlag.Invisible)) {
-                    this.cards[index].setFlag(SpriteFlag.Invisible, false)
-                    this.cards[index].x = x
-                    this.cards[index].y = y                    
-                    this.cards[index].z = this.z
-                    if (this.scrollStage >= 0) {
-                        this.expandCards.push(this.cards[index])
-                        this.expandFinalPos = this.isScrollingLeftRight ? x : y
+                const card = this.cards[index]
+
+                if (!isVisible(card)) {
+                    card.setFlag(SpriteFlag.Invisible, false)
+                    card.x = x
+                    card.y = y
+                    card.z = this.z
+                    extraAnimations.clearAnimations(card, true)                    
+                    if (isScrolling) {
+                        if (this.isScrollingLeftRight) {
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, this.expandPositions, null, EXPAND_SCALE, null, null, false, false)
+                        } else {
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, null, this.expandPositions, null, EXPAND_SCALE, null, false, false)
+                        }
                     } 
                 } else {
-                    this.cards[index].z = this.z
-                    smoothMoves.slide(this.cards[index], x, y, slideAnimationDuration)
-                }
-
-                if (this.scrollStage < 0) {
-                    this.cards[index].sx = 1.0
-                    this.cards[index].sy = 1.0
+                    extraAnimations.clearFixedFrameAnimation(card, true)
+                    extraAnimations.slide(card, x, y, slideAnimationDuration)
                 }
 
                 if (this.isScrollingLeftRight) {
@@ -515,106 +545,10 @@ namespace cardKit {
                     : this.firstLine + this.rows >= Math.ceil(this.cards.length / this.columns)
                 )
             }
-            
-            clearInterval(this.scrollTimer)
-            if (this.scrollStage >= 0) {
-                if (this.collapseCards.length + this.expandCards.length > 0) {
-                    this.continueAnimation()
-                    this.scrollTimer = setInterval(() => this.continueAnimation(), 100)
-                } else {
-                    this.scrollStage = -1
-                }
-            }
         }
 
-        private continueAnimation() {
-            let edge: number
-            let direction = this.expandFinalPos
-                > (this.isScrollingLeftRight ? this.x : this.y)
-                ? 1 : -1
-            if (this.scrollStage < COLLAPSE_SCALE.length) {
-                this.collapseCards.forEach(card => {
-                    if (this.isScrollingLeftRight) {
-                        edge = card.x + card.width / 2 * -direction
-                        card.sx = COLLAPSE_SCALE[this.scrollStage]
-                        card.x = edge - card.width / 2 * -direction
-                    } else {
-                        edge = card.y + card.height / 2 * -direction
-                        card.sy = COLLAPSE_SCALE[this.scrollStage]
-                        card.y = edge - card.height / 2 * -direction    
-                    }
-                })
-                this.expandCards.forEach(card => {
-                    if (this.isScrollingLeftRight) {
-                        edge = card.x + card.width / 2 * direction
-                        card.sx = EXPAND_SCALE[this.scrollStage]
-                        card.x = edge - card.width / 2 * direction
-                    } else {
-                        edge = card.y + card.height / 2 * direction
-                        card.sy = EXPAND_SCALE[this.scrollStage]
-                        card.y = edge - card.height / 2 * direction
-                    }
-                })
-                this.scrollStage++
-            } else {
-                this.endAnimation()
-            }
-        }
-
-        private endAnimation() {
-            if (this.scrollTimer < 0) {
-                return
-            }
-            clearInterval(this.scrollTimer)
-            this.cards.forEach((card, i) => {
-                smoothMoves.clearSpriteTimeout(card, true)
-            })
-            this.collapseCards.forEach(card => {
-                card.sx = 1.0
-                card.sy = 1.0
-                card.setFlag(SpriteFlag.Invisible, true)                        
-            })
-            this.expandCards.forEach(card => {
-                card.sx = 1.0
-                card.sy = 1.0
-                if (this.isScrollingLeftRight) {
-                    card.x = this.expandFinalPos
-                } else {
-                    card.y = this.expandFinalPos
-                }
-            })
-            this.scrollTimer = -1
-            this.scrollStage = -1
-            this.expandCards.splice(0, this.expandCards.length)
-            this.collapseCards.splice(0, this.collapseCards.length)
-        }
-
-        removeCard(index?: number): Card {
-            let i = this.collapseCards.indexOf(this.cards[index])
-            let animating = false
-            if (i >= 0) {
-                this.collapseCards.splice(i, 1)
-                animating = true
-            }
-            i = this.expandCards.indexOf(this.cards[index])
-            if (i >= 0) {
-                this.expandCards.splice(i, 1)
-                animating = true
-            }
-            if (animating) {
-                this.cards[index].setFlag(SpriteFlag.Invisible, true)
-                this.cards[index].sx = 1.0
-                this.cards[index].sy = 1.0                    
-            }
-            if (this.getCursorIndex() === index) {
-                if (this.cards.length > 1) {
-                    this.moveCursorToIndex(index === this.cards.length - 1 ? index - 1 : index + 1)
-                } else {
-                    removeCursor()
-                }
-            }
-
-            this.endAnimation()
+        removeCard(index?: number): Card {            
+            extraAnimations.clearAnimations(this.cards[index], true)
             return super.removeCard(index)
         }
 
@@ -625,26 +559,21 @@ namespace cardKit {
             if (index < 0 || index >= this.cards.length) {
                 index = 0
             }
-            let scrollToLine: number = this.firstLine
+            this.scrollToLine = this.firstLine
             if(this.isScrollingLeftRight) {
                 if(index < this.firstLine * this.rows) {
-                    scrollToLine = Math.floor(index / this.rows)
+                    this.scrollToLine = Math.floor(index / this.rows)
                 } else if(index > (this.firstLine + this.columns - 1) * this.rows) {
-                    scrollToLine = Math.floor(index / this.rows - (this.columns - 1))
+                    this.scrollToLine = Math.floor(index / this.rows - (this.columns - 1))
                 }
             } else {
                 if(index < this.firstLine * this.columns) {
-                    scrollToLine = Math.floor(index / this.columns)
+                    this.scrollToLine = Math.floor(index / this.columns)
                 } else if(index > (this.firstLine + this.rows - 1) * this.columns) {
-                    scrollToLine = Math.floor(index / this.columns - (this.rows - 1))
+                    this.scrollToLine = Math.floor(index / this.columns - (this.rows - 1))
                 }
             }
-            if(this.firstLine !== scrollToLine) {
-                this.endAnimation()
-                if (Math.abs(this.firstLine - scrollToLine) === 1) {
-                    this.scrollStage = 0
-                }
-                this.firstLine = scrollToLine
+            if(this.firstLine !== this.scrollToLine) {
                 this.reposition()
             }
             pointCursorAt(this.cards[index])
@@ -736,6 +665,7 @@ namespace cardKit {
     game.onUpdate(() => {
         if (!!cursor) {
             if (!!cursorTarget) {
+                setCursorAnchor(cursorAnchor)
                 cursor.x = Math.round((cursorTarget.x + cursor.x + cursorOffsetX) / 2)
                 cursor.y = Math.round((cursorTarget.y + cursor.y + cursorOffsetY) / 2)
             }
