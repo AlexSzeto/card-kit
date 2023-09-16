@@ -84,14 +84,13 @@ namespace cardKit {
                 null,
                 FLIP_SCALES,
                 null,
-                (step) => {
+                (_, step) => {
                     if (step == FLIP_SCALES.length / 2) {
                         this._isFaceUp = !this._isFaceUp
                         this.refreshImage()
                     }
                 },
-                false,
-                false
+                null
             )
         }
     }
@@ -131,6 +130,7 @@ namespace cardKit {
 
     export class CardStack extends Sprite implements CardContainer {
         private events: CardEvent[]
+        private transitionCards: Card[]
         constructor(
             private containerId: string,
             private design: CardDesign,
@@ -140,13 +140,15 @@ namespace cardKit {
         ) {
             super(design.createStackBaseimage())
             this.events = []
+            this.transitionCards = []
             this.refreshImage()
             activate(this)
         }
 
         private refreshImage() {
             this.image.fill(0)
-            this.design.drawCardStack(this.image, 0, 0, this.cards, this.isStackFaceUp, this.isTopCardFaceUp)
+            const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
+            this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)
         }
 
         insertCardData(data: CardData[]) {
@@ -182,6 +184,9 @@ namespace cardKit {
         }
 
         insertCard(card: Card, index: number = -1): void {
+            if (card === null) {
+                return
+            }
             if (resolveEvents(card, this, this.events)) {
                 const cardData = card.getData()
                 if (index < 0) {
@@ -189,14 +194,33 @@ namespace cardKit {
                 } else {
                     this.cards.insertAt(index, cardData)
                 }
-                sprites.destroy(card)
+                card.isFaceUp = this.isTopCardFaceUp
+                extraAnimations.slide(
+                    card, this.x, this.y + this.design.getStackTopYOffset(this.cards.length),
+                    slideAnimationDuration,
+                    () => {
+                        this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
+                        card.destroy()
+                        this.refreshImage()
+                    }
+                )
+                this.transitionCards.push(card)
                 this.refreshImage()                    
             }
         }
 
         removeCard(index: number = 0): Card {
+            if (index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            const oldCard = this.transitionCards.find(card => card.getData() === this.cards[index])
             const card = new Card(this.design, this.cards[index], this.isStackFaceUp)
-            card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
+            if (!!oldCard) {
+                card.setPosition(oldCard.x, oldCard.y)
+                extraAnimations.clearAnimations(oldCard, true)
+            } else {
+                card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
+            }
             this.cards.splice(index, 1)
             this.refreshImage()
             return card
@@ -240,6 +264,9 @@ namespace cardKit {
         }
 
         insertCard(card: Card, index: number = -1): void {
+            if (card === null) {
+                return
+            }
             if (resolveEvents(card, this, this.events)) {
                 card.isFaceUp = this.isInsertFaceUp
                 if (index < 0) {
@@ -252,6 +279,9 @@ namespace cardKit {
         }
 
         removeCard(index: number = 0): Card {
+            if (index < 0 || index > this.cards.length - 1) {
+                return null
+            }
             const card = this.cards[index]
             this.cards.splice(index, 1)
             this.reposition()
@@ -309,7 +339,8 @@ namespace cardKit {
                         card,
                         x + this.cardWidth / 2,
                         this.y + (cursorTarget === card ? this.selectedCardOffset : 0),
-                        slideAnimationDuration)
+                        slideAnimationDuration,
+                        null)
                     x += this.cardWidth + this.spacing
                     card.z = this.z + this.spacing >= 0 ? 0 : index
                 })
@@ -321,7 +352,8 @@ namespace cardKit {
                         card,
                         this.x + (cursorTarget === card ? this.selectedCardOffset : 0),
                         y + this.cardHeight / 2,
-                        slideAnimationDuration)
+                        slideAnimationDuration,
+                        null)
                     y += this.cardHeight + this.spacing
                     card.z = this.z + this.spacing >= 0 ? 0 : index
                 })
@@ -417,6 +449,9 @@ namespace cardKit {
                 this.cardHeight = this.cards[0].height
             }
 
+            const maxScroll = Math.max(0, Math.ceil(this.cards.length / this.columns) - this.rows)
+            this.scrollToLine = Math.min(this.scrollToLine, maxScroll)
+            
             const isScrolling: boolean = Math.abs(this.firstLine - this.scrollToLine) == 1
             const scrollDirection = this.scrollToLine - this.firstLine
             this.firstLine = this.scrollToLine
@@ -433,6 +468,11 @@ namespace cardKit {
                 ? this.firstLine * this.rows 
                 : this.firstLine * this.columns
             const lastIndex = index + this.rows * this.columns
+
+            const cursorIndex = this.cards.indexOf(getCursorCard())
+            if (cursorIndex >= 0 && (cursorIndex < index || cursorIndex >= lastIndex)) {
+                pointCursorAt(this.cards[Math.max(index, Math.min(lastIndex - 1, cursorIndex))])
+            }
 
             if (this.isScrollingLeftRight) {
                 if (!!this.scrollBackIndicator) {
@@ -483,13 +523,16 @@ namespace cardKit {
             let column = 0
                 
             this.cards.forEach((card, i) => {
+                extraAnimations.clearFixedFrameAnimation(card, true)
+                card.sx = 1.0
+                card.sy = 1.0
                 if ((i < index || i >= index + this.rows * this.columns) && isVisible(card)) {
                     if (isScrolling) {
                         extraAnimations.clearAnimations(card, true)
                         if (this.isScrollingLeftRight) {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, this.collapsePositions, null, COLLAPSE_SCALE, null, null, true, false)
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, this.collapsePositions, null, COLLAPSE_SCALE, null, null, () => card.setFlag(SpriteFlag.Invisible, true))
                         } else {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, null, this.collapsePositions, null, COLLAPSE_SCALE, null, true, false)
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, null, this.collapsePositions, null, COLLAPSE_SCALE, null, () => card.setFlag(SpriteFlag.Invisible, true))
                         }
                     } else {
                         card.setFlag(SpriteFlag.Invisible, true)
@@ -510,14 +553,13 @@ namespace cardKit {
                     extraAnimations.clearAnimations(card, true)                    
                     if (isScrolling) {
                         if (this.isScrollingLeftRight) {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, this.expandPositions, null, EXPAND_SCALE, null, null, false, false)
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, this.expandPositions, null, EXPAND_SCALE, null, null, null)
                         } else {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, null, this.expandPositions, null, EXPAND_SCALE, null, false, false)
+                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, null, this.expandPositions, null, EXPAND_SCALE, null, null)
                         }
                     } 
                 } else {
-                    extraAnimations.clearFixedFrameAnimation(card, true)
-                    extraAnimations.slide(card, x, y, slideAnimationDuration)
+                    extraAnimations.slide(card, x, y, slideAnimationDuration, null)
                 }
 
                 if (this.isScrollingLeftRight) {
@@ -549,7 +591,14 @@ namespace cardKit {
 
         removeCard(index?: number): Card {            
             extraAnimations.clearAnimations(this.cards[index], true)
-            return super.removeCard(index)
+            if (getCursorCard() === this.cards[index]) {
+                if (index === this.cards.length - 1) {
+                    this.moveCursorToIndex(index - 1)
+                } else {
+                    this.moveCursorToIndex(index + 1)
+                }
+            }
+            return super.removeCard(index)            
         }
 
         moveCursorToIndex(index: number) {

@@ -2,8 +2,7 @@ namespace extraAnimations {
 
     type AnimationTracker = {
         sprite: Sprite
-        isHiddenOnComplete: boolean
-        isDestroyedOnComplete: boolean
+        onComplete: (sprite: Sprite) => void
     }
 
     type SlideTracker = AnimationTracker & {
@@ -22,7 +21,7 @@ namespace extraAnimations {
         y: number[]
         sx: number[]
         sy: number[]
-        stepHandler: (step: number) => void
+        onAnimateStep: (sprite: Sprite, step: number) => void
     }
 
     const slideTrackers: SlideTracker[] = []
@@ -58,16 +57,15 @@ namespace extraAnimations {
         if (!oldTracker) {
             return
         }
-        if (oldTracker.isDestroyedOnComplete) {
-            sprite.destroy()
-        } else {
-            if (jump) {
-                oldTracker.step = oldTracker.totalSteps - 1
+        if (jump) {
+            oldTracker.step += oldTracker.direction
+            while(oldTracker.step >= 0 && oldTracker.step < oldTracker.totalSteps) {
                 updateFixedFrameAnimation(oldTracker)
+                oldTracker.step += oldTracker.direction
             }
-            if (oldTracker.isHiddenOnComplete) {
-                sprite.setFlag(SpriteFlag.Invisible, true)
-            }
+        }
+        if (!!oldTracker.onComplete) {
+            oldTracker.onComplete(oldTracker.sprite)
         }
         fixedFrameTrackers.splice(fixedFrameTrackers.indexOf(oldTracker), 1)
     }
@@ -85,8 +83,8 @@ namespace extraAnimations {
         if (!!tracker.sy) {
             tracker.sprite.sy = tracker.sy[tracker.step]
         }
-        if (!!tracker.stepHandler) {
-            tracker.stepHandler(tracker.step)
+        if (!!tracker.onAnimateStep) {
+            tracker.onAnimateStep(tracker.sprite, tracker.step)
         }
     }
 
@@ -100,6 +98,9 @@ namespace extraAnimations {
             oldTracker.sprite.setPosition(oldTracker.x, oldTracker.y)
             oldTracker.sprite.setVelocity(0, 0)
         }
+        if (!!oldTracker.onComplete) {
+            oldTracker.onComplete(oldTracker.sprite)
+        }
         slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
     }
 
@@ -108,8 +109,7 @@ namespace extraAnimations {
         x: number,
         y: number,
         timeInMs: number,
-        isHiddenOnComplete: boolean = false,
-        isDestroyedOnComplete: boolean = false
+        onComplete: (sprite: Sprite) => void
     ) {
         const t = timeInMs / 1000
         const v = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y)) / t
@@ -138,8 +138,7 @@ namespace extraAnimations {
             timer: setTimeout(() => clearSlideAnimation(sprite, true), timeInMs),
             x: x,
             y: y,
-            isHiddenOnComplete: isHiddenOnComplete,
-            isDestroyedOnComplete: isDestroyedOnComplete
+            onComplete: onComplete
         })
     }
 
@@ -151,9 +150,8 @@ namespace extraAnimations {
         y: number[],
         sx: number[],
         sy: number[],
-        stepHandler: (step: number) => void,
-        isHiddenOnComplete: boolean,
-        isDestroyedOnComplete: boolean
+        onAnimateStep: (sprite: Sprite, step: number) => void,
+        onComplete: (sprite: Sprite) => void
     ) {
         clearFixedFrameAnimation(sprite)
         const tracker = {
@@ -166,9 +164,8 @@ namespace extraAnimations {
             y: y,
             sx: sx,
             sy: sy,
-            isHiddenOnComplete: isHiddenOnComplete,
-            isDestroyedOnComplete: isDestroyedOnComplete,
-            stepHandler: stepHandler,
+            onAnimateStep: onAnimateStep,
+            onComplete: onComplete,
             direction: 1
         }
         updateFixedFrameAnimation(tracker)
