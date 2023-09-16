@@ -2,25 +2,31 @@ namespace smoothMoves {
     type SpriteTracker = {
         sprite: Sprite
         timer: number
+        x: number
+        y: number
     }
 
     const slideTrackers: SpriteTracker[] = []
 
-    function clearSpriteTimeout(sprite: Sprite) {
+    export function clearSpriteTimeout(sprite: Sprite, jump: boolean = false) {
         const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
         if (!!oldTracker) {
             clearTimeout(oldTracker.timer)
+            if (jump) {
+                sprite.setPosition(oldTracker.x, oldTracker.y)
+                sprite.setVelocity(0, 0)
+            }
             slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
         }
     }
     
-    export function spriteHasActiveAnimation(sprite: Sprite): boolean {
-        return slideTrackers.some(tracker => tracker.sprite === sprite)
-    }
+    // export function spriteHasActiveAnimation(sprite: Sprite): boolean {
+    //     return slideTrackers.some(tracker => tracker.sprite === sprite)
+    // }
     
-    export function spriteKindHasActiveAnimation(kind: number): boolean {
-        return slideTrackers.some(tracker => tracker.sprite.kind() === kind)
-    }
+    // export function spriteKindHasActiveAnimation(kind: number): boolean {
+    //     return slideTrackers.some(tracker => tracker.sprite.kind() === kind)
+    // }
 
     export function slide(sprite: Sprite, x: number, y: number, timeInMs: number) {
         const t = timeInMs / 1000
@@ -51,7 +57,9 @@ namespace smoothMoves {
                 sprite.setPosition(x, y)
                 sprite.setVelocity(0, 0)
                 clearSpriteTimeout(sprite)
-            }, timeInMs)
+            }, timeInMs),
+            x: x,
+            y: y
         })
     }
 }

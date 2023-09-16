@@ -83,13 +83,8 @@ namespace cardKit {
     }
 
     export type StampLookup = {
-        value: CardAttributeValues
+        value: string
         image: Image
-    }
-
-    export type Stamp = {
-        attribute: number,
-        lookupTable: StampLookup[]
     }
 
     export type DesignColumn = {
@@ -136,9 +131,8 @@ namespace cardKit {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
-            public cardFrontStamps: Stamp[],
             public rows: DesignRow[],
-            public indicatorStamps: Stamp[],
+            public stamps: StampLookup[],
             public margin: number,
             public spacing: number,
         ) {
@@ -189,13 +183,11 @@ namespace cardKit {
             return image.create(this.width, this.getStackImageFullHeight())
         }
 
-        private drawStamps(image: Image, data: CardData, stamps: Stamp[]) {
-            stamps.forEach(stamp => {
-                const match = stamp.lookupTable.find(lookup => data.getAttribute(stamp.attribute) === lookup.value)
-                if (!!match) {
-                    image.drawTransparentImage(match.image, (this.width - match.image.width) / 2, (this.height - match.image.height) / 2)
-                }
-            })
+        drawStamp(image: Image, value: CardAttributeValues) {
+            const match = this.stamps.find(stamp => value === stamp.value)
+            if (!!match) {
+                image.drawTransparentImage(match.image, (this.width - match.image.width) / 2, (this.height - match.image.height) / 2)
+            }
         }
 
         drawCardFront(image: Image, x: number, y: number, card: CardData) {
@@ -249,7 +241,6 @@ namespace cardKit {
             }
     
             image.drawTransparentImage(this.frontImage, x, y)
-            this.drawStamps(image, card, this.cardFrontStamps)
             let top = y + this.margin
             this.rows.forEach(row => {
                 let sections: DrawRowSection[] = []
@@ -342,12 +333,10 @@ namespace cardKit {
 
                 top += rowHeight + this.spacing
             })
-            this.drawStamps(image, card, this.indicatorStamps)
         }        
 
-        drawCardBack(image: Image, x: number, y: number, card: CardData) {
+        drawCardBack(image: Image, x: number, y: number) {
             image.drawTransparentImage(this.backImage, x, y)
-            this.drawStamps(image, card, this.indicatorStamps)
         }
     
         drawCardStack(image: Image, x: number, y: number, cards: CardData[], isStackFaceUp: boolean, isTopCardFaceUp: boolean, ) {
@@ -363,45 +352,74 @@ namespace cardKit {
             if (isTopCardFaceUp) {
                 this.drawCardFront(image, x, y, cards[0])
             } else {
-                this.drawCardBack(image, x, y, cards[0])
+                this.drawCardBack(image, x, y)
             }
         }
     }
 
-    function createDesignColumn(zoneType: ZoneTypes, align: CardZoneAlignments, id: number, text: string, color: number, width: number, height: number, isDynamic: boolean, image: Image, lookupTable: DesignLookup[]): DesignColumn {
+    export function createEmptySpaceColumn(align: CardZoneAlignments, width: number, height: number): DesignColumn {
         return {
-            zoneType: zoneType,
+            zoneType: ZoneTypes.EmptySpace,
             align: align,
-            attribute: id,
-            text: text,
-            color: color,
             width: width,
             height: height,
+        }
+    }
+    export function createTextColumn(align: CardZoneAlignments, text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return {
+            zoneType: ZoneTypes.Text,
+            align: align,
+            text: text,
+            color: color,
+            width: columns,
+            height: rows,
             isDynamic: isDynamic,
-            image: image,
+        }
+    }
+    export function createAttributeAsPlainTextColumn(align: CardZoneAlignments, attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return {
+            zoneType: ZoneTypes.AttributeText,
+            align: align,
+            attribute: attribute,
+            color: color,
+            width: columns,
+            height: rows,
+            isDynamic: isDynamic,
+        }
+    }
+    export function createAttributeAsLookupTextColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
+        return {
+            zoneType: ZoneTypes.LookupAttributeAsText,
+            align: align,
+            attribute: attribute,
+            color: color,
+            width: columns,
+            height: rows,
+            isDynamic: isDynamic,
             lookupTable: lookupTable
         }
     }
-
-    export function createEmptySpaceColumn(align: CardZoneAlignments, width: number, height: number): DesignColumn {
-        return createDesignColumn(ZoneTypes.EmptySpace, align, 0, null, null, width, height, false, null, null)
-    }
-    export function createTextColumn(align: CardZoneAlignments, text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return createDesignColumn(ZoneTypes.Text, align, 0, text, color, columns, rows, isDynamic, null, null)
-    }
-    export function createAttributeAsPlainTextColumn(align: CardZoneAlignments, attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return createDesignColumn(ZoneTypes.AttributeText, align, attribute, null, color, columns, rows, isDynamic, null, null)
-    }
-    export function createAttributeAsLookupTextColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return createDesignColumn(ZoneTypes.LookupAttributeAsText, align, attribute, null, color, columns, rows, isDynamic, null, lookupTable)
-    }
     export function createImageColumn(align: CardZoneAlignments, image: Image): DesignColumn {
-        return createDesignColumn(ZoneTypes.Image, align, 0, null, 0, 0, 0, false, image, null)
+        return {
+            zoneType: ZoneTypes.Image,
+            align: align,
+            image: image,
+        }
     }
     export function createAttributeAsRepeatImageColumn(align: CardZoneAlignments, attribute: number, image: Image): DesignColumn {
-        return createDesignColumn(ZoneTypes.RepeatImage, align, attribute, null, 0, 0, 0, false, image, null)
+        return {
+            zoneType: ZoneTypes.RepeatImage,
+            align: align,
+            attribute: attribute,
+            image: image,            
+        }
     }
     export function createAttributeAsLookupImageColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[]): DesignColumn {
-        return createDesignColumn(ZoneTypes.LookupAttributeAsImage, align, attribute, null, 0, 0, 0, false, null, lookupTable)
+        return {
+            zoneType: ZoneTypes.LookupAttributeAsImage,
+            align: align,
+            attribute: attribute,
+            lookupTable: lookupTable
+        }
     }
 }

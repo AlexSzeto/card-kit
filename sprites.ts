@@ -17,6 +17,8 @@ namespace SpriteKind {
 
 namespace cardKit {
     const FLIP_SCALES = [0.6, 0.3, 0.1]
+    const COLLAPSE_SCALE = [0.9, 0.4, 0.2, 0.1]
+    const EXPAND_SCALE = [0.1, 0.6, 0.8, 0.9]
 
     let flipAnimationDuration = 300
     let slideAnimationDuration = 500
@@ -32,6 +34,7 @@ namespace cardKit {
 
     export class Card extends Sprite {
         location: CardContainer
+        indicator: string
         private flipStage: number
         private flipTimer: number
         private __isFaceUp: boolean
@@ -53,6 +56,7 @@ namespace cardKit {
             this.image.fill(0)
             if(this.__isFaceUp) {
                 this.design.drawCardFront(this.image, 0, 0, this.card)
+                this.design.drawStamp(this.image, this.indicator)
             } else {
                 this.design.drawCardBack(this.image, 0, 0)
             }
@@ -214,13 +218,14 @@ namespace cardKit {
     }
 
     class BaseLayoutContainer implements CardContainer {
-        private events: CardEvent[]
+        private events: CardEvent[]        
         constructor(
             private id: string,
             protected x: number,
             protected y: number,
             protected z: number,
-            protected cards: Card[]
+            protected cards: Card[],
+            public isInsertFaceUp: boolean,
         ) { 
             this.events = []
             this.reposition()
@@ -251,6 +256,7 @@ namespace cardKit {
 
         insertCard(card: Card, index: number = -1): void {
             if (resolveEvents(card, this, this.events)) {
+                card.isFaceUp = this.isInsertFaceUp
                 if (index < 0) {
                     this.cards.push(card)
                 } else {
@@ -267,6 +273,14 @@ namespace cardKit {
             return card
         }
         
+        getCursorIndex(): number {
+            return this.cards.indexOf(getCursorCard())
+        }
+
+        selectCurrentCard() {
+            
+        }
+
         protected reposition(): void {}
     }
 
@@ -280,12 +294,13 @@ namespace cardKit {
             y: number,
             z: number,
             cards: Card[],
+            isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
             private spacing: number,
             private selectedCardOffset: number,
             public isWrappingSelection: boolean
         ) {
-            super(id, x, y, z, cards)
+            super(id, x, y, z, cards, isInsertFaceUp)
             this.cardWidth = -1
             this.cardHeight = -1
         }
@@ -310,7 +325,7 @@ namespace cardKit {
                         this.y + (cursorTarget === card ? this.selectedCardOffset : 0),
                         slideAnimationDuration)
                     x += this.cardWidth + this.spacing
-                    card.z = this.z + index
+                    card.z = this.z + this.spacing >= 0 ? 0 : index
                 })
             } else {
                 const height = (this.cardHeight + this.spacing) * this.cards.length  - this.spacing
@@ -322,12 +337,12 @@ namespace cardKit {
                         y + this.cardHeight / 2,
                         slideAnimationDuration)
                     y += this.cardHeight + this.spacing
-                    card.z = this.z + index
+                    card.z = this.z + this.spacing >= 0 ? 0 : index
                 })
             }
         }
 
-        selectCardAt(index: number) {
+        moveCursorToIndex(index: number) {
             if (index >= 0 && index < this.cards.length) {
                 pointCursorAt(this.cards[index])                
             } else if (this.cards.length >= 1) {
@@ -335,30 +350,26 @@ namespace cardKit {
             }
         }
 
-        getSelectedCardIndex(): number {
-            return this.cards.indexOf(getSelectedCard())
-        }
-
-        private selectCardAtOffset(offset: number) {
-            const index = this.getSelectedCardIndex()
+        private moveCursorIndexByOffset(offset: number) {
+            const index = this.cards.indexOf(getCursorCard())
             if (index >= 0) {
                 if (this.isWrappingSelection) {
-                    this.selectCardAt((index + this.cards.length + offset) % this.cards.length)
+                    this.moveCursorToIndex((index + this.cards.length + offset) % this.cards.length)
                 } else {
-                    this.selectCardAt(Math.min(this.cards.length - 1, Math.max(0, index + offset)))
+                    this.moveCursorToIndex(Math.min(this.cards.length - 1, Math.max(0, index + offset)))
                 }
             } else {
-                this.selectCardAt(-1)
+                this.moveCursorToIndex(-1)
             }
             this.reposition()
         }
 
-        selectPreviousCard() {
-            this.selectCardAtOffset(-1)
+        moveCursorForward() {
+            this.moveCursorIndexByOffset(-1)
         }
 
-        selectNextCard() {
-            this.selectCardAtOffset(1)
+        moveCursorBack() {
+            this.moveCursorIndexByOffset(1)
         }
     }
 
@@ -366,6 +377,12 @@ namespace cardKit {
         private firstLine: number
         private cardWidth: number
         private cardHeight: number
+
+        private scrollTimer: number
+        private scrollStage: number
+        private expandCards: Card[]
+        private expandFinalPos: number
+        private collapseCards: Card[]
 
         constructor(
             id: string,
@@ -376,15 +393,22 @@ namespace cardKit {
             private rows: number,
             private columns: number,
             private isScrollingLeftRight: boolean,
-            private spacing: number,            
+            isInsertFaceUp: boolean,
+            private spacing: number,
             public isWrappingSelection: boolean,
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
-            super(id, x, y, z, cards)
+            super(id, x, y, z, cards, isInsertFaceUp)
             this.firstLine = 0
             this.cardWidth = -1
             this.cardHeight = -1
+
+            this.expandCards = []
+            this.collapseCards = []
+            this.scrollTimer = -1
+            this.scrollStage = -1
+
             this.reposition()            
         }
 
@@ -431,9 +455,16 @@ namespace cardKit {
                 ? this.firstLine * this.rows 
                 : this.firstLine * this.columns
             const lastIndex = index + this.rows * this.columns
+            
             this.cards.forEach((card, i) => {
-                if(i < index || i >= index + this.rows * this.columns) {
-                    card.setFlag(SpriteFlag.Invisible, true)
+                if (i < index || i >= index + this.rows * this.columns) {
+                    if (!(card.flags & SpriteFlag.Invisible)) {
+                        if (this.scrollStage < 0) {
+                            card.setFlag(SpriteFlag.Invisible, true)
+                        } else {
+                            this.collapseCards.push(card)
+                        }
+                    } 
                 }
             })
 
@@ -443,12 +474,22 @@ namespace cardKit {
                 if(!!(this.cards[index].flags & SpriteFlag.Invisible)) {
                     this.cards[index].setFlag(SpriteFlag.Invisible, false)
                     this.cards[index].x = x
-                    this.cards[index].y = y
+                    this.cards[index].y = y                    
                     this.cards[index].z = this.z
+                    if (this.scrollStage >= 0) {
+                        this.expandCards.push(this.cards[index])
+                        this.expandFinalPos = this.isScrollingLeftRight ? x : y
+                    } 
                 } else {
-                    this.cards[index].z = this.z + 1
+                    this.cards[index].z = this.z
                     smoothMoves.slide(this.cards[index], x, y, slideAnimationDuration)
                 }
+
+                if (this.scrollStage < 0) {
+                    this.cards[index].sx = 1.0
+                    this.cards[index].sy = 1.0
+                }
+
                 if (this.isScrollingLeftRight) {
                     row++
                     if(row >= this.rows) {
@@ -474,9 +515,110 @@ namespace cardKit {
                     : this.firstLine + this.rows >= Math.ceil(this.cards.length / this.columns)
                 )
             }
+            
+            clearInterval(this.scrollTimer)
+            if (this.scrollStage >= 0) {
+                if (this.collapseCards.length + this.expandCards.length > 0) {
+                    this.continueAnimation()
+                    this.scrollTimer = setInterval(() => this.continueAnimation(), 100)
+                } else {
+                    this.scrollStage = -1
+                }
+            }
         }
 
-        selectCardAt(index: number) {
+        private continueAnimation() {
+            let edge: number
+            let direction = this.expandFinalPos
+                > (this.isScrollingLeftRight ? this.x : this.y)
+                ? 1 : -1
+            if (this.scrollStage < COLLAPSE_SCALE.length) {
+                this.collapseCards.forEach(card => {
+                    if (this.isScrollingLeftRight) {
+                        edge = card.x + card.width / 2 * -direction
+                        card.sx = COLLAPSE_SCALE[this.scrollStage]
+                        card.x = edge - card.width / 2 * -direction
+                    } else {
+                        edge = card.y + card.height / 2 * -direction
+                        card.sy = COLLAPSE_SCALE[this.scrollStage]
+                        card.y = edge - card.height / 2 * -direction    
+                    }
+                })
+                this.expandCards.forEach(card => {
+                    if (this.isScrollingLeftRight) {
+                        edge = card.x + card.width / 2 * direction
+                        card.sx = EXPAND_SCALE[this.scrollStage]
+                        card.x = edge - card.width / 2 * direction
+                    } else {
+                        edge = card.y + card.height / 2 * direction
+                        card.sy = EXPAND_SCALE[this.scrollStage]
+                        card.y = edge - card.height / 2 * direction
+                    }
+                })
+                this.scrollStage++
+            } else {
+                this.endAnimation()
+            }
+        }
+
+        private endAnimation() {
+            if (this.scrollTimer < 0) {
+                return
+            }
+            clearInterval(this.scrollTimer)
+            this.cards.forEach((card, i) => {
+                smoothMoves.clearSpriteTimeout(card, true)
+            })
+            this.collapseCards.forEach(card => {
+                card.sx = 1.0
+                card.sy = 1.0
+                card.setFlag(SpriteFlag.Invisible, true)                        
+            })
+            this.expandCards.forEach(card => {
+                card.sx = 1.0
+                card.sy = 1.0
+                if (this.isScrollingLeftRight) {
+                    card.x = this.expandFinalPos
+                } else {
+                    card.y = this.expandFinalPos
+                }
+            })
+            this.scrollTimer = -1
+            this.scrollStage = -1
+            this.expandCards.splice(0, this.expandCards.length)
+            this.collapseCards.splice(0, this.collapseCards.length)
+        }
+
+        removeCard(index?: number): Card {
+            let i = this.collapseCards.indexOf(this.cards[index])
+            let animating = false
+            if (i >= 0) {
+                this.collapseCards.splice(i, 1)
+                animating = true
+            }
+            i = this.expandCards.indexOf(this.cards[index])
+            if (i >= 0) {
+                this.expandCards.splice(i, 1)
+                animating = true
+            }
+            if (animating) {
+                this.cards[index].setFlag(SpriteFlag.Invisible, true)
+                this.cards[index].sx = 1.0
+                this.cards[index].sy = 1.0                    
+            }
+            if (this.getCursorIndex() === index) {
+                if (this.cards.length > 1) {
+                    this.moveCursorToIndex(index === this.cards.length - 1 ? index - 1 : index + 1)
+                } else {
+                    removeCursor()
+                }
+            }
+
+            this.endAnimation()
+            return super.removeCard(index)
+        }
+
+        moveCursorToIndex(index: number) {
             if (this.cards.length === 0) {
                 return
             }
@@ -498,20 +640,20 @@ namespace cardKit {
                 }
             }
             if(this.firstLine !== scrollToLine) {
+                this.endAnimation()
+                if (Math.abs(this.firstLine - scrollToLine) === 1) {
+                    this.scrollStage = 0
+                }
                 this.firstLine = scrollToLine
                 this.reposition()
             }
             pointCursorAt(this.cards[index])
         }
-
-        getSelectedCardIndex(): number {
-            return this.cards.indexOf(getSelectedCard())
-        }
         
-        private selectCardAtOffset(rowOffset: number, columnOffset: number) {
-            let index = this.getSelectedCardIndex()
+        private moveCursorIndexByOffset(rowOffset: number, columnOffset: number) {
+            let index = this.getCursorIndex()
             if (index < 0) {
-                this.selectCardAt(0)
+                this.moveCursorToIndex(0)
                 return
             }
 
@@ -552,23 +694,23 @@ namespace cardKit {
             if (index >= this.cards.length) {
                 index = this.cards.length - 1
             }
-            this.selectCardAt(index)
+            this.moveCursorToIndex(index)
         }
 
-        selectPreviousColumnCard() {
-            this.selectCardAtOffset(0, -1)
+        moveCursorLeft() {
+            this.moveCursorIndexByOffset(0, -1)
         }
 
-        selectNextColumnCard() {
-            this.selectCardAtOffset(0, 1)
+        moveCursorRight() {
+            this.moveCursorIndexByOffset(0, 1)
         }
 
-        selectPreviousRowCard() {
-            this.selectCardAtOffset(-1, 0)
+        moveCursorUp() {
+            this.moveCursorIndexByOffset(-1, 0)
         }
 
-        selectNextRowCard() {
-            this.selectCardAtOffset(1, 0)
+        moveCursorDown() {
+            this.moveCursorIndexByOffset(1, 0)
         }
     }
 
@@ -600,6 +742,10 @@ namespace cardKit {
         }
     })
 
+    export function getCursorSprite(): Sprite {
+        return cursor
+    }
+    
     export function setCursorAnchor(anchor: CardCursorAnchors) {
         cursorAnchor = anchor
         if (!cursorTarget) {
@@ -641,11 +787,16 @@ namespace cardKit {
         }
     }
 
-    export function getSelection(): Sprite {
+    export function removeCursor() {
+        cursorTarget = null
+        cursor.setFlag(SpriteFlag.Invisible, true)
+    }
+
+    export function getCursorTarget(): Sprite {
         return cursorTarget
     }
 
-    export function getSelectedCard(): Card {
+    export function getCursorCard(): Card {
         if (!!cursorTarget && cursorTarget instanceof Card) {
             return cursorTarget
         } else {

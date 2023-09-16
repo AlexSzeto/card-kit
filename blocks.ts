@@ -74,6 +74,7 @@ namespace cardDesign {
         backStackFrame: Image
 
         rows: cardKit.DesignRow[]
+        stamps: cardKit.StampLookup[]
         
         constructor() {
             this.width = 12
@@ -90,6 +91,7 @@ namespace cardDesign {
             this.margin = 2
             this.spacing = 1
 
+            this.stamps = []
             resetDesignZones(this)
         }
 
@@ -104,6 +106,7 @@ namespace cardDesign {
                 Math.ceil(1.0 / this.cardThickness),
                 Math.floor(this.maxDeckSize * this.cardThickness),
                 this.rows,
+                this.stamps,
                 this.margin,
                 this.spacing
             )
@@ -397,14 +400,23 @@ namespace cards {
         }
     }
     
+    export function createEmptyStack(
+        id: string,
+        design: cardKit.CardDesign,
+        isFaceUp: boolean
+    ): cardKit.CardStack {
+        return new cardKit.CardStack(id, design, [], isFaceUp, isFaceUp)
+    }
+
     export function createEmptySpread(
         id: string, x: number, y: number,
+        isFaceUp: boolean,
         isSpreadingLeftRight: boolean,
         selectedCardMoveDirection: SelectedCardMoveDirections,
         isWrappingSelection: boolean
     ): cardKit.CardSpread {
         return new cardKit.CardSpread(
-            id, x, y, 1, [],
+            id, x, y, 1, [], isFaceUp,
             isSpreadingLeftRight, 1,
             getSelectedCardOffset(selectedCardMoveDirection),
             isWrappingSelection
@@ -455,6 +467,7 @@ namespace cards {
     export function createEmptyGrid(
         id: string, x: number, y: number,
         columns: number, rows: number,
+        isFaceUp: boolean,
         isScrollingLeftRight: boolean,
         isWrappingSelection: boolean,
     ): cardKit.CardGrid {
@@ -462,6 +475,7 @@ namespace cards {
             id, x, y, 1, [],
             rows, columns,
             isScrollingLeftRight,
+            isFaceUp,
             1, isWrappingSelection,
             isScrollingLeftRight 
                 ? sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor) 
