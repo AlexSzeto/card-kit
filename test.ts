@@ -1,15 +1,22 @@
 // tests go here; this will not be compiled when this package is used as an extension.
 const deck = cardKit.createPlayingCards()
+deck.setImage(img`
+. 7 7 7 7 .
+7 1 1 1 1 7
+7 1 1 1 1 7
+7 1 1 1 1 7
+. 7 7 7 7 .
+`)
 deck.x = 30
 
-const discard = cards.createEmptyStack('discard', cardKit.getPlayingCardsDesign().export(), true)
+const discard = cardLayout.createEmptyStack('discard', cardKit.getPlayingCardsDesign().export(), true)
 // discard.z = 20
 discard.x = scene.screenWidth() - 30
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
     if (!!cardKit.getCursorCard()) {
         // cardKit.getCursorCard().flip()
-        let card = grid.removeCardAt(0) //grid.getCursorIndex())
+        let card = grid.removeCardAt(grid.getCursorIndex())
         hand.insertCard(card, -1)
         // card.z = 30
         
@@ -60,7 +67,7 @@ const hand = new cardKit.CardSpread(
 /*
 Grid Test
 */
-const grid = cards.createEmptyGrid(
+const grid = cardLayout.createEmptyGrid(
     'grid',
     scene.screenWidth() / 2,
     scene.screenHeight() / 2 - 10,
@@ -86,5 +93,6 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 
 while (deck.getCardCount() > 40) {
     grid.insertCard(deck.removeCardAt(), -1)
+    pause(500)
 }
 

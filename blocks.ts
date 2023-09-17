@@ -356,7 +356,7 @@ function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): numbe
 
 //% color="#307d9c" icon="\uf2bb" block="Cards"
 //% groups=['Attributes']
-namespace cards {
+namespace cardLayout {
     
     //% group="Attributes"
     //% block="set $card $attribute to number $value"
@@ -485,4 +485,58 @@ namespace cards {
                 : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
         )
     }
+
+    export function getContainerId(
+        container: cardKit.CardContainer
+    ): string {
+        return container.getId()
+    }
+
+    export function setContainerPosition(
+        container: cardKit.CardContainer,
+        x: number,
+        y: number
+    ) { 
+        container.setPosition(x, y)
+    }
+
+    export function setContainerLayer(
+        container: cardKit.CardContainer,
+        layer: number
+    ) {
+        container.setLayer(layer)
+    }
+
+    export function shuffleCards() {}
+    export function sortCards() {}
+    
+    export function addCardInsertEvent(
+        container: cardKit.CardContainer,
+        condition: cardKit.CardEventCondition,
+        handler: cardKit.CardEventHandler
+    ) {
+        container.addEvent(condition, handler)
+    }
+    
+    export function removeTopCardFrom(container: cardKit.CardContainer): cardKit.Card {
+        const card = container.removeCardAt(0)
+        card.container = null
+        return card
+    }
+
+    export function addCardTo(container: cardKit.CardContainer, card: cardKit.Card, index: number = 0) {
+        container.insertCard(card, index)
+    }
+
+    export function addCardToEndOf(container: cardKit.CardContainer, card: cardKit.Card) {
+        container.insertCard(card, -1)
+    }
+
+    export function moveCardBetween(
+        origin: cardKit.CardContainer,
+        card: cardKit.Card,
+        destination: cardKit.CardContainer,
+        index: number = 0
+    ) { }
+
 }

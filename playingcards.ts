@@ -1,5 +1,4 @@
 namespace cardKit {
-    let playingCardsDeckData: cardKit.CardData[]
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
     export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {

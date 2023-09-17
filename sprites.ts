@@ -102,8 +102,8 @@ namespace cardKit {
         }
     }
 
-    type CardEventCondition = cardKit.CardAttribute
-    type CardEventHandler = (card: Card) => void
+    export type CardEventCondition = cardKit.CardAttribute
+    export type CardEventHandler = (origin: CardContainer, card: Card) => void
     type CardEvent = {
         condition: CardEventCondition
         handler: CardEventHandler
@@ -113,7 +113,7 @@ namespace cardKit {
         const origin = card.container
         for (let event of events) {
             if(card.getData().getAttribute(event.condition.id) === event.condition.value) {
-                event.handler(card)
+                event.handler(card.container, card)
                 if(card.container !== origin || (card.flags & sprites.Flag.Destroyed)) {
                     return false
                 }
@@ -123,7 +123,7 @@ namespace cardKit {
         return true
     }
 
-    interface CardContainer {
+    export interface CardContainer {
         getId(): string
         getCardCount(): number,
 
@@ -138,6 +138,7 @@ namespace cardKit {
     export class CardStack extends Sprite implements CardContainer {
         private events: CardEvent[]
         private transitionCards: Card[]
+        private defaultStackImage: Image
         constructor(
             private containerId: string,
             private design: CardDesign,
@@ -146,16 +147,23 @@ namespace cardKit {
             private isTopCardFaceUp: boolean,
         ) {
             super(design.createStackBaseimage())
+            this.defaultStackImage = this.image
             this.events = []
             this.transitionCards = []
             this.refreshImage()
             activate(this)
         }
 
+        private getYOffset(): number {
+            return (this.image === this.defaultStackImage ? this.design.getStackTopYOffset(this.cards.length) : 0)
+        }
+
         private refreshImage() {
-            this.image.fill(0)
-            const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
-            this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)
+            if (this.image === this.defaultStackImage) {
+                this.image.fill(0)
+                const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
+                this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)                    
+            }
         }
 
         insertCardData(data: CardData[]) {
@@ -203,7 +211,7 @@ namespace cardKit {
                 }
                 card.isFaceUp = this.isTopCardFaceUp
                 extraAnimations.slide(
-                    card, this.x, this.y + this.design.getStackTopYOffset(this.cards.length),
+                    card, this.x, this.y + this.getYOffset(),
                     slideAnimationDuration,
                     () => {
                         this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
@@ -227,7 +235,7 @@ namespace cardKit {
                 card.setPosition(oldCard.x, oldCard.y)
                 extraAnimations.clearAnimations(oldCard, true)
             } else {
-                card.setPosition(this.x, this.y + this.design.getStackTopYOffset(this.cards.length))
+                card.setPosition(this.x, this.y + this.getYOffset())
             }
             this.cards.splice(index, 1)
             this.refreshImage()
