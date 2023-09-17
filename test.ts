@@ -3,20 +3,20 @@ const deck = cardKit.createPlayingCards()
 deck.x = 30
 
 const discard = cards.createEmptyStack('discard', cardKit.getPlayingCardsDesign().export(), true)
-discard.z = 20
+// discard.z = 20
 discard.x = scene.screenWidth() - 30
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
     if (!!cardKit.getCursorCard()) {
         // cardKit.getCursorCard().flip()
-        let card = grid.removeCard(0) //grid.getCursorIndex())
-        card.z = 30
+        let card = grid.removeCardAt(0) //grid.getCursorIndex())
         hand.insertCard(card, -1)
+        // card.z = 30
         
         if (hand.getCardCount() > 5) {
-            let card2 = hand.removeCard(0)
-            card2.z = 30
+            let card2 = hand.removeCardAt(0)
             discard.insertCard(card2, 0)
+        //     card2.z = 30
         }
     }
 })
@@ -30,7 +30,7 @@ const hand = new cardKit.CardSpread(
     'hand',
     scene.screenWidth() / 2,
     scene.screenHeight() - 20,
-    10, [], true, true,
+    1, [], true, true,
     1, -10, true
 )
 // controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
@@ -67,6 +67,7 @@ const grid = cards.createEmptyGrid(
     6, 3,
     true, false, false
 )
+cardKit.preselectCursorContainer(grid)
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
     grid.moveCursorLeft()
@@ -83,7 +84,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     grid.moveCursorDown()
 })
 
-while (deck.getCardCount() > 0) {
-    grid.insertCard(deck.removeCard(), -1)
+while (deck.getCardCount() > 40) {
+    grid.insertCard(deck.removeCardAt(), -1)
 }
 

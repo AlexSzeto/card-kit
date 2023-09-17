@@ -354,7 +354,7 @@ function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): numbe
     }
 }
 
-//% color="#307d9c" icon="\uf2bb" block="Card Sprites"
+//% color="#307d9c" icon="\uf2bb" block="Cards"
 //% groups=['Attributes']
 namespace cards {
     

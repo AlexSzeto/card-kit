@@ -22,6 +22,7 @@ namespace cardKit {
 
     let flipAnimationDuration = 300
     let slideAnimationDuration = 500
+    let transitionZ = 100
 
     function activate(sprite: Sprite) {
         const scene = game.currentScene();
@@ -33,7 +34,7 @@ namespace cardKit {
     }
 
     export class Card extends Sprite {
-        location: CardContainer
+        container: CardContainer
         indicator: string
         private _isFaceUp: boolean
 
@@ -43,7 +44,7 @@ namespace cardKit {
             isFaceUp: boolean
         ) {
             super(design.createCardBaseImage())
-            this.location = null
+            this.container = null
             this._isFaceUp = isFaceUp
             this.refreshImage()
             activate(this)
@@ -70,7 +71,13 @@ namespace cardKit {
                 this.refreshImage()
             }
         }
-        get isFaceUp(): boolean { return this._isFaceUp }        
+        get isFaceUp(): boolean { return this._isFaceUp }
+
+        resetTransforms() {
+            this.sx = 1.0
+            this.sy = 1.0
+            this.setFlag(SpriteFlag.Invisible, false)
+        }
 
         flip() {
             if (extraAnimations.hasFixedFrameAnimation(this)) {
@@ -103,16 +110,16 @@ namespace cardKit {
     }
 
     function resolveEvents(card: Card, target: CardContainer, events: CardEvent[]) {
-        const origin = card.location
+        const origin = card.container
         for (let event of events) {
             if(card.getData().getAttribute(event.condition.id) === event.condition.value) {
                 event.handler(card)
-                if(card.location !== origin || (card.flags & sprites.Flag.Destroyed)) {
+                if(card.container !== origin || (card.flags & sprites.Flag.Destroyed)) {
                     return false
                 }
             }
         }
-        card.location = target
+        card.container = target
         return true
     }
 
@@ -125,7 +132,7 @@ namespace cardKit {
 
         addEvent(condition: CardEventCondition, handler: CardEventHandler): void
         insertCard(card: Card, index: number): void
-        removeCard(index: number): Card
+        removeCardAt(index: number): Card
     }
 
     export class CardStack extends Sprite implements CardContainer {
@@ -205,11 +212,12 @@ namespace cardKit {
                     }
                 )
                 this.transitionCards.push(card)
-                this.refreshImage()                    
+                this.refreshImage()
+                card.z = transitionZ
             }
         }
 
-        removeCard(index: number = 0): Card {
+        removeCardAt(index: number = 0): Card {
             if (index < 0 || index > this.cards.length - 1) {
                 return null
             }
@@ -248,6 +256,10 @@ namespace cardKit {
             return this.cards.length
         }
 
+        getCardsCopy(): Card[] {
+            return this.cards.slice()
+        }
+
         setPosition(x: number, y: number): void {
             this.x = x
             this.y = y
@@ -275,14 +287,32 @@ namespace cardKit {
                     this.cards.insertAt(index, card)
                 }
                 this.reposition()
+                card.z = transitionZ
+                if (this.cards.length === 1 && getMostRecentCursorContainer() === this) {
+                    pointCursorAt(card)
+                }
             }
         }
 
-        removeCard(index: number = 0): Card {
+        removeCard(card: Card): Card {
+            return this.removeCardAt(this.cards.indexOf(card))
+        }
+
+        removeCardAt(index: number = 0): Card {
             if (index < 0 || index > this.cards.length - 1) {
                 return null
             }
             const card = this.cards[index]
+            if (getCursorCard() === card) {
+                if (this.cards.length === 1) {
+                    removeCursor()
+                } else if (index === this.cards.length - 1) {
+                    pointCursorAt(this.cards[index - 1])
+                } else {
+                    pointCursorAt(this.cards[index + 1])
+                }
+            }
+            card.resetTransforms()
             this.cards.splice(index, 1)
             this.reposition()
             return card
@@ -526,6 +556,7 @@ namespace cardKit {
                 extraAnimations.clearFixedFrameAnimation(card, true)
                 card.sx = 1.0
                 card.sy = 1.0
+                card.z = this.z
                 if ((i < index || i >= index + this.rows * this.columns) && isVisible(card)) {
                     if (isScrolling) {
                         extraAnimations.clearAnimations(card, true)
@@ -549,7 +580,6 @@ namespace cardKit {
                     card.setFlag(SpriteFlag.Invisible, false)
                     card.x = x
                     card.y = y
-                    card.z = this.z
                     extraAnimations.clearAnimations(card, true)                    
                     if (isScrolling) {
                         if (this.isScrollingLeftRight) {
@@ -589,16 +619,12 @@ namespace cardKit {
             }
         }
 
-        removeCard(index?: number): Card {            
+        removeCardAt(index?: number): Card {   
+            if (index < 0 || index > this.cards.length - 1) {
+                return null
+            }            
             extraAnimations.clearAnimations(this.cards[index], true)
-            if (getCursorCard() === this.cards[index]) {
-                if (index === this.cards.length - 1) {
-                    this.moveCursorToIndex(index - 1)
-                } else {
-                    this.moveCursorToIndex(index + 1)
-                }
-            }
-            return super.removeCard(index)            
+            return super.removeCardAt(index)            
         }
 
         moveCursorToIndex(index: number) {
@@ -695,6 +721,7 @@ namespace cardKit {
     let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
     let cursorOffsetX = 0
     let cursorOffsetY = 0
+    let mostRecentCursorContainer: any = null
     let cursorTarget: Sprite = null
     const cursor = sprites.create(img`
         . . . f f . . . .
@@ -756,8 +783,15 @@ namespace cardKit {
     }
 
     export function pointCursorAt(target: Sprite) {
+        if (!target) {
+            removeCursor()
+            return
+        }
         const hasPreviousTarget = !!cursorTarget
         cursorTarget = target
+        if (!!(cursorTarget as any).container) {
+            mostRecentCursorContainer = (cursorTarget as any).container
+        }
         cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
         setCursorAnchor(cursorAnchor)
         if (!hasPreviousTarget) {
@@ -769,6 +803,14 @@ namespace cardKit {
     export function removeCursor() {
         cursorTarget = null
         cursor.setFlag(SpriteFlag.Invisible, true)
+    }
+
+    export function getMostRecentCursorContainer(): any {
+        return mostRecentCursorContainer
+    }
+
+    export function preselectCursorContainer(container: any) {
+        mostRecentCursorContainer = container
     }
 
     export function getCursorTarget(): Sprite {
