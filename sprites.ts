@@ -35,7 +35,7 @@ namespace cardKit {
 
     export class Card extends Sprite {
         container: CardContainer
-        indicator: string
+        stamp: string
         private _isFaceUp: boolean
 
         constructor(
@@ -50,11 +50,11 @@ namespace cardKit {
             activate(this)
         }
 
-        private refreshImage() {
+        public refreshImage() {
             this.image.fill(0)
             if(this._isFaceUp) {
                 this.design.drawCardFront(this.image, 0, 0, this.card)
-                this.design.drawStamp(this.image, this.indicator)
+                this.design.drawStamp(this.image, this.stamp)
             } else {
                 this.design.drawCardBack(this.image, 0, 0)
             }
@@ -110,16 +110,19 @@ namespace cardKit {
     }
 
     function resolveEvents(card: Card, target: CardContainer, events: CardEvent[]) {
+        if (card.container != null && card.container !== target) {
+            card.container.removeCardSprite(card)
+        }
         const origin = card.container
+        card.container = target
         for (let event of events) {
-            if(card.getData().getAttribute(event.condition.id) === event.condition.value) {
-                event.handler(card.container, card)
-                if(card.container !== origin || (card.flags & sprites.Flag.Destroyed)) {
+            if(card.getData().getAttribute(event.condition.attribute) === event.condition.value) {
+                event.handler(origin, card)
+                if(card.container !== target || (card.flags & sprites.Flag.Destroyed)) {
                     return false
                 }
             }
         }
-        card.container = target
         return true
     }
 
@@ -133,6 +136,9 @@ namespace cardKit {
         addEvent(condition: CardEventCondition, handler: CardEventHandler): void
         insertCard(card: Card, index: number): void
         removeCardAt(index: number): Card
+        removeCardSprite(card: Card): void
+
+        getCursorIndex(): number
     }
 
     export class CardStack extends Sprite implements CardContainer {
@@ -158,12 +164,16 @@ namespace cardKit {
             return (this.image === this.defaultStackImage ? this.design.getStackTopYOffset(this.cards.length) : 0)
         }
 
-        private refreshImage() {
+        public refreshImage() {
             if (this.image === this.defaultStackImage) {
                 this.image.fill(0)
                 const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
                 this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)                    
             }
+        }
+
+        get container(): CardContainer {
+            return this
         }
 
         insertCardData(data: CardData[]) {
@@ -199,7 +209,7 @@ namespace cardKit {
         }
 
         insertCard(card: Card, index: number = -1): void {
-            if (card === null) {
+            if (card == null) {
                 return
             }
             if (resolveEvents(card, this, this.events)) {
@@ -225,8 +235,12 @@ namespace cardKit {
             }
         }
 
+        removeCardSprite(card: Card): void {
+            this.removeCardAt(this.cards.indexOf(card.getData()))
+        }
+
         removeCardAt(index: number = 0): Card {
-            if (index < 0 || index > this.cards.length - 1) {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
             const oldCard = this.transitionCards.find(card => card.getData() === this.cards[index])
@@ -241,9 +255,13 @@ namespace cardKit {
             this.refreshImage()
             return card
         }
+
+        getCursorIndex(): number {
+            return (getCursorSprite() === this) ? 0 : null
+        }
     }
 
-    class BaseLayoutContainer implements CardContainer {
+    export class LayoutContainer implements CardContainer {
         private events: CardEvent[]        
         constructor(
             private id: string,
@@ -284,7 +302,7 @@ namespace cardKit {
         }
 
         insertCard(card: Card, index: number = -1): void {
-            if (card === null) {
+            if (card == null) {
                 return
             }
             if (resolveEvents(card, this, this.events)) {
@@ -302,12 +320,12 @@ namespace cardKit {
             }
         }
 
-        removeCard(card: Card): Card {
-            return this.removeCardAt(this.cards.indexOf(card))
+        removeCardSprite(card: Card): void {
+            this.removeCardAt(this.cards.indexOf(card))
         }
 
         removeCardAt(index: number = 0): Card {
-            if (index < 0 || index > this.cards.length - 1) {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
             const card = this.cards[index]
@@ -327,17 +345,14 @@ namespace cardKit {
         }
         
         getCursorIndex(): number {
-            return this.cards.indexOf(getCursorCard())
+            const index = this.cards.indexOf(getCursorCard())
+            return index >= 0 ? index : null
         }
 
-        selectCurrentCard() {
-            
-        }
-
-        protected reposition(): void {}
+        reposition(): void {}
     }
 
-    export class CardSpread extends BaseLayoutContainer {
+    export class CardSpread extends LayoutContainer {
         private cardWidth: number
         private cardHeight: number
 
@@ -350,7 +365,8 @@ namespace cardKit {
             isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
             private spacing: number,
-            private selectedCardOffset: number,
+            private hoverX: number,
+            private hoverY: number,
             public isWrappingSelection: boolean
         ) {
             super(id, x, y, z, cards, isInsertFaceUp)
@@ -359,7 +375,11 @@ namespace cardKit {
             this.reposition()
         }
 
-        protected reposition() {
+        isCardSpread(): boolean { return true }
+
+        get isLeftRight(): boolean { return this.isSpreadingLeftRight }
+        
+        reposition() {
             if (this.cards.length === 0) {
                 return
             }
@@ -375,8 +395,8 @@ namespace cardKit {
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
                         card,
-                        x + this.cardWidth / 2,
-                        this.y + (cursorTarget === card ? this.selectedCardOffset : 0),
+                        x + this.cardWidth / 2 + (cursorTarget === card ? this.hoverX : 0),
+                        this.y + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
                     x += this.cardWidth + this.spacing
@@ -388,8 +408,8 @@ namespace cardKit {
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
                         card,
-                        this.x + (cursorTarget === card ? this.selectedCardOffset : 0),
-                        y + this.cardHeight / 2,
+                        this.x + (cursorTarget === card ? this.hoverX : 0),
+                        y + this.cardHeight / 2 + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
                     y += this.cardHeight + this.spacing
@@ -440,7 +460,7 @@ namespace cardKit {
 
     }
 
-    export class CardGrid extends BaseLayoutContainer {
+    export class CardGrid extends LayoutContainer {
         private firstLine: number
         private scrollToLine: number
         private cardWidth: number
@@ -473,7 +493,9 @@ namespace cardKit {
             this.reposition()            
         }
 
-        protected reposition() {
+        isCardGrid(): boolean { return true }
+
+        reposition() {
             if (this.cards.length === 0) {
                 this.scrollBackIndicator.setFlag(SpriteFlag.Invisible, true)
                 this.scrollForwardIndicator.setFlag(SpriteFlag.Invisible, true)
@@ -628,7 +650,7 @@ namespace cardKit {
         }
 
         removeCardAt(index?: number): Card {   
-            if (index < 0 || index > this.cards.length - 1) {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }            
             extraAnimations.clearAnimations(this.cards[index], true)

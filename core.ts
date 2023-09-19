@@ -8,7 +8,7 @@ namespace cardKit {
 
     export type CardAttributeValues = string | number
     export type CardAttribute = {
-        id: number
+        attribute: number
         value: CardAttributeValues
     }
 
@@ -22,7 +22,7 @@ namespace cardKit {
         }
 
         getAttribute(id: number): CardAttributeValues {
-            const attribute = this.__attributes.find(attr => attr.id === id)
+            const attribute = this.__attributes.find(attr => attr.attribute === id)
             if (!!attribute) {
                 return attribute.value
             } else {
@@ -31,18 +31,18 @@ namespace cardKit {
         }
 
         setAttribute(id: number, value: CardAttributeValues): void {
-            const attribute = this.__attributes.find(attr => attr.id === id)
+            const attribute = this.__attributes.find(attr => attr.attribute === id)
             if (!!attribute) {
                 attribute.value = value
             } else {
-                this.__attributes.push({ id: id, value: value })
+                this.__attributes.push({ attribute: id, value: value })
             }
         }
 
         clone(): CardData {
             const clone = new CardData()
             this.__attributes.forEach(attribute => {
-                clone.setAttribute(attribute.id, attribute.value)
+                clone.setAttribute(attribute.attribute, attribute.value)
             })
             return clone
         }
@@ -293,7 +293,7 @@ namespace cardKit {
                             }
                             break
                     }
-                    if (drawZone === null) {
+                    if (drawZone == null) {
                         drawZone = createSpaceDrawZone(-this.spacing, 0)                    
                     }
                     sections[zone.align].width += drawZone.width + this.spacing

@@ -9,6 +9,30 @@ enum CardDesignFrameTypes {
     BackStack
 }
 
+enum CardContainerPositions {
+    //% block="start"
+    Start,
+    //% block="middle"
+    Middle,
+    //% block="end"
+    End,
+    //% block="random"
+    Random,
+    //% block="cursor"
+    Cursor
+}
+
+enum PointerDirections {
+    //% block="up"
+    Up,
+    //% block="down"
+    Down,
+    //% block="left"
+    Left,
+    //% block="right"
+    Right
+}
+
 //% color="#183f4e" icon="\uf249" block="Card Design"
 //% groups="['Create', 'Add Row', 'Add Text', 'Add Image', 'Add Misc', 'Graphics', 'Dimensions']"
 namespace cardDesign {
@@ -231,6 +255,14 @@ namespace cardDesign {
         addDesignColumn(design, cardKit.createEmptySpaceColumn(align, width, height))
     }
 
+    //% group="Add Misc"
+    //% block="set $design stamp collection $lookupTable"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
+    export function setStampImages(design: CardDesignTemplate, lookupTable: cardKit.StampLookup[]) {
+        design.stamps = lookupTable
+    }    
+
 }
 
 //% color="#255f74" icon="\uf044" block="Deck Builder"
@@ -345,15 +377,6 @@ enum SelectedCardMoveDirections {
     Right
 }
 
-function getSelectedCardOffset(moveDirection: SelectedCardMoveDirections): number {
-    switch (moveDirection) {
-        case SelectedCardMoveDirections.Up: return -10
-        case SelectedCardMoveDirections.Down: return 10
-        case SelectedCardMoveDirections.Left: return -10
-        case SelectedCardMoveDirections.Right: return 10
-    }
-}
-
 //% color="#307d9c" icon="\uf2bb" block="Cards"
 //% groups=['Attributes']
 namespace cardLayout {
@@ -364,6 +387,7 @@ namespace cardLayout {
     //% attribute.shadow="attributePicker"
     export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
         card.getData().setAttribute(attribute, value)
+        card.refreshImage()
     }
 
     //% group="Attributes"
@@ -372,6 +396,15 @@ namespace cardLayout {
     //% attribute.shadow="attributePicker"
     export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
         card.getData().setAttribute(attribute, text)
+        card.refreshImage()
+    }
+
+    //% group="Attributes"
+    //% block="set $card stamp to $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function setCardStampText(card: cardKit.Card, text: string) {
+        card.stamp = text
+        card.refreshImage()
     }
 
     //% group="Attributes"
@@ -400,6 +433,13 @@ namespace cardLayout {
         }
     }
     
+    //% group="Attributes"
+    //% block="$card stamp text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardStampText(card: cardKit.Card) {
+        return card.stamp
+    }    
+
     export function createEmptyStack(
         id: string,
         design: cardKit.CardDesign,
@@ -410,15 +450,29 @@ namespace cardLayout {
 
     export function createEmptySpread(
         id: string, x: number, y: number,
-        isFaceUp: boolean,
-        isSpreadingLeftRight: boolean,
-        selectedCardMoveDirection: SelectedCardMoveDirections,
-        isWrappingSelection: boolean
+        isFaceUp: boolean = true,
+        isSpreadingLeftRight: boolean = true,
+        selectedCardMoveDirection: SelectedCardMoveDirections = SelectedCardMoveDirections.Up,
+        offset: number = 10,
+        isWrappingSelection: boolean = false
     ): cardKit.CardSpread {
+
+        let offsetX = 0
+        switch (selectedCardMoveDirection) {
+            case SelectedCardMoveDirections.Left: offsetX = -offset; break;
+            case SelectedCardMoveDirections.Right: offsetX = offset; break;
+        }
+        
+        let offsetY = 0
+        switch (selectedCardMoveDirection) {
+            case SelectedCardMoveDirections.Up: offsetY = -offset; break;
+            case SelectedCardMoveDirections.Down: offsetY = offset; break;
+        }
+
         return new cardKit.CardSpread(
             id, x, y, 1, [], isFaceUp,
             isSpreadingLeftRight, 1,
-            getSelectedCardOffset(selectedCardMoveDirection),
+            offsetX, offsetY,
             isWrappingSelection
         )
     }
@@ -467,9 +521,9 @@ namespace cardLayout {
     export function createEmptyGrid(
         id: string, x: number, y: number,
         columns: number, rows: number,
-        isFaceUp: boolean,
-        isScrollingLeftRight: boolean,
-        isWrappingSelection: boolean,
+        isFaceUp: boolean = true,
+        isScrollingLeftRight: boolean = false,
+        isWrappingSelection: boolean = false,
     ): cardKit.CardGrid {
         return new cardKit.CardGrid(
             id, x, y, 1, [],
@@ -510,7 +564,7 @@ namespace cardLayout {
     export function shuffleCards() {}
     export function sortCards() {}
     
-    export function addCardInsertEvent(
+    export function createContainerAddCardEvent(
         container: cardKit.CardContainer,
         condition: cardKit.CardEventCondition,
         handler: cardKit.CardEventHandler
@@ -518,25 +572,126 @@ namespace cardLayout {
         container.addEvent(condition, handler)
     }
     
-    export function removeTopCardFrom(container: cardKit.CardContainer): cardKit.Card {
-        const card = container.removeCardAt(0)
+    function getPositionIndex(container: cardKit.CardContainer, position: CardContainerPositions): number {
+        switch (position) {
+            case CardContainerPositions.Start: return 0
+            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
+            case CardContainerPositions.End: return -1
+            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
+            case CardContainerPositions.Cursor: return container.getCursorIndex()
+        }
+    }
+
+    export function detachCardFrom(container: cardKit.CardContainer, position: CardContainerPositions): cardKit.Card {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return null
+        }
+        const card = container.removeCardAt(index)
         card.container = null
         return card
     }
 
-    export function addCardTo(container: cardKit.CardContainer, card: cardKit.Card, index: number = 0) {
-        container.insertCard(card, index)
-    }
-
-    export function addCardToEndOf(container: cardKit.CardContainer, card: cardKit.Card) {
-        container.insertCard(card, -1)
+    export function addCardTo(container: cardKit.CardContainer, card: cardKit.Card, position: CardContainerPositions) {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return
+        }
+        container.insertCard(card, getPositionIndex(container, position))
     }
 
     export function moveCardBetween(
         origin: cardKit.CardContainer,
-        card: cardKit.Card,
+        startPosition: CardContainerPositions,
         destination: cardKit.CardContainer,
-        index: number = 0
-    ) { }
+        endPosition: CardContainerPositions
+    ) {
+        const start = getPositionIndex(origin, startPosition)
+        if (start == null) {
+            return
+        }
+        const end = getPositionIndex(destination, endPosition)
+        if (end == null) {
+            return
+        }
+        destination.insertCard(origin.removeCardAt(start), end)
+    }
 
+    export function getLayoutCardListCopy(container: cardKit.LayoutContainer): cardKit.Card[] {
+        return container.getCardsCopy()
+    }
+
+    export function filterCardList(list: cardKit.Card[], condition: cardKit.CardEventCondition): cardKit.Card[] {
+        return list.filter(card => card.getData().getAttribute(condition.attribute) === condition.value)
+    }
+
+
+    export function getCursorCard(): cardKit.Card {
+        return cardKit.getCursorCard()
+    }
+
+    export function getCursorCardContainer(): cardKit.CardContainer {
+        return cardKit.getMostRecentCursorContainer()
+    }
+
+    export function moveCursorInsideLayoutWithButtons(layout: cardKit.LayoutContainer) {
+        cardKit.preselectCursorContainer(layout)
+        autoLayoutControl = true
+    }
+
+    export function disableLayoutButtonControl() { 
+        autoLayoutControl = false
+    }
+
+    export function moveCursorInDirection(direction: PointerDirections) {
+        const layer = cardKit.getMostRecentCursorContainer()
+        if (!!layer.isCardSpread) {
+            const spread = layer as cardKit.CardSpread
+            if (spread.isLeftRight) {
+                switch (direction) {
+                    case PointerDirections.Left: spread.moveCursorBack(); break
+                    case PointerDirections.Right: spread.moveCursorForward(); break
+                }
+            } else {
+                switch (direction) {
+                    case PointerDirections.Up: spread.moveCursorBack(); break
+                    case PointerDirections.Down: spread.moveCursorForward(); break
+                }
+            }
+        } else if (!!layer.isCardGrid) {
+            const grid = layer as cardKit.CardGrid
+            switch (direction) {
+                case PointerDirections.Up: grid.moveCursorUp(); break
+                case PointerDirections.Down: grid.moveCursorDown(); break
+                case PointerDirections.Left: grid.moveCursorLeft(); break
+                case PointerDirections.Right: grid.moveCursorRight(); break
+            }
+        }
+    }
+
+    export function moveCursorToSprite(sprite: Sprite) {
+        cardKit.pointCursorAt(sprite)
+    }
+
+    let autoLayoutControl: boolean = true
+    controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+        if (autoLayoutControl) {
+            moveCursorInDirection(PointerDirections.Left)
+        }
+    })
+    controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl) {
+            moveCursorInDirection(PointerDirections.Right)
+        }
+    })
+    controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl) {
+            moveCursorInDirection(PointerDirections.Up)
+        }
+    })
+    controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl) {
+            moveCursorInDirection(PointerDirections.Down)
+        }
+    })
 }

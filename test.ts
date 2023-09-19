@@ -38,7 +38,7 @@ const hand = new cardKit.CardSpread(
     scene.screenWidth() / 2,
     scene.screenHeight() - 20,
     1, [], true, true,
-    1, -10, true
+    1, 0, -10, true
 )
 // controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
 //     hand.selectPreviousCard()
