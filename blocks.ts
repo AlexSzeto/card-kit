@@ -462,7 +462,7 @@ namespace cardLayout {
     export function createEmptyHand(
         id: string, x: number, y: number,
         spreadDirection: CardLayoutSpreadDirections,
-        isFaceUp: boolean = true,originContainer
+        isFaceUp: boolean = true
     ): cardKit.CardSpread {
         return new cardKit.CardSpread(
             id, x, y, 1, [], isFaceUp,
