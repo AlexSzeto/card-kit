@@ -176,11 +176,13 @@ namespace cardKit {
         }
 
         public refreshImage() {
-            if (this.image === this.defaultStackImage) {
-                this.image.fill(0)
-                const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
-                this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)                    
-            }
+            if (this.image !== this.defaultStackImage || this.design === null) {
+                return
+            }            
+            this.image.fill(0)
+            const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
+            this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)                    
+            
         }
 
         get container(): CardContainer {

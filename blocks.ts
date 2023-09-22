@@ -10,11 +10,11 @@ enum CardDesignFrameTypes {
 }
 
 enum CardContainerPositions {
-    //% block="start"
+    //% block="first"
     First,
     //% block="middle"
     Middle,
-    //% block="end"
+    //% block="last"
     Last,
     //% block="random"
     Random,
@@ -34,9 +34,9 @@ enum PointerDirections {
 }
 
 enum CardLayoutSpreadDirections {
-    //% block="up/down"
+    //% block="up and down"
     UpDown,
-    //% block="left/right"
+    //% block="left and right"
     LeftRight,
 }
 
@@ -435,7 +435,7 @@ namespace cardLayout {
     }
     
     //% group="Attributes"
-    //% block="$card stamp text"
+    //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardKit.Card) {
         return card.stamp
@@ -453,7 +453,7 @@ namespace cardLayout {
     }
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty $design card hand named $id at x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
+    //% block="empty card hand named $id x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Player Hand"
     //% x.defl=80 y.defl=100
@@ -514,8 +514,7 @@ namespace cardLayout {
     `
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty $design card grid named $id at x $x y $y columns $columns rows $rows|| scroll $scrollDirection add cards face up $isFaceUp"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% block="empty card grid named $id x $x y $y columns $columns rows $rows|| scroll $scrollDirection add cards face up $isFaceUp"
     //% id.defl="Card Grid"
     //% x.defl=80 y.defl=60
     //% columns.defl=6 rows.defl=4
@@ -593,7 +592,7 @@ namespace cardLayout {
     //% block="on $container $card added from $origin"
     export function createContainerEvent(
         container: cardKit.CardContainer,
-        handler: cardKit.CardEventHandler
+        handler: (origin: cardKit.CardContainer, card: cardKit.Card) => void
     ) {
         container.addEvent(null, handler)
     }
@@ -607,7 +606,7 @@ namespace cardLayout {
         container: cardKit.CardContainer,
         attribute: number,
         value: number,
-        handler: cardKit.CardEventHandler
+        handler: (origin: cardKit.CardContainer, card: cardKit.Card) => void
     ) {
         container.addEvent({ attribute: attribute, value: value }, handler)
     }
@@ -621,7 +620,7 @@ namespace cardLayout {
         container: cardKit.CardContainer,
         attribute: number,
         text: string,
-        handler: cardKit.CardEventHandler
+        handler: (origin: cardKit.CardContainer, card: cardKit.Card) => void
     ) {
         container.addEvent({ attribute: attribute, value: text }, handler)
     }
@@ -690,7 +689,7 @@ namespace cardLayout {
         return container.getCardsCopy()
     }
 
-    //% group="Deck/Pile/Hand/Grid Operations" blockSetVariable="list"
+    //% group="Card List" blockSetVariable="list"
     //% block="cards in $list where $attribute is number $value"
     //% list.shadow="variables_get" list.defl="list"
     //% attribute.shadow="attributePicker"
@@ -698,7 +697,7 @@ namespace cardLayout {
         return list.filter(card => card.getData().getAttribute(attribute) === value)
     }
 
-    //% group="Deck/Pile/Hand/Grid Operations" blockSetVariable="list"
+    //% group="Card List" blockSetVariable="list"
     //% block="cards in $list where $attribute is text $text"
     //% list.shadow="variables_get" list.defl="list"
     //% attribute.shadow="attributePicker"
@@ -706,13 +705,13 @@ namespace cardLayout {
         return list.filter(card => card.getData().getAttribute(attribute) === text)
     }
 
-    //% group="Deck/Pile/Hand/Grid Operations"
+    //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardKit.Card {
         return cardKit.getCursorCard()
     }
 
-    //% group="Deck/Pile/Hand/Grid Operations"
+    //% group="Cursor"
     //% block="cursor card container id"
     export function getCursorContainerId(): string {
         const container = cardKit.getMostRecentCursorContainer()
