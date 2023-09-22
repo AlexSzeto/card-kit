@@ -1,6 +1,8 @@
-namespace cardKit {
+namespace cards {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
+    //% group="Presets"
+    //% block="playing cards design"
     export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {
         if (!playingCardsDesignTemplate) {
             let design = cardDesign.createCardDesignTemplate()
@@ -55,6 +57,8 @@ namespace cardKit {
         return playingCardsDesignTemplate
     }
 
+    //% group="Presets" blockSetVariable="myCardContainer"
+    //% block="deck of playing cards"
     export function createPlayingCards(): cardKit.CardStack {
         let deck = deckBuilder.createEmptyDeck(getPlayingCardsDesign(), 'Playing Cards')
         deckBuilder.addCardVariantsToDeck(deck,

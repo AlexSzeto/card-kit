@@ -69,6 +69,10 @@ namespace cardKit {
             }
         }
 
+        public getDesign(): CardDesign {
+            return this.design
+        }
+
         public getData(): CardData {
             return this.card
         }
@@ -163,7 +167,7 @@ namespace cardKit {
             private isStackFaceUp: boolean,
             private isTopCardFaceUp: boolean,
         ) {
-            super(design.createStackBaseimage())
+            super(!!design ? design.createStackBaseimage() : image.create(1, 1))
             this.defaultStackImage = this.image
             this.events = []
             this.transitionCards = []
@@ -197,8 +201,10 @@ namespace cardKit {
         }
 
         insertCardData(data: CardData[]) {
-            this.cards = data.concat(this.cards)
-            this.refreshImage()
+            if (!!this.design) {
+                this.cards = data.concat(this.cards)
+                this.refreshImage()
+            }
         }
 
         flipStack(isFaceUp: boolean): void {
@@ -231,6 +237,11 @@ namespace cardKit {
         insertCard(card: Card, index: number = -1): void {
             if (card == null) {
                 return
+            }
+            if (!this.design) {
+                this.design = card.getDesign()
+                this.setImage(this.design.createStackBaseimage())
+                this.defaultStackImage = this.image
             }
             if (resolveEvents(card, this, this.events)) {
                 const cardData = card.getData()

@@ -1,5 +1,5 @@
 // tests go here; this will not be compiled when this package is used as an extension.
-const deck = cardKit.createPlayingCards()
+const deck = cards.createPlayingCards()
 // deck.setImage(img`
 // . 7 7 7 7 .
 // 7 1 1 1 1 7
@@ -9,7 +9,7 @@ const deck = cardKit.createPlayingCards()
 // `)
 deck.x = 30
 
-const discard = cardLayout.createEmptyPile('discard', cardKit.getPlayingCardsDesign())
+const discard = cards.createEmptyPile('discard')
 // discard.z = 20
 discard.x = scene.screenWidth() - 30
 
@@ -33,7 +33,7 @@ Spread Test
 */
 
 // Horizontal
-const hand = cardLayout.createEmptyHand(
+const hand = cards.createEmptyHand(
     'hand',
     scene.screenWidth() / 2,
     scene.screenHeight() - 20,
@@ -67,14 +67,14 @@ const hand = cardLayout.createEmptyHand(
 /*
 Grid Test
 */
-const grid = cardLayout.createEmptyGrid(
+const grid = cards.createEmptyGrid(
     'grid',
     scene.screenWidth() / 2,
     scene.screenHeight() / 2 - 10,
     6, 3,
     CardLayoutSpreadDirections.UpDown
 )
-cardLayout.moveCursorInsideLayoutWithButtons(grid)
+cards.moveCursorInsideLayoutWithButtons(grid)
 // cardKit.preselectCursorContainer(grid)
 
 // controller.left.onEvent(ControllerButtonEvent.Pressed, function() {

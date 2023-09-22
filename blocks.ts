@@ -379,7 +379,7 @@ namespace deckBuilder {
 }
 
 //% color="#307d9c" icon="\uf2bb" block="Cards"
-namespace cardLayout {
+namespace cards {
     
     //% group="Properties"
     //% block="set $card $attribute to $value"
@@ -441,14 +441,13 @@ namespace cardLayout {
     }    
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty $design card pile named $id"
+    //% block="empty card pile named $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Discard Pile"
     export function createEmptyPile(
         id: string,
-        design: cardDesign.CardDesignTemplate,
     ): cardKit.CardStack {
-        return new cardKit.CardStack(id, design.export(), [], true, true)
+        return new cardKit.CardStack(id, null, [], true, true)
     }
 
     //% group="Create" blockSetVariable="myCardContainer"
@@ -677,7 +676,7 @@ namespace cardLayout {
     }
 
     //% group="Card List" blockSetVariable="list"
-    //% block="cards in $list where $attribute is $text"
+    //% block="cards in $cards where $attribute is $text"
     //% cards.shadow="variables_get" cards.defl="list"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
