@@ -125,7 +125,7 @@ namespace cardKit {
         const origin = card.container
         card.container = target
         for (let event of events) {
-            if(card.getData().getAttribute(event.condition.attribute) === event.condition.value) {
+            if(card.getData().attributeEquals(event.condition.attribute, event.condition.value)) {
                 event.handler(origin, card)
                 if(card.container !== target || (card.flags & sprites.Flag.Destroyed)) {
                     return false

@@ -39,6 +39,13 @@ namespace cardKit {
             }
         }
 
+        attributeEquals(id: number, value: CardAttributeValues): boolean {
+            const valueText = (typeof value === 'number') ? value.toString() : value
+            const attribute = this.__attributes.find(attr => attr.attribute === id)
+            const attrText = (typeof attribute.value === 'number') ? attribute.value.toString() : attribute.value
+            return attrText === valueText
+        }
+
         clone(): CardData {
             const clone = new CardData()
             this.__attributes.forEach(attribute => {
