@@ -1,15 +1,15 @@
 // tests go here; this will not be compiled when this package is used as an extension.
 const deck = cardKit.createPlayingCards()
-deck.setImage(img`
-. 7 7 7 7 .
-7 1 1 1 1 7
-7 1 1 1 1 7
-7 1 1 1 1 7
-. 7 7 7 7 .
-`)
+// deck.setImage(img`
+// . 7 7 7 7 .
+// 7 1 1 1 1 7
+// 7 1 1 1 1 7
+// 7 1 1 1 1 7
+// . 7 7 7 7 .
+// `)
 deck.x = 30
 
-const discard = cardLayout.createEmptyStack('discard', cardKit.getPlayingCardsDesign().export(), true)
+const discard = cardLayout.createEmptyPile('discard', cardKit.getPlayingCardsDesign())
 // discard.z = 20
 discard.x = scene.screenWidth() - 30
 
@@ -33,13 +33,13 @@ Spread Test
 */
 
 // Horizontal
-const hand = new cardKit.CardSpread(
+const hand = cardLayout.createEmptyHand(
     'hand',
     scene.screenWidth() / 2,
     scene.screenHeight() - 20,
-    1, [], true, true,
-    1, 0, -10, true
+    CardLayoutSpreadDirections.LeftRight,    
 )
+    
 // controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
 //     hand.selectPreviousCard()
 // })
@@ -72,24 +72,25 @@ const grid = cardLayout.createEmptyGrid(
     scene.screenWidth() / 2,
     scene.screenHeight() / 2 - 10,
     6, 3,
-    true, false, false
+    CardLayoutSpreadDirections.UpDown
 )
-cardKit.preselectCursorContainer(grid)
+cardLayout.moveCursorInsideLayoutWithButtons(grid)
+// cardKit.preselectCursorContainer(grid)
 
-controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-    grid.moveCursorLeft()
-})
+// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
+//     grid.moveCursorLeft()
+// })
 
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    grid.moveCursorRight()
-})
-controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
-    grid.moveCursorUp()
-})
+// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+//     grid.moveCursorRight()
+// })
+// controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
+//     grid.moveCursorUp()
+// })
 
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    grid.moveCursorDown()
-})
+// controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+//     grid.moveCursorDown()
+// })
 
 while (deck.getCardCount() > 40) {
     grid.insertCard(deck.removeCardAt(), -1)

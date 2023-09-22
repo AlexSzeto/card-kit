@@ -33,6 +33,15 @@ namespace cardKit {
             .forEach(h => h.handler(sprite));
     }
 
+    function shuffle(list: any[]) {
+        for (let i = 0; i < list.length; i++) {
+            const j = randint(0, list.length - 1)
+            const temp = list[i]
+            list[i] = list[j]
+            list[j] = temp
+        }
+    }
+
     export class Card extends Sprite {
         container: CardContainer
         stamp: string
@@ -133,6 +142,8 @@ namespace cardKit {
         setPosition(x: number, y: number): void
         setLayer(z: number): void
 
+        shuffle(): void
+
         addEvent(condition: CardEventCondition, handler: CardEventHandler): void
         insertCard(card: Card, index: number): void
         removeCardAt(index: number): Card
@@ -174,6 +185,13 @@ namespace cardKit {
 
         get container(): CardContainer {
             return this
+        }
+
+        shuffle(): void {
+            shuffle(this.cards)
+            if (this.isTopCardFaceUp) {
+                this.refreshImage()
+            }
         }
 
         insertCardData(data: CardData[]) {
@@ -301,6 +319,11 @@ namespace cardKit {
             this.events.push({ condition: condition, handler: handler })
         }
 
+        shuffle(): void {
+            shuffle(this.cards)
+            this.reposition()
+        }
+
         insertCard(card: Card, index: number = -1): void {
             if (card == null) {
                 return
@@ -364,7 +387,7 @@ namespace cardKit {
             cards: Card[],
             isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
-            private spacing: number,
+            private _spacing: number,
             private hoverX: number,
             private hoverY: number,
             public isWrappingSelection: boolean
@@ -377,7 +400,29 @@ namespace cardKit {
 
         isCardSpread(): boolean { return true }
 
-        get isLeftRight(): boolean { return this.isSpreadingLeftRight }
+        get isLeftRight(): boolean {
+            return this.isSpreadingLeftRight
+        }
+        
+        set isLeftRight(value: boolean) {
+            if (this.isSpreadingLeftRight !== value) {
+                this.isSpreadingLeftRight = value
+                this.reposition()
+            }
+        }
+
+        set spacing(value: number) {
+            if (this._spacing !== value) {
+                this._spacing = value
+                this.reposition()
+            }
+        }
+
+        setHoverOffset(x: number, y: number) {
+            this.hoverX = x
+            this.hoverY = y
+            this.reposition()
+        }
         
         reposition() {
             if (this.cards.length === 0) {
@@ -390,7 +435,7 @@ namespace cardKit {
                 this.cardHeight = this.cards[0].height
             }
             if(this.isSpreadingLeftRight) {
-                const width = (this.cardWidth + this.spacing) * this.cards.length  - this.spacing
+                const width = (this.cardWidth + this._spacing) * this.cards.length  - this._spacing
                 let x = this.x - width / 2
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
@@ -399,11 +444,11 @@ namespace cardKit {
                         this.y + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
-                    x += this.cardWidth + this.spacing
-                    card.z = this.z + this.spacing >= 0 ? 0 : index
+                    x += this.cardWidth + this._spacing
+                    card.z = this.z + this._spacing >= 0 ? 0 : index
                 })
             } else {
-                const height = (this.cardHeight + this.spacing) * this.cards.length  - this.spacing
+                const height = (this.cardHeight + this._spacing) * this.cards.length  - this._spacing
                 let y = this.y - height / 2
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
@@ -412,8 +457,8 @@ namespace cardKit {
                         y + this.cardHeight / 2 + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
-                    y += this.cardHeight + this.spacing
-                    card.z = this.z + this.spacing >= 0 ? 0 : index
+                    y += this.cardHeight + this._spacing
+                    card.z = this.z + this._spacing >= 0 ? 0 : index
                 })
             }
         }
@@ -479,7 +524,7 @@ namespace cardKit {
             private columns: number,
             private isScrollingLeftRight: boolean,
             isInsertFaceUp: boolean,
-            private spacing: number,
+            private _spacing: number,
             public isWrappingSelection: boolean,
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
@@ -494,6 +539,33 @@ namespace cardKit {
         }
 
         isCardGrid(): boolean { return true }
+
+        set isLeftRight(value: boolean) {
+            if (this.isScrollingLeftRight !== value) {
+                this.isScrollingLeftRight = value
+                this.reposition()
+            }
+        }
+
+        set spacing(value: number) {
+            if (this._spacing !== value) {
+                this._spacing = value
+                this.reposition()
+            }
+        }
+
+        set isWrapping(value: boolean) {
+            if (this.isWrappingSelection !== value) {
+                this.isWrappingSelection = value
+                this.reposition()
+            }
+        }
+
+        setScrollSprites(back: Sprite, forward: Sprite) {
+            this.scrollBackIndicator = back
+            this.scrollForwardIndicator = forward
+            this.reposition()
+        }
 
         reposition() {
             if (this.cards.length === 0) {
@@ -516,13 +588,13 @@ namespace cardKit {
             const scrollDirection = this.scrollToLine - this.firstLine
             this.firstLine = this.scrollToLine
 
-            const width = (this.cardWidth + this.spacing) * this.columns - this.spacing
-            const height = (this.cardHeight + this.spacing) * this.rows - this.spacing
+            const width = (this.cardWidth + this._spacing) * this.columns - this._spacing
+            const height = (this.cardHeight + this._spacing) * this.rows - this._spacing
 
             const columnLeft = this.x - width / 2 + this.cardWidth / 2
             const rowTop = this.y - height / 2 + this.cardHeight / 2
-            const columnRight = columnLeft + (this.columns - 1) * (this.cardWidth + this.spacing)
-            const columnBottom = rowTop + (this.rows - 1) * (this.cardHeight + this.spacing)
+            const columnRight = columnLeft + (this.columns - 1) * (this.cardWidth + this._spacing)
+            const columnBottom = rowTop + (this.rows - 1) * (this.cardHeight + this._spacing)
 
             let index = this.isScrollingLeftRight
                 ? this.firstLine * this.rows 
@@ -536,21 +608,21 @@ namespace cardKit {
 
             if (this.isScrollingLeftRight) {
                 if (!!this.scrollBackIndicator) {
-                    this.scrollBackIndicator.x = this.x - width / 2 - this.scrollBackIndicator.width / 2 - this.spacing
+                    this.scrollBackIndicator.x = this.x - width / 2 - this.scrollBackIndicator.width / 2 - this._spacing
                     this.scrollBackIndicator.y = this.y
                 }
                 if (!!this.scrollForwardIndicator) {
-                    this.scrollForwardIndicator.x = this.x + width / 2 + this.scrollForwardIndicator.width / 2 + this.spacing
+                    this.scrollForwardIndicator.x = this.x + width / 2 + this.scrollForwardIndicator.width / 2 + this._spacing
                     this.scrollForwardIndicator.y = this.y
                 }               
             } else {
                 if (!!this.scrollBackIndicator) {
                     this.scrollBackIndicator.x = this.x
-                    this.scrollBackIndicator.y = this.y - height / 2 - this.scrollBackIndicator.height / 2 - this.spacing
+                    this.scrollBackIndicator.y = this.y - height / 2 - this.scrollBackIndicator.height / 2 - this._spacing
                 }
                 if (!!this.scrollForwardIndicator) {
                     this.scrollForwardIndicator.x = this.x
-                    this.scrollForwardIndicator.y = this.y + height / 2 + this.scrollForwardIndicator.height / 2 + this.spacing
+                    this.scrollForwardIndicator.y = this.y + height / 2 + this.scrollForwardIndicator.height / 2 + this._spacing
                 }               
             }
 
@@ -602,8 +674,8 @@ namespace cardKit {
             })
 
             do {
-                const x = columnLeft + column * (this.cardWidth + this.spacing)
-                const y = rowTop + row * (this.cardHeight + this.spacing)
+                const x = columnLeft + column * (this.cardWidth + this._spacing)
+                const y = rowTop + row * (this.cardHeight + this._spacing)
                 const card = this.cards[index]
 
                 if (!isVisible(card)) {
