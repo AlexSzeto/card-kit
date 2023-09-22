@@ -34,10 +34,10 @@ enum PointerDirections {
 }
 
 enum CardLayoutSpreadDirections {
-    //% block="up and down"
-    UpDown,
     //% block="left and right"
     LeftRight,
+    //% block="up and down"
+    UpDown,
 }
 
 //% color="#183f4e" icon="\uf249" block="Card Design"
@@ -379,11 +379,10 @@ namespace deckBuilder {
 }
 
 //% color="#307d9c" icon="\uf2bb" block="Cards"
-//% groups=['Attributes']
 namespace cardLayout {
     
-    //% group="Attributes"
-    //% block="set $card $attribute to number $value"
+    //% group="Properties"
+    //% block="set $card $attribute to $value"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
@@ -391,8 +390,8 @@ namespace cardLayout {
         card.refreshImage()
     }
 
-    //% group="Attributes"
-    //% block="set $card $attribute to text $text"
+    //% group="Properties"
+    //% block="set $card $attribute to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
@@ -400,7 +399,7 @@ namespace cardLayout {
         card.refreshImage()
     }
 
-    //% group="Attributes"
+    //% group="Properties"
     //% block="set $card stamp to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardStampText(card: cardKit.Card, text: string) {
@@ -408,7 +407,7 @@ namespace cardLayout {
         card.refreshImage()
     }
 
-    //% group="Attributes"
+    //% group="Properties"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -421,7 +420,7 @@ namespace cardLayout {
         }
     }
 
-    //% group="Attributes"
+    //% group="Properties"
     //% block="$card $attribute text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -434,7 +433,7 @@ namespace cardLayout {
         }
     }
     
-    //% group="Attributes"
+    //% group="Properties"
     //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardKit.Card) {
@@ -457,7 +456,7 @@ namespace cardLayout {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Player Hand"
     //% x.defl=80 y.defl=100
-    //% spreadDirection.defl=1
+    //% spreadDirection.defl=0
     //% isFaceUp.defl=true
     export function createEmptyHand(
         id: string, x: number, y: number,
@@ -518,12 +517,12 @@ namespace cardLayout {
     //% id.defl="Card Grid"
     //% x.defl=80 y.defl=60
     //% columns.defl=6 rows.defl=4
-    //% scrollDirection.defl=0
+    //% scrollDirection.defl=1
     //% isFaceUp.defl=true
     export function createEmptyGrid(
         id: string, x: number, y: number,
         columns: number, rows: number,
-        scrollDirection: CardLayoutSpreadDirections,
+        scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
         isFaceUp: boolean = true,
     ): cardKit.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
@@ -542,7 +541,7 @@ namespace cardLayout {
         )
     }
 
-    //% group="Container Properties"
+    //% group="Properties"
     //% block="$container id"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerId(
@@ -551,7 +550,7 @@ namespace cardLayout {
         return container.getId()
     }
 
-    //% group="Container Properties"
+    //% group="Properties"
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerCardCount(
@@ -560,7 +559,7 @@ namespace cardLayout {
         return container.getCardCount()
     }
 
-    //% group="Modify Container"
+    //% group="Properties"
     //% block="set $container position x $x y $y"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerPosition(
@@ -571,7 +570,7 @@ namespace cardLayout {
         container.setPosition(x, y)
     }
 
-    //% group="Modify Container"
+    //% group="Properties"
     //% block="set $container z $layer"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerLayer(
@@ -671,7 +670,7 @@ namespace cardLayout {
     }
 
     //% group="Container Cards" blockSetVariable="list"
-    //% block="copy of $container card list"
+    //% block="copy of hand or grid $container card list"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getLayoutCardListCopy(container: cardKit.LayoutContainer): cardKit.Card[] {
         return container.getCardsCopy()
@@ -781,30 +780,30 @@ namespace cardLayout {
         }
     })
 
-    //% group="Modify Hand/Grid"
-    //% block="set $container cursor wrapping to $isWrappingSelection"
+    //% group="Hand/Grid"
+    //% block="set hand or grid $container cursor wrapping to $isWrappingSelection"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setSpreadOrGridWrapping(container: cardKit.CardSpread | cardKit.CardGrid, isWrappingSelection: boolean) {
         container.isWrappingSelection = isWrappingSelection            
     }
 
-    //% group="Modify Hand/Grid"
-    //% block="set $container card spacing to $spacing"
+    //% group="Hand/Grid"
+    //% block="set hand or grid $container card spacing to $spacing"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     //% spacing.defl=1
     export function setSpreadOrGridSpacing(container: cardKit.CardSpread | cardKit.CardGrid, spacing: number) {
         container.spacing = spacing
     }
 
-    //% group="Modify Deck"
-    //% block="flip deck $stack top card"
+    //% group="Deck"
+    //% block="flip deck or pile $stack top card"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
     export function flipStackTopCard(stack: cardKit.CardStack) {
         stack.flipTopCard()
     }
     
-    //% group="Modify Hand"
-    //% block="set $spread cursor card offset $distance px $direction"
+    //% group="Hand"
+    //% block="set hand $spread cursor card offset $distance px $direction"
     //% spread.shadow="variables_get" spread.defl="myCardContainer"
     //% distance.defl=10    
     export function setSpreadHover(spread: cardKit.CardSpread, direction: PointerDirections, distance: number) {
@@ -823,8 +822,8 @@ namespace cardLayout {
         spread.setHoverOffset(offsetX, offsetY)
     }
 
-    //% group="Modify Grid"
-    //% block="set $grid|scroll back sprite $scrollBack|scroll forward sprite $scrollForward"
+    //% group="Grid"
+    //% block="set grid $grid|scroll back sprite $scrollBack|scroll forward sprite $scrollForward"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"
     //% scrollForward.shadow="variables_get" scrollForward.defl="mySprite"
