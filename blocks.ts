@@ -262,7 +262,7 @@ namespace cardDesign {
     }
 
     //% group="Add Misc"
-    //% block="set $design stamp collection $lookupTable"
+    //% block="set $design stamp collection to $lookupTable"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
     export function setStampImages(design: CardDesignTemplate, lookupTable: cardCore.StampLookup[]) {

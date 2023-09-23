@@ -654,6 +654,12 @@ namespace cardCore {
         }
 
         setScrollSprites(back: Sprite, forward: Sprite) {
+            if (!!this.scrollBackIndicator) {
+                this.scrollBackIndicator.destroy()
+            }
+            if (!!this.scrollForwardIndicator) {
+                this.scrollForwardIndicator.destroy()
+            }
             this.scrollBackIndicator = back
             this.scrollForwardIndicator = forward
             this.reposition()
