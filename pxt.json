@@ -1,5 +1,6 @@
 {
     "name": "Card Kit",
+    "version": "0.0.1",
     "description": "",
     "dependencies": {
         "device": "*"
@@ -20,7 +21,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.12.39",
+        "target": "1.12.41",
         "targetId": "arcade"
     },
     "supportedTargets": [
