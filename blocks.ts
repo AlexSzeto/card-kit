@@ -498,6 +498,13 @@ namespace cardKit {
     }
     
     //% group="Card"
+    //% block="$card is face up"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardFaceUp(card: cardCore.Card) {
+        return card.isFaceUp
+    }
+
+    //% group="Card"
     //% block="set $card face up to $isFaceUp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardFaceUp(card: cardCore.Card, isFaceUp: boolean) {
@@ -677,6 +684,7 @@ namespace cardKit {
     }
 
     //% group="Move Card"
+    //% inlineInputMode=inline
     //% block="move $startPosition card from $origin to $destination $endPosition position"
     //% origin.shadow="variables_get" origin.defl="myCardContainer"
     //% destination.shadow="variables_get" destination.defl="myCardContainer"    
