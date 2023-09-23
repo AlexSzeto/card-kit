@@ -393,10 +393,11 @@ namespace cardKit {
     //% group="Create" blockSetVariable="myCardContainer"
     //% inlineInputMode=inline
     //% block="empty card hand id $id x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
+    //% x.shadow="positionPicker" x.defl=80
+    //% y.shadow="positionPicker" y.defl=60
     //% id.defl="Player Hand"
     //% x.defl=80 y.defl=100
-    //% spreadDirection.defl=0
+    //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
     //% isFaceUp.defl=true
     export function createEmptyHand(
         id: string, x: number, y: number,
@@ -455,10 +456,11 @@ namespace cardKit {
     //% group="Create" blockSetVariable="myCardContainer"
     //% inlineInputMode=inline
     //% block="empty card grid id $id x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
+    //% x.shadow="positionPicker" x.defl=80
+    //% y.shadow="positionPicker" y.defl=60
     //% id.defl="Card Grid"
-    //% x.defl=80 y.defl=60
     //% columns.defl=6 rows.defl=4
-    //% scrollDirection.defl=1
+    //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
     //% isFaceUp.defl=true
     export function createEmptyGrid(
         id: string, x: number, y: number,
@@ -808,6 +810,8 @@ namespace cardKit {
 
     //% group="Deck/Pile/Hand/Grid Operations"
     //% block="set $container position x $x y $y"
+    //% x.shadow="positionPicker" x.defl=80
+    //% y.shadow="positionPicker" y.defl=60
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerPosition(
         container: cardCore.CardContainer,

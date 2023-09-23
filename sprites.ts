@@ -112,6 +112,7 @@ namespace cardCore {
             if (this.isEmptyCardSlot) {
                 return
             }
+            this._isFaceUp = !this._isFaceUp
             if (extraAnimations.hasFixedFrameAnimation(this)) {
                 extraAnimations.reverseFixedFrameAnimation(this)
             }
@@ -125,7 +126,6 @@ namespace cardCore {
                 null,
                 (_, step) => {
                     if (step == FLIP_SCALES.length / 2) {
-                        this._isFaceUp = !this._isFaceUp
                         this.refreshImage()
                     }
                 },
