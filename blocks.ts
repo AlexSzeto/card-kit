@@ -483,6 +483,20 @@ namespace cardKit {
 
     
     //% group="Card"
+    //% block="set $card face up to $isFaceUp"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function setCardFaceUp(card: cardCore.Card, isFaceUp: boolean) {
+        card.isFaceUp = isFaceUp
+    }
+
+    //% group="Card"
+    //% block="flip $card"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function flipCard(card: cardCore.Card) {
+        card.flip()
+    }
+
+    //% group="Card Attributes"
     //% block="set $card $attribute to $value"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -491,7 +505,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
-    //% group="Card"
+    //% group="Card Attributes"
     //% block="set $card $attribute to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -500,7 +514,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
-    //% group="Card"
+    //% group="Card Attributes"
     //% block="set $card stamp to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardStampText(card: cardCore.Card, text: string) {
@@ -508,7 +522,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
-    //% group="Card"
+    //% group="Card Attributes"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -521,7 +535,7 @@ namespace cardKit {
         }
     }
 
-    //% group="Card"
+    //% group="Card Attributes"
     //% block="$card $attribute text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -534,7 +548,7 @@ namespace cardKit {
         }
     }
     
-    //% group="Card"
+    //% group="Card Attributes"
     //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardCore.Card) {
@@ -549,7 +563,7 @@ namespace cardKit {
         return card.createView(design)
     }
     
-    //% group="Card"
+    //% group="Card Container"
     //% block="$container id"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerId(
@@ -558,7 +572,7 @@ namespace cardKit {
         return container.getId()
     }
 
-    //% group="Card"
+    //% group="Card Container"
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerCardCount(
@@ -567,7 +581,7 @@ namespace cardKit {
         return container.getCardCount()
     }
 
-    //% group="Card"
+    //% group="Card Container"
     //% block="set $container position x $x y $y"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerPosition(
@@ -578,7 +592,7 @@ namespace cardKit {
         container.setPosition(x, y)
     }
 
-    //% group="Card"
+    //% group="Card Container"
     //% block="set $container z $layer"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerLayer(
