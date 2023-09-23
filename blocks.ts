@@ -40,7 +40,7 @@ enum CardLayoutSpreadDirections {
     UpDown,
 }
 
-//% color="#183f4e" icon="\uf044" block="Card Design"
+//% color="#255f74" icon="\uf044" block="Card Design"
 namespace cardDesign {
 
     const DEFAULT_CARD_FRONT = img`
@@ -382,7 +382,7 @@ namespace cardDesign {
     }
 }
 
-//% color="#307d9c" icon="\uf2bb" block="Card Kit"
+//% color="#183f4e" icon="\uf2bb" block="Card Kit"
 namespace cardKit {
 
     //% group="Create" blockSetVariable="myCardContainer"

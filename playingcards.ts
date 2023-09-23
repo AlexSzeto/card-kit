@@ -1,7 +1,7 @@
 namespace cardKit {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
-    //% color="#183f4e"
+    //% color="#255f74"
     //% group="Playing Cards Preset"
     //% block="playing cards design"
     export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {
