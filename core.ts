@@ -4,7 +4,7 @@ enum CardZoneAlignments {
     Right
 }
 
-namespace cardKit {
+namespace cardCore {
 
     export type CardAttributeValues = string | number
     export type CardAttribute = {

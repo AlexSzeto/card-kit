@@ -15,7 +15,7 @@ namespace SpriteKind {
     export const Cursor = SpriteKind.create()
 }
 
-namespace cardKit {
+namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
     const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
     const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
@@ -132,7 +132,7 @@ namespace cardKit {
 
     }
 
-    export type CardEventCondition = cardKit.CardAttribute
+    export type CardEventCondition = cardCore.CardAttribute
     export type CardEventHandler = (origin: CardContainer, card: Card) => void
     type CardEvent = {
         condition: CardEventCondition

@@ -1,5 +1,5 @@
 // tests go here; this will not be compiled when this package is used as an extension.
-const deck = cards.createPlayingCards()
+const deck = cardKit.createPlayingCards()
 // deck.setImage(img`
 // . 7 7 7 7 .
 // 7 1 1 1 1 7
@@ -11,12 +11,12 @@ deck.x = 30
 
 const split = deck.split('split', 26)
 
-const discard = cards.createEmptyPile('discard')
+const discard = cardKit.createEmptyPile('discard')
 // discard.z = 20
 discard.x = scene.screenWidth() - 30
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-    if (!!cardKit.getCursorCard()) {
+    if (!!cardCore.getCursorCard()) {
         // cardKit.getCursorCard().flip()
         let card = grid.removeCardAt(grid.getCursorIndex())
         hand.insertCard(card, -1)
@@ -39,7 +39,7 @@ Spread Test
 */
 
 // Horizontal
-const hand = cards.createEmptyHand(
+const hand = cardKit.createEmptyHand(
     'hand',
     scene.screenWidth() / 2,
     scene.screenHeight() - 20,
@@ -73,14 +73,14 @@ const hand = cards.createEmptyHand(
 /*
 Grid Test
 */
-const grid = cards.createEmptyGrid(
+const grid = cardKit.createEmptyGrid(
     'grid',
     scene.screenWidth() / 2,
     scene.screenHeight() / 2 - 10,
     6, 3,
     CardLayoutSpreadDirections.UpDown
 )
-cards.moveCursorInsideLayoutWithButtons(grid)
+cardKit.moveCursorInsideLayoutWithButtons(grid)
 grid.lock()
 // cardKit.preselectCursorContainer(grid)
 

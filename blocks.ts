@@ -69,7 +69,7 @@ namespace cardDesign {
     //% blockHidden=true
     //% block="text $text to image $image"
     //% image.shadow="screen_image_picker"
-    export function createTextToImageLookupPair(text: string, image: Image): cardKit.DesignLookup {
+    export function createTextToImageLookupPair(text: string, image: Image): cardCore.DesignLookup {
         return { value: text, drawable: image }
     }
 
@@ -104,8 +104,8 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        rows: cardKit.DesignRow[]
-        stamps: cardKit.StampLookup[]
+        rows: cardCore.DesignRow[]
+        stamps: cardCore.StampLookup[]
         
         constructor() {
             this.width = 12
@@ -126,8 +126,8 @@ namespace cardDesign {
             resetDesignZones(this)
         }
 
-        export(): cardKit.CardDesign {
-            return new cardKit.CardDesign(
+        export(): cardCore.CardDesign {
+            return new cardCore.CardDesign(
                 this.width,
                 this.height,
                 this.frontFrame,
@@ -174,7 +174,7 @@ namespace cardDesign {
         design.rows.push([])
     }
 
-    function addDesignColumn(design: CardDesignTemplate, column: cardKit.DesignColumn) {
+    function addDesignColumn(design: CardDesignTemplate, column: cardCore.DesignColumn) {
         design.rows[design.rows.length - 1].push(column)
     }
 
@@ -187,7 +187,7 @@ namespace cardDesign {
     //% charsPerLine.defl=0 maxLines.defl=1
     //% isFixedSize.defl=false
     export function addStaticText(design: CardDesignTemplate, align: CardZoneAlignments, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createTextColumn(align, text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
+        addDesignColumn(design, cardCore.createTextColumn(align, text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Text"
@@ -200,7 +200,7 @@ namespace cardDesign {
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
     export function addAttributeText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createAttributeAsPlainTextColumn(align, attribute, color, charsPerLine, maxLines, !isFixedSize))
+        addDesignColumn(design, cardCore.createAttributeAsPlainTextColumn(align, attribute, color, charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Text"
@@ -212,7 +212,7 @@ namespace cardDesign {
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
     export function addAttributeIndexText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupTextColumn(align, attribute, cardKit.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
+        addDesignColumn(design, cardCore.createAttributeAsLookupTextColumn(align, attribute, cardCore.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
     }
 
     //% group="Add Image"
@@ -221,7 +221,7 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% image.shadow="screen_image_picker"
     export function addStaticImage(design: CardDesignTemplate, align: CardZoneAlignments, image: Image) {
-        addDesignColumn(design, cardKit.createImageColumn(align, image))
+        addDesignColumn(design, cardCore.createImageColumn(align, image))
     }
 
     //% group="Add Image"
@@ -232,7 +232,7 @@ namespace cardDesign {
     //% attribute.shadow="attributePicker"
     //% image.shadow="screen_image_picker"
     export function addRepeatImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, image: Image) {
-        addDesignColumn(design, cardKit.createAttributeAsRepeatImageColumn(align, attribute, image))
+        addDesignColumn(design, cardCore.createAttributeAsRepeatImageColumn(align, attribute, image))
     }
 
     //% group="Add Image"
@@ -242,7 +242,7 @@ namespace cardDesign {
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function addAttributeIndexImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, imageLookupTable: Image[]) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(align, attribute, cardKit.createNumberToImageLookupTable(imageLookupTable)))
+        addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, cardCore.createNumberToImageLookupTable(imageLookupTable)))
     }
 
     //% group="Add Image"
@@ -251,22 +251,22 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function addAttributeTextToImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, lookupTable: cardKit.DesignLookup[]) {
-        addDesignColumn(design, cardKit.createAttributeAsLookupImageColumn(align, attribute, lookupTable))
+    export function addAttributeTextToImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, lookupTable: cardCore.DesignLookup[]) {
+        addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, lookupTable))
     }
 
     //% group="Add Misc"
     //% block="add to current row in $design align $align empty space width $width height $height"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     export function addEmptySpace(design: CardDesignTemplate, align: CardZoneAlignments, width: number, height: number) {
-        addDesignColumn(design, cardKit.createEmptySpaceColumn(align, width, height))
+        addDesignColumn(design, cardCore.createEmptySpaceColumn(align, width, height))
     }
 
     //% group="Add Misc"
     //% block="set $design stamp collection $lookupTable"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function setStampImages(design: CardDesignTemplate, lookupTable: cardKit.StampLookup[]) {
+    export function setStampImages(design: CardDesignTemplate, lookupTable: cardCore.StampLookup[]) {
         design.stamps = lookupTable
     }    
 
@@ -294,14 +294,14 @@ namespace deckBuilder {
     //% block="empty $design deck named $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Card Deck"
-    export function createEmptyDeck(design: cardDesign.CardDesignTemplate, id: string): cardKit.CardStack {
-        return new cardKit.CardStack(id, design.export(), [], false, false)
+    export function createEmptyDeck(design: cardDesign.CardDesignTemplate, id: string): cardCore.CardStack {
+        return new cardCore.CardStack(id, design.export(), [], false, false)
     }
 
     class CardAttributeVariation {
         constructor(
             public attribute: number,
-            public values: cardKit.CardAttributeValues[]
+            public values: cardCore.CardAttributeValues[]
         ) {}
     }
 
@@ -351,7 +351,7 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, texts)
     }
 
-    function __addCardVariationsFromIndex(deckData: cardKit.CardData[], cardData: cardKit.CardData, attributes: CardAttributeVariation[], attrIndex: number, copies: number) {
+    function __addCardVariationsFromIndex(deckData: cardCore.CardData[], cardData: cardCore.CardData, attributes: CardAttributeVariation[], attrIndex: number, copies: number) {
         const variation = attributes[attrIndex]
         for (let i = 0; i < variation.values.length; i++) {
             cardData.setAttribute(variation.attribute, variation.values[i])
@@ -371,82 +371,15 @@ namespace deckBuilder {
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
     //% copies.defl=1
-    export function addCardVariantsToDeck(deck: cardKit.CardStack, variations: CardAttributeVariation[], copies: number = 1) {
-        const insertData: cardKit.CardData[] = []
-        __addCardVariationsFromIndex(insertData, new cardKit.CardData(), variations, 0, copies)
+    export function addCardVariantsToDeck(deck: cardCore.CardStack, variations: CardAttributeVariation[], copies: number = 1) {
+        const insertData: cardCore.CardData[] = []
+        __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
         deck.insertCardData(insertData)
     }
 }
 
-//% color="#307d9c" icon="\uf2bb" block="Cards"
-namespace cards {
-    
-    //% group="Card"
-    //% block="set $card $attribute to $value"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function setCardNumberAttribute(card: cardKit.Card, attribute: number, value: number) {
-        card.getData().setAttribute(attribute, value)
-        card.refreshImage()
-    }
-
-    //% group="Card"
-    //% block="set $card $attribute to $text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function setCardTextAttribute(card: cardKit.Card, attribute: number, text: string) {
-        card.getData().setAttribute(attribute, text)
-        card.refreshImage()
-    }
-
-    //% group="Card"
-    //% block="set $card stamp to $text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function setCardStampText(card: cardKit.Card, text: string) {
-        card.stamp = text
-        card.refreshImage()
-    }
-
-    //% group="Card"
-    //% block="$card $attribute number"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardNumberAttribute(card: cardKit.Card, attribute: number) {
-        const value = card.getData().getAttribute(attribute)
-        if(typeof value == "number") {
-            return value
-        } else {
-            return 0
-        }
-    }
-
-    //% group="Card"
-    //% block="$card $attribute text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardTextAttribute(card: cardKit.Card, attribute: number) {
-        const value = card.getData().getAttribute(attribute)
-        if (typeof value == "string") {
-            return value
-        } else {
-            return value.toString()
-        }
-    }
-    
-    //% group="Card"
-    //% block="$card stamp"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardStampText(card: cardKit.Card) {
-        return card.stamp
-    }
-
-    //% group="Card" blockSetVariable="myCard"
-    //% block="view of $card using $design"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function createCardView(card: cardKit.Card, design: cardKit.CardDesign): cardKit.Card {
-        return card.createView(design)
-    }
+//% color="#307d9c" icon="\uf2bb" block="Card Kit"
+namespace cardKit {
 
     //% group="Create" blockSetVariable="myCardContainer"
     //% block="empty card pile named $id"
@@ -454,8 +387,8 @@ namespace cards {
     //% id.defl="Discard Pile"
     export function createEmptyPile(
         id: string,
-    ): cardKit.CardStack {
-        return new cardKit.CardStack(id, null, [], true, true)
+    ): cardCore.CardStack {
+        return new cardCore.CardStack(id, null, [], true, true)
     }
 
     //% group="Create" blockSetVariable="myCardContainer"
@@ -469,8 +402,8 @@ namespace cards {
         id: string, x: number, y: number,
         spreadDirection: CardLayoutSpreadDirections,
         isFaceUp: boolean = true
-    ): cardKit.CardSpread {
-        return new cardKit.CardSpread(
+    ): cardCore.CardSpread {
+        return new cardCore.CardSpread(
             id, x, y, 1, [], isFaceUp,
             spreadDirection === CardLayoutSpreadDirections.LeftRight, 1,
             0, -10,
@@ -531,9 +464,9 @@ namespace cards {
         columns: number, rows: number,
         scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
         isFaceUp: boolean = true,
-    ): cardKit.CardGrid {
+    ): cardCore.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
-        return new cardKit.CardGrid(
+        return new cardCore.CardGrid(
             id, x, y, 1, [],
             rows, columns,
             isScrollingLeftRight,
@@ -548,11 +481,79 @@ namespace cards {
         )
     }
 
+    
+    //% group="Card"
+    //% block="set $card $attribute to $value"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardNumberAttribute(card: cardCore.Card, attribute: number, value: number) {
+        card.getData().setAttribute(attribute, value)
+        card.refreshImage()
+    }
+
+    //% group="Card"
+    //% block="set $card $attribute to $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardTextAttribute(card: cardCore.Card, attribute: number, text: string) {
+        card.getData().setAttribute(attribute, text)
+        card.refreshImage()
+    }
+
+    //% group="Card"
+    //% block="set $card stamp to $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function setCardStampText(card: cardCore.Card, text: string) {
+        card.stamp = text
+        card.refreshImage()
+    }
+
+    //% group="Card"
+    //% block="$card $attribute number"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardNumberAttribute(card: cardCore.Card, attribute: number) {
+        const value = card.getData().getAttribute(attribute)
+        if(typeof value == "number") {
+            return value
+        } else {
+            return 0
+        }
+    }
+
+    //% group="Card"
+    //% block="$card $attribute text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardTextAttribute(card: cardCore.Card, attribute: number) {
+        const value = card.getData().getAttribute(attribute)
+        if (typeof value == "string") {
+            return value
+        } else {
+            return value.toString()
+        }
+    }
+    
+    //% group="Card"
+    //% block="$card stamp"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardStampText(card: cardCore.Card) {
+        return card.stamp
+    }
+
+    //% group="Card" blockSetVariable="myCard"
+    //% block="view of $card using $design"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
+        return card.createView(design)
+    }
+    
     //% group="Card"
     //% block="$container id"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerId(
-        container: cardKit.CardContainer
+        container: cardCore.CardContainer
     ): string {
         return container.getId()
     }
@@ -561,7 +562,7 @@ namespace cards {
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerCardCount(
-        container: cardKit.CardContainer
+        container: cardCore.CardContainer
     ): number {
         return container.getCardCount()
     }
@@ -570,7 +571,7 @@ namespace cards {
     //% block="set $container position x $x y $y"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerPosition(
-        container: cardKit.CardContainer,
+        container: cardCore.CardContainer,
         x: number,
         y: number
     ) { 
@@ -581,7 +582,7 @@ namespace cards {
     //% block="set $container z $layer"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerLayer(
-        container: cardKit.CardContainer,
+        container: cardCore.CardContainer,
         layer: number
     ) {
         container.setLayer(layer)
@@ -590,50 +591,12 @@ namespace cards {
     //% group="Container Cards"
     //% block="shuffle $container cards"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function shuffleCards(container: cardKit.CardContainer) {}
-
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function createContainerEvent(
-        container: cardKit.CardContainer,
-        handler: (originContainer: cardKit.CardContainer, card: cardKit.Card) => void
-    ) {
-        container.addEvent(null, handler)
-    }
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer where $attribute is $text"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    //% attribute.shadow="attributePicker"
-    //% text.shadowOptions.toString=true
-    export function addContainerConditionEvent(
-        container: cardKit.CardContainer,
-        attribute: number,
-        text: string,
-        handler: (originContainer: cardKit.CardContainer, card: cardKit.Card) => void
-    ) {
-        container.addEvent({ attribute: attribute, value: text }, handler)
-    }
-    
-    
-    function getPositionIndex(container: cardKit.CardContainer, position: CardContainerPositions): number {
-        switch (position) {
-            case CardContainerPositions.First: return 0
-            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
-            case CardContainerPositions.Last: return -1
-            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
-            case CardContainerPositions.Cursor: return container.getCursorIndex()
-        }
-    }
+    export function shuffleCards(container: cardCore.CardContainer) {}
 
     //% group="Container Cards" blockSetVariable="myCard"
     //% block="remove $position card from $container"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function removeCardFrom(container: cardKit.CardContainer, position: CardContainerPositions): cardKit.Card {
+    export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
         const index = getPositionIndex(container, position)
         if (index == null) {
             return null
@@ -647,7 +610,7 @@ namespace cards {
     //% block="add $card to $container at $position position"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     //% card.shadow="variables_get" card.defl="myCard"
-    export function addCardTo(container: cardKit.CardContainer, card: cardKit.Card, position: CardContainerPositions) {
+    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions) {
         const index = getPositionIndex(container, position)
         if (index == null) {
             return
@@ -660,9 +623,9 @@ namespace cards {
     //% origin.shadow="variables_get" origin.defl="myCardContainer"
     //% destination.shadow="variables_get" destination.defl="myCardContainer"    
     export function moveCardBetween(
-        origin: cardKit.CardContainer,
+        origin: cardCore.CardContainer,
         startPosition: CardContainerPositions,
-        destination: cardKit.CardContainer,
+        destination: cardCore.CardContainer,
         endPosition: CardContainerPositions
     ) {
         const start = getPositionIndex(origin, startPosition)
@@ -676,10 +639,10 @@ namespace cards {
         destination.insertCard(origin.removeCardAt(start), end)
     }
 
-    //% group="Container Cards" blockSetVariable="list"
+    //% group="Card List" blockSetVariable="list"
     //% block="copy of hand or grid $container card list"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function getLayoutCardListCopy(container: cardKit.LayoutContainer): cardKit.Card[] {
+    export function getLayoutCardListCopy(container: cardCore.LayoutContainer): cardCore.Card[] {
         return container.getCardsCopy()
     }
 
@@ -688,20 +651,58 @@ namespace cards {
     //% cards.shadow="variables_get" cards.defl="list"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
-    export function filterCardListWithTextCondition(cards: cardKit.Card[], attribute: number, text: string): cardKit.Card[] {
+    export function filterCardListWithTextCondition(cards: cardCore.Card[], attribute: number, text: string): cardCore.Card[] {
         return cards.filter(card => card.getData().attributeEquals(attribute, text))
     }
 
+    //% group="Card Events"
+    //% draggableParameters="reporter"
+    //% block="on $container $card added from $originContainer"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function createContainerEvent(
+        container: cardCore.CardContainer,
+        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
+    ) {
+        container.addEvent(null, handler)
+    }
+
+    //% group="Card Events"
+    //% draggableParameters="reporter"
+    //% block="on $container $card added from $originContainer where $attribute is $text"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% attribute.shadow="attributePicker"
+    //% text.shadowOptions.toString=true
+    export function addContainerConditionEvent(
+        container: cardCore.CardContainer,
+        attribute: number,
+        text: string,
+        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
+    ) {
+        container.addEvent({ attribute: attribute, value: text }, handler)
+    }
+    
+    
+    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
+        switch (position) {
+            case CardContainerPositions.First: return 0
+            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
+            case CardContainerPositions.Last: return -1
+            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
+            case CardContainerPositions.Cursor: return container.getCursorIndex()
+        }
+    }
+
+
     //% group="Cursor"
     //% block="cursor card"
-    export function getCursorCard(): cardKit.Card {
-        return cardKit.getCursorCard()
+    export function getCursorCard(): cardCore.Card {
+        return cardCore.getCursorCard()
     }
 
     //% group="Cursor"
     //% block="cursor card container id"
     export function getCursorContainerId(): string {
-        const container = cardKit.getMostRecentCursorContainer()
+        const container = cardCore.getMostRecentCursorContainer()
         if (!!container.getId) {
             return container.getId()
         } else {
@@ -712,8 +713,8 @@ namespace cards {
     //% group="Cursor"
     //% block="move cursor between cards in $container with buttons"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function moveCursorInsideLayoutWithButtons(container: cardKit.LayoutContainer) {
-        cardKit.preselectCursorContainer(container)
+    export function moveCursorInsideLayoutWithButtons(container: cardCore.LayoutContainer) {
+        cardCore.preselectCursorContainer(container)
         autoLayoutControl = true
     }
 
@@ -721,15 +722,15 @@ namespace cards {
     //% block="stop cursor controls"
     export function disableLayoutButtonControl() {         
         autoLayoutControl = false
-        cardKit.removeCursor()
+        cardCore.removeCursor()
     }
 
     //% group="Cursor"
     //% block="move cursor $direction"
     export function moveCursorInDirection(direction: PointerDirections) {
-        const layer = cardKit.getMostRecentCursorContainer()
+        const layer = cardCore.getMostRecentCursorContainer()
         if (!!layer.isCardSpread) {
-            const spread = layer as cardKit.CardSpread
+            const spread = layer as cardCore.CardSpread
             if (spread.isLeftRight) {
                 switch (direction) {
                     case PointerDirections.Left: spread.moveCursorBack(); break
@@ -742,7 +743,7 @@ namespace cards {
                 }
             }
         } else if (!!layer.isCardGrid) {
-            const grid = layer as cardKit.CardGrid
+            const grid = layer as cardCore.CardGrid
             switch (direction) {
                 case PointerDirections.Up: grid.moveCursorUp(); break
                 case PointerDirections.Down: grid.moveCursorDown(); break
@@ -756,13 +757,13 @@ namespace cards {
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
     export function pointCursorAt(sprite: Sprite) {
-        cardKit.pointCursorAt(sprite)
+        cardCore.pointCursorAt(sprite)
     }
 
     //% group="Cursor"
     //% block="hide cursor"
     export function removeCursor() {
-        cardKit.removeCursor()
+        cardCore.removeCursor()
     }
 
     let autoLayoutControl: boolean = true
@@ -790,7 +791,7 @@ namespace cards {
     //% group="Hand/Grid"
     //% block="set hand or grid $container cursor wrapping to $isWrappingSelection"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function setSpreadOrGridWrapping(container: cardKit.CardSpread | cardKit.CardGrid, isWrappingSelection: boolean) {
+    export function setSpreadOrGridWrapping(container: cardCore.CardSpread | cardCore.CardGrid, isWrappingSelection: boolean) {
         container.isWrappingSelection = isWrappingSelection            
     }
 
@@ -798,7 +799,7 @@ namespace cards {
     //% block="set hand or grid $container card spacing to $spacing"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     //% spacing.defl=1
-    export function setSpreadOrGridSpacing(container: cardKit.CardSpread | cardKit.CardGrid, spacing: number) {
+    export function setSpreadOrGridSpacing(container: cardCore.CardSpread | cardCore.CardGrid, spacing: number) {
         container.spacing = spacing
     }
 
@@ -807,14 +808,14 @@ namespace cards {
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
     //% count.defl=10
     //% newId.defl="Second Deck"
-    export function splitDeck(stack: cardKit.CardStack, count: number, newId: string): cardKit.CardStack {
+    export function splitDeck(stack: cardCore.CardStack, count: number, newId: string): cardCore.CardStack {
         return stack.split(newId, count)
     }
 
     //% group="Deck"
     //% block="flip deck or pile $stack top card"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
-    export function flipStackTopCard(stack: cardKit.CardStack) {
+    export function flipStackTopCard(stack: cardCore.CardStack) {
         stack.flipTopCard()
     }
     
@@ -822,7 +823,7 @@ namespace cards {
     //% block="set hand $spread cursor card offset $distance px $direction"
     //% spread.shadow="variables_get" spread.defl="myCardContainer"
     //% distance.defl=10    
-    export function setSpreadHover(spread: cardKit.CardSpread, direction: PointerDirections, distance: number) {
+    export function setSpreadHover(spread: cardCore.CardSpread, direction: PointerDirections, distance: number) {
         let offsetX = 0
         switch (direction) {
             case PointerDirections.Left: offsetX = -distance; break;
@@ -840,13 +841,13 @@ namespace cards {
 
     //% group="Grid"
     //% block="lock $grid card positions"
-    export function lockGridCardPositions(grid: cardKit.CardGrid) {
+    export function lockGridCardPositions(grid: cardCore.CardGrid) {
         grid.lock()
     }
 
     //% group="Grid"
     //% block="unlock $grid card positions"
-    export function unlockGridCardPositions(grid: cardKit.CardGrid) {
+    export function unlockGridCardPositions(grid: cardCore.CardGrid) {
         grid.unlock()
     }
 
@@ -855,7 +856,7 @@ namespace cards {
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"
     //% scrollForward.shadow="variables_get" scrollForward.defl="mySprite"
-    export function setGridScrollSprites(grid: cardKit.CardGrid, scrollBack: Sprite, scrollForward: Sprite) {
+    export function setGridScrollSprites(grid: cardCore.CardGrid, scrollBack: Sprite, scrollForward: Sprite) {
         grid.setScrollSprites(scrollBack, scrollForward)
     }    
 }

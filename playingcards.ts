@@ -1,4 +1,4 @@
-namespace cards {
+namespace cardKit {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
     //% group="Presets"
@@ -59,7 +59,7 @@ namespace cards {
 
     //% group="Presets" blockSetVariable="myCardContainer"
     //% block="deck of playing cards"
-    export function createPlayingCards(): cardKit.CardStack {
+    export function createPlayingCards(): cardCore.CardStack {
         let deck = deckBuilder.createEmptyDeck(getPlayingCardsDesign(), 'Playing Cards')
         deckBuilder.addCardVariantsToDeck(deck,
             [
