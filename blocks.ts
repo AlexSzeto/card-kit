@@ -288,9 +288,9 @@ namespace cardDesign {
         return arg;
     }
 
-    //% color="#255f74"
+    //% color="#255f74" weight=100
     //% group="Deck Builder" blockSetVariable="myCardDeck"
-    //% block="empty $design deck named $id"
+    //% block="empty $design deck id $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Card Deck"
     export function createEmptyDeck(design: cardDesign.CardDesignTemplate, id: string): cardCore.CardStack {
@@ -306,7 +306,6 @@ namespace cardDesign {
 
     //% color="#255f74"
     //% group="Deck Builder"
-    //% weight=100
     //% blockId="numberAttributePicker"
     //% block="$attribute $value"
     //% attribute.shadow="attributePicker"
@@ -370,7 +369,7 @@ namespace cardDesign {
         }
     }
 
-    //% color="#255f74"
+    //% color="#255f74" weight=99
     //% group="Deck Builder"
     //% block="add to $deck cards combinations of $variations|| make $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
@@ -388,7 +387,7 @@ namespace cardDesign {
 namespace cardKit {
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty card pile named $id"
+    //% block="empty card pile id $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Discard Pile"
     export function createEmptyPile(
@@ -398,7 +397,7 @@ namespace cardKit {
     }
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty card hand named $id x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
+    //% block="empty card hand id $id x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Player Hand"
     //% x.defl=80 y.defl=100
@@ -459,7 +458,7 @@ namespace cardKit {
     `
 
     //% group="Create" blockSetVariable="myCardContainer"
-    //% block="empty card grid named $id x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
+    //% block="empty card grid id $id x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
     //% id.defl="Card Grid"
     //% x.defl=80 y.defl=60
     //% columns.defl=6 rows.defl=4
@@ -487,6 +486,20 @@ namespace cardKit {
         )
     }
 
+    //% group="Create" blockSetVariable="myCard"
+    //% block="view of $card using $design"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
+        return card.createView(design)
+    }
+    
+    //% group="Create" blockSetVariable="myCard"
+    //% block="clone of $card"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function createCardClone(card: cardCore.Card): cardCore.Card {
+        return card.clone()
+    }
     
     //% group="Card"
     //% block="set $card face up to $isFaceUp"
@@ -561,158 +574,6 @@ namespace cardKit {
         return card.stamp
     }
 
-    //% group="Card" blockSetVariable="myCard"
-    //% block="view of $card using $design"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% design.shadow="variables_get" design.defl="myCardDesign"
-    export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
-        return card.createView(design)
-    }
-    
-    //% group="Card Container"
-    //% block="$container id"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function getContainerId(
-        container: cardCore.CardContainer
-    ): string {
-        return container.getId()
-    }
-
-    //% group="Card Container"
-    //% block="$container card count"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function getContainerCardCount(
-        container: cardCore.CardContainer
-    ): number {
-        return container.getCardCount()
-    }
-
-    //% group="Card Container"
-    //% block="set $container position x $x y $y"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function setContainerPosition(
-        container: cardCore.CardContainer,
-        x: number,
-        y: number
-    ) { 
-        container.setPosition(x, y)
-    }
-
-    //% group="Card Container"
-    //% block="set $container z $layer"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function setContainerLayer(
-        container: cardCore.CardContainer,
-        layer: number
-    ) {
-        container.setLayer(layer)
-    }
-
-    //% group="Container Cards"
-    //% block="shuffle $container cards"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function shuffleCards(container: cardCore.CardContainer) {}
-
-    //% group="Container Cards" blockSetVariable="myCard"
-    //% block="remove $position card from $container"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
-        const index = getPositionIndex(container, position)
-        if (index == null) {
-            return null
-        }
-        const card = container.removeCardAt(index)
-        card.container = null
-        return card
-    }
-
-    //% group="Container Cards"
-    //% block="add $card to $container at $position position"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions) {
-        const index = getPositionIndex(container, position)
-        if (index == null) {
-            return
-        }
-        container.insertCard(card, getPositionIndex(container, position))
-    }
-
-    //% group="Container Cards"
-    //% block="move $startPosition card from $origin to $destination $endPosition position"
-    //% origin.shadow="variables_get" origin.defl="myCardContainer"
-    //% destination.shadow="variables_get" destination.defl="myCardContainer"    
-    export function moveCardBetween(
-        origin: cardCore.CardContainer,
-        startPosition: CardContainerPositions,
-        destination: cardCore.CardContainer,
-        endPosition: CardContainerPositions
-    ) {
-        const start = getPositionIndex(origin, startPosition)
-        if (start == null) {
-            return
-        }
-        const end = getPositionIndex(destination, endPosition)
-        if (end == null) {
-            return
-        }
-        destination.insertCard(origin.removeCardAt(start), end)
-    }
-
-    //% group="Card List" blockSetVariable="list"
-    //% block="copy of hand or grid $container card list"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function getLayoutCardListCopy(container: cardCore.LayoutContainer): cardCore.Card[] {
-        return container.getCardsCopy()
-    }
-
-    //% group="Card List" blockSetVariable="list"
-    //% block="cards in $cards where $attribute is $text"
-    //% cards.shadow="variables_get" cards.defl="list"
-    //% attribute.shadow="attributePicker"
-    //% text.shadowOptions.toString=true
-    export function filterCardListWithTextCondition(cards: cardCore.Card[], attribute: number, text: string): cardCore.Card[] {
-        return cards.filter(card => card.getData().attributeEquals(attribute, text))
-    }
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function createContainerEvent(
-        container: cardCore.CardContainer,
-        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
-    ) {
-        container.addEvent(null, handler)
-    }
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer where $attribute is $text"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    //% attribute.shadow="attributePicker"
-    //% text.shadowOptions.toString=true
-    export function addContainerConditionEvent(
-        container: cardCore.CardContainer,
-        attribute: number,
-        text: string,
-        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
-    ) {
-        container.addEvent({ attribute: attribute, value: text }, handler)
-    }
-    
-    
-    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
-        switch (position) {
-            case CardContainerPositions.First: return 0
-            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
-            case CardContainerPositions.Last: return -1
-            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
-            case CardContainerPositions.Cursor: return container.getCursorIndex()
-        }
-    }
-
-
     //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
@@ -785,6 +646,112 @@ namespace cardKit {
     export function removeCursor() {
         cardCore.removeCursor()
     }
+    
+    //% group="Move Card"
+    //% block="shuffle $container cards"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function shuffleCards(container: cardCore.CardContainer) {}
+
+    //% group="Move Card" blockSetVariable="myCard"
+    //% block="remove $position card from $container"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return null
+        }
+        const card = container.removeCardAt(index)
+        card.container = null
+        return card
+    }
+
+    //% group="Move Card"
+    //% block="add $card to $container at $position position"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions) {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return
+        }
+        container.insertCard(card, getPositionIndex(container, position))
+    }
+
+    //% group="Move Card"
+    //% block="move $startPosition card from $origin to $destination $endPosition position"
+    //% origin.shadow="variables_get" origin.defl="myCardContainer"
+    //% destination.shadow="variables_get" destination.defl="myCardContainer"    
+    export function moveCardBetween(
+        origin: cardCore.CardContainer,
+        startPosition: CardContainerPositions,
+        destination: cardCore.CardContainer,
+        endPosition: CardContainerPositions
+    ) {
+        const start = getPositionIndex(origin, startPosition)
+        if (start == null) {
+            return
+        }
+        const end = getPositionIndex(destination, endPosition)
+        if (end == null) {
+            return
+        }
+        destination.insertCard(origin.removeCardAt(start), end)
+    }
+
+    //% color="#ff9008"
+    //% group="Card List" blockSetVariable="list"
+    //% block="copy of hand or grid $container card list"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function getLayoutCardListCopy(container: cardCore.LayoutContainer): cardCore.Card[] {
+        return container.getCardsCopy()
+    }
+
+    //% color="#ff9008"
+    //% group="Card List" blockSetVariable="list"
+    //% block="cards in $cards where $attribute is $text"
+    //% cards.shadow="variables_get" cards.defl="list"
+    //% attribute.shadow="attributePicker"
+    //% text.shadowOptions.toString=true
+    export function filterCardListWithTextCondition(cards: cardCore.Card[], attribute: number, text: string): cardCore.Card[] {
+        return cards.filter(card => card.getData().attributeEquals(attribute, text))
+    }
+
+    //% group="Card Events"
+    //% draggableParameters="reporter"
+    //% block="on $container $card added from $originContainer"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function createContainerEvent(
+        container: cardCore.CardContainer,
+        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
+    ) {
+        container.addEvent(null, handler)
+    }
+
+    //% group="Card Events"
+    //% draggableParameters="reporter"
+    //% block="on $container $card added from $originContainer where $attribute is $text"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% attribute.shadow="attributePicker"
+    //% text.shadowOptions.toString=true
+    export function addContainerConditionEvent(
+        container: cardCore.CardContainer,
+        attribute: number,
+        text: string,
+        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
+    ) {
+        container.addEvent({ attribute: attribute, value: text }, handler)
+    }
+    
+    
+    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
+        switch (position) {
+            case CardContainerPositions.First: return 0
+            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
+            case CardContainerPositions.Last: return -1
+            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
+            case CardContainerPositions.Cursor: return container.getCursorIndex()
+        }
+    }
 
     let autoLayoutControl: boolean = true
     controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
@@ -808,22 +775,46 @@ namespace cardKit {
         }
     })
 
-    //% group="Hand/Grid"
-    //% block="set hand or grid $container cursor wrapping to $isWrappingSelection"
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="$container id"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function setSpreadOrGridWrapping(container: cardCore.CardSpread | cardCore.CardGrid, isWrappingSelection: boolean) {
-        container.isWrappingSelection = isWrappingSelection            
+    export function getContainerId(
+        container: cardCore.CardContainer
+    ): string {
+        return container.getId()
     }
 
-    //% group="Hand/Grid"
-    //% block="set hand or grid $container card spacing to $spacing"
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    //% spacing.defl=1
-    export function setSpreadOrGridSpacing(container: cardCore.CardSpread | cardCore.CardGrid, spacing: number) {
-        container.spacing = spacing
+    export function getContainerCardCount(
+        container: cardCore.CardContainer
+    ): number {
+        return container.getCardCount()
     }
 
-    //% group="Deck" blockSetVariable="myCardContainer"
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="set $container position x $x y $y"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function setContainerPosition(
+        container: cardCore.CardContainer,
+        x: number,
+        y: number
+    ) { 
+        container.setPosition(x, y)
+    }
+
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="set $container z $layer"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function setContainerLayer(
+        container: cardCore.CardContainer,
+        layer: number
+    ) {
+        container.setLayer(layer)
+    }
+
+    //% group="Deck/Pile Operations" blockSetVariable="myCardContainer"
     //% block="deck by removing $stack top $count cards"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
     //% count.defl=10
@@ -832,14 +823,37 @@ namespace cardKit {
         return stack.split(newId, count)
     }
 
-    //% group="Deck"
-    //% block="flip deck or pile $stack top card"
+    //% group="Deck/Pile Operations"
+    //% block="flip deck $stack top card"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
     export function flipStackTopCard(stack: cardCore.CardStack) {
         stack.flipTopCard()
     }
-    
-    //% group="Hand"
+        
+    //% group="Hand/Grid Operations"
+    //% block="set hand or grid $container cursor wrapping to $isWrappingSelection"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function setCardLayoutWrapping(container: cardCore.CardSpread | cardCore.CardGrid, isWrappingSelection: boolean) {
+        container.isWrappingSelection = isWrappingSelection            
+    }
+
+    //% group="Hand/Grid Operations"
+    //% block="set hand or grid $container card spacing to $spacing"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% spacing.defl=1
+    export function setCardLayoutSpacing(container: cardCore.CardSpread | cardCore.CardGrid, spacing: number) {
+        container.spacing = spacing
+    }
+
+    //% group="Hand/Grid Operations"
+    //% block="destroy $container cards"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% spacing.defl=1
+    export function destroyCardLayoutCards(container: cardCore.LayoutContainer) {
+        container.destroyCards()
+    }
+
+    //% group="Hand Operations"
     //% block="set hand $spread cursor card offset $distance px $direction"
     //% spread.shadow="variables_get" spread.defl="myCardContainer"
     //% distance.defl=10    
@@ -859,21 +873,21 @@ namespace cardKit {
         spread.setHoverOffset(offsetX, offsetY)
     }
 
-    //% group="Grid"
+    //% group="Grid Operations"
     //% block="lock $grid card positions"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function lockGridCardPositions(grid: cardCore.CardGrid) {
         grid.lock()
     }
 
-    //% group="Grid"
+    //% group="Grid Operations"
     //% block="unlock $grid card positions"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function unlockGridCardPositions(grid: cardCore.CardGrid) {
         grid.unlock()
     }
 
-    //% group="Grid"
+    //% group="Grid Operations"
     //% block="set grid $grid|scroll back sprite $scrollBack|scroll forward sprite $scrollForward"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"

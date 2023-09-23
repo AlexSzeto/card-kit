@@ -124,6 +124,12 @@ namespace cardCore {
             )
         }
 
+        clone(): Card {
+            const card = new Card(this.design, this.card.clone(), this._isFaceUp)
+            card.setPosition(this.x, this.y)
+            return card
+        }
+
         createView(newDesign: CardDesign): Card {
             const card = new Card(newDesign, this.card, this._isFaceUp)
             card.setPosition(this.x, this.y)
@@ -418,6 +424,11 @@ namespace cardCore {
             this.cards.splice(index, 1)
             this.cards.insertAt(index, blank)
             return card
+        }
+
+        destroyCards() {
+            this.cards.forEach(card => card.destroy())
+            this.cards = []
         }
         
         getCursorIndex(): number {
