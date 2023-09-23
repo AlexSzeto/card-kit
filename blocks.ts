@@ -715,12 +715,12 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="cards in $cards where $attribute is $text"
-    //% cards.shadow="variables_get" cards.defl="list"
+    //% block="cards in hand or grid $container where $attribute is $text"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
-    export function filterCardListWithTextCondition(cards: cardCore.Card[], attribute: number, text: string): cardCore.Card[] {
-        return cards.filter(card => card.getData().attributeEquals(attribute, text))
+    export function filterCardListWithCondition(container: cardCore.LayoutContainer, attribute: number, text: string): cardCore.Card[] {
+        return container.getCardsCopy().filter(card => card.getData().attributeEquals(attribute, text))
     }
 
     //% group="Card Events"
