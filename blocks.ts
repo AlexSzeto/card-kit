@@ -306,6 +306,7 @@ namespace deckBuilder {
     }
 
     //% group="Deck Builder"
+    //% weight=100
     //% blockId="numberAttributePicker"
     //% block="$attribute $value"
     //% attribute.shadow="attributePicker"
@@ -855,12 +856,14 @@ namespace cardKit {
 
     //% group="Grid"
     //% block="lock $grid card positions"
+    //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function lockGridCardPositions(grid: cardCore.CardGrid) {
         grid.lock()
     }
 
     //% group="Grid"
     //% block="unlock $grid card positions"
+    //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function unlockGridCardPositions(grid: cardCore.CardGrid) {
         grid.unlock()
     }
