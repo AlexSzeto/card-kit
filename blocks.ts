@@ -40,7 +40,7 @@ enum CardLayoutSpreadDirections {
     UpDown,
 }
 
-//% color="#255f74" icon="\uf044" block="Card Design"
+//% color="#307d9c" icon="\uf044" block="Card Design"
 namespace cardDesign {
 
     const DEFAULT_CARD_FRONT = img`
@@ -287,7 +287,7 @@ namespace cardDesign {
         return arg;
     }
 
-    //% color="#255f74" weight=100
+    //% weight=100
     //% group="Deck Builder" blockSetVariable="myCardDeck"
     //% block="empty $design deck id $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
@@ -303,7 +303,6 @@ namespace cardDesign {
         ) {}
     }
 
-    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="numberAttributePicker"
     //% block="$attribute $value"
@@ -312,7 +311,6 @@ namespace cardDesign {
         return new CardAttributeVariation(attribute, [value])
     }
 
-    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="textAttributePicker"
     //% block="$attribute $text"
@@ -321,7 +319,6 @@ namespace cardDesign {
         return new CardAttributeVariation(attribute, [text])
     }
 
-    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
     //% block="$attribute each number from $startNumber to $endNumber"
@@ -336,7 +333,6 @@ namespace cardDesign {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="numberListVariationsPicker"
     //% block="$attribute each number from $values"
@@ -345,7 +341,6 @@ namespace cardDesign {
         return new CardAttributeVariation(attribute, values)
     }
 
-    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="textVariationsPicker"
     //% block="$attribute each text from $texts"
@@ -368,7 +363,7 @@ namespace cardDesign {
         }
     }
 
-    //% color="#255f74" weight=99
+    //% weight=99
     //% group="Deck Builder"
     //% block="add to $deck cards combinations of $variations|| make $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
@@ -382,7 +377,7 @@ namespace cardDesign {
     }
 }
 
-//% color="#183f4e" icon="\uf2bb" block="Card Kit"
+//% color="#255f74" icon="\uf2bb" block="Card Kit"
 namespace cardKit {
 
     //% group="Create" blockSetVariable="myCardContainer"
