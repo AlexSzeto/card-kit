@@ -353,18 +353,18 @@ namespace cardCore {
             image.drawTransparentImage(this.backImage, x, y)
         }
     
-        drawCardStack(image: Image, x: number, y: number, cards: CardData[], isStackFaceUp: boolean, isTopCardFaceUp: boolean, ) {
-            if (cards.length > 1) {
-                const stackImage = this.getStackImage(cards.length, isStackFaceUp)
+        drawCardStack(image: Image, x: number, y: number, cardCount: number, topCardData: CardData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, ) {
+            if (cardCount > 1) {
+                const stackImage = this.getStackImage(cardCount, isStackFaceUp)
                 y = y + this.getStackImageFullHeight() - stackImage.height
                 image.drawTransparentImage(stackImage, x, y)
-            } else if (cards.length === 1) {
+            } else if (cardCount === 1) {
                 y = y + this.getStackImageFullHeight() - this.height
             } else {
                 return
             }
             if (isTopCardFaceUp) {
-                this.drawCardFront(image, x, y, cards[0])
+                this.drawCardFront(image, x, y, topCardData)
             } else {
                 this.drawCardBack(image, x, y)
             }

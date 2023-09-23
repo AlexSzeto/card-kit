@@ -12,6 +12,7 @@ enum CardCursorAnchors {
 
 namespace SpriteKind {
     export const Card = SpriteKind.create()
+    export const CardStack = SpriteKind.create()
     export const Cursor = SpriteKind.create()
 }
 
@@ -24,12 +25,12 @@ namespace cardCore {
     let slideAnimationDuration = 500
     let transitionZ = 100
 
-    function activate(sprite: Sprite) {
+    function activate(sprite: Sprite, kind: number) {
         const scene = game.currentScene();
-        sprite.setKind(SpriteKind.Card);
+        sprite.setKind(kind);
         scene.physicsEngine.addSprite(sprite);
         scene.createdHandlers
-            .filter(h => h.kind == SpriteKind.Card)
+            .filter(h => h.kind == kind)
             .forEach(h => h.handler(sprite));
     }
 
@@ -58,7 +59,7 @@ namespace cardCore {
             this.container = null
             this._isFaceUp = isFaceUp
             this.refreshImage()
-            activate(this)
+            activate(this, SpriteKind.Card)
         }
 
         get isEmptyCardSlot(): boolean {
@@ -101,6 +102,12 @@ namespace cardCore {
             this.setFlag(SpriteFlag.Invisible, false)
         }
 
+        detachFromContainer() {
+            if (this.container != null) {
+                this.container.removeCardSprite(this)
+            }
+        }
+
         flip() {
             if (this.isEmptyCardSlot) {
                 return
@@ -140,6 +147,12 @@ namespace cardCore {
 
     }
 
+    sprites.onDestroyed(SpriteKind.Card, function (sprite: Sprite) {
+        if (sprite instanceof Card) {
+            sprite.detachFromContainer()
+        }
+    })
+
     export type CardEventCondition = cardCore.CardAttribute
     export type CardEventHandler = (origin: CardContainer, card: Card) => void
     type CardEvent = {
@@ -167,6 +180,7 @@ namespace cardCore {
     export interface CardContainer {
         getId(): string
         getCardCount(): number,
+        getCardsCopy(): Card[],
 
         setPosition(x: number, y: number): void
         setLayer(z: number): void
@@ -177,6 +191,7 @@ namespace cardCore {
         insertCard(card: Card, index: number): void
         removeCardAt(index: number): Card
         removeCardSprite(card: Card): void
+        destroyCards(): void
 
         getCursorIndex(): number
         moveCursorIntoContainer(): void
@@ -189,7 +204,7 @@ namespace cardCore {
         constructor(
             private containerId: string,
             private design: CardDesign,
-            private cards: CardData[],
+            private cards: Card[],
             private isStackFaceUp: boolean,
             private isTopCardFaceUp: boolean,
         ) {
@@ -198,7 +213,7 @@ namespace cardCore {
             this.events = []
             this.transitionCards = []
             this.refreshImage()
-            activate(this)
+            activate(this, SpriteKind.CardStack)
         }
 
         private getYOffset(): number {
@@ -210,9 +225,16 @@ namespace cardCore {
                 return
             }            
             this.image.fill(0)
-            const inDeckCards = this.cards.filter(card => !this.transitionCards.some(transitionCard => transitionCard.getData() === card))
-            this.design.drawCardStack(this.image, 0, 0, inDeckCards, this.isStackFaceUp, this.isTopCardFaceUp)                    
-            
+            const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
+            if (this.cards.length - this.transitionCards.length > 0) {
+                this.design.drawCardStack(this.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
+            }
+            this.cards.forEach(card => {
+                if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
+                    card.setFlag(SpriteFlag.Invisible, true)
+                    card.isFaceUp = card === topCard ? this.isTopCardFaceUp : this.isStackFaceUp
+                }
+            })
         }
 
         get container(): CardContainer {
@@ -238,7 +260,11 @@ namespace cardCore {
 
         insertCardData(data: CardData[]) {
             if (!!this.design) {
-                this.cards = data.concat(this.cards)
+                this.cards = data.map(cardData => {
+                    const card = new Card(this.design, cardData, this.isStackFaceUp)
+                    card.container = this
+                    return card
+                }).concat(this.cards)
                 this.refreshImage()
             }
         }
@@ -266,6 +292,10 @@ namespace cardCore {
             return this.cards.length
         }
 
+        getCardsCopy(): Card[] {
+            return this.cards.slice()
+        }
+
         addEvent(condition: CardAttribute, handler: CardEventHandler): void {
             this.events.push({ condition: condition, handler: handler })
         }
@@ -280,11 +310,10 @@ namespace cardCore {
                 this.defaultStackImage = this.image
             }
             if (resolveEvents(card, this, this.events)) {
-                const cardData = card.getData()
                 if (index < 0) {
-                    this.cards.push(cardData)
+                    this.cards.push(card)
                 } else {
-                    this.cards.insertAt(index, cardData)
+                    this.cards.insertAt(index, card)
                 }
                 card.isFaceUp = this.isTopCardFaceUp
                 extraAnimations.slide(
@@ -292,7 +321,6 @@ namespace cardCore {
                     slideAnimationDuration,
                     () => {
                         this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
-                        card.destroy()
                         this.refreshImage()
                     }
                 )
@@ -303,24 +331,30 @@ namespace cardCore {
         }
 
         removeCardSprite(card: Card): void {
-            this.removeCardAt(this.cards.indexOf(card.getData()))
+            this.removeCardAt(this.cards.indexOf(card))
         }
 
         removeCardAt(index: number = 0): Card {
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
-            const oldCard = this.transitionCards.find(card => card.getData() === this.cards[index])
-            const card = new Card(this.design, this.cards[index], this.isStackFaceUp)
-            if (!!oldCard) {
-                card.setPosition(oldCard.x, oldCard.y)
-                extraAnimations.clearAnimations(oldCard, true)
+            const card = this.cards[index]
+            const transitionIndex = this.transitionCards.indexOf(card)
+            card.setFlag(SpriteFlag.Invisible, false)
+            if (transitionIndex >= 0) {
+                extraAnimations.clearAnimations(this.transitionCards[transitionIndex], true)
             } else {
                 card.setPosition(this.x, this.y + this.getYOffset())
             }
             this.cards.splice(index, 1)
             this.refreshImage()
             return card
+        }
+
+        destroyCards(): void {
+            this.cards.forEach(card => card.destroy())
+            this.transitionCards = []
+            this.refreshImage()
         }
 
         getCursorIndex(): number {
@@ -331,6 +365,12 @@ namespace cardCore {
             pointCursorAt(this)
         }
     }
+
+    sprites.onDestroyed(SpriteKind.CardStack, function (sprite: Sprite) {
+        if (sprite instanceof CardStack) {
+            (sprite as any as CardStack).destroyCards()
+        }
+    })
 
     export class LayoutContainer implements CardContainer {
         private events: CardEvent[]        
@@ -475,8 +515,6 @@ namespace cardCore {
             this.cardHeight = -1
             this.reposition()
         }
-
-        isCardSpread(): boolean { return true }
 
         get isLeftRight(): boolean {
             return this.isSpreadingLeftRight

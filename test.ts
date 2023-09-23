@@ -41,6 +41,19 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function SetupPlayField () {
     CardDeck = cardKit.createPlayingCards()
+    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Suit, "clubs")
+    for (let DeleteCard of DeleteCards) {
+        DeleteCard.destroy()
+    }
+    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Suit, "diamonds")
+    for (let DeleteCard of DeleteCards) {
+        DeleteCard.destroy()
+    }
+    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Rank, "13")
+    for (let DeleteCard of DeleteCards) {
+        DeleteCard.destroy()
+    }
+    cardKit.shuffleCards(CardDeck)
     CardDeck.setPosition(20, 60)
     PlayGrid = cardKit.createEmptyGrid("Card Grid", 80, 60, 6, 4)
     DiscardPile = cardKit.createEmptyPile("Discard Pile")
@@ -70,6 +83,7 @@ let CardDeck: cardCore.CardStack = null
 let PlayGrid: cardCore.CardGrid = null
 let DiscardPile: cardCore.CardStack = null
 let FlippedCards: cardCore.Card[] = []
+let DeleteCards: cardCore.Card[] = []
 let CardsFlipped = 0
 let TitleCard: Sprite = null
 let isOnTitleScreen = false

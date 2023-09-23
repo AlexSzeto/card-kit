@@ -57,6 +57,7 @@ namespace extraAnimations {
         if (!oldTracker) {
             return
         }
+        fixedFrameTrackers.splice(fixedFrameTrackers.indexOf(oldTracker), 1)
         if (jump) {
             oldTracker.step += oldTracker.direction
             while(oldTracker.step >= 0 && oldTracker.step < oldTracker.totalSteps) {
@@ -67,7 +68,6 @@ namespace extraAnimations {
         if (!!oldTracker.onComplete) {
             oldTracker.onComplete(oldTracker.sprite)
         }
-        fixedFrameTrackers.splice(fixedFrameTrackers.indexOf(oldTracker), 1)
     }
 
     export function updateFixedFrameAnimation(tracker: FixedFrameTracker) {
@@ -93,6 +93,7 @@ namespace extraAnimations {
         if (!oldTracker) {
             return
         }
+        slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
         clearTimeout(oldTracker.timer)
         if (jump) {
             oldTracker.sprite.setPosition(oldTracker.x, oldTracker.y)
@@ -101,7 +102,6 @@ namespace extraAnimations {
         if (!!oldTracker.onComplete) {
             oldTracker.onComplete(oldTracker.sprite)
         }
-        slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
     }
 
     export function slide(

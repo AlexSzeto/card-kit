@@ -710,19 +710,19 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="copy of hand or grid $container card list"
+    //% block="copy of $container card list"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function getLayoutCardListCopy(container: cardCore.LayoutContainer): cardCore.Card[] {
+    export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
         return container.getCardsCopy()
     }
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="cards in hand or grid $container where $attribute is $text"
+    //% block="cards in $container where $attribute is $text"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
-    export function filterCardListWithCondition(container: cardCore.LayoutContainer, attribute: number, text: string): cardCore.Card[] {
+    export function filterCardListWithCondition(container: cardCore.CardContainer, attribute: number, text: string): cardCore.Card[] {
         return container.getCardsCopy().filter(card => {
             const data = card.getData()
             return !!data && data.attributeEquals(attribute, text)
@@ -830,7 +830,9 @@ namespace cardKit {
     //% group="Deck/Pile/Hand/Grid Operations"
     //% block="shuffle $container cards"
     //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function shuffleCards(container: cardCore.CardContainer) {}
+    export function shuffleCards(container: cardCore.CardContainer) {
+        container.shuffle()
+    }
 
     //% group="Deck/Pile Operations" blockSetVariable="myCardContainer"
     //% block="deck by removing $stack top $count cards"
