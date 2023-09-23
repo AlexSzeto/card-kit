@@ -177,6 +177,7 @@ namespace cardCore {
         removeCardSprite(card: Card): void
 
         getCursorIndex(): number
+        moveCursorIntoContainer(): void
     }
 
     export class CardStack extends Sprite implements CardContainer {
@@ -323,6 +324,10 @@ namespace cardCore {
         getCursorIndex(): number {
             return (getCursorSprite() === this) ? 0 : null
         }
+
+        moveCursorIntoContainer(): void {
+            pointCursorAt(this)
+        }
     }
 
     export class LayoutContainer implements CardContainer {
@@ -434,6 +439,13 @@ namespace cardCore {
         getCursorIndex(): number {
             const index = this.cards.indexOf(getCursorCard())
             return index >= 0 ? index : null
+        }
+
+        moveCursorIntoContainer(): void {
+            if (this.cards.length < 1) {
+                return
+            }
+            pointCursorAt(this.cards[0])
         }
 
         reposition(): void {}

@@ -595,6 +595,7 @@ namespace cardKit {
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function moveCursorInsideLayoutWithButtons(container: cardCore.LayoutContainer) {
         cardCore.preselectCursorContainer(container)
+        container.moveCursorIntoContainer()
         autoLayoutControl = true
     }
 
