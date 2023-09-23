@@ -59,7 +59,14 @@ namespace cardKit {
             activate(this)
         }
 
-        public refreshImage() {
+        get isEmptyCardSlot(): boolean {
+            return this.card === null
+        }
+
+        refreshImage() {
+            if (this.isEmptyCardSlot) {
+                return
+            }
             this.image.fill(0)
             if(this._isFaceUp) {
                 this.design.drawCardFront(this.image, 0, 0, this.card)
@@ -69,11 +76,11 @@ namespace cardKit {
             }
         }
 
-        public getDesign(): CardDesign {
+        getDesign(): CardDesign {
             return this.design
         }
 
-        public getData(): CardData {
+        getData(): CardData {
             return this.card
         }
 
@@ -93,6 +100,9 @@ namespace cardKit {
         }
 
         flip() {
+            if (this.isEmptyCardSlot) {
+                return
+            }
             if (extraAnimations.hasFixedFrameAnimation(this)) {
                 extraAnimations.reverseFixedFrameAnimation(this)
             }
@@ -113,6 +123,13 @@ namespace cardKit {
                 null
             )
         }
+
+        createView(newDesign: CardDesign): Card {
+            const card = new Card(newDesign, this.card, this._isFaceUp)
+            card.setPosition(this.x, this.y)
+            return card
+        }
+
     }
 
     export type CardEventCondition = cardKit.CardAttribute
@@ -198,6 +215,16 @@ namespace cardKit {
             if (this.isTopCardFaceUp) {
                 this.refreshImage()
             }
+        }
+
+        split(id: string, count: number) {
+            const cards = this.cards.slice(0, count)
+            this.cards.splice(this.cards.length - count, count)
+            const stack = new CardStack(id, this.design, cards, this.isStackFaceUp, this.isTopCardFaceUp)
+            stack.setPosition(this.x, this.y - this.design.getStackThickness(this.getCardCount()) - 1)
+            stack.setLayer(this.z)
+            this.refreshImage()
+            return stack
         }
 
         insertCardData(data: CardData[]) {
@@ -310,11 +337,11 @@ namespace cardKit {
         }
 
         getCardCount(): number {
-            return this.cards.length
+            return this.cards.reduce((count, card) => count + (card.isEmptyCardSlot ? 0 : 1), 0)
         }
 
         getCardsCopy(): Card[] {
-            return this.cards.slice()
+            return this.cards.slice().filter(card => !card.isEmptyCardSlot)
         }
 
         setPosition(x: number, y: number): void {
@@ -377,6 +404,19 @@ namespace cardKit {
             card.resetTransforms()
             this.cards.splice(index, 1)
             this.reposition()
+            return card
+        }
+
+        replaceCardWithBlankAt(index: number = 0): Card {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            const blank = new Card(this.cards[index].getDesign(), null, true)
+            const card = this.cards[index]
+            blank.setPosition(card.x, card.y)
+            pointCursorAt(blank)
+            this.cards.splice(index, 1)
+            this.cards.insertAt(index, blank)
             return card
         }
         
@@ -523,6 +563,7 @@ namespace cardKit {
         private scrollToLine: number
         private cardWidth: number
         private cardHeight: number
+        private isLocked: boolean
 
         private collapsePositions: number[]
         private expandPositions: number[]
@@ -547,6 +588,7 @@ namespace cardKit {
             this.scrollToLine = 0
             this.cardWidth = -1
             this.cardHeight = -1
+            this.isLocked = false
 
             this.reposition()            
         }
@@ -572,6 +614,32 @@ namespace cardKit {
                 this.isWrappingSelection = value
                 this.reposition()
             }
+        }
+
+        lock() {
+            this.isLocked = true
+        }
+
+        unlock() {
+            this.isLocked = false
+            for (let i = 0; i < this.cards.length; i++) {
+                const card = this.cards[i]
+                if (card.isEmptyCardSlot) {
+                    if (getCursorCard() === card) {
+                        if (this.cards.length === 1) {
+                            removeCursor()
+                        } else if (i > 0) {
+                            pointCursorAt(this.cards[i - 1])
+                        } else {
+                            pointCursorAt(this.cards[i + 1])
+                        }
+                    }
+                    card.destroy()
+                    this.cards.splice(i, 1)
+                    i--    
+                }
+            }
+            this.reposition()
         }
 
         setScrollSprites(back: Sprite, forward: Sprite) {
@@ -734,12 +802,14 @@ namespace cardKit {
             }
         }
 
-        removeCardAt(index?: number): Card {   
-            if (index == null || index < 0 || index > this.cards.length - 1) {
+        removeCardAt(index?: number): Card {
+            if (index == null || index < 0 || index > this.cards.length - 1 || this.cards[index].isEmptyCardSlot) {
                 return null
             }            
             extraAnimations.clearAnimations(this.cards[index], true)
-            return super.removeCardAt(index)            
+            return this.isLocked
+                ? this.replaceCardWithBlankAt(index)
+                : super.removeCardAt(index)
         }
 
         moveCursorToIndex(index: number) {

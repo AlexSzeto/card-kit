@@ -381,7 +381,7 @@ namespace deckBuilder {
 //% color="#307d9c" icon="\uf2bb" block="Cards"
 namespace cards {
     
-    //% group="Properties"
+    //% group="Card"
     //% block="set $card $attribute to $value"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -390,7 +390,7 @@ namespace cards {
         card.refreshImage()
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="set $card $attribute to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -399,7 +399,7 @@ namespace cards {
         card.refreshImage()
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="set $card stamp to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardStampText(card: cardKit.Card, text: string) {
@@ -407,7 +407,7 @@ namespace cards {
         card.refreshImage()
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -420,7 +420,7 @@ namespace cards {
         }
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="$card $attribute text"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -433,12 +433,20 @@ namespace cards {
         }
     }
     
-    //% group="Properties"
+    //% group="Card"
     //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardKit.Card) {
         return card.stamp
-    }    
+    }
+
+    //% group="Card" blockSetVariable="myCard"
+    //% block="view of $card using $design"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function createCardView(card: cardKit.Card, design: cardKit.CardDesign): cardKit.Card {
+        return card.createView(design)
+    }
 
     //% group="Create" blockSetVariable="myCardContainer"
     //% block="empty card pile named $id"
@@ -540,7 +548,7 @@ namespace cards {
         )
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="$container id"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerId(
@@ -549,7 +557,7 @@ namespace cards {
         return container.getId()
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function getContainerCardCount(
@@ -558,7 +566,7 @@ namespace cards {
         return container.getCardCount()
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="set $container position x $x y $y"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerPosition(
@@ -569,7 +577,7 @@ namespace cards {
         container.setPosition(x, y)
     }
 
-    //% group="Properties"
+    //% group="Card"
     //% block="set $container z $layer"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     export function setContainerLayer(
@@ -794,6 +802,15 @@ namespace cards {
         container.spacing = spacing
     }
 
+    //% group="Deck" blockSetVariable="myCardContainer"
+    //% block="deck by removing $stack top $count cards"
+    //% stack.shadow="variables_get" stack.defl="myCardContainer"
+    //% count.defl=10
+    //% newId.defl="Second Deck"
+    export function splitDeck(stack: cardKit.CardStack, count: number, newId: string): cardKit.CardStack {
+        return stack.split(newId, count)
+    }
+
     //% group="Deck"
     //% block="flip deck or pile $stack top card"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
@@ -819,6 +836,18 @@ namespace cards {
         }
 
         spread.setHoverOffset(offsetX, offsetY)
+    }
+
+    //% group="Grid"
+    //% block="lock $grid card positions"
+    export function lockGridCardPositions(grid: cardKit.CardGrid) {
+        grid.lock()
+    }
+
+    //% group="Grid"
+    //% block="unlock $grid card positions"
+    export function unlockGridCardPositions(grid: cardKit.CardGrid) {
+        grid.unlock()
     }
 
     //% group="Grid"

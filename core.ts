@@ -164,7 +164,7 @@ namespace cardKit {
         }
 
         private getStackHeight(cardStackSize: number): number {
-            return Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel))) + this.height
+            return this.getStackThickness(cardStackSize) + this.height
         }
 
         private getStackImage(cardStackSize: number, isFaceUp: boolean): Image {
@@ -178,6 +178,10 @@ namespace cardKit {
             }
         }
 
+        getStackThickness(cardStackSize: number): number {
+            return Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel)))
+        }
+        
         getStackTopYOffset(cardStackSize: number): number {
             return this.getStackImageFullHeight() / 2 - this.getStackHeight(cardStackSize) + this.height / 2
         }
