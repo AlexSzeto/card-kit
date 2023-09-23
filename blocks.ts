@@ -573,14 +573,14 @@ namespace cardKit {
         return card.stamp
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
         return cardCore.getCursorCard()
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="cursor card container id"
     export function getCursorContainerId(): string {
@@ -592,7 +592,7 @@ namespace cardKit {
         }
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="move cursor between cards in $container with buttons"
     //% container.shadow="variables_get" container.defl="myCardContainer"
@@ -601,7 +601,7 @@ namespace cardKit {
         autoLayoutControl = true
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="stop cursor controls"
     export function disableLayoutButtonControl() {         
@@ -609,7 +609,7 @@ namespace cardKit {
         cardCore.removeCursor()
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="move cursor $direction"
     export function moveCursorInDirection(direction: PointerDirections) {
@@ -638,7 +638,7 @@ namespace cardKit {
         }
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
@@ -646,7 +646,7 @@ namespace cardKit {
         cardCore.pointCursorAt(sprite)
     }
 
-    //% color="#9c3097"
+    //% color="#d54322"
     //% group="Cursor"
     //% block="hide cursor"
     export function removeCursor() {
