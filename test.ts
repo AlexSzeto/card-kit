@@ -1,108 +1,103 @@
-// tests go here; this will not be compiled when this package is used as an extension.
-const deck = cardKit.createPlayingCards()
-// deck.setImage(img`
-// . 7 7 7 7 .
-// 7 1 1 1 1 7
-// 7 1 1 1 1 7
-// 7 1 1 1 1 7
-// . 7 7 7 7 .
-// `)
-deck.x = 30
-
-const split = deck.split('split', 26)
-
-const discard = cardKit.createEmptyPile('discard')
-// discard.z = 20
-discard.x = scene.screenWidth() - 30
-
-controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-    if (!!cardCore.getCursorCard()) {
-        // cardKit.getCursorCard().flip()
-        let card = grid.removeCardAt(grid.getCursorIndex())
-        hand.insertCard(card, -1)
-        // card.z = 30
-        
-        if (hand.getCardCount() > 5) {
-            let card2 = hand.removeCardAt(0)
-            discard.insertCard(card2, 0)
-
-            if (grid.getCardCount() < 5) {
-                grid.unlock()
+enum CardAttributes {
+    Rank,
+    Suit,
+    Selected,
+    Flipped
+}
+function FlipCards () {
+    if (cardKit.getCardNumberAttribute(cardKit.getCursorCard(), CardAttributes.Flipped) != 1) {
+        cardKit.setCardNumberAttribute(cardKit.getCursorCard(), CardAttributes.Flipped, 1)
+        CardsFlipped += 1
+        cardKit.flipCard(cardKit.getCursorCard())
+    }
+    if (CardsFlipped == 2) {
+        if (FlippedCardsMatch()) {
+            for (let Card of FlippedCards) {
+                cardKit.addCardTo(DiscardPile, Card, CardContainerPositions.First)
             }
-        //     card2.z = 30
+            if (cardKit.getContainerCardCount(PlayGrid) == 0) {
+                game.gameOver(true)
+            }
+        } else {
+            pause(500)
+            info.changeLifeBy(-1)
+            for (let Card of FlippedCards) {
+                cardKit.setCardNumberAttribute(Card, CardAttributes.Flipped, 0)
+                cardKit.flipCard(Card)
+            }
         }
+        CardsFlipped = 0
+    }
+}
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (isOnTitleScreen) {
+        isOnTitleScreen = false
+        sprites.destroy(TitleCard, effects.disintegrate, 500)
+        // pause(1000)
+        SetupPlayField()
+    } else {
+        FlipCards()
     }
 })
-
-/*
-Spread Test
-*/
-
-// Horizontal
-const hand = cardKit.createEmptyHand(
-    'hand',
-    scene.screenWidth() / 2,
-    scene.screenHeight() - 20,
-    CardLayoutSpreadDirections.LeftRight,    
-)
-    
-// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-//     hand.selectPreviousCard()
-// })
-// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-//     hand.selectNextCard()
-// })
-
-// Vertical
-// const hand = new cardKit.CardSpread(
-//     20,
-//     scene.screenHeight() / 2,
-//     1, [], 12, 20,
-//     false,
-//     1, 6, true
-// )
-// controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
-//     hand.selectPreviousCard()
-// })
-// controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-//     hand.selectNextCard()
-// })
-
-// hand.insertCardsFrom(deck, 5)
-
-/*
-Grid Test
-*/
-const grid = cardKit.createEmptyGrid(
-    'grid',
-    scene.screenWidth() / 2,
-    scene.screenHeight() / 2 - 10,
-    6, 3,
-    CardLayoutSpreadDirections.UpDown
-)
-cardKit.moveCursorInsideLayoutWithButtons(grid)
-grid.lock()
-// cardKit.preselectCursorContainer(grid)
-
-// controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-//     grid.moveCursorLeft()
-// })
-
-// controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-//     grid.moveCursorRight()
-// })
-// controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
-//     grid.moveCursorUp()
-// })
-
-// controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-//     grid.moveCursorDown()
-// })
-
-let dealt = 0
-while (dealt < 18) {
-    grid.insertCard(deck.removeCardAt(), -1)
-    pause(500)
-    dealt++
+function SetupPlayField () {
+    CardDeck = cardKit.createPlayingCards()
+    CardDeck.setPosition(20, 60)
+    PlayGrid = cardKit.createEmptyGrid("Card Grid", 80, 60, 6, 4)
+    DiscardPile = cardKit.createEmptyPile("Discard Pile")
+    cardKit.setContainerPosition(DiscardPile, 140, 60)
+    cardKit.lockGridCardPositions(PlayGrid)
+    for (let index = 0; index < 24; index++) {
+        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last)
+        // pause(200)
+    }
+    info.setLife(5)
+    cardKit.moveCursorInsideLayoutWithButtons(PlayGrid)
 }
-
+function FlippedCardsMatch () {
+    CardRank = cardKit.getCardNumberAttribute(cardKit.getCursorCard(), CardAttributes.Rank)
+    FlippedCards = cardKit.filterCardListWithCondition(PlayGrid, CardAttributes.Flipped, "1")
+    CardsMatch = 0
+    for (let Card of FlippedCards) {
+        if (cardKit.getCardNumberAttribute(Card, CardAttributes.Rank) != CardRank) {
+            return false
+        }
+    }
+    return true
+}
+let CardsMatch = 0
+let CardRank = 0
+let CardDeck: cardCore.CardStack = null
+let PlayGrid: cardCore.CardGrid = null
+let DiscardPile: cardCore.CardStack = null
+let FlippedCards: cardCore.Card[] = []
+let CardsFlipped = 0
+let TitleCard: Sprite = null
+let isOnTitleScreen = false
+isOnTitleScreen = true
+TitleCard = sprites.create(img`
+    ...............bb...................................................
+    .bbbb........bbbbb..................................................
+    bbbbbb......bbb1bb..................................................
+    bb111bb.....bb111bb.................................................
+    .b1111bb...bb1111bb.................................................
+    .b1111bb..bb11111bb...bbbb.....bbbb.bbb.....bbb...bbbbbbbb..b...bbb.
+    .b11111bbbbb11b11bb.bbbbbbb.bbbbbbbbbbbb..bbbbbbbbbbbbbbbbbbbbbbbbbb
+    .b111111bbb11bb11bbbbb1111bbbbb111bb111bbbbb1111bbb11bb111bb1bbb11bb
+    .b111b111b111bb11bbb11bb11bbb111b111111bbb111bb11bb11b11b1111bbb11bb
+    .b111bb11111bbb11bbb11bb11bb1111b111111bbb11bbb111b1111bb1b11bbb11bb
+    .b111bbb111bbbb11bb11bbb11bb111bb111b11bbb11bbbb11b1111bbbb11bbb11bb
+    .b111bbbbbbbbbb11bb11bb11bbb111bb111b11bb111b.bb11b111bb.bb11bbb11bb
+    .b111b.bbbb..bb11bb11111bbbb111bb111b11bb11bb.bb11b111bb..b111bb11bb
+    .b111b.......bb11b111bbbbbbb111bb111b11bb11bb.bb11bb11bb..bb11bb11bb
+    .b111b.......bb11bb11bbbb11b111bb111b11bbb11bbbb11bb11bb..bb11bb111b
+    .b111b.......bb11bb11bbb111bb11bb11bbb11bb11bbb11bbb11bb..bb11b1111b
+    .b11bb.......bb11bbb11111bbbb1bbbb1bbb1111b11111bbbb11bb...bb111b11b
+    .bbbbb.......bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb...bbbbbb11b
+    .bbbb.........bbbb..bbbbb...bbb..bb...bbbbbbbbbb...bbbb...bbbbbbb11b
+    .........................................................bbbbbbb11bb
+    ........................................................bb111bbb11bb
+    .........................................................bbb11111bbb
+    ..........................................................bbbbbbbbb.
+    ............................................................bbbbb...
+    `, SpriteKind.Player)
+CardsFlipped = 0

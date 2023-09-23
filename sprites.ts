@@ -42,6 +42,8 @@ namespace cardCore {
         }
     }
 
+    const EmptyData = new CardData([])
+    
     export class Card extends Sprite {
         container: CardContainer
         stamp: string
@@ -60,7 +62,7 @@ namespace cardCore {
         }
 
         get isEmptyCardSlot(): boolean {
-            return this.card === null
+            return this.card === EmptyData
         }
 
         refreshImage() {
@@ -104,6 +106,7 @@ namespace cardCore {
                 return
             }
             if (extraAnimations.hasFixedFrameAnimation(this)) {
+                console.log('reversing')
                 extraAnimations.reverseFixedFrameAnimation(this)
             }
             extraAnimations.fixedFrameAnimate(
@@ -115,6 +118,7 @@ namespace cardCore {
                 FLIP_SCALES,
                 null,
                 (_, step) => {
+                    console.log('step '+step)
                     if (step == FLIP_SCALES.length / 2) {
                         this._isFaceUp = !this._isFaceUp
                         this.refreshImage()
@@ -422,7 +426,7 @@ namespace cardCore {
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
-            const blank = new Card(this.cards[index].getDesign(), null, true)
+            const blank = new Card(this.cards[index].getDesign(), EmptyData, true)
             const card = this.cards[index]
             blank.setPosition(card.x, card.y)
             pointCursorAt(blank)

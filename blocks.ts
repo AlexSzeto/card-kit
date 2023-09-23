@@ -619,6 +619,9 @@ namespace cardKit {
     //% block="move cursor $direction"
     export function moveCursorInDirection(direction: PointerDirections) {
         const layer = cardCore.getMostRecentCursorContainer()
+        if (!layer) {
+            return
+        }
         if (!!layer.isCardSpread) {
             const spread = layer as cardCore.CardSpread
             if (spread.isLeftRight) {
@@ -720,7 +723,10 @@ namespace cardKit {
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
     export function filterCardListWithCondition(container: cardCore.LayoutContainer, attribute: number, text: string): cardCore.Card[] {
-        return container.getCardsCopy().filter(card => card.getData().attributeEquals(attribute, text))
+        return container.getCardsCopy().filter(card => {
+            const data = card.getData()
+            return !!data && data.attributeEquals(attribute, text)
+        })
     }
 
     //% group="Card Events"

@@ -180,7 +180,7 @@ namespace extraAnimations {
     }
 
     export function hasFixedFrameAnimation(sprite: Sprite): boolean {
-        return !!fixedFrameTrackers.find(tracker => tracker.sprite === sprite)
+        return fixedFrameTrackers.some(tracker => tracker.sprite === sprite)
     }
 
     export function clearAnimations(sprite: Sprite, jump: boolean = false) {

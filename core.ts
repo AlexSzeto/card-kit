@@ -13,16 +13,16 @@ namespace cardCore {
     }
 
     export class CardData {
-        private __attributes: CardAttribute[]
+        private _attributes: CardAttribute[]
 
         constructor(
             public attributes?: CardAttribute[],
         ) {
-            this.__attributes = attributes ? attributes : []
+            this._attributes = attributes ? attributes : []
         }
 
         getAttribute(id: number): CardAttributeValues {
-            const attribute = this.__attributes.find(attr => attr.attribute === id)
+            const attribute = this._attributes.find(attr => attr.attribute === id)
             if (!!attribute) {
                 return attribute.value
             } else {
@@ -31,24 +31,30 @@ namespace cardCore {
         }
 
         setAttribute(id: number, value: CardAttributeValues): void {
-            const attribute = this.__attributes.find(attr => attr.attribute === id)
+            const attribute = this._attributes.find(attr => attr.attribute === id)
             if (!!attribute) {
                 attribute.value = value
             } else {
-                this.__attributes.push({ attribute: id, value: value })
+                this._attributes.push({ attribute: id, value: value })
             }
         }
 
         attributeEquals(id: number, value: CardAttributeValues): boolean {
-            const valueText = (typeof value === 'number') ? value.toString() : value
-            const attribute = this.__attributes.find(attr => attr.attribute === id)
-            const attrText = (typeof attribute.value === 'number') ? attribute.value.toString() : attribute.value
+            console.log('id ' + id)
+            console.log('value ' + value)
+            console.log(typeof value)
+            const valueText: string = (typeof value === 'number') ? value.toString() : value
+            const attribute = this._attributes.find(attr => attr.attribute === id)
+            if (!attribute) {
+                return (valueText === '' || valueText === '0')
+            }
+            const attrText: string = (typeof attribute.value === 'number') ? attribute.value.toString() : attribute.value
             return attrText === valueText
         }
 
         clone(): CardData {
             const clone = new CardData()
-            this.__attributes.forEach(attribute => {
+            this._attributes.forEach(attribute => {
                 clone.setAttribute(attribute.attribute, attribute.value)
             })
             return clone
