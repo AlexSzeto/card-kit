@@ -40,7 +40,7 @@ enum CardLayoutSpreadDirections {
     UpDown,
 }
 
-//% color="#183f4e" icon="\uf249" block="Card Design"
+//% color="#183f4e" icon="\uf044" block="Card Design"
 namespace cardDesign {
 
     const DEFAULT_CARD_FRONT = img`
@@ -271,7 +271,6 @@ namespace cardDesign {
 
 }
 
-// color="#255f74" icon="\uf044" block="Deck Builder"
 namespace cardDesign {
 
     //% shim=ENUM_GET
@@ -574,12 +573,14 @@ namespace cardKit {
         return card.stamp
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
         return cardCore.getCursorCard()
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="cursor card container id"
     export function getCursorContainerId(): string {
@@ -591,6 +592,7 @@ namespace cardKit {
         }
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="move cursor between cards in $container with buttons"
     //% container.shadow="variables_get" container.defl="myCardContainer"
@@ -599,6 +601,7 @@ namespace cardKit {
         autoLayoutControl = true
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="stop cursor controls"
     export function disableLayoutButtonControl() {         
@@ -606,6 +609,7 @@ namespace cardKit {
         cardCore.removeCursor()
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="move cursor $direction"
     export function moveCursorInDirection(direction: PointerDirections) {
@@ -634,6 +638,7 @@ namespace cardKit {
         }
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
@@ -641,17 +646,13 @@ namespace cardKit {
         cardCore.pointCursorAt(sprite)
     }
 
+    //% color="#9c3097"
     //% group="Cursor"
     //% block="hide cursor"
     export function removeCursor() {
         cardCore.removeCursor()
     }
     
-    //% group="Move Card"
-    //% block="shuffle $container cards"
-    //% container.shadow="variables_get" container.defl="myCardContainer"
-    export function shuffleCards(container: cardCore.CardContainer) {}
-
     //% group="Move Card" blockSetVariable="myCard"
     //% block="remove $position card from $container"
     //% container.shadow="variables_get" container.defl="myCardContainer"
@@ -814,6 +815,11 @@ namespace cardKit {
         container.setLayer(layer)
     }
 
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="shuffle $container cards"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function shuffleCards(container: cardCore.CardContainer) {}
+
     //% group="Deck/Pile Operations" blockSetVariable="myCardContainer"
     //% block="deck by removing $stack top $count cards"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
@@ -824,7 +830,14 @@ namespace cardKit {
     }
 
     //% group="Deck/Pile Operations"
-    //% block="flip deck $stack top card"
+    //% block="flip entire deck or pile $stack"
+    //% stack.shadow="variables_get" stack.defl="myCardContainer"
+    export function flipEntireStack(stack: cardCore.CardStack) {
+        stack.flipStack()
+    }
+        
+    //% group="Deck/Pile Operations"
+    //% block="flip deck or pile $stack top card"
     //% stack.shadow="variables_get" stack.defl="myCardContainer"
     export function flipStackTopCard(stack: cardCore.CardStack) {
         stack.flipTopCard()
@@ -846,7 +859,7 @@ namespace cardKit {
     }
 
     //% group="Hand/Grid Operations"
-    //% block="destroy $container cards"
+    //% block="destroy hand or grid $container cards"
     //% container.shadow="variables_get" container.defl="myCardContainer"
     //% spacing.defl=1
     export function destroyCardLayoutCards(container: cardCore.LayoutContainer) {
@@ -874,14 +887,14 @@ namespace cardKit {
     }
 
     //% group="Grid Operations"
-    //% block="lock $grid card positions"
+    //% block="lock grid $grid card positions"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function lockGridCardPositions(grid: cardCore.CardGrid) {
         grid.lock()
     }
 
     //% group="Grid Operations"
-    //% block="unlock $grid card positions"
+    //% block="unlock grid $grid card positions"
     //% grid.shadow="variables_get" grid.defl="myCardContainer"
     export function unlockGridCardPositions(grid: cardCore.CardGrid) {
         grid.unlock()

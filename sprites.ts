@@ -240,9 +240,9 @@ namespace cardCore {
             }
         }
 
-        flipStack(isFaceUp: boolean): void {
-            this.isStackFaceUp = isFaceUp
-            this.isTopCardFaceUp = isFaceUp
+        flipStack(): void {
+            this.isStackFaceUp = !this.isStackFaceUp
+            this.isTopCardFaceUp = this.isStackFaceUp
             this.refreshImage()
         }
 
