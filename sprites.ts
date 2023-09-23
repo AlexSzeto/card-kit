@@ -106,7 +106,6 @@ namespace cardCore {
                 return
             }
             if (extraAnimations.hasFixedFrameAnimation(this)) {
-                console.log('reversing')
                 extraAnimations.reverseFixedFrameAnimation(this)
             }
             extraAnimations.fixedFrameAnimate(
@@ -118,7 +117,6 @@ namespace cardCore {
                 FLIP_SCALES,
                 null,
                 (_, step) => {
-                    console.log('step '+step)
                     if (step == FLIP_SCALES.length / 2) {
                         this._isFaceUp = !this._isFaceUp
                         this.refreshImage()

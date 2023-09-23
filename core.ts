@@ -40,9 +40,6 @@ namespace cardCore {
         }
 
         attributeEquals(id: number, value: CardAttributeValues): boolean {
-            console.log('id ' + id)
-            console.log('value ' + value)
-            console.log(typeof value)
             const valueText: string = (typeof value === 'number') ? value.toString() : value
             const attribute = this._attributes.find(attr => attr.attribute === id)
             if (!attribute) {
