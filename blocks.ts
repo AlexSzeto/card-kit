@@ -391,6 +391,7 @@ namespace cardKit {
     }
 
     //% group="Create" blockSetVariable="myCardContainer"
+    //% inlineInputMode=inline
     //% block="empty card hand id $id x $x y $y spread $spreadDirection|| add cards face up $isFaceUp"
     //% design.shadow="variables_get" design.defl="myCardDesign"
     //% id.defl="Player Hand"
@@ -452,6 +453,7 @@ namespace cardKit {
     `
 
     //% group="Create" blockSetVariable="myCardContainer"
+    //% inlineInputMode=inline
     //% block="empty card grid id $id x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
     //% id.defl="Card Grid"
     //% x.defl=80 y.defl=60
