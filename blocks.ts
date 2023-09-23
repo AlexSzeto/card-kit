@@ -41,7 +41,6 @@ enum CardLayoutSpreadDirections {
 }
 
 //% color="#183f4e" icon="\uf249" block="Card Design"
-//% groups="['Create', 'Add Row', 'Add Text', 'Add Image', 'Add Misc', 'Graphics', 'Dimensions']"
 namespace cardDesign {
 
     const DEFAULT_CARD_FRONT = img`
@@ -272,9 +271,8 @@ namespace cardDesign {
 
 }
 
-//% color="#255f74" icon="\uf044" block="Deck Builder"
-//% groups=['Deck Builder']
-namespace deckBuilder {
+// color="#255f74" icon="\uf044" block="Deck Builder"
+namespace cardDesign {
 
     //% shim=ENUM_GET
     //% blockId="attributePicker"
@@ -290,6 +288,7 @@ namespace deckBuilder {
         return arg;
     }
 
+    //% color="#255f74"
     //% group="Deck Builder" blockSetVariable="myCardDeck"
     //% block="empty $design deck named $id"
     //% design.shadow="variables_get" design.defl="myCardDesign"
@@ -305,6 +304,7 @@ namespace deckBuilder {
         ) {}
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% weight=100
     //% blockId="numberAttributePicker"
@@ -314,6 +314,7 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, [value])
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="textAttributePicker"
     //% block="$attribute $text"
@@ -322,6 +323,7 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, [text])
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
     //% block="$attribute each number from $startNumber to $endNumber"
@@ -336,6 +338,7 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, values)
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="numberListVariationsPicker"
     //% block="$attribute each number from $values"
@@ -344,6 +347,7 @@ namespace deckBuilder {
         return new CardAttributeVariation(attribute, values)
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% blockId="textVariationsPicker"
     //% block="$attribute each text from $texts"
@@ -366,6 +370,7 @@ namespace deckBuilder {
         }
     }
 
+    //% color="#255f74"
     //% group="Deck Builder"
     //% block="add to $deck cards combinations of $variations|| make $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myCardDeck"
