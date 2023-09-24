@@ -1,6 +1,8 @@
 namespace cardKit {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
+    //% group="Playing Cards Preset" blockSetVariable="myCardDesign"
+    //% block="playing cards design"
     export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {
         if (!playingCardsDesignTemplate) {
             let design = cardDesign.createCardDesignTemplate()

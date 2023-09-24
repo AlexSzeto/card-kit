@@ -40,7 +40,8 @@ enum CardLayoutSpreadDirections {
     UpDown,
 }
 
-//% color="#307d9c" icon="\uf044" block="Card Design"
+//% color="#307d9c" icon="\uf2bb" block="Card Design"
+//% advanced="true"
 namespace cardDesign {
 
     const DEFAULT_CARD_FRONT = img`
@@ -843,6 +844,17 @@ namespace cardKit {
         layer: number
     ) {
         container.setLayer(layer)
+    }
+
+    //% group="Deck/Pile/Hand/Grid Operations"
+    //% block="set $container card design to $design"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    //% design.shadow="variables_get" design.defl="myCardDesign"
+    export function setContainerDesign(
+        container: cardCore.CardContainer,
+        design: cardDesign.CardDesignTemplate
+    ) {
+        container.setDesign(design.export())
     }
 
     //% group="Deck/Pile/Hand/Grid Operations"

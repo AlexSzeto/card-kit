@@ -83,6 +83,13 @@ namespace cardCore {
             return this.design
         }
 
+        setDesign(design: CardDesign): void {
+            if (this.design != design) {
+                this.design = design
+                this.refreshImage()
+            }
+        }
+
         getData(): CardData {
             return this.card
         }
@@ -185,6 +192,7 @@ namespace cardCore {
 
         setPosition(x: number, y: number): void
         setLayer(z: number): void
+        setDesign(design: CardDesign): void
 
         shuffle(): void
 
@@ -248,6 +256,12 @@ namespace cardCore {
             if (this.isTopCardFaceUp) {
                 this.refreshImage()
             }
+        }
+
+        setDesign(design: CardDesign): void {
+            this.design = design
+            this.cards.forEach(card => card.setDesign(design))
+            this.refreshImage()
         }
 
         split(id: string, count: number) {
@@ -433,6 +447,11 @@ namespace cardCore {
             this.reposition()
         }
 
+        setDesign(design: CardDesign): void {
+            this.cards.forEach(card => card.setDesign(design))
+            this.reposition()
+        }
+
         insertCard(card: Card, index: number = -1): void {
             if (card == null) {
                 return
@@ -558,6 +577,12 @@ namespace cardCore {
             this.hoverX = x
             this.hoverY = y
             this.reposition()
+        }
+
+        setDesign(design: CardDesign): void {
+            this.cardWidth = -1
+            this.cardHeight = -1
+            super.setDesign(design)
         }
         
         reposition() {
@@ -723,6 +748,12 @@ namespace cardCore {
                 }
             }
             this.reposition()
+        }
+
+        setDesign(design: CardDesign): void {
+            this.cardWidth = -1
+            this.cardHeight = -1
+            super.setDesign(design)
         }
 
         setScrollSprites(back: Sprite, forward: Sprite) {
