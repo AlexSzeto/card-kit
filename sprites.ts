@@ -1,18 +1,30 @@
 enum CardCursorAnchors {
+    //% block="top left"
     TopLeft,
+    //% block="top"
     Top,
+    //% block="top right"
     TopRight,
+    //% block="left"
     Left,
+    //% block="center"
     Center,
+    //% block="right"
     Right,
+    //% block="bottom left"
     BottomLeft,
+    //% block="bottom"
     Bottom,
+    //% block="bottom right"
     BottomRight
 }
 
 enum CardLayoutSpreadAlignments {
+    //% block="start"
     Start,
+    //% block="center"
     Center,
+    //% block="end"
     End
 }
 
@@ -315,6 +327,9 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
+            if (index == -1 && this.cards.length > 0) {
+                return this.cards[this.cards.length - 1]
+            }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
@@ -426,6 +441,9 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
+            if (index == -1 && this.cards.length > 0) {
+                return this.cards[this.cards.length - 1]
+            }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
