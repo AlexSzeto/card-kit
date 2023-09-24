@@ -113,7 +113,7 @@ namespace cardCore {
         }
 
         set isFaceUp(value: boolean) {
-            extraAnimations.clearAnimations(this, true)
+            extraAnimations.clearFixedFrameAnimation(this, true)
             if (value != this._isFaceUp) {
                 this._isFaceUp = value
                 this.refreshImage()
