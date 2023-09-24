@@ -467,9 +467,13 @@ namespace cardCore {
             const blank = new Card(this.cards[index].getDesign(), EmptyData, true)
             const card = this.cards[index]
             blank.setPosition(card.x, card.y)
-            pointCursorAt(blank)
             this.cards.splice(index, 1)
             this.cards.insertAt(index, blank)
+            if (this.getCardCount() === 0) {
+                removeCursor()
+            } else if (getCursorCard() === card) {
+                pointCursorAt(blank)
+            }
             return card
         }
 
