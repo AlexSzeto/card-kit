@@ -1,5 +1,5 @@
-// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.41/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"0.0.9","target":"arcade","targetVersion":"1.12.41","repo":"alexszeto/card-kit"}
-// total=2265122 new=25.96% cached=68.44% other=5.60%
+// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.41/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"0.0.10","target":"arcade","targetVersion":"1.12.41","repo":"alexszeto/card-kit"}
+// total=2265935 new=25.98% cached=68.41% other=5.60%
 (function (ectx) {
 'use strict';
 const runtime = ectx.runtime;
@@ -641,7 +641,7 @@ const pxsim_pxtrt = pxsim.pxtrt;
 const pxsim_numops = pxsim.numops;
 
 
-function _main___P78644(s) {
+function _main___P81724(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -1227,17 +1227,17 @@ switch (step) {
     s.callLocIdx = 185; s.pc = 39; return s.tmp_0;
   case 39:
     r0 = s.retval;
-    globals.Card___78649 = (r0);
+    globals.Card___81729 = (r0);
     s.tmp_0 = SpriteKind_create__P48235_mk(s);
     s.callLocIdx = 186; s.pc = 40; return s.tmp_0;
   case 40:
     r0 = s.retval;
-    globals.CardStack___78652 = (r0);
+    globals.CardStack___81732 = (r0);
     s.tmp_0 = SpriteKind_create__P48235_mk(s);
     s.callLocIdx = 187; s.pc = 41; return s.tmp_0;
   case 41:
     r0 = s.retval;
-    globals.Cursor___78655 = (r0);
+    globals.Cursor___81735 = (r0);
     r0 = pxsim_Array__mk();
     s.tmp_0 = r0;
     r0 = pxsim_Array__push(s.tmp_0, 1);
@@ -1246,24 +1246,24 @@ switch (step) {
     r0 = pxsim_Array__push(s.tmp_0, 0.3);
     r0 = pxsim_Array__push(s.tmp_0, 0.6);
     r0 = pxsim_Array__push(s.tmp_0, 1);
-    globals.FLIP_SCALES___78663 = (s.tmp_0);
+    globals.FLIP_SCALES___81743 = (s.tmp_0);
     r0 = pxsim_Array__mk();
     s.tmp_0 = r0;
     r0 = pxsim_Array__push(s.tmp_0, 1);
     r0 = pxsim_Array__push(s.tmp_0, 0.3);
     r0 = pxsim_Array__push(s.tmp_0, 0.1);
     r0 = pxsim_Array__push(s.tmp_0, 0.1);
-    globals.COLLAPSE_SCALE___78668 = (s.tmp_0);
+    globals.COLLAPSE_SCALE___81748 = (s.tmp_0);
     r0 = pxsim_Array__mk();
     s.tmp_0 = r0;
     r0 = pxsim_Array__push(s.tmp_0, 0.1);
     r0 = pxsim_Array__push(s.tmp_0, 0.7);
     r0 = pxsim_Array__push(s.tmp_0, 0.9);
     r0 = pxsim_Array__push(s.tmp_0, 1);
-    globals.EXPAND_SCALE___78673 = (s.tmp_0);
-    globals.flipAnimationDuration___78675 = (300);
-    globals.slideAnimationDuration___78677 = (500);
-    globals.transitionZ___78679 = (100);
+    globals.EXPAND_SCALE___81753 = (s.tmp_0);
+    globals.flipAnimationDuration___81755 = (300);
+    globals.slideAnimationDuration___81757 = (500);
+    globals.transitionZ___81759 = (100);
     r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardData__C74097_VT);
     s.tmp_0 = r0;
     s.tmp_1 = cardCore_CardData_constructor__P74102_mk(s);
@@ -1273,34 +1273,34 @@ switch (step) {
     s.callLocIdx = 193; s.pc = 42; return s.tmp_1;
   case 42:
     r0 = s.retval;
-    globals.EmptyData___78683 = (s.tmp_0);
+    globals.EmptyData___81763 = (s.tmp_0);
     s.tmp_0 = sprites_onDestroyed__P48213_mk(s);
-    s.tmp_0.arg0 = globals.Card___78649;
-    s.tmp_0.arg1 = cardCore_inline__P78702;
+    s.tmp_0.arg0 = globals.Card___81729;
+    s.tmp_0.arg1 = cardCore_inline__P81782;
     s.callLocIdx = 218; s.pc = 43; return s.tmp_0;
   case 43:
     r0 = s.retval;
     s.tmp_0 = sprites_onDestroyed__P48213_mk(s);
-    s.tmp_0.arg0 = globals.CardStack___78652;
-    s.tmp_0.arg1 = cardCore_inline__P78735;
+    s.tmp_0.arg0 = globals.CardStack___81732;
+    s.tmp_0.arg1 = cardCore_inline__P81815;
     s.callLocIdx = 280; s.pc = 44; return s.tmp_0;
   case 44:
     r0 = s.retval;
-    globals.cursorAnchor___78791 = (7);
-    globals.cursorOffsetX___78793 = (0);
-    globals.cursorOffsetY___78795 = (0);
-    globals.mostRecentCursorContainer___78797 = (null);
-    globals.cursorTarget___78799 = (null);
+    globals.cursorAnchor___81871 = (7);
+    globals.cursorOffsetX___81873 = (0);
+    globals.cursorOffsetY___81875 = (0);
+    globals.mostRecentCursorContainer___81877 = (null);
+    globals.cursorTarget___81879 = (null);
     s.tmp_0 = sprites_create__P48031_mk(s);
-    r0 = pxsim.image.ofBuffer(_hex78804);
+    r0 = pxsim.image.ofBuffer(_hex81884);
     s.tmp_0.arg0 = r0;
-    s.tmp_0.arg1 = globals.Cursor___78655;
-    s.callLocIdx = 397; s.pc = 45; return s.tmp_0;
+    s.tmp_0.arg1 = globals.Cursor___81735;
+    s.callLocIdx = 400; s.pc = 45; return s.tmp_0;
   case 45:
     r0 = s.retval;
-    globals.cursor___78801 = (r0);
+    globals.cursor___81881 = (r0);
     s.tmp_0 = if_z_2_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_0.arg1 = 1000;
     if (!s.tmp_0.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapSetByString(s.tmp_0.arg0, "z", s.tmp_0.arg1);
@@ -1308,20 +1308,20 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/z"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["z"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 398; s.pc = 46; return s.tmp_0; }
+     else { s.callLocIdx = 401; s.pc = 46; return s.tmp_0; }
     }
   case 46:
     r0 = s.retval;
     s.tmp_0 = Sprite_setFlag__P48175_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 399; s.pc = 47; return s.tmp_0;
+    s.callLocIdx = 402; s.pc = 47; return s.tmp_0;
   case 47:
     r0 = s.retval;
     s.tmp_0 = game_onUpdate__P48779_mk(s);
-    s.tmp_0.arg0 = cardCore_inline__P78812;
-    s.callLocIdx = 407; s.pc = 48; return s.tmp_0;
+    s.tmp_0.arg0 = cardCore_inline__P81892;
+    s.callLocIdx = 410; s.pc = 48; return s.tmp_0;
   case 48:
     r0 = s.retval;
     r0 = pxsim_Array__mk();
@@ -1329,13 +1329,13 @@ switch (step) {
     r0 = pxsim_Array__mk();
     globals.fixedFrameTrackers___74333 = (r0);
     s.tmp_0 = game_runtime__P48781_mk(s);
-    s.callLocIdx = 422; s.pc = 49; return s.tmp_0;
+    s.callLocIdx = 425; s.pc = 49; return s.tmp_0;
   case 49:
     r0 = s.retval;
     globals.elapsedTime___74335 = (r0);
     s.tmp_0 = game_onUpdate__P48779_mk(s);
     s.tmp_0.arg0 = extraAnimations_inline__P74338;
-    s.callLocIdx = 443; s.pc = 50; return s.tmp_0;
+    s.callLocIdx = 446; s.pc = 50; return s.tmp_0;
   case 50:
     r0 = s.retval;
     globals.playingCardsDesignTemplate___56953 = (null);
@@ -1356,35 +1356,35 @@ switch (step) {
     s.tmp_0.arg0 = globals.left___47871;
     s.tmp_0.arg1 = 2049;
     s.tmp_0.arg2 = cardKit_inline__P78942;
-    s.callLocIdx = 614; s.pc = 51; return s.tmp_0;
+    s.callLocIdx = 617; s.pc = 51; return s.tmp_0;
   case 51:
     r0 = s.retval;
     s.tmp_0 = controller_Button_onEvent__P47952_mk(s);
     s.tmp_0.arg0 = globals.right___47873;
     s.tmp_0.arg1 = 2049;
     s.tmp_0.arg2 = cardKit_inline__P78950;
-    s.callLocIdx = 616; s.pc = 52; return s.tmp_0;
+    s.callLocIdx = 619; s.pc = 52; return s.tmp_0;
   case 52:
     r0 = s.retval;
     s.tmp_0 = controller_Button_onEvent__P47952_mk(s);
     s.tmp_0.arg0 = globals.up___47872;
     s.tmp_0.arg1 = 2049;
     s.tmp_0.arg2 = cardKit_inline__P78958;
-    s.callLocIdx = 618; s.pc = 53; return s.tmp_0;
+    s.callLocIdx = 621; s.pc = 53; return s.tmp_0;
   case 53:
     r0 = s.retval;
     s.tmp_0 = controller_Button_onEvent__P47952_mk(s);
     s.tmp_0.arg0 = globals.down___47874;
     s.tmp_0.arg1 = 2049;
     s.tmp_0.arg2 = cardKit_inline__P78966;
-    s.callLocIdx = 620; s.pc = 54; return s.tmp_0;
+    s.callLocIdx = 623; s.pc = 54; return s.tmp_0;
   case 54:
     r0 = s.retval;
     s.tmp_0 = controller_Button_onEvent__P47952_mk(s);
     s.tmp_0.arg0 = globals.A___47869;
     s.tmp_0.arg1 = 2049;
     s.tmp_0.arg2 = inline__P74556;
-    s.callLocIdx = 642; s.pc = 55; return s.tmp_0;
+    s.callLocIdx = 645; s.pc = 55; return s.tmp_0;
   case 55:
     r0 = s.retval;
     globals.CardsMatch___74571 = (0);
@@ -1404,7 +1404,7 @@ switch (step) {
     r0 = pxsim.image.ofBuffer(_hex74588);
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = globals.Player___48236;
-    s.callLocIdx = 663; s.pc = 56; return s.tmp_0;
+    s.callLocIdx = 666; s.pc = 56; return s.tmp_0;
   case 56:
     r0 = s.retval;
     globals.TitleCard___74563 = (r0);
@@ -1413,13 +1413,13 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-_main___P78644.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
-_main___P78644.continuations = [  ]
+_main___P81724.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
+_main___P81724.continuations = [  ]
 
-function _main___P78644_mk(s) {
+function _main___P81724_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: _main___P78644, depth: s.depth + 1,
+        parent: s, fn: _main___P81724, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -1516,7 +1516,7 @@ const _hex53193 = pxsim.BufferMethods.createBufferFromHex("870403000500000000100
 const _hex53195 = pxsim.BufferMethods.createBufferFromHex("8704030005000000101000001010000010100000")
 const _hex53197 = pxsim.BufferMethods.createBufferFromHex("8704030005000000000000001100000000000000")
 const _hex53199 = pxsim.BufferMethods.createBufferFromHex("8704030005000000110000000000000011000000")
-const _hex78804 = pxsim.BufferMethods.createBufferFromHex("870409000a0000000000f00f0000000000001ff100000000f0ffffdd0f0000001f111111fd0000001f111111f1000000f0ffdb11f100000000f0db11f10000000000df11fd0000000000f0ff0f000000")
+const _hex81884 = pxsim.BufferMethods.createBufferFromHex("870409000a0000000000f00f0000000000001ff100000000f0ffffdd0f0000001f111111fd0000001f111111f1000000f0ffdb11f100000000f0db11f10000000000df11fd0000000000f0ff0f000000")
 const _hex78860 = pxsim.BufferMethods.createBufferFromHex("8704060006000000c0cc0c00bc11cb001c11c1001c11c100bc11cb00c0cc0c00")
 const _hex78863 = pxsim.BufferMethods.createBufferFromHex("8704030003000000100000001101000010000000")
 const _hex78898 = pxsim.BufferMethods.createBufferFromHex("87040800080000000000ff0000f0b10f00dfb10ff01db10ff01db10f00dfb10f00f0b10f0000ff00")
@@ -2035,7 +2035,7 @@ function gameOverConfig_inline__P50943_mk(s) {
 
 
 
-function cardCore_inline__P78702(s) {
+function cardCore_inline__P81782(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -2050,11 +2050,11 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    r0 = checkSubtype(r0, cardCore_Card__C78686_VT);
+    r0 = checkSubtype(r0, cardCore_Card__C81766_VT);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_1 = cardCore_Card_detachFromContainer__P78695_mk(s);
+    s.tmp_1 = cardCore_Card_detachFromContainer__P81775_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.callLocIdx = 217; s.pc = 3; return s.tmp_1;
   case 3:
@@ -2065,12 +2065,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_inline__P78702.info = {"start":4052,"length":122,"line":149,"column":41,"endLine":153,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":["sprite"]}
+cardCore_inline__P81782.info = {"start":4052,"length":122,"line":149,"column":41,"endLine":153,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":["sprite"]}
 
-function cardCore_inline__P78702_mk(s) {
+function cardCore_inline__P81782_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_inline__P78702, depth: s.depth + 1,
+        parent: s, fn: cardCore_inline__P81782, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -2081,7 +2081,7 @@ function cardCore_inline__P78702_mk(s) {
 
 
 
-function cardCore_inline__P78735(s) {
+function cardCore_inline__P81815(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -2096,11 +2096,11 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    r0 = checkSubtype(r0, cardCore_CardStack__C78711_VT);
+    r0 = checkSubtype(r0, cardCore_CardStack__C81791_VT);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_1 = cardCore_CardStack_destroyCards__P78729_mk(s);
+    s.tmp_1 = cardCore_CardStack_destroyCards__P81809_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.callLocIdx = 279; s.pc = 3; return s.tmp_1;
   case 3:
@@ -2111,12 +2111,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_inline__P78735.info = {"start":11619,"length":142,"line":368,"column":46,"endLine":372,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":["sprite"]}
+cardCore_inline__P81815.info = {"start":11619,"length":142,"line":368,"column":46,"endLine":372,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":["sprite"]}
 
-function cardCore_inline__P78735_mk(s) {
+function cardCore_inline__P81815_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_inline__P78735, depth: s.depth + 1,
+        parent: s, fn: cardCore_inline__P81815, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -2127,7 +2127,7 @@ function cardCore_inline__P78735_mk(s) {
 
 
 
-function cardCore_inline__P78812(s) {
+function cardCore_inline__P81892(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -2137,7 +2137,7 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    r0 = pxsim_numops_toBoolDecr(globals.cursor___78801);
+    r0 = pxsim_numops_toBoolDecr(globals.cursor___81881);
     s.tmp_3 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_3);
     s.tmp_2 = r0;
@@ -2147,7 +2147,7 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 3; continue; }
-    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___78799);
+    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___81879);
     s.tmp_7 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_7);
     s.tmp_6 = r0;
@@ -2157,59 +2157,59 @@ switch (step) {
     s.tmp_4 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_4);
     if (!r0) { step = 1; continue; }
-    s.tmp_8 = cardCore_setCursorAnchor__P78820_mk(s);
-    s.tmp_8.arg0 = globals.cursorAnchor___78791;
-    s.callLocIdx = 400; s.pc = 5; return s.tmp_8;
+    s.tmp_8 = cardCore_setCursorAnchor__P81900_mk(s);
+    s.tmp_8.arg0 = globals.cursorAnchor___81871;
+    s.callLocIdx = 403; s.pc = 5; return s.tmp_8;
   case 5:
     r0 = s.retval;
     s.tmp_0 = Sprite_x__P48111_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_5 = Sprite_x__P48110_mk(s);
-    s.tmp_5.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 401; s.pc = 7; return s.tmp_5;
+    s.tmp_5.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 404; s.pc = 7; return s.tmp_5;
   case 7:
     r0 = s.retval;
     s.tmp_4 = r0;
     s.tmp_7 = Sprite_x__P48110_mk(s);
-    s.tmp_7.arg0 = globals.cursor___78801;
-    s.callLocIdx = 402; s.pc = 8; return s.tmp_7;
+    s.tmp_7.arg0 = globals.cursor___81881;
+    s.callLocIdx = 405; s.pc = 8; return s.tmp_7;
   case 8:
     r0 = s.retval;
     s.tmp_6 = r0;
     r0 = (s.tmp_4 + s.tmp_6);
     s.tmp_3 = r0;
-    r0 = (s.tmp_3 + globals.cursorOffsetX___78793);
+    r0 = (s.tmp_3 + globals.cursorOffsetX___81873);
     s.tmp_2 = r0;
     r0 = (s.tmp_2 / 2);
     s.tmp_1 = r0;
     r0 = pxsim.Math_.round(s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 403; s.pc = 6; return s.tmp_0;
+    s.callLocIdx = 406; s.pc = 6; return s.tmp_0;
   case 6:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_5 = Sprite_y__P48112_mk(s);
-    s.tmp_5.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 404; s.pc = 10; return s.tmp_5;
+    s.tmp_5.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 407; s.pc = 10; return s.tmp_5;
   case 10:
     r0 = s.retval;
     s.tmp_4 = r0;
     s.tmp_7 = Sprite_y__P48112_mk(s);
-    s.tmp_7.arg0 = globals.cursor___78801;
-    s.callLocIdx = 405; s.pc = 11; return s.tmp_7;
+    s.tmp_7.arg0 = globals.cursor___81881;
+    s.callLocIdx = 408; s.pc = 11; return s.tmp_7;
   case 11:
     r0 = s.retval;
     s.tmp_6 = r0;
     r0 = (s.tmp_4 + s.tmp_6);
     s.tmp_3 = r0;
-    r0 = (s.tmp_3 + globals.cursorOffsetY___78795);
+    r0 = (s.tmp_3 + globals.cursorOffsetY___81875);
     s.tmp_2 = r0;
     r0 = (s.tmp_2 / 2);
     s.tmp_1 = r0;
     r0 = pxsim.Math_.round(s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 406; s.pc = 9; return s.tmp_0;
+    s.callLocIdx = 409; s.pc = 9; return s.tmp_0;
   case 9:
     r0 = s.retval;
   case 1:
@@ -2220,12 +2220,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_inline__P78812.info = {"start":34974,"length":315,"line":994,"column":18,"endLine":1002,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
+cardCore_inline__P81892.info = {"start":35119,"length":315,"line":998,"column":18,"endLine":1006,"endColumn":5,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
 
-function cardCore_inline__P78812_mk(s) {
+function cardCore_inline__P81892_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_inline__P78812, depth: s.depth + 1,
+        parent: s, fn: cardCore_inline__P81892, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -2257,14 +2257,14 @@ switch (step) {
     s.tracker___74353 = undefined;
     s.isComplete___74357 = undefined;
     s.tmp_1 = game_runtime__P48781_mk(s);
-    s.callLocIdx = 423; s.pc = 15; return s.tmp_1;
+    s.callLocIdx = 426; s.pc = 15; return s.tmp_1;
   case 15:
     r0 = s.retval;
     s.tmp_0 = r0;
     r0 = (s.tmp_0 - globals.elapsedTime___74335);
     s.elapsed___74339 = (r0);
     s.tmp_0 = game_runtime__P48781_mk(s);
-    s.callLocIdx = 424; s.pc = 16; return s.tmp_0;
+    s.callLocIdx = 427; s.pc = 16; return s.tmp_0;
   case 16:
     r0 = s.retval;
     globals.elapsedTime___74335 = (r0);
@@ -2291,7 +2291,7 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["elapsed"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["elapsed"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 425; s.pc = 18; return s.tmp_3; }
+     else { s.callLocIdx = 428; s.pc = 18; return s.tmp_3; }
     }
   case 18:
     r0 = s.retval;
@@ -2304,7 +2304,7 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/elapsed"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["elapsed"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 426; s.pc = 17; return s.tmp_0; }
+     else { s.callLocIdx = 429; s.pc = 17; return s.tmp_0; }
     }
   case 17:
     r0 = s.retval;
@@ -2326,7 +2326,7 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["elapsed"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["elapsed"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 427; s.pc = 19; return s.tmp_3; }
+     else { s.callLocIdx = 430; s.pc = 19; return s.tmp_3; }
     }
   case 19:
     r0 = s.retval;
@@ -2339,7 +2339,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["msPerFrame"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["msPerFrame"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 428; s.pc = 20; return s.tmp_5; }
+     else { s.callLocIdx = 431; s.pc = 20; return s.tmp_5; }
     }
   case 20:
     r0 = s.retval;
@@ -2361,7 +2361,7 @@ switch (step) {
       s.tmp_10.fn = s.tmp_10.arg0.vtable.iface["step"];
       if (s.tmp_10.fn == null) { s.retval = s.tmp_10.arg0.fields["step"]; }
       else if (!s.tmp_10.fn.isGetter) { s.retval = bind(s.tmp_10); }
-     else { s.callLocIdx = 430; s.pc = 22; return s.tmp_10; }
+     else { s.callLocIdx = 433; s.pc = 22; return s.tmp_10; }
     }
   case 22:
     r0 = s.retval;
@@ -2374,7 +2374,7 @@ switch (step) {
       s.tmp_12.fn = s.tmp_12.arg0.vtable.iface["direction"];
       if (s.tmp_12.fn == null) { s.retval = s.tmp_12.arg0.fields["direction"]; }
       else if (!s.tmp_12.fn.isGetter) { s.retval = bind(s.tmp_12); }
-     else { s.callLocIdx = 429; s.pc = 23; return s.tmp_12; }
+     else { s.callLocIdx = 432; s.pc = 23; return s.tmp_12; }
     }
   case 23:
     r0 = s.retval;
@@ -2387,7 +2387,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["set/step"];
       if (s.tmp_7.fn === null) { s.tmp_7.arg0.fields["step"] = s.tmp_7.arg1; }
       else if (s.tmp_7.fn === undefined) { failedCast(s.tmp_7.arg0) } 
-     else { s.callLocIdx = 431; s.pc = 21; return s.tmp_7; }
+     else { s.callLocIdx = 434; s.pc = 21; return s.tmp_7; }
     }
   case 21:
     r0 = s.retval;
@@ -2399,7 +2399,7 @@ switch (step) {
       s.tmp_2.fn = s.tmp_2.arg0.vtable.iface["direction"];
       if (s.tmp_2.fn == null) { s.retval = s.tmp_2.arg0.fields["direction"]; }
       else if (!s.tmp_2.fn.isGetter) { s.retval = bind(s.tmp_2); }
-     else { s.callLocIdx = 432; s.pc = 24; return s.tmp_2; }
+     else { s.callLocIdx = 435; s.pc = 24; return s.tmp_2; }
     }
   case 24:
     r0 = s.retval;
@@ -2419,7 +2419,7 @@ switch (step) {
       s.tmp_4.fn = s.tmp_4.arg0.vtable.iface["step"];
       if (s.tmp_4.fn == null) { s.retval = s.tmp_4.arg0.fields["step"]; }
       else if (!s.tmp_4.fn.isGetter) { s.retval = bind(s.tmp_4); }
-     else { s.callLocIdx = 433; s.pc = 25; return s.tmp_4; }
+     else { s.callLocIdx = 436; s.pc = 25; return s.tmp_4; }
     }
   case 25:
     r0 = s.retval;
@@ -2432,7 +2432,7 @@ switch (step) {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["totalSteps"];
       if (s.tmp_6.fn == null) { s.retval = s.tmp_6.arg0.fields["totalSteps"]; }
       else if (!s.tmp_6.fn.isGetter) { s.retval = bind(s.tmp_6); }
-     else { s.callLocIdx = 434; s.pc = 26; return s.tmp_6; }
+     else { s.callLocIdx = 437; s.pc = 26; return s.tmp_6; }
     }
   case 26:
     r0 = s.retval;
@@ -2454,7 +2454,7 @@ switch (step) {
       s.tmp_10.fn = s.tmp_10.arg0.vtable.iface["direction"];
       if (s.tmp_10.fn == null) { s.retval = s.tmp_10.arg0.fields["direction"]; }
       else if (!s.tmp_10.fn.isGetter) { s.retval = bind(s.tmp_10); }
-     else { s.callLocIdx = 435; s.pc = 27; return s.tmp_10; }
+     else { s.callLocIdx = 438; s.pc = 27; return s.tmp_10; }
     }
   case 27:
     r0 = s.retval;
@@ -2474,7 +2474,7 @@ switch (step) {
       s.tmp_12.fn = s.tmp_12.arg0.vtable.iface["step"];
       if (s.tmp_12.fn == null) { s.retval = s.tmp_12.arg0.fields["step"]; }
       else if (!s.tmp_12.fn.isGetter) { s.retval = bind(s.tmp_12); }
-     else { s.callLocIdx = 436; s.pc = 28; return s.tmp_12; }
+     else { s.callLocIdx = 439; s.pc = 28; return s.tmp_12; }
     }
   case 28:
     r0 = s.retval;
@@ -2499,13 +2499,13 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 437; s.pc = 30; return s.tmp_1; }
+     else { s.callLocIdx = 440; s.pc = 30; return s.tmp_1; }
     }
   case 30:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = false;
-    s.callLocIdx = 438; s.pc = 29; return s.tmp_0;
+    s.callLocIdx = 441; s.pc = 29; return s.tmp_0;
   case 29:
     r0 = s.retval;
     r0 = (s.i___74346 - 1);
@@ -2514,7 +2514,7 @@ switch (step) {
   case 11:
     s.tmp_0 = extraAnimations_updateFixedFrameAnimation__P74410_mk(s);
     s.tmp_0.arg0 = s.tracker___74353;
-    s.callLocIdx = 439; s.pc = 31; return s.tmp_0;
+    s.callLocIdx = 442; s.pc = 31; return s.tmp_0;
   case 31:
     r0 = s.retval;
     s.tmp_0 = if_elapsed_2_mk(s);
@@ -2528,7 +2528,7 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["elapsed"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["elapsed"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 441; s.pc = 33; return s.tmp_3; }
+     else { s.callLocIdx = 444; s.pc = 33; return s.tmp_3; }
     }
   case 33:
     r0 = s.retval;
@@ -2541,7 +2541,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["msPerFrame"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["msPerFrame"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 440; s.pc = 34; return s.tmp_5; }
+     else { s.callLocIdx = 443; s.pc = 34; return s.tmp_5; }
     }
   case 34:
     r0 = s.retval;
@@ -2554,7 +2554,7 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/elapsed"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["elapsed"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 442; s.pc = 32; return s.tmp_0; }
+     else { s.callLocIdx = 445; s.pc = 32; return s.tmp_0; }
     }
   case 32:
     r0 = s.retval;
@@ -2615,7 +2615,7 @@ switch (step) {
     if (!r0) { step = 1; continue; }
     s.tmp_0 = cardKit_moveCursorInDirection__P78926_mk(s);
     s.tmp_0.arg0 = 2;
-    s.callLocIdx = 613; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 616; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
   case 1:
@@ -2652,7 +2652,7 @@ switch (step) {
     if (!r0) { step = 1; continue; }
     s.tmp_0 = cardKit_moveCursorInDirection__P78926_mk(s);
     s.tmp_0.arg0 = 3;
-    s.callLocIdx = 615; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 618; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
   case 1:
@@ -2689,7 +2689,7 @@ switch (step) {
     if (!r0) { step = 1; continue; }
     s.tmp_0 = cardKit_moveCursorInDirection__P78926_mk(s);
     s.tmp_0.arg0 = 0;
-    s.callLocIdx = 617; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 620; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
   case 1:
@@ -2726,7 +2726,7 @@ switch (step) {
     if (!r0) { step = 1; continue; }
     s.tmp_0 = cardKit_moveCursorInDirection__P78926_mk(s);
     s.tmp_0.arg0 = 1;
-    s.callLocIdx = 619; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 622; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
   case 1:
@@ -2766,17 +2766,17 @@ switch (step) {
     s.tmp_0.arg0 = globals.TitleCard___74563;
     s.tmp_0.arg1 = globals.disintegrate___49039;
     s.tmp_0.arg2 = 500;
-    s.callLocIdx = 639; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 642; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
     s.tmp_0 = SetupPlayField__P74567_mk(s);
-    s.callLocIdx = 640; s.pc = 4; return s.tmp_0;
+    s.callLocIdx = 643; s.pc = 4; return s.tmp_0;
   case 4:
     r0 = s.retval;
     { step = 2; continue; }
   case 1:
     s.tmp_0 = FlipCards__P74552_mk(s);
-    s.callLocIdx = 641; s.pc = 5; return s.tmp_0;
+    s.callLocIdx = 644; s.pc = 5; return s.tmp_0;
   case 5:
     r0 = s.retval;
   case 2:
@@ -2809,19 +2809,19 @@ switch (step) {
   case 0:
 
     s.Card___74610 = undefined;
-    s.unnamed392___U1 = undefined;
-    s.unnamed393___U2 = undefined;
+    s.unnamed420___U1 = undefined;
+    s.unnamed421___U2 = undefined;
     s.Card___74627 = undefined;
-    s.unnamed394___U4 = undefined;
-    s.unnamed395___U5 = undefined;
+    s.unnamed422___U4 = undefined;
+    s.unnamed423___U5 = undefined;
     s.tmp_2 = cardKit_getCardNumberAttribute__P78919_mk(s);
     s.tmp_3 = cardKit_getCursorCard__P78922_mk(s);
-    s.callLocIdx = 625; s.pc = 14; return s.tmp_3;
+    s.callLocIdx = 628; s.pc = 14; return s.tmp_3;
   case 14:
     r0 = s.retval;
     s.tmp_2.arg0 = r0;
     s.tmp_2.arg1 = 3;
-    s.callLocIdx = 626; s.pc = 13; return s.tmp_2;
+    s.callLocIdx = 629; s.pc = 13; return s.tmp_2;
   case 13:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -2831,24 +2831,24 @@ switch (step) {
     if (!r0) { step = 1; continue; }
     s.tmp_4 = cardKit_setCardNumberAttribute__P78916_mk(s);
     s.tmp_5 = cardKit_getCursorCard__P78922_mk(s);
-    s.callLocIdx = 627; s.pc = 16; return s.tmp_5;
+    s.callLocIdx = 630; s.pc = 16; return s.tmp_5;
   case 16:
     r0 = s.retval;
     s.tmp_4.arg0 = r0;
     s.tmp_4.arg1 = 3;
     s.tmp_4.arg2 = 1;
-    s.callLocIdx = 628; s.pc = 15; return s.tmp_4;
+    s.callLocIdx = 631; s.pc = 15; return s.tmp_4;
   case 15:
     r0 = s.retval;
     r0 = (globals.CardsFlipped___74583 + 1);
     globals.CardsFlipped___74583 = (r0);
     s.tmp_0 = cardKit_flipCard__P78915_mk(s);
     s.tmp_1 = cardKit_getCursorCard__P78922_mk(s);
-    s.callLocIdx = 629; s.pc = 18; return s.tmp_1;
+    s.callLocIdx = 632; s.pc = 18; return s.tmp_1;
   case 18:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
-    s.callLocIdx = 630; s.pc = 17; return s.tmp_0;
+    s.callLocIdx = 633; s.pc = 17; return s.tmp_0;
   case 17:
     r0 = s.retval;
   case 1:
@@ -2858,38 +2858,38 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 11; continue; }
     s.tmp_2 = FlippedCardsMatch__P74569_mk(s);
-    s.callLocIdx = 631; s.pc = 19; return s.tmp_2;
+    s.callLocIdx = 634; s.pc = 19; return s.tmp_2;
   case 19:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     if (!r0) { step = 7; continue; }
     s.Card___74610 = (undefined);
-    s.unnamed392___U1 = (globals.FlippedCards___74580);
-    s.unnamed393___U2 = (0);
+    s.unnamed420___U1 = (globals.FlippedCards___74580);
+    s.unnamed421___U2 = (0);
   case 3:
-    s.tmp_0 = r0 = s.unnamed393___U2;
-    r0 = pxsim_Array__length(s.unnamed392___U1);
+    s.tmp_0 = r0 = s.unnamed421___U2;
+    r0 = pxsim_Array__length(s.unnamed420___U1);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 4; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed392___U1, s.unnamed393___U2);
+    r0 = pxsim_Array__getAt(s.unnamed420___U1, s.unnamed421___U2);
     s.Card___74610 = (r0);
     s.tmp_2 = cardKit_addCardTo__P78930_mk(s);
     s.tmp_2.arg0 = globals.DiscardPile___74579;
     s.tmp_2.arg1 = s.Card___74610;
     s.tmp_2.arg2 = 0;
-    s.callLocIdx = 632; s.pc = 20; return s.tmp_2;
+    s.callLocIdx = 635; s.pc = 20; return s.tmp_2;
   case 20:
     r0 = s.retval;
-    r0 = (s.unnamed393___U2 + 1);
-    s.unnamed393___U2 = (r0);
+    r0 = (s.unnamed421___U2 + 1);
+    s.unnamed421___U2 = (r0);
     { step = 3; continue; }
   case 4:
-    s.unnamed392___U1 = (undefined);
+    s.unnamed420___U1 = (undefined);
     s.tmp_2 = cardKit_getContainerCardCount__P78972_mk(s);
     s.tmp_2.arg0 = globals.PlayGrid___74577;
-    s.callLocIdx = 633; s.pc = 21; return s.tmp_2;
+    s.callLocIdx = 636; s.pc = 21; return s.tmp_2;
   case 21:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -2899,7 +2899,7 @@ switch (step) {
     if (!r0) { step = 5; continue; }
     s.tmp_3 = game_gameOver__P48769_mk(s);
     s.tmp_3.arg0 = true;
-    s.callLocIdx = 634; s.pc = 22; return s.tmp_3;
+    s.callLocIdx = 637; s.pc = 22; return s.tmp_3;
   case 22:
     r0 = s.retval;
   case 5:
@@ -2908,42 +2908,42 @@ switch (step) {
   case 7:
     s.tmp_0 = pause__P46169_mk(s);
     s.tmp_0.arg0 = 500;
-    s.callLocIdx = 635; s.pc = 23; return s.tmp_0;
+    s.callLocIdx = 638; s.pc = 23; return s.tmp_0;
   case 23:
     r0 = s.retval;
     s.tmp_0 = info_changeLifeBy__P48333_mk(s);
     s.tmp_0.arg0 = -1;
-    s.callLocIdx = 636; s.pc = 24; return s.tmp_0;
+    s.callLocIdx = 639; s.pc = 24; return s.tmp_0;
   case 24:
     r0 = s.retval;
     s.Card___74627 = (undefined);
-    s.unnamed394___U4 = (globals.FlippedCards___74580);
-    s.unnamed395___U5 = (0);
+    s.unnamed422___U4 = (globals.FlippedCards___74580);
+    s.unnamed423___U5 = (0);
   case 8:
-    s.tmp_0 = r0 = s.unnamed395___U5;
-    r0 = pxsim_Array__length(s.unnamed394___U4);
+    s.tmp_0 = r0 = s.unnamed423___U5;
+    r0 = pxsim_Array__length(s.unnamed422___U4);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 9; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed394___U4, s.unnamed395___U5);
+    r0 = pxsim_Array__getAt(s.unnamed422___U4, s.unnamed423___U5);
     s.Card___74627 = (r0);
     s.tmp_2 = cardKit_setCardNumberAttribute__P78916_mk(s);
     s.tmp_2.arg0 = s.Card___74627;
     s.tmp_2.arg1 = 3;
     s.tmp_2.arg2 = 0;
-    s.callLocIdx = 637; s.pc = 25; return s.tmp_2;
+    s.callLocIdx = 640; s.pc = 25; return s.tmp_2;
   case 25:
     r0 = s.retval;
     s.tmp_0 = cardKit_flipCard__P78915_mk(s);
     s.tmp_0.arg0 = s.Card___74627;
-    s.callLocIdx = 638; s.pc = 26; return s.tmp_0;
+    s.callLocIdx = 641; s.pc = 26; return s.tmp_0;
   case 26:
     r0 = s.retval;
-    r0 = (s.unnamed395___U5 + 1);
-    s.unnamed395___U5 = (r0);
+    r0 = (s.unnamed423___U5 + 1);
+    s.unnamed423___U5 = (r0);
     { step = 8; continue; }
   case 9:
-    s.unnamed394___U4 = (undefined);
+    s.unnamed422___U4 = (undefined);
   case 10:
     globals.CardsFlipped___74583 = (0);
   case 11:
@@ -2966,11 +2966,11 @@ function FlipCards__P74552_mk(s) {
   tmp_4: undefined,
   tmp_5: undefined,
   Card___74610: undefined,
-  unnamed392___U1: undefined,
-  unnamed393___U2: undefined,
+  unnamed420___U1: undefined,
+  unnamed421___U2: undefined,
   Card___74627: undefined,
-  unnamed394___U4: undefined,
-  unnamed395___U5: undefined,
+  unnamed422___U4: undefined,
+  unnamed423___U5: undefined,
 } }
 
 
@@ -24523,12 +24523,12 @@ switch (step) {
     s.tmp_0.arg0 = s.arg0;
     if (!s.tmp_0.arg0.vtable.iface) {
       setupLambda(s.tmp_0, pxsim_pxtrt.mapGetByString(s.tmp_0.arg0, "getCardCount"), 1);
-      s.callLocIdx = 621; s.pc = 1; return s.tmp_0;
+      s.callLocIdx = 624; s.pc = 1; return s.tmp_0;
     } else {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["getCardCount"];
-      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["getCardCount"], 1); s.callLocIdx = 621; s.pc = 1; return s.tmp_0; }
-      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 621; s.pc = 1; return s.tmp_0;; }
-     else { s.callLocIdx = 621; s.pc = 1; return s.tmp_0; }
+      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["getCardCount"], 1); s.callLocIdx = 624; s.pc = 1; return s.tmp_0; }
+      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 624; s.pc = 1; return s.tmp_0;; }
+     else { s.callLocIdx = 624; s.pc = 1; return s.tmp_0; }
     }
   case 1:
     r0 = s.retval;
@@ -24570,7 +24570,7 @@ switch (step) {
     s.tmp_0 = cardKit_getPositionIndex__P78936_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg2;
-    s.callLocIdx = 599; s.pc = 4; return s.tmp_0;
+    s.callLocIdx = 602; s.pc = 4; return s.tmp_0;
   case 4:
     r0 = s.retval;
     s.index___78995 = (r0);
@@ -24587,18 +24587,18 @@ switch (step) {
     s.tmp_2 = cardKit_getPositionIndex__P78936_mk(s);
     s.tmp_2.arg0 = s.arg0;
     s.tmp_2.arg1 = s.arg2;
-    s.callLocIdx = 600; s.pc = 6; return s.tmp_2;
+    s.callLocIdx = 603; s.pc = 6; return s.tmp_2;
   case 6:
     r0 = s.retval;
     s.tmp_1.arg2 = r0;
     if (!s.tmp_1.arg0.vtable.iface) {
       setupLambda(s.tmp_1, pxsim_pxtrt.mapGetByString(s.tmp_1.arg0, "insertCard"), 3);
-      s.callLocIdx = 601; s.pc = 5; return s.tmp_1;
+      s.callLocIdx = 604; s.pc = 5; return s.tmp_1;
     } else {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["insertCard"];
-      if (s.tmp_1.fn == null) { setupLambda(s.tmp_1, s.tmp_1.arg0.fields["insertCard"], 3); s.callLocIdx = 601; s.pc = 5; return s.tmp_1; }
-      else if (s.tmp_1.fn.isGetter) { s.tmp_1.stage2Call = true; s.callLocIdx = 601; s.pc = 5; return s.tmp_1;; }
-     else { s.callLocIdx = 601; s.pc = 5; return s.tmp_1; }
+      if (s.tmp_1.fn == null) { setupLambda(s.tmp_1, s.tmp_1.arg0.fields["insertCard"], 3); s.callLocIdx = 604; s.pc = 5; return s.tmp_1; }
+      else if (s.tmp_1.fn.isGetter) { s.tmp_1.stage2Call = true; s.callLocIdx = 604; s.pc = 5; return s.tmp_1;; }
+     else { s.callLocIdx = 604; s.pc = 5; return s.tmp_1; }
     }
   case 5:
     r0 = s.retval;
@@ -24663,12 +24663,12 @@ switch (step) {
     s.tmp_3.arg0 = s.arg0;
     if (!s.tmp_3.arg0.vtable.iface) {
       setupLambda(s.tmp_3, pxsim_pxtrt.mapGetByString(s.tmp_3.arg0, "getCardCount"), 1);
-      s.callLocIdx = 610; s.pc = 8; return s.tmp_3;
+      s.callLocIdx = 613; s.pc = 8; return s.tmp_3;
     } else {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["getCardCount"];
-      if (s.tmp_3.fn == null) { setupLambda(s.tmp_3, s.tmp_3.arg0.fields["getCardCount"], 1); s.callLocIdx = 610; s.pc = 8; return s.tmp_3; }
-      else if (s.tmp_3.fn.isGetter) { s.tmp_3.stage2Call = true; s.callLocIdx = 610; s.pc = 8; return s.tmp_3;; }
-     else { s.callLocIdx = 610; s.pc = 8; return s.tmp_3; }
+      if (s.tmp_3.fn == null) { setupLambda(s.tmp_3, s.tmp_3.arg0.fields["getCardCount"], 1); s.callLocIdx = 613; s.pc = 8; return s.tmp_3; }
+      else if (s.tmp_3.fn.isGetter) { s.tmp_3.stage2Call = true; s.callLocIdx = 613; s.pc = 8; return s.tmp_3;; }
+     else { s.callLocIdx = 613; s.pc = 8; return s.tmp_3; }
     }
   case 8:
     r0 = s.retval;
@@ -24685,12 +24685,12 @@ switch (step) {
     s.tmp_6.arg0 = s.arg0;
     if (!s.tmp_6.arg0.vtable.iface) {
       setupLambda(s.tmp_6, pxsim_pxtrt.mapGetByString(s.tmp_6.arg0, "getCardCount"), 1);
-      s.callLocIdx = 611; s.pc = 9; return s.tmp_6;
+      s.callLocIdx = 614; s.pc = 9; return s.tmp_6;
     } else {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["getCardCount"];
-      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["getCardCount"], 1); s.callLocIdx = 611; s.pc = 9; return s.tmp_6; }
-      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 611; s.pc = 9; return s.tmp_6;; }
-     else { s.callLocIdx = 611; s.pc = 9; return s.tmp_6; }
+      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["getCardCount"], 1); s.callLocIdx = 614; s.pc = 9; return s.tmp_6; }
+      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 614; s.pc = 9; return s.tmp_6;; }
+     else { s.callLocIdx = 614; s.pc = 9; return s.tmp_6; }
     }
   case 9:
     r0 = s.retval;
@@ -24704,12 +24704,12 @@ switch (step) {
     s.tmp_7.arg0 = s.arg0;
     if (!s.tmp_7.arg0.vtable.iface) {
       setupLambda(s.tmp_7, pxsim_pxtrt.mapGetByString(s.tmp_7.arg0, "getCursorIndex"), 1);
-      s.callLocIdx = 612; s.pc = 10; return s.tmp_7;
+      s.callLocIdx = 615; s.pc = 10; return s.tmp_7;
     } else {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["getCursorIndex"];
-      if (s.tmp_7.fn == null) { setupLambda(s.tmp_7, s.tmp_7.arg0.fields["getCursorIndex"], 1); s.callLocIdx = 612; s.pc = 10; return s.tmp_7; }
-      else if (s.tmp_7.fn.isGetter) { s.tmp_7.stage2Call = true; s.callLocIdx = 612; s.pc = 10; return s.tmp_7;; }
-     else { s.callLocIdx = 612; s.pc = 10; return s.tmp_7; }
+      if (s.tmp_7.fn == null) { setupLambda(s.tmp_7, s.tmp_7.arg0.fields["getCursorIndex"], 1); s.callLocIdx = 615; s.pc = 10; return s.tmp_7; }
+      else if (s.tmp_7.fn.isGetter) { s.tmp_7.stage2Call = true; s.callLocIdx = 615; s.pc = 10; return s.tmp_7;; }
+     else { s.callLocIdx = 615; s.pc = 10; return s.tmp_7; }
     }
   case 10:
     r0 = s.retval;
@@ -24754,16 +24754,16 @@ switch (step) {
   case 0:
 
     s.Card___74699 = undefined;
-    s.unnamed402___U1 = undefined;
-    s.unnamed403___U2 = undefined;
+    s.unnamed430___U1 = undefined;
+    s.unnamed431___U2 = undefined;
     s.tmp_0 = cardKit_getCardNumberAttribute__P78919_mk(s);
     s.tmp_1 = cardKit_getCursorCard__P78922_mk(s);
-    s.callLocIdx = 659; s.pc = 7; return s.tmp_1;
+    s.callLocIdx = 662; s.pc = 7; return s.tmp_1;
   case 7:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 660; s.pc = 6; return s.tmp_0;
+    s.callLocIdx = 663; s.pc = 6; return s.tmp_0;
   case 6:
     r0 = s.retval;
     globals.CardRank___74573 = (r0);
@@ -24771,26 +24771,26 @@ switch (step) {
     s.tmp_0.arg0 = globals.PlayGrid___74577;
     s.tmp_0.arg1 = 3;
     s.tmp_0.arg2 = "1";
-    s.callLocIdx = 661; s.pc = 8; return s.tmp_0;
+    s.callLocIdx = 664; s.pc = 8; return s.tmp_0;
   case 8:
     r0 = s.retval;
     globals.FlippedCards___74580 = (r0);
     globals.CardsMatch___74571 = (0);
     s.Card___74699 = (undefined);
-    s.unnamed402___U1 = (globals.FlippedCards___74580);
-    s.unnamed403___U2 = (0);
+    s.unnamed430___U1 = (globals.FlippedCards___74580);
+    s.unnamed431___U2 = (0);
   case 1:
-    s.tmp_0 = r0 = s.unnamed403___U2;
-    r0 = pxsim_Array__length(s.unnamed402___U1);
+    s.tmp_0 = r0 = s.unnamed431___U2;
+    r0 = pxsim_Array__length(s.unnamed430___U1);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 4; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed402___U1, s.unnamed403___U2);
+    r0 = pxsim_Array__getAt(s.unnamed430___U1, s.unnamed431___U2);
     s.Card___74699 = (r0);
     s.tmp_4 = cardKit_getCardNumberAttribute__P78919_mk(s);
     s.tmp_4.arg0 = s.Card___74699;
     s.tmp_4.arg1 = 0;
-    s.callLocIdx = 662; s.pc = 9; return s.tmp_4;
+    s.callLocIdx = 665; s.pc = 9; return s.tmp_4;
   case 9:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -24802,11 +24802,11 @@ switch (step) {
     { step = 5; continue; }
   case 2:
   case 3:
-    r0 = (s.unnamed403___U2 + 1);
-    s.unnamed403___U2 = (r0);
+    r0 = (s.unnamed431___U2 + 1);
+    s.unnamed431___U2 = (r0);
     { step = 1; continue; }
   case 4:
-    s.unnamed402___U1 = (undefined);
+    s.unnamed430___U1 = (undefined);
     r0 = true;
   case 5:
     return leave(s, r0)
@@ -24825,8 +24825,8 @@ function FlippedCardsMatch__P74569_mk(s) {
   tmp_3: undefined,
   tmp_4: undefined,
   Card___74699: undefined,
-  unnamed402___U1: undefined,
-  unnamed403___U2: undefined,
+  unnamed430___U1: undefined,
+  unnamed431___U2: undefined,
 } }
 
 
@@ -24858,18 +24858,18 @@ switch (step) {
     s.tmp_2.arg0 = s.arg0;
     if (!s.tmp_2.arg0.vtable.iface) {
       setupLambda(s.tmp_2, pxsim_pxtrt.mapGetByString(s.tmp_2.arg0, "getCardsCopy"), 1);
-      s.callLocIdx = 606; s.pc = 2; return s.tmp_2;
+      s.callLocIdx = 609; s.pc = 2; return s.tmp_2;
     } else {
       s.tmp_2.fn = s.tmp_2.arg0.vtable.iface["getCardsCopy"];
-      if (s.tmp_2.fn == null) { setupLambda(s.tmp_2, s.tmp_2.arg0.fields["getCardsCopy"], 1); s.callLocIdx = 606; s.pc = 2; return s.tmp_2; }
-      else if (s.tmp_2.fn.isGetter) { s.tmp_2.stage2Call = true; s.callLocIdx = 606; s.pc = 2; return s.tmp_2;; }
-     else { s.callLocIdx = 606; s.pc = 2; return s.tmp_2; }
+      if (s.tmp_2.fn == null) { setupLambda(s.tmp_2, s.tmp_2.arg0.fields["getCardsCopy"], 1); s.callLocIdx = 609; s.pc = 2; return s.tmp_2; }
+      else if (s.tmp_2.fn.isGetter) { s.tmp_2.stage2Call = true; s.callLocIdx = 609; s.pc = 2; return s.tmp_2;; }
+     else { s.callLocIdx = 609; s.pc = 2; return s.tmp_2; }
     }
   case 2:
     r0 = s.retval;
     s.tmp_1.arg0 = r0;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 609; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 612; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     return leave(s, r0)
@@ -24928,7 +24928,7 @@ switch (step) {
     s.tmp_4.arg0 = s.data___79049;
     s.tmp_4.arg1 = s.caps[0];
     s.tmp_4.arg2 = s.caps[1];
-    s.callLocIdx = 608; s.pc = 3; return s.tmp_4;
+    s.callLocIdx = 611; s.pc = 3; return s.tmp_4;
   case 3:
     r0 = s.retval;
   case 2:
@@ -25165,7 +25165,7 @@ function attribute_inline__P74742_mk(s) {
 
 
 
-function cardCore_Card_getData__P78691(s) {
+function cardCore_Card_getData__P81771(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -25180,17 +25180,17 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["card"];
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_getData__P78691.info = {"start":2219,"length":60,"line":85,"column":8,"endLine":87,"endColumn":9,"fileName":"sprites.ts","functionName":"getData","argumentNames":["this"]}
+cardCore_Card_getData__P81771.info = {"start":2219,"length":60,"line":85,"column":8,"endLine":87,"endColumn":9,"fileName":"sprites.ts","functionName":"getData","argumentNames":["this"]}
 
-function cardCore_Card_getData__P78691_mk(s) {
+function cardCore_Card_getData__P81771_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_getData__P78691, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_getData__P81771, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -25213,9 +25213,9 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    s.tmp_0 = cardCore_Card_flip__P78696_mk(s);
+    s.tmp_0 = cardCore_Card_flip__P81776_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 578; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 581; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -25237,7 +25237,7 @@ function cardKit_flipCard__P78915_mk(s) {
 
 
 
-function cardCore_Card_flip__P78696(s) {
+function cardCore_Card_flip__P81776(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -25252,10 +25252,10 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["card"];
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 === globals.EmptyData___78683);
+    r0 = (s.tmp_1 === globals.EmptyData___81763);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
@@ -25285,17 +25285,17 @@ switch (step) {
     r0 = s.retval;
   case 3:
   case 4:
-    r0 = pxsim_pxtcore_mkAction(1, cardCore_Card_flip_inline__P79088);
+    r0 = pxsim_pxtcore_mkAction(1, cardCore_Card_flip_inline__P81969);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     s.tmp_1 = extraAnimations_fixedFrameAnimate__P74422_mk(s);
     s.tmp_1.arg0 = s.arg0;
-    s.tmp_1.arg1 = globals.flipAnimationDuration___78675;
-    r0 = pxsim_Array__length(globals.FLIP_SCALES___78663);
+    s.tmp_1.arg1 = globals.flipAnimationDuration___81755;
+    r0 = pxsim_Array__length(globals.FLIP_SCALES___81743);
     s.tmp_1.arg2 = r0;
     s.tmp_1.arg3 = null;
     s.tmp_1.arg4 = null;
-    s.tmp_1.arg5 = globals.FLIP_SCALES___78663;
+    s.tmp_1.arg5 = globals.FLIP_SCALES___81743;
     s.tmp_1.arg6 = null;
     s.tmp_1.arg7 = s.tmp_0;
     s.tmp_1.arg8 = null;
@@ -25307,12 +25307,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_flip__P78696.info = {"start":2883,"length":731,"line":110,"column":8,"endLine":133,"endColumn":9,"fileName":"sprites.ts","functionName":"flip","argumentNames":["this"]}
+cardCore_Card_flip__P81776.info = {"start":2883,"length":731,"line":110,"column":8,"endLine":133,"endColumn":9,"fileName":"sprites.ts","functionName":"flip","argumentNames":["this"]}
 
-function cardCore_Card_flip__P78696_mk(s) {
+function cardCore_Card_flip__P81776_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_flip__P78696, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_flip__P81776, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -25327,7 +25327,7 @@ function cardCore_Card_flip__P78696_mk(s) {
 
 
 
-function cardCore_Card_flip_inline__P79088(s) {
+function cardCore_Card_flip_inline__P81969(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -25343,7 +25343,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     s.tmp_1 = r0 = s.arg1;
-    r0 = pxsim_Array__length(globals.FLIP_SCALES___78663);
+    r0 = pxsim_Array__length(globals.FLIP_SCALES___81743);
     s.tmp_3 = r0;
     r0 = (s.tmp_3 / 2);
     s.tmp_2 = r0;
@@ -25351,7 +25351,7 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_4 = cardCore_Card_refreshImage__P78689_mk(s);
+    s.tmp_4 = cardCore_Card_refreshImage__P81769_mk(s);
     s.tmp_4.arg0 = s.caps[0];
     s.callLocIdx = 215; s.pc = 3; return s.tmp_4;
   case 3:
@@ -25362,12 +25362,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_flip_inline__P79088.info = {"start":3412,"length":156,"line":126,"column":16,"endLine":130,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["_","step"]}
+cardCore_Card_flip_inline__P81969.info = {"start":3412,"length":156,"line":126,"column":16,"endLine":130,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["_","step"]}
 
-function cardCore_Card_flip_inline__P79088_mk(s) {
+function cardCore_Card_flip_inline__P81969_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_flip_inline__P79088, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_flip_inline__P81969, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -25382,7 +25382,7 @@ function cardCore_Card_flip_inline__P79088_mk(s) {
 
 
 
-function cardCore_Card_refreshImage__P78689(s) {
+function cardCore_Card_refreshImage__P81769(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -25397,10 +25397,10 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["card"];
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 === globals.EmptyData___78683);
+    r0 = (s.tmp_1 === globals.EmptyData___81763);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
@@ -25454,12 +25454,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_refreshImage__P78689.info = {"start":1739,"length":394,"line":68,"column":8,"endLine":79,"endColumn":9,"fileName":"sprites.ts","functionName":"refreshImage","argumentNames":["this"]}
+cardCore_Card_refreshImage__P81769.info = {"start":1739,"length":394,"line":68,"column":8,"endLine":79,"endColumn":9,"fileName":"sprites.ts","functionName":"refreshImage","argumentNames":["this"]}
 
-function cardCore_Card_refreshImage__P78689_mk(s) {
+function cardCore_Card_refreshImage__P81769_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_refreshImage__P78689, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_refreshImage__P81769, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -27843,7 +27843,7 @@ switch (step) {
     s.tmp_0 = extraAnimations_clearFixedFrameAnimation__P74403_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = false;
-    s.callLocIdx = 523; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 526; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = pxsim_pxtrt.mkMap();
@@ -27865,7 +27865,7 @@ switch (step) {
     s.tracker___75354 = (s.tmp_0);
     s.tmp_0 = extraAnimations_updateFixedFrameAnimation__P74410_mk(s);
     s.tmp_0.arg0 = s.tracker___75354;
-    s.callLocIdx = 524; s.pc = 2; return s.tmp_0;
+    s.callLocIdx = 527; s.pc = 2; return s.tmp_0;
   case 2:
     r0 = s.retval;
     r0 = pxsim_Array__push(globals.fixedFrameTrackers___74333, s.tracker___75354);
@@ -27919,7 +27919,7 @@ switch (step) {
     s.tmp_1 = helpers_arrayFind__P45867_mk(s);
     s.tmp_1.arg0 = globals.fixedFrameTrackers___74333;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 526; s.pc = 3; return s.tmp_1;
+    s.callLocIdx = 529; s.pc = 3; return s.tmp_1;
   case 3:
     r0 = s.retval;
     s.tracker___75374 = (r0);
@@ -27943,7 +27943,7 @@ switch (step) {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["direction"];
       if (s.tmp_6.fn == null) { s.retval = s.tmp_6.arg0.fields["direction"]; }
       else if (!s.tmp_6.fn.isGetter) { s.retval = bind(s.tmp_6); }
-     else { s.callLocIdx = 527; s.pc = 5; return s.tmp_6; }
+     else { s.callLocIdx = 530; s.pc = 5; return s.tmp_6; }
     }
   case 5:
     r0 = s.retval;
@@ -27956,7 +27956,7 @@ switch (step) {
       s.tmp_4.fn = s.tmp_4.arg0.vtable.iface["set/direction"];
       if (s.tmp_4.fn === null) { s.tmp_4.arg0.fields["direction"] = s.tmp_4.arg1; }
       else if (s.tmp_4.fn === undefined) { failedCast(s.tmp_4.arg0) } 
-     else { s.callLocIdx = 528; s.pc = 4; return s.tmp_4; }
+     else { s.callLocIdx = 531; s.pc = 4; return s.tmp_4; }
     }
   case 4:
     r0 = s.retval;
@@ -28010,7 +28010,7 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 525; s.pc = 1; return s.tmp_1; }
+     else { s.callLocIdx = 528; s.pc = 1; return s.tmp_1; }
     }
   case 1:
     r0 = s.retval;
@@ -28055,7 +28055,7 @@ switch (step) {
     s.tmp_1 = helpers_arraySome__P45863_mk(s);
     s.tmp_1.arg0 = globals.fixedFrameTrackers___74333;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 530; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 533; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     return leave(s, r0)
@@ -28099,7 +28099,7 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 529; s.pc = 1; return s.tmp_1; }
+     else { s.callLocIdx = 532; s.pc = 1; return s.tmp_1; }
     }
   case 1:
     r0 = s.retval;
@@ -28194,7 +28194,7 @@ function helpers_arraySome__P45863_mk(s) {
 
 
 
-function cardCore_Card_isEmptyCardSlot__P78688(s) {
+function cardCore_Card_isEmptyCardSlot__P81768(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -28209,20 +28209,20 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["card"];
     s.tmp_0 = r0;
-    r0 = (s.tmp_0 === globals.EmptyData___78683);
+    r0 = (s.tmp_0 === globals.EmptyData___81763);
     return leaveAccessor(s, r0)
   default: oops()
 } } }
-cardCore_Card_isEmptyCardSlot__P78688.info = {"start":1644,"length":85,"line":64,"column":8,"endLine":66,"endColumn":9,"fileName":"sprites.ts","functionName":"isEmptyCardSlot","argumentNames":["this"]}
-cardCore_Card_isEmptyCardSlot__P78688.isGetter = true;
+cardCore_Card_isEmptyCardSlot__P81768.info = {"start":1644,"length":85,"line":64,"column":8,"endLine":66,"endColumn":9,"fileName":"sprites.ts","functionName":"isEmptyCardSlot","argumentNames":["this"]}
+cardCore_Card_isEmptyCardSlot__P81768.isGetter = true;
 
-function cardCore_Card_isEmptyCardSlot__P78688_mk(s) {
+function cardCore_Card_isEmptyCardSlot__P81768_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_isEmptyCardSlot__P78688, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_isEmptyCardSlot__P81768, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -28253,12 +28253,12 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = s.arg1;
     s.tmp_0.arg2 = s.arg2;
-    s.callLocIdx = 580; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 583; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
-    s.tmp_0 = cardCore_Card_refreshImage__P78689_mk(s);
+    s.tmp_0 = cardCore_Card_refreshImage__P81769_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 581; s.pc = 2; return s.tmp_0;
+    s.callLocIdx = 584; s.pc = 2; return s.tmp_0;
   case 2:
     r0 = s.retval;
     r0 = undefined;
@@ -28428,8 +28428,8 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.tmp_0 = cardCore_getCursorCard__P78854_mk(s);
-    s.callLocIdx = 584; s.pc = 1; return s.tmp_0;
+    s.tmp_0 = cardCore_getCursorCard__P81934_mk(s);
+    s.callLocIdx = 587; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     return leave(s, r0)
@@ -28449,7 +28449,7 @@ function cardKit_getCursorCard__P78922_mk(s) {
 
 
 
-function cardCore_getCursorCard__P78854(s) {
+function cardCore_getCursorCard__P81934(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -28459,7 +28459,7 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___78799);
+    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___81879);
     s.tmp_3 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_3);
     s.tmp_2 = r0;
@@ -28472,14 +28472,14 @@ switch (step) {
     r0 = s.tmp_0;
     { step = 2; continue; }
   case 1:
-    r0 = globals.cursorTarget___78799;
-    r0 = checkSubtype(r0, cardCore_Card__C78686_VT);
+    r0 = globals.cursorTarget___81879;
+    r0 = checkSubtype(r0, cardCore_Card__C81766_VT);
   case 2:
     // jmp value (already in r0)
     s.tmp_4 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_4);
     if (!r0) { step = 3; continue; }
-    r0 = globals.cursorTarget___78799;
+    r0 = globals.cursorTarget___81879;
     { step = 5; continue; }
     { step = 4; continue; }
   case 3:
@@ -28491,12 +28491,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_getCursorCard__P78854.info = {"start":37480,"length":190,"line":1073,"column":4,"endLine":1079,"endColumn":5,"fileName":"sprites.ts","functionName":"getCursorCard","argumentNames":[]}
+cardCore_getCursorCard__P81934.info = {"start":37625,"length":190,"line":1077,"column":4,"endLine":1083,"endColumn":5,"fileName":"sprites.ts","functionName":"getCursorCard","argumentNames":[]}
 
-function cardCore_getCursorCard__P78854_mk(s) {
+function cardCore_getCursorCard__P81934_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_getCursorCard__P78854, depth: s.depth + 1,
+        parent: s, fn: cardCore_getCursorCard__P81934, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -28529,7 +28529,7 @@ switch (step) {
     r0 = s.arg0.fields["card"];
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = s.arg1;
-    s.callLocIdx = 583; s.pc = 4; return s.tmp_0;
+    s.callLocIdx = 586; s.pc = 4; return s.tmp_0;
   case 4:
     r0 = s.retval;
     s.value___79167 = (r0);
@@ -28580,17 +28580,17 @@ switch (step) {
   case 0:
 
     s.DeleteCard___75472 = undefined;
-    s.unnamed396___U1 = undefined;
-    s.unnamed397___U2 = undefined;
+    s.unnamed424___U1 = undefined;
+    s.unnamed425___U2 = undefined;
     s.DeleteCard___75483 = undefined;
-    s.unnamed398___U4 = undefined;
-    s.unnamed399___U5 = undefined;
+    s.unnamed426___U4 = undefined;
+    s.unnamed427___U5 = undefined;
     s.DeleteCard___75494 = undefined;
-    s.unnamed400___U7 = undefined;
-    s.unnamed401___U8 = undefined;
+    s.unnamed428___U7 = undefined;
+    s.unnamed429___U8 = undefined;
     s.index___75514 = undefined;
     s.tmp_0 = cardKit_createPlayingCards__P50243_mk(s);
-    s.callLocIdx = 643; s.pc = 9; return s.tmp_0;
+    s.callLocIdx = 646; s.pc = 9; return s.tmp_0;
   case 9:
     r0 = s.retval;
     globals.CardDeck___74575 = (r0);
@@ -28598,105 +28598,105 @@ switch (step) {
     s.tmp_0.arg0 = globals.CardDeck___74575;
     s.tmp_0.arg1 = 1;
     s.tmp_0.arg2 = "clubs";
-    s.callLocIdx = 644; s.pc = 10; return s.tmp_0;
+    s.callLocIdx = 647; s.pc = 10; return s.tmp_0;
   case 10:
     r0 = s.retval;
     globals.DeleteCards___74581 = (r0);
     s.DeleteCard___75472 = (undefined);
-    s.unnamed396___U1 = (globals.DeleteCards___74581);
-    s.unnamed397___U2 = (0);
+    s.unnamed424___U1 = (globals.DeleteCards___74581);
+    s.unnamed425___U2 = (0);
   case 1:
-    s.tmp_0 = r0 = s.unnamed397___U2;
-    r0 = pxsim_Array__length(s.unnamed396___U1);
+    s.tmp_0 = r0 = s.unnamed425___U2;
+    r0 = pxsim_Array__length(s.unnamed424___U1);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 2; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed396___U1, s.unnamed397___U2);
+    r0 = pxsim_Array__getAt(s.unnamed424___U1, s.unnamed425___U2);
     s.DeleteCard___75472 = (r0);
     s.tmp_2 = Sprite_destroy__P48184_mk(s);
     s.tmp_2.arg0 = s.DeleteCard___75472;
     s.tmp_2.arg1 = undefined;
     s.tmp_2.arg2 = undefined;
-    s.callLocIdx = 645; s.pc = 11; return s.tmp_2;
+    s.callLocIdx = 648; s.pc = 11; return s.tmp_2;
   case 11:
     r0 = s.retval;
-    r0 = (s.unnamed397___U2 + 1);
-    s.unnamed397___U2 = (r0);
+    r0 = (s.unnamed425___U2 + 1);
+    s.unnamed425___U2 = (r0);
     { step = 1; continue; }
   case 2:
-    s.unnamed396___U1 = (undefined);
+    s.unnamed424___U1 = (undefined);
     s.tmp_0 = cardKit_filterCardListWithCondition__P78933_mk(s);
     s.tmp_0.arg0 = globals.CardDeck___74575;
     s.tmp_0.arg1 = 1;
     s.tmp_0.arg2 = "diamonds";
-    s.callLocIdx = 646; s.pc = 12; return s.tmp_0;
+    s.callLocIdx = 649; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
     globals.DeleteCards___74581 = (r0);
     s.DeleteCard___75483 = (undefined);
-    s.unnamed398___U4 = (globals.DeleteCards___74581);
-    s.unnamed399___U5 = (0);
+    s.unnamed426___U4 = (globals.DeleteCards___74581);
+    s.unnamed427___U5 = (0);
   case 3:
-    s.tmp_0 = r0 = s.unnamed399___U5;
-    r0 = pxsim_Array__length(s.unnamed398___U4);
+    s.tmp_0 = r0 = s.unnamed427___U5;
+    r0 = pxsim_Array__length(s.unnamed426___U4);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 4; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed398___U4, s.unnamed399___U5);
+    r0 = pxsim_Array__getAt(s.unnamed426___U4, s.unnamed427___U5);
     s.DeleteCard___75483 = (r0);
     s.tmp_2 = Sprite_destroy__P48184_mk(s);
     s.tmp_2.arg0 = s.DeleteCard___75483;
     s.tmp_2.arg1 = undefined;
     s.tmp_2.arg2 = undefined;
-    s.callLocIdx = 647; s.pc = 13; return s.tmp_2;
+    s.callLocIdx = 650; s.pc = 13; return s.tmp_2;
   case 13:
     r0 = s.retval;
-    r0 = (s.unnamed399___U5 + 1);
-    s.unnamed399___U5 = (r0);
+    r0 = (s.unnamed427___U5 + 1);
+    s.unnamed427___U5 = (r0);
     { step = 3; continue; }
   case 4:
-    s.unnamed398___U4 = (undefined);
+    s.unnamed426___U4 = (undefined);
     s.tmp_0 = cardKit_filterCardListWithCondition__P78933_mk(s);
     s.tmp_0.arg0 = globals.CardDeck___74575;
     s.tmp_0.arg1 = 0;
     s.tmp_0.arg2 = "13";
-    s.callLocIdx = 648; s.pc = 14; return s.tmp_0;
+    s.callLocIdx = 651; s.pc = 14; return s.tmp_0;
   case 14:
     r0 = s.retval;
     globals.DeleteCards___74581 = (r0);
     s.DeleteCard___75494 = (undefined);
-    s.unnamed400___U7 = (globals.DeleteCards___74581);
-    s.unnamed401___U8 = (0);
+    s.unnamed428___U7 = (globals.DeleteCards___74581);
+    s.unnamed429___U8 = (0);
   case 5:
-    s.tmp_0 = r0 = s.unnamed401___U8;
-    r0 = pxsim_Array__length(s.unnamed400___U7);
+    s.tmp_0 = r0 = s.unnamed429___U8;
+    r0 = pxsim_Array__length(s.unnamed428___U7);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 6; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed400___U7, s.unnamed401___U8);
+    r0 = pxsim_Array__getAt(s.unnamed428___U7, s.unnamed429___U8);
     s.DeleteCard___75494 = (r0);
     s.tmp_2 = Sprite_destroy__P48184_mk(s);
     s.tmp_2.arg0 = s.DeleteCard___75494;
     s.tmp_2.arg1 = undefined;
     s.tmp_2.arg2 = undefined;
-    s.callLocIdx = 649; s.pc = 15; return s.tmp_2;
+    s.callLocIdx = 652; s.pc = 15; return s.tmp_2;
   case 15:
     r0 = s.retval;
-    r0 = (s.unnamed401___U8 + 1);
-    s.unnamed401___U8 = (r0);
+    r0 = (s.unnamed429___U8 + 1);
+    s.unnamed429___U8 = (r0);
     { step = 5; continue; }
   case 6:
-    s.unnamed400___U7 = (undefined);
+    s.unnamed428___U7 = (undefined);
     s.tmp_0 = cardKit_shuffleCards__P78975_mk(s);
     s.tmp_0.arg0 = globals.CardDeck___74575;
-    s.callLocIdx = 650; s.pc = 16; return s.tmp_0;
+    s.callLocIdx = 653; s.pc = 16; return s.tmp_0;
   case 16:
     r0 = s.retval;
     s.tmp_0 = Sprite_setPosition__P48165_mk(s);
     s.tmp_0.arg0 = globals.CardDeck___74575;
     s.tmp_0.arg1 = 20;
     s.tmp_0.arg2 = 60;
-    s.callLocIdx = 651; s.pc = 17; return s.tmp_0;
+    s.callLocIdx = 654; s.pc = 17; return s.tmp_0;
   case 17:
     r0 = s.retval;
     s.tmp_0 = cardKit_createEmptyGrid__P78910_mk(s);
@@ -28707,13 +28707,13 @@ switch (step) {
     s.tmp_0.arg4 = 4;
     s.tmp_0.arg5 = 1;
     s.tmp_0.arg6 = true;
-    s.callLocIdx = 652; s.pc = 18; return s.tmp_0;
+    s.callLocIdx = 655; s.pc = 18; return s.tmp_0;
   case 18:
     r0 = s.retval;
     globals.PlayGrid___74577 = (r0);
     s.tmp_0 = cardKit_createEmptyPile__P78896_mk(s);
     s.tmp_0.arg0 = "Discard Pile";
-    s.callLocIdx = 653; s.pc = 19; return s.tmp_0;
+    s.callLocIdx = 656; s.pc = 19; return s.tmp_0;
   case 19:
     r0 = s.retval;
     globals.DiscardPile___74579 = (r0);
@@ -28721,12 +28721,12 @@ switch (step) {
     s.tmp_0.arg0 = globals.DiscardPile___74579;
     s.tmp_0.arg1 = 140;
     s.tmp_0.arg2 = 60;
-    s.callLocIdx = 654; s.pc = 20; return s.tmp_0;
+    s.callLocIdx = 657; s.pc = 20; return s.tmp_0;
   case 20:
     r0 = s.retval;
     s.tmp_0 = cardKit_lockGridCardPositions__P78983_mk(s);
     s.tmp_0.arg0 = globals.PlayGrid___74577;
-    s.callLocIdx = 655; s.pc = 21; return s.tmp_0;
+    s.callLocIdx = 658; s.pc = 21; return s.tmp_0;
   case 21:
     r0 = s.retval;
     s.index___75514 = (0);
@@ -28740,7 +28740,7 @@ switch (step) {
     s.tmp_1.arg1 = 0;
     s.tmp_1.arg2 = globals.PlayGrid___74577;
     s.tmp_1.arg3 = 2;
-    s.callLocIdx = 656; s.pc = 22; return s.tmp_1;
+    s.callLocIdx = 659; s.pc = 22; return s.tmp_1;
   case 22:
     r0 = s.retval;
     r0 = (s.index___75514 + 1);
@@ -28749,12 +28749,12 @@ switch (step) {
   case 8:
     s.tmp_0 = info_setLife__P48332_mk(s);
     s.tmp_0.arg0 = 5;
-    s.callLocIdx = 657; s.pc = 23; return s.tmp_0;
+    s.callLocIdx = 660; s.pc = 23; return s.tmp_0;
   case 23:
     r0 = s.retval;
     s.tmp_0 = cardKit_moveCursorInsideLayoutWithButtons__P78924_mk(s);
     s.tmp_0.arg0 = globals.PlayGrid___74577;
-    s.callLocIdx = 658; s.pc = 24; return s.tmp_0;
+    s.callLocIdx = 661; s.pc = 24; return s.tmp_0;
   case 24:
     r0 = s.retval;
     r0 = undefined;
@@ -28772,14 +28772,14 @@ function SetupPlayField__P74567_mk(s) {
   tmp_1: undefined,
   tmp_2: undefined,
   DeleteCard___75472: undefined,
-  unnamed396___U1: undefined,
-  unnamed397___U2: undefined,
+  unnamed424___U1: undefined,
+  unnamed425___U2: undefined,
   DeleteCard___75483: undefined,
-  unnamed398___U4: undefined,
-  unnamed399___U5: undefined,
+  unnamed426___U4: undefined,
+  unnamed427___U5: undefined,
   DeleteCard___75494: undefined,
-  unnamed400___U7: undefined,
-  unnamed401___U8: undefined,
+  unnamed428___U7: undefined,
+  unnamed429___U8: undefined,
   index___75514: undefined,
 } }
 
@@ -28801,14 +28801,14 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    s.tmp_0 = cardCore_preselectCursorContainer__P78852_mk(s);
+    s.tmp_0 = cardCore_preselectCursorContainer__P81932_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 585; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 588; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
-    s.tmp_0 = cardCore_LayoutContainer_moveCursorIntoContainer__P78756_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer_moveCursorIntoContainer__P81836_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 586; s.pc = 2; return s.tmp_0;
+    s.callLocIdx = 589; s.pc = 2; return s.tmp_0;
   case 2:
     r0 = s.retval;
     globals.autoLayoutControl___78938 = (true);
@@ -28831,7 +28831,7 @@ function cardKit_moveCursorInsideLayoutWithButtons__P78924_mk(s) {
 
 
 
-function cardCore_LayoutContainer_moveCursorIntoContainer__P78756(s) {
+function cardCore_LayoutContainer_moveCursorIntoContainer__P81836(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -28846,7 +28846,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -28858,12 +28858,12 @@ switch (step) {
     { step = 3; continue; }
   case 1:
   case 2:
-    s.tmp_3 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_3 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_4 = r0;
     r0 = pxsim_Array__getAt(s.tmp_4, 0);
     s.tmp_3.arg0 = r0;
-    s.callLocIdx = 306; s.pc = 4; return s.tmp_3;
+    s.callLocIdx = 309; s.pc = 4; return s.tmp_3;
   case 4:
     r0 = s.retval;
   case 3:
@@ -28871,12 +28871,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_moveCursorIntoContainer__P78756.info = {"start":15251,"length":162,"line":485,"column":8,"endLine":490,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIntoContainer","argumentNames":["this"]}
+cardCore_LayoutContainer_moveCursorIntoContainer__P81836.info = {"start":15396,"length":162,"line":489,"column":8,"endLine":494,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIntoContainer","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_moveCursorIntoContainer__P78756_mk(s) {
+function cardCore_LayoutContainer_moveCursorIntoContainer__P81836_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_moveCursorIntoContainer__P78756, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_moveCursorIntoContainer__P81836, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -28890,7 +28890,7 @@ function cardCore_LayoutContainer_moveCursorIntoContainer__P78756_mk(s) {
 
 
 
-function cardCore_pointCursorAt__P78849(s) {
+function cardCore_pointCursorAt__P81929(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -28900,7 +28900,7 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.hasPreviousTarget___79205 = undefined;
+    s.hasPreviousTarget___82055 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
@@ -28911,31 +28911,31 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_2 = cardCore_removeCursor__P78850_mk(s);
-    s.callLocIdx = 412; s.pc = 8; return s.tmp_2;
+    s.tmp_2 = cardCore_removeCursor__P81930_mk(s);
+    s.callLocIdx = 415; s.pc = 8; return s.tmp_2;
   case 8:
     r0 = s.retval;
     { step = 7; continue; }
   case 1:
   case 2:
-    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___78799);
+    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___81879);
     s.tmp_2 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_2);
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     s.tmp_0 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_0);
-    s.hasPreviousTarget___79205 = (r0);
-    globals.cursorTarget___78799 = (s.arg0);
+    s.hasPreviousTarget___82055 = (r0);
+    globals.cursorTarget___81879 = (s.arg0);
     s.tmp_5 = if_container_1_mk(s);
-    s.tmp_5.arg0 = globals.cursorTarget___78799;
+    s.tmp_5.arg0 = globals.cursorTarget___81879;
     if (!s.tmp_5.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapGetByString(s.tmp_5.arg0, "container");
     } else {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["container"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["container"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 413; s.pc = 9; return s.tmp_5; }
+     else { s.callLocIdx = 416; s.pc = 9; return s.tmp_5; }
     }
   case 9:
     r0 = s.retval;
@@ -28951,65 +28951,65 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 3; continue; }
     s.tmp_6 = if_container_1_mk(s);
-    s.tmp_6.arg0 = globals.cursorTarget___78799;
+    s.tmp_6.arg0 = globals.cursorTarget___81879;
     if (!s.tmp_6.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapGetByString(s.tmp_6.arg0, "container");
     } else {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["container"];
       if (s.tmp_6.fn == null) { s.retval = s.tmp_6.arg0.fields["container"]; }
       else if (!s.tmp_6.fn.isGetter) { s.retval = bind(s.tmp_6); }
-     else { s.callLocIdx = 414; s.pc = 10; return s.tmp_6; }
+     else { s.callLocIdx = 417; s.pc = 10; return s.tmp_6; }
     }
   case 10:
     r0 = s.retval;
-    globals.mostRecentCursorContainer___78797 = (r0);
+    globals.mostRecentCursorContainer___81877 = (r0);
   case 3:
   case 4:
     s.tmp_0 = Sprite_setFlag__P48175_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_0.arg1 = 128;
-    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___78799);
+    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___81879);
     s.tmp_1 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_1);
     s.tmp_0.arg2 = r0;
-    s.callLocIdx = 415; s.pc = 11; return s.tmp_0;
+    s.callLocIdx = 418; s.pc = 11; return s.tmp_0;
   case 11:
     r0 = s.retval;
-    s.tmp_0 = cardCore_setCursorAnchor__P78820_mk(s);
-    s.tmp_0.arg0 = globals.cursorAnchor___78791;
-    s.callLocIdx = 416; s.pc = 12; return s.tmp_0;
+    s.tmp_0 = cardCore_setCursorAnchor__P81900_mk(s);
+    s.tmp_0.arg0 = globals.cursorAnchor___81871;
+    s.callLocIdx = 419; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
-    r0 = pxsim_numops_toBoolDecr(s.hasPreviousTarget___79205);
+    r0 = pxsim_numops_toBoolDecr(s.hasPreviousTarget___82055);
     s.tmp_1 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_1);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 5; continue; }
     s.tmp_2 = Sprite_x__P48111_mk(s);
-    s.tmp_2.arg0 = globals.cursor___78801;
+    s.tmp_2.arg0 = globals.cursor___81881;
     s.tmp_4 = Sprite_x__P48110_mk(s);
-    s.tmp_4.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 417; s.pc = 14; return s.tmp_4;
+    s.tmp_4.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 420; s.pc = 14; return s.tmp_4;
   case 14:
     r0 = s.retval;
     s.tmp_3 = r0;
-    r0 = (s.tmp_3 + globals.cursorOffsetX___78793);
+    r0 = (s.tmp_3 + globals.cursorOffsetX___81873);
     s.tmp_2.arg1 = r0;
-    s.callLocIdx = 418; s.pc = 13; return s.tmp_2;
+    s.callLocIdx = 421; s.pc = 13; return s.tmp_2;
   case 13:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_2 = Sprite_y__P48112_mk(s);
-    s.tmp_2.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 419; s.pc = 16; return s.tmp_2;
+    s.tmp_2.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 422; s.pc = 16; return s.tmp_2;
   case 16:
     r0 = s.retval;
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 + globals.cursorOffsetY___78795);
+    r0 = (s.tmp_1 + globals.cursorOffsetY___81875);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 420; s.pc = 15; return s.tmp_0;
+    s.callLocIdx = 423; s.pc = 15; return s.tmp_0;
   case 15:
     r0 = s.retval;
   case 5:
@@ -29019,12 +29019,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_pointCursorAt__P78849.info = {"start":36454,"length":592,"line":1038,"column":4,"endLine":1054,"endColumn":5,"fileName":"sprites.ts","functionName":"pointCursorAt","argumentNames":["target"]}
+cardCore_pointCursorAt__P81929.info = {"start":36599,"length":592,"line":1042,"column":4,"endLine":1058,"endColumn":5,"fileName":"sprites.ts","functionName":"pointCursorAt","argumentNames":["target"]}
 
-function cardCore_pointCursorAt__P78849_mk(s) {
+function cardCore_pointCursorAt__P81929_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_pointCursorAt__P78849, depth: s.depth + 1,
+        parent: s, fn: cardCore_pointCursorAt__P81929, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -29033,7 +29033,7 @@ function cardCore_pointCursorAt__P78849_mk(s) {
   tmp_4: undefined,
   tmp_5: undefined,
   tmp_6: undefined,
-  hasPreviousTarget___79205: undefined,
+  hasPreviousTarget___82055: undefined,
   arg0: undefined,
 } }
 
@@ -29041,7 +29041,7 @@ function cardCore_pointCursorAt__P78849_mk(s) {
 
 
 
-function cardCore_removeCursor__P78850(s) {
+function cardCore_removeCursor__P81930(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29051,24 +29051,24 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    globals.cursorTarget___78799 = (null);
+    globals.cursorTarget___81879 = (null);
     s.tmp_0 = Sprite_setFlag__P48175_mk(s);
-    s.tmp_0.arg0 = globals.cursor___78801;
+    s.tmp_0.arg0 = globals.cursor___81881;
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 421; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 424; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_removeCursor__P78850.info = {"start":37052,"length":117,"line":1056,"column":4,"endLine":1059,"endColumn":5,"fileName":"sprites.ts","functionName":"removeCursor","argumentNames":[]}
+cardCore_removeCursor__P81930.info = {"start":37197,"length":117,"line":1060,"column":4,"endLine":1063,"endColumn":5,"fileName":"sprites.ts","functionName":"removeCursor","argumentNames":[]}
 
-function cardCore_removeCursor__P78850_mk(s) {
+function cardCore_removeCursor__P81930_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_removeCursor__P78850, depth: s.depth + 1,
+        parent: s, fn: cardCore_removeCursor__P81930, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
 } }
@@ -29077,7 +29077,7 @@ function cardCore_removeCursor__P78850_mk(s) {
 
 
 
-function cardCore_preselectCursorContainer__P78852(s) {
+function cardCore_preselectCursorContainer__P81932(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29091,17 +29091,17 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    globals.mostRecentCursorContainer___78797 = (s.arg0);
+    globals.mostRecentCursorContainer___81877 = (s.arg0);
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_preselectCursorContainer__P78852.info = {"start":37281,"length":110,"line":1065,"column":4,"endLine":1067,"endColumn":5,"fileName":"sprites.ts","functionName":"preselectCursorContainer","argumentNames":["container"]}
+cardCore_preselectCursorContainer__P81932.info = {"start":37426,"length":110,"line":1069,"column":4,"endLine":1071,"endColumn":5,"fileName":"sprites.ts","functionName":"preselectCursorContainer","argumentNames":["container"]}
 
-function cardCore_preselectCursorContainer__P78852_mk(s) {
+function cardCore_preselectCursorContainer__P81932_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_preselectCursorContainer__P78852, depth: s.depth + 1,
+        parent: s, fn: cardCore_preselectCursorContainer__P81932, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -29172,7 +29172,7 @@ switch (step) {
     s.tmp_0 = cardKit_getPositionIndex__P78936_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
-    s.callLocIdx = 602; s.pc = 6; return s.tmp_0;
+    s.callLocIdx = 605; s.pc = 6; return s.tmp_0;
   case 6:
     r0 = s.retval;
     s.start___79253 = (r0);
@@ -29186,7 +29186,7 @@ switch (step) {
     s.tmp_1 = cardKit_getPositionIndex__P78936_mk(s);
     s.tmp_1.arg0 = s.arg2;
     s.tmp_1.arg1 = s.arg3;
-    s.callLocIdx = 603; s.pc = 7; return s.tmp_1;
+    s.callLocIdx = 606; s.pc = 7; return s.tmp_1;
   case 7:
     r0 = s.retval;
     s.end___79261 = (r0);
@@ -29204,12 +29204,12 @@ switch (step) {
     s.tmp_2.arg1 = s.start___79253;
     if (!s.tmp_2.arg0.vtable.iface) {
       setupLambda(s.tmp_2, pxsim_pxtrt.mapGetByString(s.tmp_2.arg0, "removeCardAt"), 2);
-      s.callLocIdx = 604; s.pc = 9; return s.tmp_2;
+      s.callLocIdx = 607; s.pc = 9; return s.tmp_2;
     } else {
       s.tmp_2.fn = s.tmp_2.arg0.vtable.iface["removeCardAt"];
-      if (s.tmp_2.fn == null) { setupLambda(s.tmp_2, s.tmp_2.arg0.fields["removeCardAt"], 2); s.callLocIdx = 604; s.pc = 9; return s.tmp_2; }
-      else if (s.tmp_2.fn.isGetter) { s.tmp_2.stage2Call = true; s.callLocIdx = 604; s.pc = 9; return s.tmp_2;; }
-     else { s.callLocIdx = 604; s.pc = 9; return s.tmp_2; }
+      if (s.tmp_2.fn == null) { setupLambda(s.tmp_2, s.tmp_2.arg0.fields["removeCardAt"], 2); s.callLocIdx = 607; s.pc = 9; return s.tmp_2; }
+      else if (s.tmp_2.fn.isGetter) { s.tmp_2.stage2Call = true; s.callLocIdx = 607; s.pc = 9; return s.tmp_2;; }
+     else { s.callLocIdx = 607; s.pc = 9; return s.tmp_2; }
     }
   case 9:
     r0 = s.retval;
@@ -29217,12 +29217,12 @@ switch (step) {
     s.tmp_1.arg2 = s.end___79261;
     if (!s.tmp_1.arg0.vtable.iface) {
       setupLambda(s.tmp_1, pxsim_pxtrt.mapGetByString(s.tmp_1.arg0, "insertCard"), 3);
-      s.callLocIdx = 605; s.pc = 8; return s.tmp_1;
+      s.callLocIdx = 608; s.pc = 8; return s.tmp_1;
     } else {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["insertCard"];
-      if (s.tmp_1.fn == null) { setupLambda(s.tmp_1, s.tmp_1.arg0.fields["insertCard"], 3); s.callLocIdx = 605; s.pc = 8; return s.tmp_1; }
-      else if (s.tmp_1.fn.isGetter) { s.tmp_1.stage2Call = true; s.callLocIdx = 605; s.pc = 8; return s.tmp_1;; }
-     else { s.callLocIdx = 605; s.pc = 8; return s.tmp_1; }
+      if (s.tmp_1.fn == null) { setupLambda(s.tmp_1, s.tmp_1.arg0.fields["insertCard"], 3); s.callLocIdx = 608; s.pc = 8; return s.tmp_1; }
+      else if (s.tmp_1.fn.isGetter) { s.tmp_1.stage2Call = true; s.callLocIdx = 608; s.pc = 8; return s.tmp_1;; }
+     else { s.callLocIdx = 608; s.pc = 8; return s.tmp_1; }
     }
   case 8:
     r0 = s.retval;
@@ -29267,9 +29267,9 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    s.tmp_0 = cardCore_CardGrid_lock__P78777_mk(s);
+    s.tmp_0 = cardCore_CardGrid_lock__P81857_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 624; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 627; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -29291,7 +29291,7 @@ function cardKit_lockGridCardPositions__P78983_mk(s) {
 
 
 
-function cardCore_CardGrid_lock__P78777(s) {
+function cardCore_CardGrid_lock__P81857(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29306,18 +29306,18 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = (s.arg0).fields["isLocked"] = (true);
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_lock__P78777.info = {"start":21470,"length":51,"line":681,"column":8,"endLine":683,"endColumn":9,"fileName":"sprites.ts","functionName":"lock","argumentNames":["this"]}
+cardCore_CardGrid_lock__P81857.info = {"start":21615,"length":51,"line":685,"column":8,"endLine":687,"endColumn":9,"fileName":"sprites.ts","functionName":"lock","argumentNames":["this"]}
 
-function cardCore_CardGrid_lock__P78777_mk(s) {
+function cardCore_CardGrid_lock__P81857_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_lock__P78777, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_lock__P81857, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -29348,12 +29348,12 @@ switch (step) {
     s.tmp_0.arg2 = s.arg2;
     if (!s.tmp_0.arg0.vtable.iface) {
       setupLambda(s.tmp_0, pxsim_pxtrt.mapGetByString(s.tmp_0.arg0, "setPosition"), 3);
-      s.callLocIdx = 622; s.pc = 1; return s.tmp_0;
+      s.callLocIdx = 625; s.pc = 1; return s.tmp_0;
     } else {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["setPosition"];
-      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["setPosition"], 3); s.callLocIdx = 622; s.pc = 1; return s.tmp_0; }
-      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 622; s.pc = 1; return s.tmp_0;; }
-     else { s.callLocIdx = 622; s.pc = 1; return s.tmp_0; }
+      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["setPosition"], 3); s.callLocIdx = 625; s.pc = 1; return s.tmp_0; }
+      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 625; s.pc = 1; return s.tmp_0;; }
+     else { s.callLocIdx = 625; s.pc = 1; return s.tmp_0; }
     }
   case 1:
     r0 = s.retval;
@@ -29392,9 +29392,9 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardStack__C78711_VT);
+    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardStack__C81791_VT);
     s.tmp_0 = r0;
-    s.tmp_1 = cardCore_CardStack_constructor__P78732_mk(s);
+    s.tmp_1 = cardCore_CardStack_constructor__P81812_mk(s);
     s.tmp_1.arg0 = s.tmp_0;
     s.tmp_1.arg1 = s.arg0;
     s.tmp_1.arg2 = null;
@@ -29402,7 +29402,7 @@ switch (step) {
     s.tmp_1.arg3 = r0;
     s.tmp_1.arg4 = true;
     s.tmp_1.arg5 = true;
-    s.callLocIdx = 572; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 575; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -29425,7 +29425,7 @@ function cardKit_createEmptyPile__P78896_mk(s) {
 
 
 
-function cardCore_CardStack_constructor__P78732(s) {
+function cardCore_CardStack_constructor__P81812(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29445,7 +29445,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = (s.arg0).fields["containerId"] = (s.arg1);
     r0 = (s.arg0).fields["design"] = (s.arg2);
     r0 = (s.arg0).fields["cards"] = (s.arg3);
@@ -29490,14 +29490,14 @@ switch (step) {
     r0 = pxsim_Array__mk();
     s.tmp_1 = r0;
     r0 = (s.tmp_0).fields["transitionCards"] = (s.tmp_1);
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 230; s.pc = 5; return s.tmp_0;
   case 5:
     r0 = s.retval;
-    s.tmp_0 = cardCore_activate__P78680_mk(s);
+    s.tmp_0 = cardCore_activate__P81760_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.tmp_0.arg1 = globals.CardStack___78652;
+    s.tmp_0.arg1 = globals.CardStack___81732;
     s.callLocIdx = 231; s.pc = 6; return s.tmp_0;
   case 6:
     r0 = s.retval;
@@ -29505,12 +29505,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_constructor__P78732.info = {"start":5826,"length":517,"line":203,"column":8,"endLine":216,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","containerId","design","cards","isStackFaceUp","isTopCardFaceUp"]}
+cardCore_CardStack_constructor__P81812.info = {"start":5826,"length":517,"line":203,"column":8,"endLine":216,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","containerId","design","cards","isStackFaceUp","isTopCardFaceUp"]}
 
-function cardCore_CardStack_constructor__P78732_mk(s) {
+function cardCore_CardStack_constructor__P81812_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_constructor__P78732, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_constructor__P81812, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -29531,7 +29531,7 @@ function cardCore_CardStack_constructor__P78732_mk(s) {
 
 
 
-function cardCore_activate__P78680(s) {
+function cardCore_activate__P81760(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29541,7 +29541,7 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.scene___79328 = undefined;
+    s.scene___82136 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
@@ -29551,7 +29551,7 @@ switch (step) {
     s.callLocIdx = 188; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
-    s.scene___79328 = (r0);
+    s.scene___82136 = (r0);
     s.tmp_0 = Sprite_setKind__P48164_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
@@ -29559,7 +29559,7 @@ switch (step) {
   case 2:
     r0 = s.retval;
     s.tmp_0 = PhysicsEngine__C48267_v0_2_mk(s);
-    r0 = s.scene___79328.fields["physicsEngine"];
+    r0 = s.scene___82136.fields["physicsEngine"];
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = s.arg0;
     if (!checkSubtype(s.tmp_0.arg0, PhysicsEngine__C48267_VT)) failedCast(s.tmp_0.arg0);
@@ -29567,15 +29567,15 @@ switch (step) {
     s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
-    r0 = pxsim_pxtcore_mkAction(1, forEach_inline__P79342);
+    r0 = pxsim_pxtcore_mkAction(1, forEach_inline__P82150);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg1);
-    r0 = pxsim_pxtcore_mkAction(1, cardCore_activate_inline__P79348);
+    r0 = pxsim_pxtcore_mkAction(1, cardCore_activate_inline__P82156);
     s.tmp_1 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_1, 0, s.arg0);
     s.tmp_2 = helpers_arrayForEach__P45865_mk(s);
     s.tmp_3 = helpers_arrayFilter__P45866_mk(s);
-    r0 = s.scene___79328.fields["createdHandlers"];
+    r0 = s.scene___82136.fields["createdHandlers"];
     s.tmp_3.arg0 = r0;
     s.tmp_3.arg1 = s.tmp_0;
     s.callLocIdx = 190; s.pc = 5; return s.tmp_3;
@@ -29590,18 +29590,18 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_activate__P78680.info = {"start":581,"length":292,"line":27,"column":4,"endLine":34,"endColumn":5,"fileName":"sprites.ts","functionName":"activate","argumentNames":["sprite","kind"]}
+cardCore_activate__P81760.info = {"start":581,"length":292,"line":27,"column":4,"endLine":34,"endColumn":5,"fileName":"sprites.ts","functionName":"activate","argumentNames":["sprite","kind"]}
 
-function cardCore_activate__P78680_mk(s) {
+function cardCore_activate__P81760_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_activate__P78680, depth: s.depth + 1,
+        parent: s, fn: cardCore_activate__P81760, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
   tmp_2: undefined,
   tmp_3: undefined,
-  scene___79328: undefined,
+  scene___82136: undefined,
   arg0: undefined,
   arg1: undefined,
 } }
@@ -29610,7 +29610,7 @@ function cardCore_activate__P78680_mk(s) {
 
 
 
-function forEach_inline__P79342(s) {
+function forEach_inline__P82150(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29630,12 +29630,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-forEach_inline__P79342.info = {"start":801,"length":19,"line":32,"column":20,"endLine":32,"endColumn":39,"fileName":"sprites.ts","functionName":"inline","argumentNames":["h"]}
+forEach_inline__P82150.info = {"start":801,"length":19,"line":32,"column":20,"endLine":32,"endColumn":39,"fileName":"sprites.ts","functionName":"inline","argumentNames":["h"]}
 
-function forEach_inline__P79342_mk(s) {
+function forEach_inline__P82150_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: forEach_inline__P79342, depth: s.depth + 1,
+        parent: s, fn: forEach_inline__P82150, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -29645,7 +29645,7 @@ function forEach_inline__P79342_mk(s) {
 
 
 
-function cardCore_activate_inline__P79348(s) {
+function cardCore_activate_inline__P82156(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -29677,12 +29677,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_activate_inline__P79348.info = {"start":843,"length":22,"line":33,"column":21,"endLine":33,"endColumn":43,"fileName":"sprites.ts","functionName":"inline","argumentNames":["h"]}
+cardCore_activate_inline__P82156.info = {"start":843,"length":22,"line":33,"column":21,"endLine":33,"endColumn":43,"fileName":"sprites.ts","functionName":"inline","argumentNames":["h"]}
 
-function cardCore_activate_inline__P79348_mk(s) {
+function cardCore_activate_inline__P82156_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_activate_inline__P79348, depth: s.depth + 1,
+        parent: s, fn: cardCore_activate_inline__P82156, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -30095,7 +30095,7 @@ function sprites_SpriteSet_constructor__P48221_mk(s) {
 
 
 
-function cardCore_CardStack_refreshImage__P78714(s) {
+function cardCore_CardStack_refreshImage__P81794(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30105,13 +30105,13 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.topCard___79366 = undefined;
+    s.topCard___82174 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = s.arg0.fields["_image"];
     s.tmp_1 = r0;
     r0 = s.arg0.fields["defaultStackImage"];
@@ -30137,7 +30137,7 @@ switch (step) {
     r0 = s.arg0.fields["_image"];
     s.tmp_5 = r0;
     r0 = pxsim_ImageMethods.fill(s.tmp_5, 0);
-    r0 = pxsim_pxtcore_mkAction(1, topCard_inline__P79368);
+    r0 = pxsim_pxtcore_mkAction(1, topCard_inline__P82176);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     s.tmp_1 = helpers_arrayFind__P45867_mk(s);
@@ -30147,7 +30147,7 @@ switch (step) {
     s.callLocIdx = 237; s.pc = 8; return s.tmp_1;
   case 8:
     r0 = s.retval;
-    s.topCard___79366 = (r0);
+    s.topCard___82174 = (r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_3 = r0;
     r0 = pxsim_Array__length(s.tmp_3);
@@ -30179,7 +30179,7 @@ switch (step) {
     s.tmp_9 = r0;
     r0 = (s.tmp_7 - s.tmp_9);
     s.tmp_6.arg4 = r0;
-    r0 = s.topCard___79366.fields["card"];
+    r0 = s.topCard___82174.fields["card"];
     s.tmp_6.arg5 = r0;
     r0 = s.arg0.fields["isStackFaceUp"];
     s.tmp_6.arg6 = r0;
@@ -30190,10 +30190,10 @@ switch (step) {
     r0 = s.retval;
   case 5:
   case 6:
-    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardStack_refreshImage_inline__P79411);
+    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardStack_refreshImage_inline__P82219);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.topCard___79366);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.topCard___82174);
     s.tmp_1 = helpers_arrayForEach__P45865_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1.arg0 = r0;
@@ -30206,12 +30206,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_refreshImage__P78714.info = {"start":6518,"length":913,"line":222,"column":8,"endLine":237,"endColumn":9,"fileName":"sprites.ts","functionName":"refreshImage","argumentNames":["this"]}
+cardCore_CardStack_refreshImage__P81794.info = {"start":6518,"length":913,"line":222,"column":8,"endLine":237,"endColumn":9,"fileName":"sprites.ts","functionName":"refreshImage","argumentNames":["this"]}
 
-function cardCore_CardStack_refreshImage__P78714_mk(s) {
+function cardCore_CardStack_refreshImage__P81794_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_refreshImage__P78714, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_refreshImage__P81794, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -30224,7 +30224,7 @@ function cardCore_CardStack_refreshImage__P78714_mk(s) {
   tmp_8: undefined,
   tmp_9: undefined,
   tmp_10: undefined,
-  topCard___79366: undefined,
+  topCard___82174: undefined,
   arg0: undefined,
 } }
 
@@ -30232,7 +30232,7 @@ function cardCore_CardStack_refreshImage__P78714_mk(s) {
 
 
 
-function topCard_inline__P79368(s) {
+function topCard_inline__P82176(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30246,7 +30246,7 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkAction(1, topCard_inline__P79375);
+    r0 = pxsim_pxtcore_mkAction(1, topCard_inline__P82183);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     s.tmp_3 = helpers_arraySome__P45863_mk(s);
@@ -30263,12 +30263,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-topCard_inline__P79368.info = {"start":6747,"length":77,"line":227,"column":44,"endLine":227,"endColumn":121,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
+topCard_inline__P82176.info = {"start":6747,"length":77,"line":227,"column":44,"endLine":227,"endColumn":121,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
 
-function topCard_inline__P79368_mk(s) {
+function topCard_inline__P82176_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: topCard_inline__P79368, depth: s.depth + 1,
+        parent: s, fn: topCard_inline__P82176, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -30281,7 +30281,7 @@ function topCard_inline__P79368_mk(s) {
 
 
 
-function topCard_inline__P79375(s) {
+function topCard_inline__P82183(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30299,12 +30299,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-topCard_inline__P79375.info = {"start":6782,"length":41,"line":227,"column":79,"endLine":227,"endColumn":120,"fileName":"sprites.ts","functionName":"inline","argumentNames":["transitionCard"]}
+topCard_inline__P82183.info = {"start":6782,"length":41,"line":227,"column":79,"endLine":227,"endColumn":120,"fileName":"sprites.ts","functionName":"inline","argumentNames":["transitionCard"]}
 
-function topCard_inline__P79375_mk(s) {
+function topCard_inline__P82183_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: topCard_inline__P79375, depth: s.depth + 1,
+        parent: s, fn: topCard_inline__P82183, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -30313,7 +30313,7 @@ function topCard_inline__P79375_mk(s) {
 
 
 
-function cardCore_CardStack_refreshImage_inline__P79411(s) {
+function cardCore_CardStack_refreshImage_inline__P82219(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30327,7 +30327,7 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardStack_refreshImage_inline__P79415);
+    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardStack_refreshImage_inline__P82223);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     s.tmp_4 = helpers_arraySome__P45863_mk(s);
@@ -30362,7 +30362,7 @@ switch (step) {
   case 2:
     // jmp value (already in r0)
     s.tmp_1 = r0;
-    s.tmp_2 = cardCore_Card_isFaceUp__P78692_mk(s);
+    s.tmp_2 = cardCore_Card_isFaceUp__P81772_mk(s);
     s.tmp_2.arg0 = s.arg0;
     s.tmp_2.arg1 = s.tmp_1;
     s.callLocIdx = 243; s.pc = 7; return s.tmp_2;
@@ -30374,12 +30374,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_refreshImage_inline__P79411.info = {"start":7128,"length":292,"line":231,"column":31,"endLine":236,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
+cardCore_CardStack_refreshImage_inline__P82219.info = {"start":7128,"length":292,"line":231,"column":31,"endLine":236,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
 
-function cardCore_CardStack_refreshImage_inline__P79411_mk(s) {
+function cardCore_CardStack_refreshImage_inline__P82219_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_refreshImage_inline__P79411, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_refreshImage_inline__P82219, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -30394,7 +30394,7 @@ function cardCore_CardStack_refreshImage_inline__P79411_mk(s) {
 
 
 
-function cardCore_CardStack_refreshImage_inline__P79415(s) {
+function cardCore_CardStack_refreshImage_inline__P82223(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30412,12 +30412,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_refreshImage_inline__P79415.info = {"start":7185,"length":41,"line":232,"column":47,"endLine":232,"endColumn":88,"fileName":"sprites.ts","functionName":"inline","argumentNames":["transitionCard"]}
+cardCore_CardStack_refreshImage_inline__P82223.info = {"start":7185,"length":41,"line":232,"column":47,"endLine":232,"endColumn":88,"fileName":"sprites.ts","functionName":"inline","argumentNames":["transitionCard"]}
 
-function cardCore_CardStack_refreshImage_inline__P79415_mk(s) {
+function cardCore_CardStack_refreshImage_inline__P82223_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_refreshImage_inline__P79415, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_refreshImage_inline__P82223, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -30426,7 +30426,7 @@ function cardCore_CardStack_refreshImage_inline__P79415_mk(s) {
 
 
 
-function cardCore_Card_isFaceUp__P78692(s) {
+function cardCore_Card_isFaceUp__P81772(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -30442,7 +30442,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     s.tmp_0 = extraAnimations_clearAnimations__P74425_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = true;
@@ -30456,7 +30456,7 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
     r0 = (s.arg0).fields["_isFaceUp"] = (s.arg1);
-    s.tmp_0 = cardCore_Card_refreshImage__P78689_mk(s);
+    s.tmp_0 = cardCore_Card_refreshImage__P81769_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 207; s.pc = 4; return s.tmp_0;
   case 4:
@@ -30467,12 +30467,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_isFaceUp__P78692.info = {"start":2289,"length":228,"line":89,"column":8,"endLine":95,"endColumn":9,"fileName":"sprites.ts","functionName":"isFaceUp","argumentNames":["this","value"]}
+cardCore_Card_isFaceUp__P81772.info = {"start":2289,"length":228,"line":89,"column":8,"endLine":95,"endColumn":9,"fileName":"sprites.ts","functionName":"isFaceUp","argumentNames":["this","value"]}
 
-function cardCore_Card_isFaceUp__P78692_mk(s) {
+function cardCore_Card_isFaceUp__P81772_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_isFaceUp__P78692, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_isFaceUp__P81772, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -30502,13 +30502,13 @@ switch (step) {
     s.tmp_0 = extraAnimations_clearSlideAnimation__P74420_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
-    s.callLocIdx = 531; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 534; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     s.tmp_0 = extraAnimations_clearFixedFrameAnimation__P74403_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
-    s.callLocIdx = 532; s.pc = 2; return s.tmp_0;
+    s.callLocIdx = 535; s.pc = 2; return s.tmp_0;
   case 2:
     r0 = s.retval;
     r0 = undefined;
@@ -30553,7 +30553,7 @@ switch (step) {
     s.tmp_1 = helpers_arrayFind__P45867_mk(s);
     s.tmp_1.arg0 = globals.slideTrackers___74332;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 485; s.pc = 8; return s.tmp_1;
+    s.callLocIdx = 488; s.pc = 8; return s.tmp_1;
   case 8:
     r0 = s.retval;
     s.oldTracker___75798 = (r0);
@@ -30571,7 +30571,7 @@ switch (step) {
     r0 = pxsim_Array_.indexOf(globals.slideTrackers___74332, s.oldTracker___75798, undefined);
     s.tmp_2.arg1 = r0;
     s.tmp_2.arg2 = 1;
-    s.callLocIdx = 486; s.pc = 9; return s.tmp_2;
+    s.callLocIdx = 489; s.pc = 9; return s.tmp_2;
   case 9:
     r0 = s.retval;
     s.tmp_0 = clearTimeout__P46180_mk(s);
@@ -30583,12 +30583,12 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["timer"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["timer"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 487; s.pc = 11; return s.tmp_1; }
+     else { s.callLocIdx = 490; s.pc = 11; return s.tmp_1; }
     }
   case 11:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
-    s.callLocIdx = 488; s.pc = 10; return s.tmp_0;
+    s.callLocIdx = 491; s.pc = 10; return s.tmp_0;
   case 10:
     r0 = s.retval;
     r0 = pxsim_numops_toBoolDecr(s.arg1);
@@ -30602,7 +30602,7 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 489; s.pc = 13; return s.tmp_1; }
+     else { s.callLocIdx = 492; s.pc = 13; return s.tmp_1; }
     }
   case 13:
     r0 = s.retval;
@@ -30615,7 +30615,7 @@ switch (step) {
       s.tmp_2.fn = s.tmp_2.arg0.vtable.iface["x"];
       if (s.tmp_2.fn == null) { s.retval = s.tmp_2.arg0.fields["x"]; }
       else if (!s.tmp_2.fn.isGetter) { s.retval = bind(s.tmp_2); }
-     else { s.callLocIdx = 490; s.pc = 14; return s.tmp_2; }
+     else { s.callLocIdx = 493; s.pc = 14; return s.tmp_2; }
     }
   case 14:
     r0 = s.retval;
@@ -30628,12 +30628,12 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["y"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["y"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 491; s.pc = 15; return s.tmp_3; }
+     else { s.callLocIdx = 494; s.pc = 15; return s.tmp_3; }
     }
   case 15:
     r0 = s.retval;
     s.tmp_0.arg2 = r0;
-    s.callLocIdx = 492; s.pc = 12; return s.tmp_0;
+    s.callLocIdx = 495; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
     s.tmp_0 = Sprite_setVelocity__P48166_mk(s);
@@ -30645,14 +30645,14 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 493; s.pc = 17; return s.tmp_1; }
+     else { s.callLocIdx = 496; s.pc = 17; return s.tmp_1; }
     }
   case 17:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = 0;
     s.tmp_0.arg2 = 0;
-    s.callLocIdx = 494; s.pc = 16; return s.tmp_0;
+    s.callLocIdx = 497; s.pc = 16; return s.tmp_0;
   case 16:
     r0 = s.retval;
   case 3:
@@ -30665,7 +30665,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["onComplete"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["onComplete"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 495; s.pc = 18; return s.tmp_5; }
+     else { s.callLocIdx = 498; s.pc = 18; return s.tmp_5; }
     }
   case 18:
     r0 = s.retval;
@@ -30690,19 +30690,19 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 496; s.pc = 20; return s.tmp_7; }
+     else { s.callLocIdx = 499; s.pc = 20; return s.tmp_7; }
     }
   case 20:
     r0 = s.retval;
     s.tmp_6.arg1 = r0;
     if (!s.tmp_6.arg0.vtable.iface) {
       setupLambda(s.tmp_6, pxsim_pxtrt.mapGetByString(s.tmp_6.arg0, "onComplete"), 2);
-      s.callLocIdx = 497; s.pc = 19; return s.tmp_6;
+      s.callLocIdx = 500; s.pc = 19; return s.tmp_6;
     } else {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["onComplete"];
-      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onComplete"], 2); s.callLocIdx = 497; s.pc = 19; return s.tmp_6; }
-      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 497; s.pc = 19; return s.tmp_6;; }
-     else { s.callLocIdx = 497; s.pc = 19; return s.tmp_6; }
+      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onComplete"], 2); s.callLocIdx = 500; s.pc = 19; return s.tmp_6; }
+      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 500; s.pc = 19; return s.tmp_6;; }
+     else { s.callLocIdx = 500; s.pc = 19; return s.tmp_6; }
     }
   case 19:
     r0 = s.retval;
@@ -30759,7 +30759,7 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 484; s.pc = 1; return s.tmp_1; }
+     else { s.callLocIdx = 487; s.pc = 1; return s.tmp_1; }
     }
   case 1:
     r0 = s.retval;
@@ -33311,22 +33311,22 @@ switch (step) {
     }
     r0 = (s.arg5 == 0);
     s.isScrollingLeftRight___79464 = (r0);
-    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardGrid__C78771_VT);
+    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardGrid__C81851_VT);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.isScrollingLeftRight___79464);
     if (!r0) { step = 1; continue; }
     s.tmp_1 = sprites_create__P48031_mk(s);
     s.tmp_1.arg0 = globals.DEFAULT_SCROLL_LEFT___78905;
-    s.tmp_1.arg1 = globals.Cursor___78655;
-    s.callLocIdx = 573; s.pc = 5; return s.tmp_1;
+    s.tmp_1.arg1 = globals.Cursor___81735;
+    s.callLocIdx = 576; s.pc = 5; return s.tmp_1;
   case 5:
     r0 = s.retval;
     { step = 2; continue; }
   case 1:
     s.tmp_2 = sprites_create__P48031_mk(s);
     s.tmp_2.arg0 = globals.DEFAULT_SCROLL_UP___78899;
-    s.tmp_2.arg1 = globals.Cursor___78655;
-    s.callLocIdx = 574; s.pc = 6; return s.tmp_2;
+    s.tmp_2.arg1 = globals.Cursor___81735;
+    s.callLocIdx = 577; s.pc = 6; return s.tmp_2;
   case 6:
     r0 = s.retval;
   case 2:
@@ -33336,22 +33336,22 @@ switch (step) {
     if (!r0) { step = 3; continue; }
     s.tmp_4 = sprites_create__P48031_mk(s);
     s.tmp_4.arg0 = globals.DEFAULT_SCROLL_RIGHT___78908;
-    s.tmp_4.arg1 = globals.Cursor___78655;
-    s.callLocIdx = 575; s.pc = 7; return s.tmp_4;
+    s.tmp_4.arg1 = globals.Cursor___81735;
+    s.callLocIdx = 578; s.pc = 7; return s.tmp_4;
   case 7:
     r0 = s.retval;
     { step = 4; continue; }
   case 3:
     s.tmp_5 = sprites_create__P48031_mk(s);
     s.tmp_5.arg0 = globals.DEFAULT_SCROLL_DOWN___78902;
-    s.tmp_5.arg1 = globals.Cursor___78655;
-    s.callLocIdx = 576; s.pc = 8; return s.tmp_5;
+    s.tmp_5.arg1 = globals.Cursor___81735;
+    s.callLocIdx = 579; s.pc = 8; return s.tmp_5;
   case 8:
     r0 = s.retval;
   case 4:
     // jmp value (already in r0)
     s.tmp_6 = r0;
-    s.tmp_7 = cardCore_CardGrid_constructor__P78788_mk(s);
+    s.tmp_7 = cardCore_CardGrid_constructor__P81868_mk(s);
     s.tmp_7.arg0 = s.tmp_0;
     s.tmp_7.arg1 = s.arg0;
     s.tmp_7.arg2 = s.arg1;
@@ -33367,7 +33367,7 @@ switch (step) {
     s.tmp_7.arg11 = false;
     s.tmp_7.arg12 = s.tmp_3;
     s.tmp_7.arg13 = s.tmp_6;
-    s.callLocIdx = 577; s.pc = 9; return s.tmp_7;
+    s.callLocIdx = 580; s.pc = 9; return s.tmp_7;
   case 9:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -33403,7 +33403,7 @@ function cardKit_createEmptyGrid__P78910_mk(s) {
 
 
 
-function cardCore_CardGrid_constructor__P78788(s) {
+function cardCore_CardGrid_constructor__P81868(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -33431,7 +33431,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = (s.arg0).fields["rows"] = (s.arg6);
     r0 = (s.arg0).fields["columns"] = (s.arg7);
     r0 = (s.arg0).fields["isScrollingLeftRight"] = (s.arg8);
@@ -33439,7 +33439,7 @@ switch (step) {
     r0 = (s.arg0).fields["isWrappingSelection"] = (s.arg11);
     r0 = (s.arg0).fields["scrollBackIndicator"] = (s.arg12);
     r0 = (s.arg0).fields["scrollForwardIndicator"] = (s.arg13);
-    s.tmp_0 = cardCore_LayoutContainer_constructor__P78758_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer_constructor__P81838_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
     s.tmp_0.arg2 = s.arg2;
@@ -33447,7 +33447,7 @@ switch (step) {
     s.tmp_0.arg4 = s.arg4;
     s.tmp_0.arg5 = s.arg5;
     s.tmp_0.arg6 = s.arg9;
-    s.callLocIdx = 326; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 329; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = (s.arg0).fields["firstLine"] = (0);
@@ -33455,9 +33455,9 @@ switch (step) {
     r0 = (s.arg0).fields["cardWidth"] = (-1);
     r0 = (s.arg0).fields["cardHeight"] = (-1);
     r0 = (s.arg0).fields["isLocked"] = (false);
-    s.tmp_0 = cardCore_CardGrid__C78771_v1_1_mk(s);
+    s.tmp_0 = cardCore_CardGrid__C81851_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardGrid__C78771_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardGrid__C81851_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 2; return s.tmp_0;
   case 2:
@@ -33466,12 +33466,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_constructor__P78788.info = {"start":20065,"length":762,"line":633,"column":8,"endLine":656,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","rows","columns","isScrollingLeftRight","isInsertFaceUp","_spacing","isWrappingSelection","scrollBackIndicator","scrollForwardIndicator"]}
+cardCore_CardGrid_constructor__P81868.info = {"start":20210,"length":762,"line":637,"column":8,"endLine":660,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","rows","columns","isScrollingLeftRight","isInsertFaceUp","_spacing","isWrappingSelection","scrollBackIndicator","scrollForwardIndicator"]}
 
-function cardCore_CardGrid_constructor__P78788_mk(s) {
+function cardCore_CardGrid_constructor__P81868_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_constructor__P78788, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_constructor__P81868, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -33494,7 +33494,7 @@ function cardCore_CardGrid_constructor__P78788_mk(s) {
 
 
 
-function cardCore_CardGrid_reposition__P78780(s) {
+function cardCore_CardGrid_reposition__P81860(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -33504,31 +33504,31 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.maxScroll___79562 = undefined;
-    s.isScrolling___79582 = undefined;
-    s.scrollDirection___79591 = undefined;
-    s.width___79601 = undefined;
-    s.height___79614 = undefined;
-    s.columnLeft___79627 = undefined;
-    s.rowTop___79638 = undefined;
-    s.columnRight___79649 = undefined;
-    s.columnBottom___79662 = undefined;
-    s.index___79675 = undefined;
-    s.lastIndex___79688 = undefined;
-    s.cursorIndex___79696 = undefined;
-    s.isVisible___79826 = undefined;
-    s.createPositionLookup___79835 = undefined;
-    s.row___79934 = undefined;
-    s.column___79935 = undefined;
-    s.x___80011 = undefined;
-    s.y___80021 = undefined;
-    s.card___80031 = undefined;
+    s.maxScroll___82334 = undefined;
+    s.isScrolling___82354 = undefined;
+    s.scrollDirection___82363 = undefined;
+    s.width___82373 = undefined;
+    s.height___82386 = undefined;
+    s.columnLeft___82399 = undefined;
+    s.rowTop___82410 = undefined;
+    s.columnRight___82421 = undefined;
+    s.columnBottom___82434 = undefined;
+    s.index___82447 = undefined;
+    s.lastIndex___82460 = undefined;
+    s.cursorIndex___82468 = undefined;
+    s.isVisible___82598 = undefined;
+    s.createPositionLookup___82607 = undefined;
+    s.row___82706 = undefined;
+    s.column___82707 = undefined;
+    s.x___82783 = undefined;
+    s.y___82793 = undefined;
+    s.card___82803 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -33542,7 +33542,7 @@ switch (step) {
     s.tmp_3.arg0 = r0;
     s.tmp_3.arg1 = 128;
     s.tmp_3.arg2 = true;
-    s.callLocIdx = 327; s.pc = 56; return s.tmp_3;
+    s.callLocIdx = 330; s.pc = 56; return s.tmp_3;
   case 56:
     r0 = s.retval;
     s.tmp_0 = Sprite_setFlag__P48175_mk(s);
@@ -33550,7 +33550,7 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 328; s.pc = 57; return s.tmp_0;
+    s.callLocIdx = 331; s.pc = 57; return s.tmp_0;
   case 57:
     r0 = s.retval;
     { step = 55; continue; }
@@ -33568,7 +33568,7 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = pxsim_Array__getAt(s.tmp_5, 0);
     s.tmp_4.arg0 = r0;
-    s.callLocIdx = 329; s.pc = 58; return s.tmp_4;
+    s.callLocIdx = 332; s.pc = 58; return s.tmp_4;
   case 58:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -33587,7 +33587,7 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = pxsim_Array__getAt(s.tmp_5, 0);
     s.tmp_4.arg0 = r0;
-    s.callLocIdx = 330; s.pc = 59; return s.tmp_4;
+    s.callLocIdx = 333; s.pc = 59; return s.tmp_4;
   case 59:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -33610,16 +33610,16 @@ switch (step) {
     s.tmp_6 = r0;
     r0 = (s.tmp_1 - s.tmp_6);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 331; s.pc = 60; return s.tmp_0;
+    s.callLocIdx = 334; s.pc = 60; return s.tmp_0;
   case 60:
     r0 = s.retval;
-    s.maxScroll___79562 = (r0);
+    s.maxScroll___82334 = (r0);
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = Math_min__P45887_mk(s);
     r0 = s.arg0.fields["scrollToLine"];
     s.tmp_2.arg0 = r0;
-    s.tmp_2.arg1 = s.maxScroll___79562;
-    s.callLocIdx = 332; s.pc = 61; return s.tmp_2;
+    s.tmp_2.arg1 = s.maxScroll___82334;
+    s.callLocIdx = 335; s.pc = 61; return s.tmp_2;
   case 61:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -33631,18 +33631,18 @@ switch (step) {
     s.tmp_3 = r0;
     r0 = (s.tmp_2 - s.tmp_3);
     s.tmp_1.arg0 = r0;
-    s.callLocIdx = 333; s.pc = 62; return s.tmp_1;
+    s.callLocIdx = 336; s.pc = 62; return s.tmp_1;
   case 62:
     r0 = s.retval;
     s.tmp_0 = r0;
     r0 = (s.tmp_0 == 1);
-    s.isScrolling___79582 = (r0);
+    s.isScrolling___82354 = (r0);
     r0 = s.arg0.fields["scrollToLine"];
     s.tmp_0 = r0;
     r0 = s.arg0.fields["firstLine"];
     s.tmp_1 = r0;
     r0 = (s.tmp_0 - s.tmp_1);
-    s.scrollDirection___79591 = (r0);
+    s.scrollDirection___82363 = (r0);
     r0 = s.arg0.fields["scrollToLine"];
     s.tmp_0 = r0;
     r0 = (s.arg0).fields["firstLine"] = (s.tmp_0);
@@ -33659,7 +33659,7 @@ switch (step) {
     r0 = s.arg0.fields["_spacing"];
     s.tmp_5 = r0;
     r0 = (s.tmp_0 - s.tmp_5);
-    s.width___79601 = (r0);
+    s.width___82373 = (r0);
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_2 = r0;
     r0 = s.arg0.fields["_spacing"];
@@ -33673,10 +33673,10 @@ switch (step) {
     r0 = s.arg0.fields["_spacing"];
     s.tmp_5 = r0;
     r0 = (s.tmp_0 - s.tmp_5);
-    s.height___79614 = (r0);
+    s.height___82386 = (r0);
     r0 = s.arg0.fields["x"];
     s.tmp_1 = r0;
-    r0 = (s.width___79601 / 2);
+    r0 = (s.width___82373 / 2);
     s.tmp_2 = r0;
     r0 = (s.tmp_1 - s.tmp_2);
     s.tmp_0 = r0;
@@ -33685,10 +33685,10 @@ switch (step) {
     r0 = (s.tmp_4 / 2);
     s.tmp_3 = r0;
     r0 = (s.tmp_0 + s.tmp_3);
-    s.columnLeft___79627 = (r0);
+    s.columnLeft___82399 = (r0);
     r0 = s.arg0.fields["y"];
     s.tmp_1 = r0;
-    r0 = (s.height___79614 / 2);
+    r0 = (s.height___82386 / 2);
     s.tmp_2 = r0;
     r0 = (s.tmp_1 - s.tmp_2);
     s.tmp_0 = r0;
@@ -33697,8 +33697,8 @@ switch (step) {
     r0 = (s.tmp_4 / 2);
     s.tmp_3 = r0;
     r0 = (s.tmp_0 + s.tmp_3);
-    s.rowTop___79638 = (r0);
-    s.tmp_0 = r0 = s.columnLeft___79627;
+    s.rowTop___82410 = (r0);
+    s.tmp_0 = r0 = s.columnLeft___82399;
     r0 = s.arg0.fields["columns"];
     s.tmp_3 = r0;
     r0 = (s.tmp_3 - 1);
@@ -33712,8 +33712,8 @@ switch (step) {
     r0 = (s.tmp_2 * s.tmp_4);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 + s.tmp_1);
-    s.columnRight___79649 = (r0);
-    s.tmp_0 = r0 = s.rowTop___79638;
+    s.columnRight___82421 = (r0);
+    s.tmp_0 = r0 = s.rowTop___82410;
     r0 = s.arg0.fields["rows"];
     s.tmp_3 = r0;
     r0 = (s.tmp_3 - 1);
@@ -33727,9 +33727,9 @@ switch (step) {
     r0 = (s.tmp_2 * s.tmp_4);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 + s.tmp_1);
-    s.columnBottom___79662 = (r0);
+    s.columnBottom___82434 = (r0);
     r0 = pxsim_pxtrt.mklocRef();
-    s.index___79675 = (r0);
+    s.index___82447 = (r0);
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
@@ -33749,8 +33749,8 @@ switch (step) {
   case 8:
     // jmp value (already in r0)
     s.tmp_5 = r0;
-    r0 = pxsim_pxtrt_stlocRef(s.index___79675, s.tmp_5);
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    r0 = pxsim_pxtrt_stlocRef(s.index___82447, s.tmp_5);
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_0 = r0;
     r0 = s.arg0.fields["rows"];
     s.tmp_2 = r0;
@@ -33759,25 +33759,25 @@ switch (step) {
     r0 = (s.tmp_2 * s.tmp_3);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 + s.tmp_1);
-    s.lastIndex___79688 = (r0);
+    s.lastIndex___82460 = (r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
-    s.tmp_2 = cardCore_getCursorCard__P78854_mk(s);
-    s.callLocIdx = 334; s.pc = 63; return s.tmp_2;
+    s.tmp_2 = cardCore_getCursorCard__P81934_mk(s);
+    s.callLocIdx = 337; s.pc = 63; return s.tmp_2;
   case 63:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim_Array_.indexOf(s.tmp_0, s.tmp_1, undefined);
-    s.cursorIndex___79696 = (r0);
-    r0 = (s.cursorIndex___79696 >= 0);
+    s.cursorIndex___82468 = (r0);
+    r0 = (s.cursorIndex___82468 >= 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
     if (r0) { step = 9; continue; }
     r0 = s.tmp_0;
     { step = 12; continue; }
   case 9:
-    s.tmp_2 = r0 = s.cursorIndex___79696;
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    s.tmp_2 = r0 = s.cursorIndex___82468;
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_3 = r0;
     r0 = (s.tmp_2 < s.tmp_3);
     s.tmp_1 = r0;
@@ -33786,7 +33786,7 @@ switch (step) {
     r0 = s.tmp_1;
     { step = 11; continue; }
   case 10:
-    r0 = (s.cursorIndex___79696 >= s.lastIndex___79688);
+    r0 = (s.cursorIndex___82468 >= s.lastIndex___82460);
   case 11:
     // jmp value (already in r0)
     s.tmp_4 = r0;
@@ -33796,27 +33796,27 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_5);
     if (!r0) { step = 13; continue; }
-    s.tmp_6 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_6 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_7 = r0;
     s.tmp_9 = Math_max__P45886_mk(s);
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_9.arg0 = r0;
     s.tmp_10 = Math_min__P45887_mk(s);
-    r0 = (s.lastIndex___79688 - 1);
+    r0 = (s.lastIndex___82460 - 1);
     s.tmp_10.arg0 = r0;
-    s.tmp_10.arg1 = s.cursorIndex___79696;
-    s.callLocIdx = 335; s.pc = 66; return s.tmp_10;
+    s.tmp_10.arg1 = s.cursorIndex___82468;
+    s.callLocIdx = 338; s.pc = 66; return s.tmp_10;
   case 66:
     r0 = s.retval;
     s.tmp_9.arg1 = r0;
-    s.callLocIdx = 336; s.pc = 65; return s.tmp_9;
+    s.callLocIdx = 339; s.pc = 65; return s.tmp_9;
   case 65:
     r0 = s.retval;
     s.tmp_8 = r0;
     r0 = pxsim_Array__getAt(s.tmp_7, s.tmp_8);
     s.tmp_6.arg0 = r0;
-    s.callLocIdx = 337; s.pc = 64; return s.tmp_6;
+    s.callLocIdx = 340; s.pc = 64; return s.tmp_6;
   case 64:
     r0 = s.retval;
   case 13:
@@ -33842,14 +33842,14 @@ switch (step) {
     s.tmp_6.arg0 = r0;
     r0 = s.arg0.fields["x"];
     s.tmp_9 = r0;
-    r0 = (s.width___79601 / 2);
+    r0 = (s.width___82373 / 2);
     s.tmp_10 = r0;
     r0 = (s.tmp_9 - s.tmp_10);
     s.tmp_8 = r0;
     s.tmp_13 = Sprite_width__P48153_mk(s);
     r0 = s.arg0.fields["scrollBackIndicator"];
     s.tmp_13.arg0 = r0;
-    s.callLocIdx = 338; s.pc = 68; return s.tmp_13;
+    s.callLocIdx = 341; s.pc = 68; return s.tmp_13;
   case 68:
     r0 = s.retval;
     s.tmp_12 = r0;
@@ -33861,7 +33861,7 @@ switch (step) {
     s.tmp_14 = r0;
     r0 = (s.tmp_7 - s.tmp_14);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 339; s.pc = 67; return s.tmp_6;
+    s.callLocIdx = 342; s.pc = 67; return s.tmp_6;
   case 67:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
@@ -33869,7 +33869,7 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     r0 = s.arg0.fields["y"];
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 340; s.pc = 69; return s.tmp_0;
+    s.callLocIdx = 343; s.pc = 69; return s.tmp_0;
   case 69:
     r0 = s.retval;
   case 15:
@@ -33891,14 +33891,14 @@ switch (step) {
     s.tmp_5.arg0 = r0;
     r0 = s.arg0.fields["x"];
     s.tmp_8 = r0;
-    r0 = (s.width___79601 / 2);
+    r0 = (s.width___82373 / 2);
     s.tmp_9 = r0;
     r0 = (s.tmp_8 + s.tmp_9);
     s.tmp_7 = r0;
     s.tmp_12 = Sprite_width__P48153_mk(s);
     r0 = s.arg0.fields["scrollForwardIndicator"];
     s.tmp_12.arg0 = r0;
-    s.callLocIdx = 341; s.pc = 71; return s.tmp_12;
+    s.callLocIdx = 344; s.pc = 71; return s.tmp_12;
   case 71:
     r0 = s.retval;
     s.tmp_11 = r0;
@@ -33910,7 +33910,7 @@ switch (step) {
     s.tmp_13 = r0;
     r0 = (s.tmp_6 + s.tmp_13);
     s.tmp_5.arg1 = r0;
-    s.callLocIdx = 342; s.pc = 70; return s.tmp_5;
+    s.callLocIdx = 345; s.pc = 70; return s.tmp_5;
   case 70:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
@@ -33918,7 +33918,7 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     r0 = s.arg0.fields["y"];
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 343; s.pc = 72; return s.tmp_0;
+    s.callLocIdx = 346; s.pc = 72; return s.tmp_0;
   case 72:
     r0 = s.retval;
   case 17:
@@ -33942,7 +33942,7 @@ switch (step) {
     s.tmp_5.arg0 = r0;
     r0 = s.arg0.fields["x"];
     s.tmp_5.arg1 = r0;
-    s.callLocIdx = 344; s.pc = 73; return s.tmp_5;
+    s.callLocIdx = 347; s.pc = 73; return s.tmp_5;
   case 73:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
@@ -33950,14 +33950,14 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     r0 = s.arg0.fields["y"];
     s.tmp_3 = r0;
-    r0 = (s.height___79614 / 2);
+    r0 = (s.height___82386 / 2);
     s.tmp_4 = r0;
     r0 = (s.tmp_3 - s.tmp_4);
     s.tmp_2 = r0;
     s.tmp_7 = Sprite_height__P48154_mk(s);
     r0 = s.arg0.fields["scrollBackIndicator"];
     s.tmp_7.arg0 = r0;
-    s.callLocIdx = 345; s.pc = 75; return s.tmp_7;
+    s.callLocIdx = 348; s.pc = 75; return s.tmp_7;
   case 75:
     r0 = s.retval;
     s.tmp_6 = r0;
@@ -33969,7 +33969,7 @@ switch (step) {
     s.tmp_8 = r0;
     r0 = (s.tmp_1 - s.tmp_8);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 346; s.pc = 74; return s.tmp_0;
+    s.callLocIdx = 349; s.pc = 74; return s.tmp_0;
   case 74:
     r0 = s.retval;
   case 20:
@@ -33991,7 +33991,7 @@ switch (step) {
     s.tmp_5.arg0 = r0;
     r0 = s.arg0.fields["x"];
     s.tmp_5.arg1 = r0;
-    s.callLocIdx = 347; s.pc = 76; return s.tmp_5;
+    s.callLocIdx = 350; s.pc = 76; return s.tmp_5;
   case 76:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
@@ -33999,14 +33999,14 @@ switch (step) {
     s.tmp_0.arg0 = r0;
     r0 = s.arg0.fields["y"];
     s.tmp_3 = r0;
-    r0 = (s.height___79614 / 2);
+    r0 = (s.height___82386 / 2);
     s.tmp_4 = r0;
     r0 = (s.tmp_3 + s.tmp_4);
     s.tmp_2 = r0;
     s.tmp_7 = Sprite_height__P48154_mk(s);
     r0 = s.arg0.fields["scrollForwardIndicator"];
     s.tmp_7.arg0 = r0;
-    s.callLocIdx = 348; s.pc = 78; return s.tmp_7;
+    s.callLocIdx = 351; s.pc = 78; return s.tmp_7;
   case 78:
     r0 = s.retval;
     s.tmp_6 = r0;
@@ -34018,48 +34018,48 @@ switch (step) {
     s.tmp_8 = r0;
     r0 = (s.tmp_1 + s.tmp_8);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 349; s.pc = 77; return s.tmp_0;
+    s.callLocIdx = 352; s.pc = 77; return s.tmp_0;
   case 77:
     r0 = s.retval;
   case 22:
   case 23:
   case 24:
-    s.isVisible___79826 = (isVisible_inline__P79827);
-    s.createPositionLookup___79835 = (createPositionLookup_inline__P79836);
-    r0 = pxsim_numops_toBoolDecr(s.isScrolling___79582);
+    s.isVisible___82598 = (isVisible_inline__P82599);
+    s.createPositionLookup___82607 = (createPositionLookup_inline__P82608);
+    r0 = pxsim_numops_toBoolDecr(s.isScrolling___82354);
     if (!r0) { step = 31; continue; }
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 27; continue; }
-    r0 = (s.scrollDirection___79591 > 0);
+    r0 = (s.scrollDirection___82363 > 0);
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     if (!r0) { step = 25; continue; }
     s.tmp_2 = r0 = s.arg0;
     s.tmp_4 = lambda_5_mk(s);
-    s.tmp_4.argL = s.createPositionLookup___79835;
-    s.tmp_4.arg0 = globals.COLLAPSE_SCALE___78668;
-    s.tmp_4.arg1 = s.columnLeft___79627;
+    s.tmp_4.argL = s.createPositionLookup___82607;
+    s.tmp_4.arg0 = globals.COLLAPSE_SCALE___81748;
+    s.tmp_4.arg1 = s.columnLeft___82399;
     r0 = s.arg0.fields["cardWidth"];
     s.tmp_4.arg2 = r0;
     s.tmp_4.arg3 = -1;
     setupLambda(s.tmp_4, s.tmp_4.argL);
-    s.callLocIdx = 351; s.pc = 79; return s.tmp_4;
+    s.callLocIdx = 354; s.pc = 79; return s.tmp_4;
   case 79:
     r0 = s.retval;
     s.tmp_3 = r0;
     r0 = (s.tmp_2).fields["collapsePositions"] = (s.tmp_3);
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.EXPAND_SCALE___78673;
-    s.tmp_2.arg1 = s.columnRight___79649;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.EXPAND_SCALE___81753;
+    s.tmp_2.arg1 = s.columnRight___82421;
     r0 = s.arg0.fields["cardWidth"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = 1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 352; s.pc = 80; return s.tmp_2;
+    s.callLocIdx = 355; s.pc = 80; return s.tmp_2;
   case 80:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -34068,28 +34068,28 @@ switch (step) {
   case 25:
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.COLLAPSE_SCALE___78668;
-    s.tmp_2.arg1 = s.columnRight___79649;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.COLLAPSE_SCALE___81748;
+    s.tmp_2.arg1 = s.columnRight___82421;
     r0 = s.arg0.fields["cardWidth"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = 1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 353; s.pc = 81; return s.tmp_2;
+    s.callLocIdx = 356; s.pc = 81; return s.tmp_2;
   case 81:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = (s.tmp_0).fields["collapsePositions"] = (s.tmp_1);
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.EXPAND_SCALE___78673;
-    s.tmp_2.arg1 = s.columnLeft___79627;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.EXPAND_SCALE___81753;
+    s.tmp_2.arg1 = s.columnLeft___82399;
     r0 = s.arg0.fields["cardWidth"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = -1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 354; s.pc = 82; return s.tmp_2;
+    s.callLocIdx = 357; s.pc = 82; return s.tmp_2;
   case 82:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -34097,34 +34097,34 @@ switch (step) {
   case 26:
     { step = 30; continue; }
   case 27:
-    r0 = (s.scrollDirection___79591 > 0);
+    r0 = (s.scrollDirection___82363 > 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 28; continue; }
     s.tmp_1 = r0 = s.arg0;
     s.tmp_3 = lambda_5_mk(s);
-    s.tmp_3.argL = s.createPositionLookup___79835;
-    s.tmp_3.arg0 = globals.COLLAPSE_SCALE___78668;
-    s.tmp_3.arg1 = s.rowTop___79638;
+    s.tmp_3.argL = s.createPositionLookup___82607;
+    s.tmp_3.arg0 = globals.COLLAPSE_SCALE___81748;
+    s.tmp_3.arg1 = s.rowTop___82410;
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_3.arg2 = r0;
     s.tmp_3.arg3 = -1;
     setupLambda(s.tmp_3, s.tmp_3.argL);
-    s.callLocIdx = 355; s.pc = 83; return s.tmp_3;
+    s.callLocIdx = 358; s.pc = 83; return s.tmp_3;
   case 83:
     r0 = s.retval;
     s.tmp_2 = r0;
     r0 = (s.tmp_1).fields["collapsePositions"] = (s.tmp_2);
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.EXPAND_SCALE___78673;
-    s.tmp_2.arg1 = s.columnBottom___79662;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.EXPAND_SCALE___81753;
+    s.tmp_2.arg1 = s.columnBottom___82434;
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = 1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 356; s.pc = 84; return s.tmp_2;
+    s.callLocIdx = 359; s.pc = 84; return s.tmp_2;
   case 84:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -34133,28 +34133,28 @@ switch (step) {
   case 28:
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.COLLAPSE_SCALE___78668;
-    s.tmp_2.arg1 = s.columnBottom___79662;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.COLLAPSE_SCALE___81748;
+    s.tmp_2.arg1 = s.columnBottom___82434;
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = 1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 357; s.pc = 85; return s.tmp_2;
+    s.callLocIdx = 360; s.pc = 85; return s.tmp_2;
   case 85:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = (s.tmp_0).fields["collapsePositions"] = (s.tmp_1);
     s.tmp_0 = r0 = s.arg0;
     s.tmp_2 = lambda_5_mk(s);
-    s.tmp_2.argL = s.createPositionLookup___79835;
-    s.tmp_2.arg0 = globals.EXPAND_SCALE___78673;
-    s.tmp_2.arg1 = s.rowTop___79638;
+    s.tmp_2.argL = s.createPositionLookup___82607;
+    s.tmp_2.arg0 = globals.EXPAND_SCALE___81753;
+    s.tmp_2.arg1 = s.rowTop___82410;
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_2.arg2 = r0;
     s.tmp_2.arg3 = -1;
     setupLambda(s.tmp_2, s.tmp_2.argL);
-    s.callLocIdx = 358; s.pc = 86; return s.tmp_2;
+    s.callLocIdx = 361; s.pc = 86; return s.tmp_2;
   case 86:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -34163,24 +34163,24 @@ switch (step) {
   case 30:
   case 31:
   case 32:
-    s.row___79934 = (0);
-    s.column___79935 = (0);
-    r0 = pxsim_pxtcore_mkAction(4, cardCore_CardGrid_reposition_inline__P79939);
+    s.row___82706 = (0);
+    s.column___82707 = (0);
+    r0 = pxsim_pxtcore_mkAction(4, cardCore_CardGrid_reposition_inline__P82711);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.index___79675);
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 2, s.isVisible___79826);
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 3, s.isScrolling___79582);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.index___82447);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 2, s.isVisible___82598);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 3, s.isScrolling___82354);
     s.tmp_1 = helpers_arrayForEach__P45865_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1.arg0 = r0;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 370; s.pc = 87; return s.tmp_1;
+    s.callLocIdx = 373; s.pc = 87; return s.tmp_1;
   case 87:
     r0 = s.retval;
   case 33:
-    s.tmp_0 = r0 = s.columnLeft___79627;
-    s.tmp_2 = r0 = s.column___79935;
+    s.tmp_0 = r0 = s.columnLeft___82399;
+    s.tmp_2 = r0 = s.column___82707;
     r0 = s.arg0.fields["cardWidth"];
     s.tmp_4 = r0;
     r0 = s.arg0.fields["_spacing"];
@@ -34190,9 +34190,9 @@ switch (step) {
     r0 = (s.tmp_2 * s.tmp_3);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 + s.tmp_1);
-    s.x___80011 = (r0);
-    s.tmp_0 = r0 = s.rowTop___79638;
-    s.tmp_2 = r0 = s.row___79934;
+    s.x___82783 = (r0);
+    s.tmp_0 = r0 = s.rowTop___82410;
+    s.tmp_2 = r0 = s.row___82706;
     r0 = s.arg0.fields["cardHeight"];
     s.tmp_4 = r0;
     r0 = s.arg0.fields["_spacing"];
@@ -34202,18 +34202,18 @@ switch (step) {
     r0 = (s.tmp_2 * s.tmp_3);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 + s.tmp_1);
-    s.y___80021 = (r0);
+    s.y___82793 = (r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_1 = r0;
     r0 = pxsim_Array__getAt(s.tmp_0, s.tmp_1);
-    s.card___80031 = (r0);
+    s.card___82803 = (r0);
     s.tmp_3 = lambda_2_mk(s);
-    s.tmp_3.argL = s.isVisible___79826;
-    s.tmp_3.arg0 = s.card___80031;
+    s.tmp_3.argL = s.isVisible___82598;
+    s.tmp_3.arg0 = s.card___82803;
     setupLambda(s.tmp_3, s.tmp_3.argL);
-    s.callLocIdx = 371; s.pc = 88; return s.tmp_3;
+    s.callLocIdx = 374; s.pc = 88; return s.tmp_3;
   case 88:
     r0 = s.retval;
     s.tmp_2 = r0;
@@ -34224,39 +34224,39 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 38; continue; }
     s.tmp_4 = Sprite_setFlag__P48175_mk(s);
-    s.tmp_4.arg0 = s.card___80031;
+    s.tmp_4.arg0 = s.card___82803;
     s.tmp_4.arg1 = 128;
     s.tmp_4.arg2 = false;
-    s.callLocIdx = 372; s.pc = 89; return s.tmp_4;
+    s.callLocIdx = 375; s.pc = 89; return s.tmp_4;
   case 89:
     r0 = s.retval;
     s.tmp_0 = Sprite_x__P48111_mk(s);
-    s.tmp_0.arg0 = s.card___80031;
-    s.tmp_0.arg1 = s.x___80011;
-    s.callLocIdx = 373; s.pc = 90; return s.tmp_0;
+    s.tmp_0.arg0 = s.card___82803;
+    s.tmp_0.arg1 = s.x___82783;
+    s.callLocIdx = 376; s.pc = 90; return s.tmp_0;
   case 90:
     r0 = s.retval;
     s.tmp_0 = Sprite_y__P48113_mk(s);
-    s.tmp_0.arg0 = s.card___80031;
-    s.tmp_0.arg1 = s.y___80021;
-    s.callLocIdx = 374; s.pc = 91; return s.tmp_0;
+    s.tmp_0.arg0 = s.card___82803;
+    s.tmp_0.arg1 = s.y___82793;
+    s.callLocIdx = 377; s.pc = 91; return s.tmp_0;
   case 91:
     r0 = s.retval;
     s.tmp_0 = extraAnimations_clearAnimations__P74425_mk(s);
-    s.tmp_0.arg0 = s.card___80031;
+    s.tmp_0.arg0 = s.card___82803;
     s.tmp_0.arg1 = true;
-    s.callLocIdx = 375; s.pc = 92; return s.tmp_0;
+    s.callLocIdx = 378; s.pc = 92; return s.tmp_0;
   case 92:
     r0 = s.retval;
-    r0 = pxsim_numops_toBoolDecr(s.isScrolling___79582);
+    r0 = pxsim_numops_toBoolDecr(s.isScrolling___82354);
     if (!r0) { step = 36; continue; }
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 34; continue; }
     s.tmp_1 = extraAnimations_fixedFrameAnimate__P74422_mk(s);
-    s.tmp_1.arg0 = s.card___80031;
-    s.tmp_1.arg1 = globals.slideAnimationDuration___78677;
+    s.tmp_1.arg0 = s.card___82803;
+    s.tmp_1.arg1 = globals.slideAnimationDuration___81757;
     r0 = s.arg0.fields["expandPositions"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -34264,18 +34264,18 @@ switch (step) {
     r0 = s.arg0.fields["expandPositions"];
     s.tmp_1.arg3 = r0;
     s.tmp_1.arg4 = null;
-    s.tmp_1.arg5 = globals.EXPAND_SCALE___78673;
+    s.tmp_1.arg5 = globals.EXPAND_SCALE___81753;
     s.tmp_1.arg6 = null;
     s.tmp_1.arg7 = null;
     s.tmp_1.arg8 = null;
-    s.callLocIdx = 376; s.pc = 93; return s.tmp_1;
+    s.callLocIdx = 379; s.pc = 93; return s.tmp_1;
   case 93:
     r0 = s.retval;
     { step = 35; continue; }
   case 34:
     s.tmp_0 = extraAnimations_fixedFrameAnimate__P74422_mk(s);
-    s.tmp_0.arg0 = s.card___80031;
-    s.tmp_0.arg1 = globals.slideAnimationDuration___78677;
+    s.tmp_0.arg0 = s.card___82803;
+    s.tmp_0.arg1 = globals.slideAnimationDuration___81757;
     r0 = s.arg0.fields["expandPositions"];
     s.tmp_1 = r0;
     r0 = pxsim_Array__length(s.tmp_1);
@@ -34284,10 +34284,10 @@ switch (step) {
     r0 = s.arg0.fields["expandPositions"];
     s.tmp_0.arg4 = r0;
     s.tmp_0.arg5 = null;
-    s.tmp_0.arg6 = globals.EXPAND_SCALE___78673;
+    s.tmp_0.arg6 = globals.EXPAND_SCALE___81753;
     s.tmp_0.arg7 = null;
     s.tmp_0.arg8 = null;
-    s.callLocIdx = 377; s.pc = 94; return s.tmp_0;
+    s.callLocIdx = 380; s.pc = 94; return s.tmp_0;
   case 94:
     r0 = s.retval;
   case 35:
@@ -34296,12 +34296,12 @@ switch (step) {
     { step = 39; continue; }
   case 38:
     s.tmp_0 = extraAnimations_slide__P74421_mk(s);
-    s.tmp_0.arg0 = s.card___80031;
-    s.tmp_0.arg1 = s.x___80011;
-    s.tmp_0.arg2 = s.y___80021;
-    s.tmp_0.arg3 = globals.slideAnimationDuration___78677;
+    s.tmp_0.arg0 = s.card___82803;
+    s.tmp_0.arg1 = s.x___82783;
+    s.tmp_0.arg2 = s.y___82793;
+    s.tmp_0.arg3 = globals.slideAnimationDuration___81757;
     s.tmp_0.arg4 = null;
-    s.callLocIdx = 378; s.pc = 95; return s.tmp_0;
+    s.callLocIdx = 381; s.pc = 95; return s.tmp_0;
   case 95:
     r0 = s.retval;
   case 39:
@@ -34309,42 +34309,42 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 42; continue; }
-    r0 = (s.row___79934 + 1);
-    s.row___79934 = (r0);
+    r0 = (s.row___82706 + 1);
+    s.row___82706 = (r0);
     r0 = s.arg0.fields["rows"];
     s.tmp_1 = r0;
-    r0 = (s.row___79934 >= s.tmp_1);
+    r0 = (s.row___82706 >= s.tmp_1);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 40; continue; }
-    r0 = (s.column___79935 + 1);
-    s.column___79935 = (r0);
-    s.row___79934 = (0);
+    r0 = (s.column___82707 + 1);
+    s.column___82707 = (r0);
+    s.row___82706 = (0);
   case 40:
   case 41:
     { step = 45; continue; }
   case 42:
-    r0 = (s.column___79935 + 1);
-    s.column___79935 = (r0);
+    r0 = (s.column___82707 + 1);
+    s.column___82707 = (r0);
     r0 = s.arg0.fields["columns"];
     s.tmp_1 = r0;
-    r0 = (s.column___79935 >= s.tmp_1);
+    r0 = (s.column___82707 >= s.tmp_1);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 43; continue; }
-    r0 = (s.row___79934 + 1);
-    s.row___79934 = (r0);
-    s.column___79935 = (0);
+    r0 = (s.row___82706 + 1);
+    s.row___82706 = (r0);
+    s.column___82707 = (0);
   case 43:
   case 44:
   case 45:
-    s.tmp_0 = r0 = s.index___79675;
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    s.tmp_0 = r0 = s.index___82447;
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_2 = r0;
     r0 = (s.tmp_2 + 1);
     s.tmp_1 = r0;
     r0 = pxsim_pxtrt_stlocRef(s.tmp_0, s.tmp_1);
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_1 = r0;
     r0 = s.arg0.fields["cards"];
     s.tmp_3 = r0;
@@ -34357,9 +34357,9 @@ switch (step) {
     r0 = s.tmp_0;
     { step = 47; continue; }
   case 46:
-    r0 = pxsim_pxtrt_ldlocRef(s.index___79675);
+    r0 = pxsim_pxtrt_ldlocRef(s.index___82447);
     s.tmp_4 = r0;
-    r0 = (s.tmp_4 < s.lastIndex___79688);
+    r0 = (s.tmp_4 < s.lastIndex___82460);
   case 47:
     // jmp value (already in r0)
     s.tmp_5 = r0;
@@ -34387,7 +34387,7 @@ switch (step) {
     s.tmp_12 = r0;
     r0 = (s.tmp_12 === 0);
     s.tmp_11.arg2 = r0;
-    s.callLocIdx = 379; s.pc = 96; return s.tmp_11;
+    s.callLocIdx = 382; s.pc = 96; return s.tmp_11;
   case 96:
     r0 = s.retval;
   case 49:
@@ -34452,7 +34452,7 @@ switch (step) {
     s.tmp_23.arg0 = r0;
     s.tmp_23.arg1 = 128;
     s.tmp_23.arg2 = s.tmp_22;
-    s.callLocIdx = 380; s.pc = 97; return s.tmp_23;
+    s.callLocIdx = 383; s.pc = 97; return s.tmp_23;
   case 97:
     r0 = s.retval;
   case 53:
@@ -34462,12 +34462,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_reposition__P78780.info = {"start":22727,"length":7964,"line":719,"column":8,"endLine":871,"endColumn":9,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
+cardCore_CardGrid_reposition__P81860.info = {"start":22872,"length":7964,"line":723,"column":8,"endLine":875,"endColumn":9,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
 
-function cardCore_CardGrid_reposition__P78780_mk(s) {
+function cardCore_CardGrid_reposition__P81860_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_reposition__P78780, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_reposition__P81860, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -34493,25 +34493,25 @@ function cardCore_CardGrid_reposition__P78780_mk(s) {
   tmp_21: undefined,
   tmp_22: undefined,
   tmp_23: undefined,
-  maxScroll___79562: undefined,
-  isScrolling___79582: undefined,
-  scrollDirection___79591: undefined,
-  width___79601: undefined,
-  height___79614: undefined,
-  columnLeft___79627: undefined,
-  rowTop___79638: undefined,
-  columnRight___79649: undefined,
-  columnBottom___79662: undefined,
-  index___79675: undefined,
-  lastIndex___79688: undefined,
-  cursorIndex___79696: undefined,
-  isVisible___79826: undefined,
-  createPositionLookup___79835: undefined,
-  row___79934: undefined,
-  column___79935: undefined,
-  x___80011: undefined,
-  y___80021: undefined,
-  card___80031: undefined,
+  maxScroll___82334: undefined,
+  isScrolling___82354: undefined,
+  scrollDirection___82363: undefined,
+  width___82373: undefined,
+  height___82386: undefined,
+  columnLeft___82399: undefined,
+  rowTop___82410: undefined,
+  columnRight___82421: undefined,
+  columnBottom___82434: undefined,
+  index___82447: undefined,
+  lastIndex___82460: undefined,
+  cursorIndex___82468: undefined,
+  isVisible___82598: undefined,
+  createPositionLookup___82607: undefined,
+  row___82706: undefined,
+  column___82707: undefined,
+  x___82783: undefined,
+  y___82793: undefined,
+  card___82803: undefined,
   arg0: undefined,
 } }
 
@@ -34519,7 +34519,7 @@ function cardCore_CardGrid_reposition__P78780_mk(s) {
 
 
 
-function isVisible_inline__P79827(s) {
+function isVisible_inline__P82599(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34543,12 +34543,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-isVisible_inline__P79827.info = {"start":25727,"length":61,"line":778,"column":30,"endLine":778,"endColumn":91,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
+isVisible_inline__P82599.info = {"start":25872,"length":61,"line":782,"column":30,"endLine":782,"endColumn":91,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
 
-function isVisible_inline__P79827_mk(s) {
+function isVisible_inline__P82599_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: isVisible_inline__P79827, depth: s.depth + 1,
+        parent: s, fn: isVisible_inline__P82599, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -34560,7 +34560,7 @@ function isVisible_inline__P79827_mk(s) {
 
 
 
-function createPositionLookup_inline__P79836(s) {
+function createPositionLookup_inline__P82608(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34577,7 +34577,7 @@ switch (step) {
       s.arg3 = (s.lambdaArgs[3]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkAction(3, createPositionLookup_inline__P79843);
+    r0 = pxsim_pxtcore_mkAction(3, createPositionLookup_inline__P82615);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg1);
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.arg2);
@@ -34585,18 +34585,18 @@ switch (step) {
     s.tmp_1 = helpers_arrayMap__P45862_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 350; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 353; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     return leave(s, r0)
   default: oops()
 } } }
-createPositionLookup_inline__P79836.info = {"start":25830,"length":195,"line":779,"column":41,"endLine":781,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["scales","center","size","direction"]}
+createPositionLookup_inline__P82608.info = {"start":25975,"length":195,"line":783,"column":41,"endLine":785,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["scales","center","size","direction"]}
 
-function createPositionLookup_inline__P79836_mk(s) {
+function createPositionLookup_inline__P82608_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: createPositionLookup_inline__P79836, depth: s.depth + 1,
+        parent: s, fn: createPositionLookup_inline__P82608, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -34610,7 +34610,7 @@ function createPositionLookup_inline__P79836_mk(s) {
 
 
 
-function createPositionLookup_inline__P79843(s) {
+function createPositionLookup_inline__P82615(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34641,12 +34641,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-createPositionLookup_inline__P79843.info = {"start":25922,"length":89,"line":779,"column":133,"endLine":780,"endColumn":80,"fileName":"sprites.ts","functionName":"inline","argumentNames":["scale"]}
+createPositionLookup_inline__P82615.info = {"start":26067,"length":89,"line":783,"column":133,"endLine":784,"endColumn":80,"fileName":"sprites.ts","functionName":"inline","argumentNames":["scale"]}
 
-function createPositionLookup_inline__P79843_mk(s) {
+function createPositionLookup_inline__P82615_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: createPositionLookup_inline__P79843, depth: s.depth + 1,
+        parent: s, fn: createPositionLookup_inline__P82615, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -34662,7 +34662,7 @@ function createPositionLookup_inline__P79843_mk(s) {
 
 
 
-function cardCore_CardGrid_reposition_inline__P79939(s) {
+function cardCore_CardGrid_reposition_inline__P82711(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34680,19 +34680,19 @@ switch (step) {
     s.tmp_0 = extraAnimations_clearFixedFrameAnimation__P74403_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = true;
-    s.callLocIdx = 359; s.pc = 11; return s.tmp_0;
+    s.callLocIdx = 362; s.pc = 11; return s.tmp_0;
   case 11:
     r0 = s.retval;
     s.tmp_0 = Sprite_sx__P48127_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 1;
-    s.callLocIdx = 360; s.pc = 12; return s.tmp_0;
+    s.callLocIdx = 363; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
     s.tmp_0 = Sprite_sy__P48129_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 1;
-    s.callLocIdx = 361; s.pc = 13; return s.tmp_0;
+    s.callLocIdx = 364; s.pc = 13; return s.tmp_0;
   case 13:
     r0 = s.retval;
     s.tmp_0 = if_z_2_mk(s);
@@ -34705,7 +34705,7 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/z"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["z"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 362; s.pc = 14; return s.tmp_0; }
+     else { s.callLocIdx = 365; s.pc = 14; return s.tmp_0; }
     }
   case 14:
     r0 = s.retval;
@@ -34743,7 +34743,7 @@ switch (step) {
     s.tmp_10.argL = s.caps[2];
     s.tmp_10.arg0 = s.arg0;
     setupLambda(s.tmp_10, s.tmp_10.argL);
-    s.callLocIdx = 363; s.pc = 15; return s.tmp_10;
+    s.callLocIdx = 366; s.pc = 15; return s.tmp_10;
   case 15:
     r0 = s.retval;
   case 4:
@@ -34756,19 +34756,19 @@ switch (step) {
     s.tmp_12 = extraAnimations_clearAnimations__P74425_mk(s);
     s.tmp_12.arg0 = s.arg0;
     s.tmp_12.arg1 = true;
-    s.callLocIdx = 364; s.pc = 16; return s.tmp_12;
+    s.callLocIdx = 367; s.pc = 16; return s.tmp_12;
   case 16:
     r0 = s.retval;
     r0 = s.caps[0].fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 5; continue; }
-    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardGrid_reposition_inline__P79987);
+    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardGrid_reposition_inline__P82759);
     s.tmp_1 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_1, 0, s.arg0);
     s.tmp_2 = extraAnimations_fixedFrameAnimate__P74422_mk(s);
     s.tmp_2.arg0 = s.arg0;
-    s.tmp_2.arg1 = globals.slideAnimationDuration___78677;
+    s.tmp_2.arg1 = globals.slideAnimationDuration___81757;
     r0 = s.caps[0].fields["collapsePositions"];
     s.tmp_3 = r0;
     r0 = pxsim_Array__length(s.tmp_3);
@@ -34776,21 +34776,21 @@ switch (step) {
     r0 = s.caps[0].fields["collapsePositions"];
     s.tmp_2.arg3 = r0;
     s.tmp_2.arg4 = null;
-    s.tmp_2.arg5 = globals.COLLAPSE_SCALE___78668;
+    s.tmp_2.arg5 = globals.COLLAPSE_SCALE___81748;
     s.tmp_2.arg6 = null;
     s.tmp_2.arg7 = null;
     s.tmp_2.arg8 = s.tmp_1;
-    s.callLocIdx = 366; s.pc = 17; return s.tmp_2;
+    s.callLocIdx = 369; s.pc = 17; return s.tmp_2;
   case 17:
     r0 = s.retval;
     { step = 6; continue; }
   case 5:
-    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardGrid_reposition_inline__P80003);
+    r0 = pxsim_pxtcore_mkAction(1, cardCore_CardGrid_reposition_inline__P82775);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     s.tmp_1 = extraAnimations_fixedFrameAnimate__P74422_mk(s);
     s.tmp_1.arg0 = s.arg0;
-    s.tmp_1.arg1 = globals.slideAnimationDuration___78677;
+    s.tmp_1.arg1 = globals.slideAnimationDuration___81757;
     r0 = s.caps[0].fields["collapsePositions"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -34799,10 +34799,10 @@ switch (step) {
     r0 = s.caps[0].fields["collapsePositions"];
     s.tmp_1.arg4 = r0;
     s.tmp_1.arg5 = null;
-    s.tmp_1.arg6 = globals.COLLAPSE_SCALE___78668;
+    s.tmp_1.arg6 = globals.COLLAPSE_SCALE___81748;
     s.tmp_1.arg7 = null;
     s.tmp_1.arg8 = s.tmp_0;
-    s.callLocIdx = 368; s.pc = 18; return s.tmp_1;
+    s.callLocIdx = 371; s.pc = 18; return s.tmp_1;
   case 18:
     r0 = s.retval;
   case 6:
@@ -34812,7 +34812,7 @@ switch (step) {
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 369; s.pc = 19; return s.tmp_0;
+    s.callLocIdx = 372; s.pc = 19; return s.tmp_0;
   case 19:
     r0 = s.retval;
   case 8:
@@ -34822,12 +34822,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_reposition_inline__P79939.info = {"start":27398,"length":1099,"line":806,"column":31,"endLine":823,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","i"]}
+cardCore_CardGrid_reposition_inline__P82711.info = {"start":27543,"length":1099,"line":810,"column":31,"endLine":827,"endColumn":13,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","i"]}
 
-function cardCore_CardGrid_reposition_inline__P79939_mk(s) {
+function cardCore_CardGrid_reposition_inline__P82711_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_reposition_inline__P79939, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_reposition_inline__P82711, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -34850,7 +34850,7 @@ function cardCore_CardGrid_reposition_inline__P79939_mk(s) {
 
 
 
-function cardCore_CardGrid_reposition_inline__P79987(s) {
+function cardCore_CardGrid_reposition_inline__P82759(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34864,19 +34864,19 @@ switch (step) {
     s.tmp_0.arg0 = s.caps[0];
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 365; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 368; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_reposition_inline__P79987.info = {"start":28014,"length":46,"line":815,"column":181,"endLine":815,"endColumn":227,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
+cardCore_CardGrid_reposition_inline__P82759.info = {"start":28159,"length":46,"line":819,"column":181,"endLine":819,"endColumn":227,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
 
-function cardCore_CardGrid_reposition_inline__P79987_mk(s) {
+function cardCore_CardGrid_reposition_inline__P82759_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_reposition_inline__P79987, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_reposition_inline__P82759, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
 } }
@@ -34885,7 +34885,7 @@ function cardCore_CardGrid_reposition_inline__P79987_mk(s) {
 
 
 
-function cardCore_CardGrid_reposition_inline__P80003(s) {
+function cardCore_CardGrid_reposition_inline__P82775(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -34899,19 +34899,19 @@ switch (step) {
     s.tmp_0.arg0 = s.caps[0];
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = true;
-    s.callLocIdx = 367; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 370; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_reposition_inline__P80003.info = {"start":28276,"length":46,"line":817,"column":181,"endLine":817,"endColumn":227,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
+cardCore_CardGrid_reposition_inline__P82775.info = {"start":28421,"length":46,"line":821,"column":181,"endLine":821,"endColumn":227,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
 
-function cardCore_CardGrid_reposition_inline__P80003_mk(s) {
+function cardCore_CardGrid_reposition_inline__P82775_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_reposition_inline__P80003, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_reposition_inline__P82775, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
 } }
@@ -34949,7 +34949,7 @@ switch (step) {
     s.tmp_4 = r0 = s.arg1;
     s.tmp_6 = Sprite_x__P48110_mk(s);
     s.tmp_6.arg0 = s.arg0;
-    s.callLocIdx = 498; s.pc = 3; return s.tmp_6;
+    s.callLocIdx = 501; s.pc = 3; return s.tmp_6;
   case 3:
     r0 = s.retval;
     s.tmp_5 = r0;
@@ -34958,7 +34958,7 @@ switch (step) {
     s.tmp_8 = r0 = s.arg1;
     s.tmp_10 = Sprite_x__P48110_mk(s);
     s.tmp_10.arg0 = s.arg0;
-    s.callLocIdx = 499; s.pc = 4; return s.tmp_10;
+    s.callLocIdx = 502; s.pc = 4; return s.tmp_10;
   case 4:
     r0 = s.retval;
     s.tmp_9 = r0;
@@ -34969,7 +34969,7 @@ switch (step) {
     s.tmp_13 = r0 = s.arg2;
     s.tmp_15 = Sprite_y__P48112_mk(s);
     s.tmp_15.arg0 = s.arg0;
-    s.callLocIdx = 500; s.pc = 5; return s.tmp_15;
+    s.callLocIdx = 503; s.pc = 5; return s.tmp_15;
   case 5:
     r0 = s.retval;
     s.tmp_14 = r0;
@@ -34978,7 +34978,7 @@ switch (step) {
     s.tmp_17 = r0 = s.arg2;
     s.tmp_19 = Sprite_y__P48112_mk(s);
     s.tmp_19.arg0 = s.arg0;
-    s.callLocIdx = 501; s.pc = 6; return s.tmp_19;
+    s.callLocIdx = 504; s.pc = 6; return s.tmp_19;
   case 6:
     r0 = s.retval;
     s.tmp_18 = r0;
@@ -35003,7 +35003,7 @@ switch (step) {
     s.tmp_2 = r0 = s.arg1;
     s.tmp_4 = Sprite_x__P48110_mk(s);
     s.tmp_4.arg0 = s.arg0;
-    s.callLocIdx = 502; s.pc = 8; return s.tmp_4;
+    s.callLocIdx = 505; s.pc = 8; return s.tmp_4;
   case 8:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -35011,7 +35011,7 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = (s.tmp_1 / s.t___76710);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 503; s.pc = 7; return s.tmp_0;
+    s.callLocIdx = 506; s.pc = 7; return s.tmp_0;
   case 7:
     r0 = s.retval;
     s.tmp_0 = Sprite_vy__P48117_mk(s);
@@ -35019,7 +35019,7 @@ switch (step) {
     s.tmp_2 = r0 = s.arg2;
     s.tmp_4 = Sprite_y__P48112_mk(s);
     s.tmp_4.arg0 = s.arg0;
-    s.callLocIdx = 504; s.pc = 10; return s.tmp_4;
+    s.callLocIdx = 507; s.pc = 10; return s.tmp_4;
   case 10:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -35027,31 +35027,31 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = (s.tmp_1 / s.t___76710);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 505; s.pc = 9; return s.tmp_0;
+    s.callLocIdx = 508; s.pc = 9; return s.tmp_0;
   case 9:
     r0 = s.retval;
     s.tmp_0 = Sprite_fx__P48123_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 506; s.pc = 11; return s.tmp_0;
+    s.callLocIdx = 509; s.pc = 11; return s.tmp_0;
   case 11:
     r0 = s.retval;
     s.tmp_0 = Sprite_fy__P48125_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 507; s.pc = 12; return s.tmp_0;
+    s.callLocIdx = 510; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
     s.tmp_0 = Sprite_ax__P48119_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 508; s.pc = 13; return s.tmp_0;
+    s.callLocIdx = 511; s.pc = 13; return s.tmp_0;
   case 13:
     r0 = s.retval;
     s.tmp_0 = Sprite_ay__P48121_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 509; s.pc = 14; return s.tmp_0;
+    s.callLocIdx = 512; s.pc = 14; return s.tmp_0;
   case 14:
     r0 = s.retval;
     { step = 2; continue; }
@@ -35061,7 +35061,7 @@ switch (step) {
     s.tmp_2 = r0 = s.arg1;
     s.tmp_4 = Sprite_x__P48110_mk(s);
     s.tmp_4.arg0 = s.arg0;
-    s.callLocIdx = 510; s.pc = 15; return s.tmp_4;
+    s.callLocIdx = 513; s.pc = 15; return s.tmp_4;
   case 15:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -35081,32 +35081,32 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = (0 - s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 511; s.pc = 16; return s.tmp_0;
+    s.callLocIdx = 514; s.pc = 16; return s.tmp_0;
   case 16:
     r0 = s.retval;
     s.tmp_0 = Sprite_fx__P48123_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_2 = Math_abs__P45884_mk(s);
     s.tmp_2.arg0 = s.ax___76742;
-    s.callLocIdx = 512; s.pc = 18; return s.tmp_2;
+    s.callLocIdx = 515; s.pc = 18; return s.tmp_2;
   case 18:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim.Math_.ceil(s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 513; s.pc = 17; return s.tmp_0;
+    s.callLocIdx = 516; s.pc = 17; return s.tmp_0;
   case 17:
     r0 = s.retval;
     s.tmp_0 = Sprite_ax__P48119_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 514; s.pc = 19; return s.tmp_0;
+    s.callLocIdx = 517; s.pc = 19; return s.tmp_0;
   case 19:
     r0 = s.retval;
     s.tmp_2 = r0 = s.arg2;
     s.tmp_4 = Sprite_y__P48112_mk(s);
     s.tmp_4.arg0 = s.arg0;
-    s.callLocIdx = 515; s.pc = 20; return s.tmp_4;
+    s.callLocIdx = 518; s.pc = 20; return s.tmp_4;
   case 20:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -35126,33 +35126,33 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = (0 - s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 516; s.pc = 21; return s.tmp_0;
+    s.callLocIdx = 519; s.pc = 21; return s.tmp_0;
   case 21:
     r0 = s.retval;
     s.tmp_0 = Sprite_fy__P48125_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_2 = Math_abs__P45884_mk(s);
     s.tmp_2.arg0 = s.ay___76771;
-    s.callLocIdx = 517; s.pc = 23; return s.tmp_2;
+    s.callLocIdx = 520; s.pc = 23; return s.tmp_2;
   case 23:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim.Math_.ceil(s.tmp_1);
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 518; s.pc = 22; return s.tmp_0;
+    s.callLocIdx = 521; s.pc = 22; return s.tmp_0;
   case 22:
     r0 = s.retval;
     s.tmp_0 = Sprite_ay__P48121_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
-    s.callLocIdx = 519; s.pc = 24; return s.tmp_0;
+    s.callLocIdx = 522; s.pc = 24; return s.tmp_0;
   case 24:
     r0 = s.retval;
   case 2:
     s.tmp_0 = extraAnimations_clearSlideAnimation__P74420_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = false;
-    s.callLocIdx = 520; s.pc = 25; return s.tmp_0;
+    s.callLocIdx = 523; s.pc = 25; return s.tmp_0;
   case 25:
     r0 = s.retval;
     r0 = pxsim_pxtrt.mkMap();
@@ -35164,7 +35164,7 @@ switch (step) {
     s.tmp_3 = setTimeout__P46179_mk(s);
     s.tmp_3.arg0 = s.tmp_1;
     s.tmp_3.arg1 = s.arg3;
-    s.callLocIdx = 522; s.pc = 26; return s.tmp_3;
+    s.callLocIdx = 525; s.pc = 26; return s.tmp_3;
   case 26:
     r0 = s.retval;
     s.tmp_2 = r0;
@@ -35234,7 +35234,7 @@ switch (step) {
     s.tmp_0 = extraAnimations_clearSlideAnimation__P74420_mk(s);
     s.tmp_0.arg0 = s.caps[0];
     s.tmp_0.arg1 = true;
-    s.callLocIdx = 521; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 524; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -36152,7 +36152,7 @@ function Sprite_width__P48153_mk(s) {
 
 
 
-function cardCore_LayoutContainer_constructor__P78758(s) {
+function cardCore_LayoutContainer_constructor__P81838(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -36173,7 +36173,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = (s.arg0).fields["id"] = (s.arg1);
     r0 = (s.arg0).fields["x"] = (s.arg2);
     r0 = (s.arg0).fields["y"] = (s.arg3);
@@ -36188,12 +36188,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_constructor__P78758.info = {"start":11876,"length":276,"line":376,"column":8,"endLine":385,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","isInsertFaceUp"]}
+cardCore_LayoutContainer_constructor__P81838.info = {"start":11876,"length":276,"line":376,"column":8,"endLine":385,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","isInsertFaceUp"]}
 
-function cardCore_LayoutContainer_constructor__P78758_mk(s) {
+function cardCore_LayoutContainer_constructor__P81838_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_constructor__P78758, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_constructor__P81838, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -36319,12 +36319,12 @@ switch (step) {
     s.tmp_0.arg0 = s.arg0;
     if (!s.tmp_0.arg0.vtable.iface) {
       setupLambda(s.tmp_0, pxsim_pxtrt.mapGetByString(s.tmp_0.arg0, "shuffle"), 1);
-      s.callLocIdx = 623; s.pc = 1; return s.tmp_0;
+      s.callLocIdx = 626; s.pc = 1; return s.tmp_0;
     } else {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["shuffle"];
-      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["shuffle"], 1); s.callLocIdx = 623; s.pc = 1; return s.tmp_0; }
-      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 623; s.pc = 1; return s.tmp_0;; }
-     else { s.callLocIdx = 623; s.pc = 1; return s.tmp_0; }
+      if (s.tmp_0.fn == null) { setupLambda(s.tmp_0, s.tmp_0.arg0.fields["shuffle"], 1); s.callLocIdx = 626; s.pc = 1; return s.tmp_0; }
+      else if (s.tmp_0.fn.isGetter) { s.tmp_0.stage2Call = true; s.callLocIdx = 626; s.pc = 1; return s.tmp_0;; }
+     else { s.callLocIdx = 626; s.pc = 1; return s.tmp_0; }
     }
   case 1:
     r0 = s.retval;
@@ -37592,12 +37592,12 @@ switch (step) {
     s.deck___56993 = undefined;
     s.tmp_0 = cardDesign_createEmptyDeck__P78886_mk(s);
     s.tmp_1 = cardKit_getPlayingCardsDesign__P50242_mk(s);
-    s.callLocIdx = 543; s.pc = 2; return s.tmp_1;
+    s.callLocIdx = 546; s.pc = 2; return s.tmp_1;
   case 2:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = "Playing Cards";
-    s.callLocIdx = 544; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 547; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     s.deck___56993 = (r0);
@@ -37612,7 +37612,7 @@ switch (step) {
     s.tmp_3 = cardDesign_createTextAttributeVariations__P78893_mk(s);
     s.tmp_3.arg0 = 1;
     s.tmp_3.arg1 = s.tmp_0;
-    s.callLocIdx = 545; s.pc = 3; return s.tmp_3;
+    s.callLocIdx = 548; s.pc = 3; return s.tmp_3;
   case 3:
     r0 = s.retval;
     s.tmp_2 = r0;
@@ -37621,7 +37621,7 @@ switch (step) {
     s.tmp_5.arg0 = 0;
     s.tmp_5.arg1 = 1;
     s.tmp_5.arg2 = 13;
-    s.callLocIdx = 546; s.pc = 4; return s.tmp_5;
+    s.callLocIdx = 549; s.pc = 4; return s.tmp_5;
   case 4:
     r0 = s.retval;
     s.tmp_4 = r0;
@@ -37630,7 +37630,7 @@ switch (step) {
     s.tmp_6.arg0 = s.deck___56993;
     s.tmp_6.arg1 = s.tmp_1;
     s.tmp_6.arg2 = 1;
-    s.callLocIdx = 547; s.pc = 5; return s.tmp_6;
+    s.callLocIdx = 550; s.pc = 5; return s.tmp_6;
   case 5:
     r0 = s.retval;
     r0 = s.deck___56993;
@@ -37708,7 +37708,7 @@ switch (step) {
     s.tmp_1.arg0 = s.tmp_0;
     s.tmp_1.arg1 = s.arg0;
     s.tmp_1.arg2 = s.values___80181;
-    s.callLocIdx = 564; s.pc = 5; return s.tmp_1;
+    s.callLocIdx = 567; s.pc = 5; return s.tmp_1;
   case 5:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -37797,7 +37797,7 @@ switch (step) {
     s.tmp_1.arg0 = s.tmp_0;
     s.tmp_1.arg1 = s.arg0;
     s.tmp_1.arg2 = s.arg1;
-    s.callLocIdx = 565; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 568; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -37845,7 +37845,7 @@ switch (step) {
     s.tmp_1 = cardCore_CardData_constructor__P74102_mk(s);
     s.tmp_1.arg0 = s.tmp_0;
     s.tmp_1.arg1 = undefined;
-    s.callLocIdx = 569; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 572; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     s.tmp_2 = cardDesign___addCardVariationsFromIndex__P78894_mk(s);
@@ -37854,13 +37854,13 @@ switch (step) {
     s.tmp_2.arg2 = s.arg1;
     s.tmp_2.arg3 = 0;
     s.tmp_2.arg4 = s.arg2;
-    s.callLocIdx = 570; s.pc = 2; return s.tmp_2;
+    s.callLocIdx = 573; s.pc = 2; return s.tmp_2;
   case 2:
     r0 = s.retval;
-    s.tmp_0 = cardCore_CardStack_insertCardData__P78718_mk(s);
+    s.tmp_0 = cardCore_CardStack_insertCardData__P81798_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.insertData___80219;
-    s.callLocIdx = 571; s.pc = 3; return s.tmp_0;
+    s.callLocIdx = 574; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
     r0 = undefined;
@@ -37887,7 +37887,7 @@ function cardDesign_addCardVariantsToDeck__P78895_mk(s) {
 
 
 
-function cardCore_CardStack_insertCardData__P78718(s) {
+function cardCore_CardStack_insertCardData__P81798(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -37903,7 +37903,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = s.arg0.fields["design"];
     s.tmp_4 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_4);
@@ -37916,7 +37916,7 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    r0 = pxsim_pxtcore_mkAction(1, concat_inline__P80242);
+    r0 = pxsim_pxtcore_mkAction(1, concat_inline__P82961);
     s.tmp_5 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_5, 0, s.arg0);
     s.tmp_6 = r0 = s.arg0;
@@ -37935,7 +37935,7 @@ switch (step) {
     r0 = s.retval;
     s.tmp_7 = r0;
     r0 = (s.tmp_6).fields["cards"] = (s.tmp_7);
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 250; s.pc = 5; return s.tmp_0;
   case 5:
@@ -37946,12 +37946,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_insertCardData__P78718.info = {"start":8148,"length":376,"line":260,"column":8,"endLine":269,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCardData","argumentNames":["this","data"]}
+cardCore_CardStack_insertCardData__P81798.info = {"start":8148,"length":376,"line":260,"column":8,"endLine":269,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCardData","argumentNames":["this","data"]}
 
-function cardCore_CardStack_insertCardData__P78718_mk(s) {
+function cardCore_CardStack_insertCardData__P81798_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_insertCardData__P78718, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_insertCardData__P81798, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -37971,7 +37971,7 @@ function cardCore_CardStack_insertCardData__P78718_mk(s) {
 
 
 
-function concat_inline__P80242(s) {
+function concat_inline__P82961(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -37981,14 +37981,14 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.card___80244 = undefined;
+    s.card___82963 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkClassInstance(cardCore_Card__C78686_VT);
+    r0 = pxsim_pxtcore_mkClassInstance(cardCore_Card__C81766_VT);
     s.tmp_0 = r0;
-    s.tmp_1 = cardCore_Card_constructor__P78699_mk(s);
+    s.tmp_1 = cardCore_Card_constructor__P81779_mk(s);
     s.tmp_1.arg0 = s.tmp_0;
     r0 = s.caps[0].fields["design"];
     s.tmp_1.arg1 = r0;
@@ -37998,22 +37998,22 @@ switch (step) {
     s.callLocIdx = 247; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
-    s.card___80244 = (s.tmp_0);
-    r0 = (s.card___80244).fields["container"] = (s.caps[0]);
-    r0 = s.card___80244;
+    s.card___82963 = (s.tmp_0);
+    r0 = (s.card___82963).fields["container"] = (s.caps[0]);
+    r0 = s.card___82963;
     return leave(s, r0)
   default: oops()
 } } }
-concat_inline__P80242.info = {"start":8254,"length":190,"line":262,"column":38,"endLine":266,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["cardData"]}
+concat_inline__P82961.info = {"start":8254,"length":190,"line":262,"column":38,"endLine":266,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["cardData"]}
 
-function concat_inline__P80242_mk(s) {
+function concat_inline__P82961_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: concat_inline__P80242, depth: s.depth + 1,
+        parent: s, fn: concat_inline__P82961, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
-  card___80244: undefined,
+  card___82963: undefined,
   arg0: undefined,
 } }
 
@@ -38021,7 +38021,7 @@ function concat_inline__P80242_mk(s) {
 
 
 
-function cardCore_Card_constructor__P78699(s) {
+function cardCore_Card_constructor__P81779(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -38039,7 +38039,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = (s.arg0).fields["design"] = (s.arg1);
     r0 = (s.arg0).fields["card"] = (s.arg2);
     s.tmp_0 = Sprite_constructor__P48144_mk(s);
@@ -38055,14 +38055,14 @@ switch (step) {
     r0 = s.retval;
     r0 = (s.arg0).fields["container"] = (null);
     r0 = (s.arg0).fields["_isFaceUp"] = (s.arg3);
-    s.tmp_0 = cardCore_Card_refreshImage__P78689_mk(s);
+    s.tmp_0 = cardCore_Card_refreshImage__P81769_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 196; s.pc = 2; return s.tmp_0;
   case 2:
     r0 = s.retval;
-    s.tmp_0 = cardCore_activate__P78680_mk(s);
+    s.tmp_0 = cardCore_activate__P81760_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.tmp_0.arg1 = globals.Card___78649;
+    s.tmp_0.arg1 = globals.Card___81729;
     s.callLocIdx = 197; s.pc = 3; return s.tmp_0;
   case 3:
     r0 = s.retval;
@@ -38070,12 +38070,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_constructor__P78699.info = {"start":1298,"length":336,"line":52,"column":8,"endLine":62,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","design","card","isFaceUp"]}
+cardCore_Card_constructor__P81779.info = {"start":1298,"length":336,"line":52,"column":8,"endLine":62,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","design","card","isFaceUp"]}
 
-function cardCore_Card_constructor__P78699_mk(s) {
+function cardCore_Card_constructor__P81779_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_constructor__P78699, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_constructor__P81779, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -38258,7 +38258,7 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = pxsim_Array__getAt(s.tmp_5, s.i___80283);
     s.tmp_4.arg2 = r0;
-    s.callLocIdx = 566; s.pc = 7; return s.tmp_4;
+    s.callLocIdx = 569; s.pc = 7; return s.tmp_4;
   case 7:
     r0 = s.retval;
     r0 = (s.arg3 + 1);
@@ -38276,7 +38276,7 @@ switch (step) {
     r0 = (s.arg3 + 1);
     s.tmp_3.arg3 = r0;
     s.tmp_3.arg4 = s.arg4;
-    s.callLocIdx = 567; s.pc = 8; return s.tmp_3;
+    s.callLocIdx = 570; s.pc = 8; return s.tmp_3;
   case 8:
     r0 = s.retval;
     { step = 5; continue; }
@@ -38290,7 +38290,7 @@ switch (step) {
     s.tmp_1 = r0 = s.arg0;
     s.tmp_3 = cardCore_CardData_clone__P74101_mk(s);
     s.tmp_3.arg0 = s.arg1;
-    s.callLocIdx = 568; s.pc = 9; return s.tmp_3;
+    s.callLocIdx = 571; s.pc = 9; return s.tmp_3;
   case 9:
     r0 = s.retval;
     s.tmp_2 = r0;
@@ -38476,7 +38476,7 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
     s.tmp_2 = cardDesign_createCardDesignTemplate__P78868_mk(s);
-    s.callLocIdx = 533; s.pc = 3; return s.tmp_2;
+    s.callLocIdx = 536; s.pc = 3; return s.tmp_2;
   case 3:
     r0 = s.retval;
     s.design___56956 = (r0);
@@ -38509,7 +38509,7 @@ switch (step) {
     s.tmp_1.arg5 = 5;
     s.tmp_1.arg6 = 1;
     s.tmp_1.arg7 = false;
-    s.callLocIdx = 534; s.pc = 4; return s.tmp_1;
+    s.callLocIdx = 537; s.pc = 4; return s.tmp_1;
   case 4:
     r0 = s.retval;
     s.tmp_0 = cardDesign_addEmptySpace__P78883_mk(s);
@@ -38517,12 +38517,12 @@ switch (step) {
     s.tmp_0.arg1 = 1;
     s.tmp_0.arg2 = 2;
     s.tmp_0.arg3 = 0;
-    s.callLocIdx = 535; s.pc = 5; return s.tmp_0;
+    s.callLocIdx = 538; s.pc = 5; return s.tmp_0;
   case 5:
     r0 = s.retval;
     s.tmp_0 = cardDesign_editNextRow__P78874_mk(s);
     s.tmp_0.arg0 = s.design___56956;
-    s.callLocIdx = 536; s.pc = 6; return s.tmp_0;
+    s.callLocIdx = 539; s.pc = 6; return s.tmp_0;
   case 6:
     r0 = s.retval;
     r0 = pxsim_Array__mk();
@@ -38531,7 +38531,7 @@ switch (step) {
     s.tmp_2.arg0 = "spades";
     r0 = pxsim.image.ofBuffer(_hex56977);
     s.tmp_2.arg1 = r0;
-    s.callLocIdx = 537; s.pc = 7; return s.tmp_2;
+    s.callLocIdx = 540; s.pc = 7; return s.tmp_2;
   case 7:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -38540,7 +38540,7 @@ switch (step) {
     s.tmp_4.arg0 = "diamonds";
     r0 = pxsim.image.ofBuffer(_hex56980);
     s.tmp_4.arg1 = r0;
-    s.callLocIdx = 538; s.pc = 8; return s.tmp_4;
+    s.callLocIdx = 541; s.pc = 8; return s.tmp_4;
   case 8:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -38549,7 +38549,7 @@ switch (step) {
     s.tmp_6.arg0 = "clubs";
     r0 = pxsim.image.ofBuffer(_hex56983);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 539; s.pc = 9; return s.tmp_6;
+    s.callLocIdx = 542; s.pc = 9; return s.tmp_6;
   case 9:
     r0 = s.retval;
     s.tmp_5 = r0;
@@ -38558,7 +38558,7 @@ switch (step) {
     s.tmp_8.arg0 = "hearts";
     r0 = pxsim.image.ofBuffer(_hex56986);
     s.tmp_8.arg1 = r0;
-    s.callLocIdx = 540; s.pc = 10; return s.tmp_8;
+    s.callLocIdx = 543; s.pc = 10; return s.tmp_8;
   case 10:
     r0 = s.retval;
     s.tmp_7 = r0;
@@ -38568,7 +38568,7 @@ switch (step) {
     s.tmp_9.arg1 = 1;
     s.tmp_9.arg2 = 1;
     s.tmp_9.arg3 = s.tmp_0;
-    s.callLocIdx = 541; s.pc = 11; return s.tmp_9;
+    s.callLocIdx = 544; s.pc = 11; return s.tmp_9;
   case 11:
     r0 = s.retval;
     s.tmp_0 = cardDesign_addEmptySpace__P78883_mk(s);
@@ -38576,7 +38576,7 @@ switch (step) {
     s.tmp_0.arg1 = 1;
     s.tmp_0.arg2 = 2;
     s.tmp_0.arg3 = 0;
-    s.callLocIdx = 542; s.pc = 12; return s.tmp_0;
+    s.callLocIdx = 545; s.pc = 12; return s.tmp_0;
   case 12:
     r0 = s.retval;
     globals.playingCardsDesignTemplate___56953 = (s.design___56956);
@@ -38677,11 +38677,11 @@ switch (step) {
     s.tmp_1.arg0 = s.arg1;
     s.tmp_1.arg1 = s.arg2;
     s.tmp_1.arg2 = s.arg3;
-    s.callLocIdx = 558; s.pc = 2; return s.tmp_1;
+    s.callLocIdx = 561; s.pc = 2; return s.tmp_1;
   case 2:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 559; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 562; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -38862,11 +38862,11 @@ switch (step) {
     s.tmp_1.arg0 = s.arg1;
     s.tmp_1.arg1 = s.arg2;
     s.tmp_1.arg2 = s.arg3;
-    s.callLocIdx = 560; s.pc = 2; return s.tmp_1;
+    s.callLocIdx = 563; s.pc = 2; return s.tmp_1;
   case 2:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 561; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 564; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -38963,7 +38963,7 @@ switch (step) {
     s.tmp_1.arg1 = s.arg2;
     s.tmp_2 = cardCore_createNumberToTextLookupTable__P74103_mk(s);
     s.tmp_2.arg0 = s.arg3;
-    s.callLocIdx = 555; s.pc = 3; return s.tmp_2;
+    s.callLocIdx = 558; s.pc = 3; return s.tmp_2;
   case 3:
     r0 = s.retval;
     s.tmp_1.arg2 = r0;
@@ -38974,11 +38974,11 @@ switch (step) {
     s.tmp_3 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_3);
     s.tmp_1.arg6 = r0;
-    s.callLocIdx = 556; s.pc = 2; return s.tmp_1;
+    s.callLocIdx = 559; s.pc = 2; return s.tmp_1;
   case 2:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 557; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 560; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -39166,7 +39166,7 @@ switch (step) {
     s.tmp_0 = r0;
     s.tmp_1 = cardDesign_CardDesignTemplate_constructor__P78871_mk(s);
     s.tmp_1.arg0 = s.tmp_0;
-    s.callLocIdx = 548; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 551; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -39211,7 +39211,7 @@ switch (step) {
     s.tmp_2 = cardDesign_createFlatColorImage__P78866_mk(s);
     s.tmp_2.arg0 = globals.DEFAULT_ROUNDED_RECTANGLE___78864;
     s.tmp_2.arg1 = 4;
-    s.callLocIdx = 549; s.pc = 1; return s.tmp_2;
+    s.callLocIdx = 552; s.pc = 1; return s.tmp_2;
   case 1:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -39220,7 +39220,7 @@ switch (step) {
     s.tmp_2 = cardDesign_createFlatColorImage__P78866_mk(s);
     s.tmp_2.arg0 = globals.DEFAULT_ROUNDED_RECTANGLE___78864;
     s.tmp_2.arg1 = 11;
-    s.callLocIdx = 550; s.pc = 2; return s.tmp_2;
+    s.callLocIdx = 553; s.pc = 2; return s.tmp_2;
   case 2:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -39229,7 +39229,7 @@ switch (step) {
     s.tmp_2 = cardDesign_createFlatColorImage__P78866_mk(s);
     s.tmp_2.arg0 = globals.DEFAULT_ROUNDED_RECTANGLE___78864;
     s.tmp_2.arg1 = 14;
-    s.callLocIdx = 551; s.pc = 3; return s.tmp_2;
+    s.callLocIdx = 554; s.pc = 3; return s.tmp_2;
   case 3:
     r0 = s.retval;
     s.tmp_1 = r0;
@@ -39244,7 +39244,7 @@ switch (step) {
     r0 = (s.tmp_0).fields["stamps"] = (s.tmp_1);
     s.tmp_0 = cardDesign_resetDesignZones__P78873_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 552; s.pc = 4; return s.tmp_0;
+    s.callLocIdx = 555; s.pc = 4; return s.tmp_0;
   case 4:
     r0 = s.retval;
     r0 = undefined;
@@ -39288,7 +39288,7 @@ switch (step) {
     r0 = (s.tmp_0).fields["rows"] = (s.tmp_1);
     s.tmp_0 = cardDesign_editNextRow__P78874_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 554; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 557; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
@@ -39378,14 +39378,14 @@ switch (step) {
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
-    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardStack__C78711_VT);
+    r0 = pxsim_pxtcore_mkClassInstance(cardCore_CardStack__C81791_VT);
     s.tmp_0 = r0;
-    s.tmp_1 = cardCore_CardStack_constructor__P78732_mk(s);
+    s.tmp_1 = cardCore_CardStack_constructor__P81812_mk(s);
     s.tmp_1.arg0 = s.tmp_0;
     s.tmp_1.arg1 = s.arg1;
     s.tmp_2 = cardDesign_CardDesignTemplate_export__P78870_mk(s);
     s.tmp_2.arg0 = s.arg0;
-    s.callLocIdx = 562; s.pc = 2; return s.tmp_2;
+    s.callLocIdx = 565; s.pc = 2; return s.tmp_2;
   case 2:
     r0 = s.retval;
     s.tmp_1.arg2 = r0;
@@ -39393,7 +39393,7 @@ switch (step) {
     s.tmp_1.arg3 = r0;
     s.tmp_1.arg4 = false;
     s.tmp_1.arg5 = false;
-    s.callLocIdx = 563; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 566; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -39472,7 +39472,7 @@ switch (step) {
     s.tmp_1.arg11 = r0;
     r0 = s.arg0.fields["spacing"];
     s.tmp_1.arg12 = r0;
-    s.callLocIdx = 553; s.pc = 1; return s.tmp_1;
+    s.callLocIdx = 556; s.pc = 1; return s.tmp_1;
   case 1:
     r0 = s.retval;
     r0 = s.tmp_0;
@@ -42226,7 +42226,7 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    r0 = globals.mostRecentCursorContainer___78797;
+    r0 = globals.mostRecentCursorContainer___81877;
     s.layer___80512 = (r0);
     r0 = pxsim_numops_toBoolDecr(s.layer___80512);
     s.tmp_1 = r0;
@@ -42245,7 +42245,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["isCardSpread"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["isCardSpread"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 588; s.pc = 21; return s.tmp_7; }
+     else { s.callLocIdx = 591; s.pc = 21; return s.tmp_7; }
     }
   case 21:
     r0 = s.retval;
@@ -42273,16 +42273,16 @@ switch (step) {
     r0 = s.tmp_1;
     { step = 5; continue; }
   case 3:
-    s.tmp_2 = cardCore_CardSpread_moveCursorBack__P78769_mk(s);
+    s.tmp_2 = cardCore_CardSpread_moveCursorBack__P81849_mk(s);
     s.tmp_2.arg0 = s.spread___80522;
-    s.callLocIdx = 590; s.pc = 22; return s.tmp_2;
+    s.callLocIdx = 593; s.pc = 22; return s.tmp_2;
   case 22:
     r0 = s.retval;
     { step = 5; continue; }
   case 4:
-    s.tmp_0 = cardCore_CardSpread_moveCursorForward__P78768_mk(s);
+    s.tmp_0 = cardCore_CardSpread_moveCursorForward__P81848_mk(s);
     s.tmp_0.arg0 = s.spread___80522;
-    s.callLocIdx = 591; s.pc = 23; return s.tmp_0;
+    s.callLocIdx = 594; s.pc = 23; return s.tmp_0;
   case 23:
     r0 = s.retval;
   case 5:
@@ -42296,16 +42296,16 @@ switch (step) {
     r0 = s.tmp_0;
     { step = 9; continue; }
   case 7:
-    s.tmp_1 = cardCore_CardSpread_moveCursorBack__P78769_mk(s);
+    s.tmp_1 = cardCore_CardSpread_moveCursorBack__P81849_mk(s);
     s.tmp_1.arg0 = s.spread___80522;
-    s.callLocIdx = 592; s.pc = 24; return s.tmp_1;
+    s.callLocIdx = 595; s.pc = 24; return s.tmp_1;
   case 24:
     r0 = s.retval;
     { step = 9; continue; }
   case 8:
-    s.tmp_0 = cardCore_CardSpread_moveCursorForward__P78768_mk(s);
+    s.tmp_0 = cardCore_CardSpread_moveCursorForward__P81848_mk(s);
     s.tmp_0.arg0 = s.spread___80522;
-    s.callLocIdx = 593; s.pc = 25; return s.tmp_0;
+    s.callLocIdx = 596; s.pc = 25; return s.tmp_0;
   case 25:
     r0 = s.retval;
   case 9:
@@ -42320,7 +42320,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["isCardGrid"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["isCardGrid"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 594; s.pc = 26; return s.tmp_5; }
+     else { s.callLocIdx = 597; s.pc = 26; return s.tmp_5; }
     }
   case 26:
     r0 = s.retval;
@@ -42348,30 +42348,30 @@ switch (step) {
     r0 = s.tmp_0;
     { step = 16; continue; }
   case 12:
-    s.tmp_1 = cardCore_CardGrid_moveCursorUp__P78786_mk(s);
+    s.tmp_1 = cardCore_CardGrid_moveCursorUp__P81866_mk(s);
     s.tmp_1.arg0 = s.grid___80548;
-    s.callLocIdx = 595; s.pc = 27; return s.tmp_1;
+    s.callLocIdx = 598; s.pc = 27; return s.tmp_1;
   case 27:
     r0 = s.retval;
     { step = 16; continue; }
   case 13:
-    s.tmp_0 = cardCore_CardGrid_moveCursorDown__P78787_mk(s);
+    s.tmp_0 = cardCore_CardGrid_moveCursorDown__P81867_mk(s);
     s.tmp_0.arg0 = s.grid___80548;
-    s.callLocIdx = 596; s.pc = 28; return s.tmp_0;
+    s.callLocIdx = 599; s.pc = 28; return s.tmp_0;
   case 28:
     r0 = s.retval;
     { step = 16; continue; }
   case 14:
-    s.tmp_0 = cardCore_CardGrid_moveCursorLeft__P78784_mk(s);
+    s.tmp_0 = cardCore_CardGrid_moveCursorLeft__P81864_mk(s);
     s.tmp_0.arg0 = s.grid___80548;
-    s.callLocIdx = 597; s.pc = 29; return s.tmp_0;
+    s.callLocIdx = 600; s.pc = 29; return s.tmp_0;
   case 29:
     r0 = s.retval;
     { step = 16; continue; }
   case 15:
-    s.tmp_0 = cardCore_CardGrid_moveCursorRight__P78785_mk(s);
+    s.tmp_0 = cardCore_CardGrid_moveCursorRight__P81865_mk(s);
     s.tmp_0.arg0 = s.grid___80548;
-    s.callLocIdx = 598; s.pc = 30; return s.tmp_0;
+    s.callLocIdx = 601; s.pc = 30; return s.tmp_0;
   case 30:
     r0 = s.retval;
   case 16:
@@ -42408,7 +42408,7 @@ function cardKit_moveCursorInDirection__P78926_mk(s) {
 
 
 
-function cardCore_CardGrid_moveCursorRight__P78785(s) {
+function cardCore_CardGrid_moveCursorRight__P81865(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -42423,24 +42423,24 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P81863_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
     s.tmp_0.arg2 = 1;
-    s.callLocIdx = 394; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 397; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_moveCursorRight__P78785.info = {"start":34109,"length":76,"line":961,"column":8,"endLine":963,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorRight","argumentNames":["this"]}
+cardCore_CardGrid_moveCursorRight__P81865.info = {"start":34254,"length":76,"line":965,"column":8,"endLine":967,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorRight","argumentNames":["this"]}
 
-function cardCore_CardGrid_moveCursorRight__P78785_mk(s) {
+function cardCore_CardGrid_moveCursorRight__P81865_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_moveCursorRight__P78785, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_moveCursorRight__P81865, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -42450,7 +42450,7 @@ function cardCore_CardGrid_moveCursorRight__P78785_mk(s) {
 
 
 
-function cardCore_CardGrid_moveCursorIndexByOffset__P78783(s) {
+function cardCore_CardGrid_moveCursorIndexByOffset__P81863(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -42460,11 +42460,11 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.index___80570 = undefined;
-    s.row___80575 = undefined;
-    s.column___80588 = undefined;
-    s.maxRow___80601 = undefined;
-    s.maxColumn___80614 = undefined;
+    s.index___83016 = undefined;
+    s.row___83021 = undefined;
+    s.column___83034 = undefined;
+    s.maxRow___83047 = undefined;
+    s.maxColumn___83060 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
@@ -42472,21 +42472,21 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_LayoutContainer_getCursorIndex__P78755_mk(s);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_LayoutContainer_getCursorIndex__P81835_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.callLocIdx = 386; s.pc = 26; return s.tmp_0;
+    s.callLocIdx = 389; s.pc = 26; return s.tmp_0;
   case 26:
     r0 = s.retval;
-    s.index___80570 = (r0);
-    r0 = (s.index___80570 < 0);
+    s.index___83016 = (r0);
+    r0 = (s.index___83016 < 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_1 = cardCore_CardGrid_moveCursorToIndex__P78782_mk(s);
+    s.tmp_1 = cardCore_CardGrid_moveCursorToIndex__P81862_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.tmp_1.arg1 = 0;
-    s.callLocIdx = 387; s.pc = 27; return s.tmp_1;
+    s.callLocIdx = 390; s.pc = 27; return s.tmp_1;
   case 27:
     r0 = s.retval;
     { step = 25; continue; }
@@ -42498,36 +42498,36 @@ switch (step) {
     if (!r0) { step = 3; continue; }
     r0 = s.arg0.fields["rows"];
     s.tmp_1 = r0;
-    r0 = (s.index___80570 % s.tmp_1);
+    r0 = (s.index___83016 % s.tmp_1);
     { step = 4; continue; }
   case 3:
     r0 = s.arg0.fields["columns"];
     s.tmp_3 = r0;
-    r0 = (s.index___80570 / s.tmp_3);
+    r0 = (s.index___83016 / s.tmp_3);
     s.tmp_2 = r0;
     r0 = pxsim.Math_.floor(s.tmp_2);
   case 4:
     // jmp value (already in r0)
     s.tmp_4 = r0;
-    s.row___80575 = (s.tmp_4);
+    s.row___83021 = (s.tmp_4);
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 5; continue; }
     r0 = s.arg0.fields["rows"];
     s.tmp_2 = r0;
-    r0 = (s.index___80570 / s.tmp_2);
+    r0 = (s.index___83016 / s.tmp_2);
     s.tmp_1 = r0;
     r0 = pxsim.Math_.floor(s.tmp_1);
     { step = 6; continue; }
   case 5:
     r0 = s.arg0.fields["columns"];
     s.tmp_3 = r0;
-    r0 = (s.index___80570 % s.tmp_3);
+    r0 = (s.index___83016 % s.tmp_3);
   case 6:
     // jmp value (already in r0)
     s.tmp_4 = r0;
-    s.column___80588 = (s.tmp_4);
+    s.column___83034 = (s.tmp_4);
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
@@ -42547,7 +42547,7 @@ switch (step) {
   case 8:
     // jmp value (already in r0)
     s.tmp_5 = r0;
-    s.maxRow___80601 = (s.tmp_5);
+    s.maxRow___83047 = (s.tmp_5);
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
@@ -42567,46 +42567,46 @@ switch (step) {
   case 10:
     // jmp value (already in r0)
     s.tmp_5 = r0;
-    s.maxColumn___80614 = (s.tmp_5);
-    r0 = (s.row___80575 + s.arg1);
-    s.row___80575 = (r0);
-    r0 = (s.column___80588 + s.arg2);
-    s.column___80588 = (r0);
+    s.maxColumn___83060 = (s.tmp_5);
+    r0 = (s.row___83021 + s.arg1);
+    s.row___83021 = (r0);
+    r0 = (s.column___83034 + s.arg2);
+    s.column___83034 = (r0);
     r0 = s.arg0.fields["isWrappingSelection"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 19; continue; }
-    r0 = (s.row___80575 < 0);
+    r0 = (s.row___83021 < 0);
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     if (!r0) { step = 11; continue; }
-    r0 = (s.maxRow___80601 + s.row___80575);
-    s.row___80575 = (r0);
+    r0 = (s.maxRow___83047 + s.row___83021);
+    s.row___83021 = (r0);
     { step = 14; continue; }
   case 11:
-    r0 = (s.row___80575 >= s.maxRow___80601);
+    r0 = (s.row___83021 >= s.maxRow___83047);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 12; continue; }
-    r0 = (s.row___80575 - s.maxRow___80601);
-    s.row___80575 = (r0);
+    r0 = (s.row___83021 - s.maxRow___83047);
+    s.row___83021 = (r0);
   case 12:
   case 13:
   case 14:
-    r0 = (s.column___80588 < 0);
+    r0 = (s.column___83034 < 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 15; continue; }
-    r0 = (s.maxColumn___80614 + s.column___80588);
-    s.column___80588 = (r0);
+    r0 = (s.maxColumn___83060 + s.column___83034);
+    s.column___83034 = (r0);
     { step = 18; continue; }
   case 15:
-    r0 = (s.column___80588 >= s.maxColumn___80614);
+    r0 = (s.column___83034 >= s.maxColumn___83060);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 16; continue; }
-    r0 = (s.column___80588 - s.maxColumn___80614);
-    s.column___80588 = (r0);
+    r0 = (s.column___83034 - s.maxColumn___83060);
+    s.column___83034 = (r0);
   case 16:
   case 17:
   case 18:
@@ -42615,31 +42615,31 @@ switch (step) {
     s.tmp_0 = Math_max__P45886_mk(s);
     s.tmp_0.arg0 = 0;
     s.tmp_1 = Math_min__P45887_mk(s);
-    s.tmp_1.arg0 = s.row___80575;
-    r0 = (s.maxRow___80601 - 1);
+    s.tmp_1.arg0 = s.row___83021;
+    r0 = (s.maxRow___83047 - 1);
     s.tmp_1.arg1 = r0;
-    s.callLocIdx = 388; s.pc = 29; return s.tmp_1;
+    s.callLocIdx = 391; s.pc = 29; return s.tmp_1;
   case 29:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 389; s.pc = 28; return s.tmp_0;
+    s.callLocIdx = 392; s.pc = 28; return s.tmp_0;
   case 28:
     r0 = s.retval;
-    s.row___80575 = (r0);
+    s.row___83021 = (r0);
     s.tmp_0 = Math_max__P45886_mk(s);
     s.tmp_0.arg0 = 0;
     s.tmp_1 = Math_min__P45887_mk(s);
-    s.tmp_1.arg0 = s.column___80588;
-    r0 = (s.maxColumn___80614 - 1);
+    s.tmp_1.arg0 = s.column___83034;
+    r0 = (s.maxColumn___83060 - 1);
     s.tmp_1.arg1 = r0;
-    s.callLocIdx = 390; s.pc = 31; return s.tmp_1;
+    s.callLocIdx = 393; s.pc = 31; return s.tmp_1;
   case 31:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 391; s.pc = 30; return s.tmp_0;
+    s.callLocIdx = 394; s.pc = 30; return s.tmp_0;
   case 30:
     r0 = s.retval;
-    s.column___80588 = (r0);
+    s.column___83034 = (r0);
   case 20:
     r0 = s.arg0.fields["isScrollingLeftRight"];
     s.tmp_0 = r0;
@@ -42647,21 +42647,21 @@ switch (step) {
     if (!r0) { step = 21; continue; }
     r0 = s.arg0.fields["rows"];
     s.tmp_2 = r0;
-    r0 = (s.column___80588 * s.tmp_2);
+    r0 = (s.column___83034 * s.tmp_2);
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 + s.row___80575);
+    r0 = (s.tmp_1 + s.row___83021);
     { step = 22; continue; }
   case 21:
     r0 = s.arg0.fields["columns"];
     s.tmp_4 = r0;
-    r0 = (s.row___80575 * s.tmp_4);
+    r0 = (s.row___83021 * s.tmp_4);
     s.tmp_3 = r0;
-    r0 = (s.tmp_3 + s.column___80588);
+    r0 = (s.tmp_3 + s.column___83034);
   case 22:
     // jmp value (already in r0)
     s.tmp_5 = r0;
-    s.index___80570 = (s.tmp_5);
-    s.tmp_1 = r0 = s.index___80570;
+    s.index___83016 = (s.tmp_5);
+    s.tmp_1 = r0 = s.index___83016;
     r0 = s.arg0.fields["cards"];
     s.tmp_3 = r0;
     r0 = pxsim_Array__length(s.tmp_3);
@@ -42675,13 +42675,13 @@ switch (step) {
     r0 = pxsim_Array__length(s.tmp_5);
     s.tmp_4 = r0;
     r0 = (s.tmp_4 - 1);
-    s.index___80570 = (r0);
+    s.index___83016 = (r0);
   case 23:
   case 24:
-    s.tmp_0 = cardCore_CardGrid_moveCursorToIndex__P78782_mk(s);
+    s.tmp_0 = cardCore_CardGrid_moveCursorToIndex__P81862_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    s.tmp_0.arg1 = s.index___80570;
-    s.callLocIdx = 392; s.pc = 32; return s.tmp_0;
+    s.tmp_0.arg1 = s.index___83016;
+    s.callLocIdx = 395; s.pc = 32; return s.tmp_0;
   case 32:
     r0 = s.retval;
   case 25:
@@ -42689,12 +42689,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_moveCursorIndexByOffset__P78783.info = {"start":32289,"length":1724,"line":910,"column":8,"endLine":955,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIndexByOffset","argumentNames":["this","rowOffset","columnOffset"]}
+cardCore_CardGrid_moveCursorIndexByOffset__P81863.info = {"start":32434,"length":1724,"line":914,"column":8,"endLine":959,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIndexByOffset","argumentNames":["this","rowOffset","columnOffset"]}
 
-function cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s) {
+function cardCore_CardGrid_moveCursorIndexByOffset__P81863_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_moveCursorIndexByOffset__P78783, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_moveCursorIndexByOffset__P81863, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -42702,11 +42702,11 @@ function cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s) {
   tmp_3: undefined,
   tmp_4: undefined,
   tmp_5: undefined,
-  index___80570: undefined,
-  row___80575: undefined,
-  column___80588: undefined,
-  maxRow___80601: undefined,
-  maxColumn___80614: undefined,
+  index___83016: undefined,
+  row___83021: undefined,
+  column___83034: undefined,
+  maxRow___83047: undefined,
+  maxColumn___83060: undefined,
   arg0: undefined,
   arg1: undefined,
   arg2: undefined,
@@ -42716,7 +42716,7 @@ function cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s) {
 
 
 
-function cardCore_CardGrid_moveCursorToIndex__P78782(s) {
+function cardCore_CardGrid_moveCursorToIndex__P81862(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -42732,7 +42732,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -42893,21 +42893,21 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 17; continue; }
-    s.tmp_3 = cardCore_CardGrid__C78771_v1_1_mk(s);
+    s.tmp_3 = cardCore_CardGrid__C81851_v1_1_mk(s);
     s.tmp_3.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_3.arg0, cardCore_CardGrid__C78771_VT)) failedCast(s.tmp_3.arg0);
+    if (!checkSubtype(s.tmp_3.arg0, cardCore_CardGrid__C81851_VT)) failedCast(s.tmp_3.arg0);
     s.tmp_3.fn = s.tmp_3.arg0.vtable.methods.reposition;
     s.pc = 20; return s.tmp_3;
   case 20:
     r0 = s.retval;
   case 17:
   case 18:
-    s.tmp_0 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_0 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1 = r0;
     r0 = pxsim_Array__getAt(s.tmp_1, s.arg1);
     s.tmp_0.arg0 = r0;
-    s.callLocIdx = 385; s.pc = 21; return s.tmp_0;
+    s.callLocIdx = 388; s.pc = 21; return s.tmp_0;
   case 21:
     r0 = s.retval;
   case 19:
@@ -42915,12 +42915,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_moveCursorToIndex__P78782.info = {"start":31126,"length":1145,"line":883,"column":8,"endLine":908,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorToIndex","argumentNames":["this","index"]}
+cardCore_CardGrid_moveCursorToIndex__P81862.info = {"start":31271,"length":1145,"line":887,"column":8,"endLine":912,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorToIndex","argumentNames":["this","index"]}
 
-function cardCore_CardGrid_moveCursorToIndex__P78782_mk(s) {
+function cardCore_CardGrid_moveCursorToIndex__P81862_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_moveCursorToIndex__P78782, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_moveCursorToIndex__P81862, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -42945,7 +42945,7 @@ function cardCore_CardGrid_moveCursorToIndex__P78782_mk(s) {
 
 
 
-function cardCore_LayoutContainer_getCursorIndex__P78755(s) {
+function cardCore_LayoutContainer_getCursorIndex__P81835(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -42955,27 +42955,27 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.index___80812 = undefined;
+    s.index___83258 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
-    s.tmp_2 = cardCore_getCursorCard__P78854_mk(s);
-    s.callLocIdx = 305; s.pc = 3; return s.tmp_2;
+    s.tmp_2 = cardCore_getCursorCard__P81934_mk(s);
+    s.callLocIdx = 308; s.pc = 3; return s.tmp_2;
   case 3:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim_Array_.indexOf(s.tmp_0, s.tmp_1, undefined);
-    s.index___80812 = (r0);
-    r0 = (s.index___80812 >= 0);
+    s.index___83258 = (r0);
+    r0 = (s.index___83258 >= 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    r0 = s.index___80812;
+    r0 = s.index___83258;
     { step = 2; continue; }
   case 1:
     r0 = null;
@@ -42986,17 +42986,17 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_getCursorIndex__P78755.info = {"start":15098,"length":143,"line":480,"column":8,"endLine":483,"endColumn":9,"fileName":"sprites.ts","functionName":"getCursorIndex","argumentNames":["this"]}
+cardCore_LayoutContainer_getCursorIndex__P81835.info = {"start":15243,"length":143,"line":484,"column":8,"endLine":487,"endColumn":9,"fileName":"sprites.ts","functionName":"getCursorIndex","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_getCursorIndex__P78755_mk(s) {
+function cardCore_LayoutContainer_getCursorIndex__P81835_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_getCursorIndex__P78755, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_getCursorIndex__P81835, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
   tmp_2: undefined,
-  index___80812: undefined,
+  index___83258: undefined,
   arg0: undefined,
 } }
 
@@ -43004,7 +43004,7 @@ function cardCore_LayoutContainer_getCursorIndex__P78755_mk(s) {
 
 
 
-function cardCore_CardGrid_moveCursorLeft__P78784(s) {
+function cardCore_CardGrid_moveCursorLeft__P81864(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43019,53 +43019,11 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P81863_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 0;
     s.tmp_0.arg2 = -1;
-    s.callLocIdx = 393; s.pc = 1; return s.tmp_0;
-  case 1:
-    r0 = s.retval;
-    r0 = undefined;
-    return leave(s, r0)
-  default: oops()
-} } }
-cardCore_CardGrid_moveCursorLeft__P78784.info = {"start":34023,"length":76,"line":957,"column":8,"endLine":959,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorLeft","argumentNames":["this"]}
-
-function cardCore_CardGrid_moveCursorLeft__P78784_mk(s) {
-    checkStack(s.depth);
-    return {
-        parent: s, fn: cardCore_CardGrid_moveCursorLeft__P78784, depth: s.depth + 1,
-        pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
-  tmp_0: undefined,
-  arg0: undefined,
-} }
-
-
-
-
-
-function cardCore_CardGrid_moveCursorDown__P78787(s) {
-let r0 = s.r0, step = s.pc;
-s.pc = -1;
-
-
-while (true) {
-if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) return null;
-switch (step) {
-  case 0:
-
-    if (s.lambdaArgs) {
-      s.arg0 = (s.lambdaArgs[0]);
-      s.lambdaArgs = null;
-    }
-    r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s);
-    s.tmp_0.arg0 = s.arg0;
-    s.tmp_0.arg1 = 1;
-    s.tmp_0.arg2 = 0;
     s.callLocIdx = 396; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
@@ -43073,12 +43031,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_moveCursorDown__P78787.info = {"start":34279,"length":75,"line":969,"column":8,"endLine":971,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorDown","argumentNames":["this"]}
+cardCore_CardGrid_moveCursorLeft__P81864.info = {"start":34168,"length":76,"line":961,"column":8,"endLine":963,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorLeft","argumentNames":["this"]}
 
-function cardCore_CardGrid_moveCursorDown__P78787_mk(s) {
+function cardCore_CardGrid_moveCursorLeft__P81864_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_moveCursorDown__P78787, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_moveCursorLeft__P81864, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -43088,7 +43046,7 @@ function cardCore_CardGrid_moveCursorDown__P78787_mk(s) {
 
 
 
-function cardCore_CardGrid_moveCursorUp__P78786(s) {
+function cardCore_CardGrid_moveCursorDown__P81867(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43103,24 +43061,66 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P78783_mk(s);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P81863_mk(s);
+    s.tmp_0.arg0 = s.arg0;
+    s.tmp_0.arg1 = 1;
+    s.tmp_0.arg2 = 0;
+    s.callLocIdx = 399; s.pc = 1; return s.tmp_0;
+  case 1:
+    r0 = s.retval;
+    r0 = undefined;
+    return leave(s, r0)
+  default: oops()
+} } }
+cardCore_CardGrid_moveCursorDown__P81867.info = {"start":34424,"length":75,"line":973,"column":8,"endLine":975,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorDown","argumentNames":["this"]}
+
+function cardCore_CardGrid_moveCursorDown__P81867_mk(s) {
+    checkStack(s.depth);
+    return {
+        parent: s, fn: cardCore_CardGrid_moveCursorDown__P81867, depth: s.depth + 1,
+        pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
+  tmp_0: undefined,
+  arg0: undefined,
+} }
+
+
+
+
+
+function cardCore_CardGrid_moveCursorUp__P81866(s) {
+let r0 = s.r0, step = s.pc;
+s.pc = -1;
+
+
+while (true) {
+if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) return null;
+switch (step) {
+  case 0:
+
+    if (s.lambdaArgs) {
+      s.arg0 = (s.lambdaArgs[0]);
+      s.lambdaArgs = null;
+    }
+    r0 = s.arg0;
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardGrid_moveCursorIndexByOffset__P81863_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = -1;
     s.tmp_0.arg2 = 0;
-    s.callLocIdx = 395; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 398; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_moveCursorUp__P78786.info = {"start":34195,"length":74,"line":965,"column":8,"endLine":967,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorUp","argumentNames":["this"]}
+cardCore_CardGrid_moveCursorUp__P81866.info = {"start":34340,"length":74,"line":969,"column":8,"endLine":971,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorUp","argumentNames":["this"]}
 
-function cardCore_CardGrid_moveCursorUp__P78786_mk(s) {
+function cardCore_CardGrid_moveCursorUp__P81866_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_moveCursorUp__P78786, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_moveCursorUp__P81866, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -43130,7 +43130,7 @@ function cardCore_CardGrid_moveCursorUp__P78786_mk(s) {
 
 
 
-function cardCore_CardSpread_moveCursorForward__P78768(s) {
+function cardCore_CardSpread_moveCursorForward__P81848(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43145,23 +43145,23 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardSpread_moveCursorIndexByOffset__P78767_mk(s);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardSpread_moveCursorIndexByOffset__P81847_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = -1;
-    s.callLocIdx = 324; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 327; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_moveCursorForward__P78768.info = {"start":19362,"length":76,"line":603,"column":8,"endLine":605,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorForward","argumentNames":["this"]}
+cardCore_CardSpread_moveCursorForward__P81848.info = {"start":19507,"length":76,"line":607,"column":8,"endLine":609,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorForward","argumentNames":["this"]}
 
-function cardCore_CardSpread_moveCursorForward__P78768_mk(s) {
+function cardCore_CardSpread_moveCursorForward__P81848_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_moveCursorForward__P78768, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_moveCursorForward__P81848, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -43171,7 +43171,7 @@ function cardCore_CardSpread_moveCursorForward__P78768_mk(s) {
 
 
 
-function cardCore_CardSpread_moveCursorIndexByOffset__P78767(s) {
+function cardCore_CardSpread_moveCursorIndexByOffset__P81847(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43181,24 +43181,24 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.index___80840 = undefined;
+    s.index___83286 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
-    s.tmp_2 = cardCore_getCursorCard__P78854_mk(s);
-    s.callLocIdx = 318; s.pc = 5; return s.tmp_2;
+    s.tmp_2 = cardCore_getCursorCard__P81934_mk(s);
+    s.callLocIdx = 321; s.pc = 5; return s.tmp_2;
   case 5:
     r0 = s.retval;
     s.tmp_1 = r0;
     r0 = pxsim_Array_.indexOf(s.tmp_0, s.tmp_1, undefined);
-    s.index___80840 = (r0);
-    r0 = (s.index___80840 >= 0);
+    s.index___83286 = (r0);
+    r0 = (s.index___83286 >= 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 3; continue; }
@@ -43206,9 +43206,9 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     if (!r0) { step = 1; continue; }
-    s.tmp_2 = cardCore_CardSpread_moveCursorToIndex__P78766_mk(s);
+    s.tmp_2 = cardCore_CardSpread_moveCursorToIndex__P81846_mk(s);
     s.tmp_2.arg0 = s.arg0;
-    s.tmp_5 = r0 = s.index___80840;
+    s.tmp_5 = r0 = s.index___83286;
     r0 = s.arg0.fields["cards"];
     s.tmp_7 = r0;
     r0 = pxsim_Array__length(s.tmp_7);
@@ -43223,12 +43223,12 @@ switch (step) {
     s.tmp_8 = r0;
     r0 = (s.tmp_3 % s.tmp_8);
     s.tmp_2.arg1 = r0;
-    s.callLocIdx = 319; s.pc = 6; return s.tmp_2;
+    s.callLocIdx = 322; s.pc = 6; return s.tmp_2;
   case 6:
     r0 = s.retval;
     { step = 2; continue; }
   case 1:
-    s.tmp_0 = cardCore_CardSpread_moveCursorToIndex__P78766_mk(s);
+    s.tmp_0 = cardCore_CardSpread_moveCursorToIndex__P81846_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_1 = Math_min__P45887_mk(s);
     r0 = s.arg0.fields["cards"];
@@ -43239,32 +43239,32 @@ switch (step) {
     s.tmp_1.arg0 = r0;
     s.tmp_4 = Math_max__P45886_mk(s);
     s.tmp_4.arg0 = 0;
-    r0 = (s.index___80840 + s.arg1);
+    r0 = (s.index___83286 + s.arg1);
     s.tmp_4.arg1 = r0;
-    s.callLocIdx = 320; s.pc = 9; return s.tmp_4;
+    s.callLocIdx = 323; s.pc = 9; return s.tmp_4;
   case 9:
     r0 = s.retval;
     s.tmp_1.arg1 = r0;
-    s.callLocIdx = 321; s.pc = 8; return s.tmp_1;
+    s.callLocIdx = 324; s.pc = 8; return s.tmp_1;
   case 8:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
-    s.callLocIdx = 322; s.pc = 7; return s.tmp_0;
+    s.callLocIdx = 325; s.pc = 7; return s.tmp_0;
   case 7:
     r0 = s.retval;
   case 2:
     { step = 4; continue; }
   case 3:
-    s.tmp_0 = cardCore_CardSpread_moveCursorToIndex__P78766_mk(s);
+    s.tmp_0 = cardCore_CardSpread_moveCursorToIndex__P81846_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = -1;
-    s.callLocIdx = 323; s.pc = 10; return s.tmp_0;
+    s.callLocIdx = 326; s.pc = 10; return s.tmp_0;
   case 10:
     r0 = s.retval;
   case 4:
-    s.tmp_0 = cardCore_CardSpread__C78759_v1_1_mk(s);
+    s.tmp_0 = cardCore_CardSpread__C81839_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardSpread__C78759_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardSpread__C81839_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 11; return s.tmp_0;
   case 11:
@@ -43273,12 +43273,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_moveCursorIndexByOffset__P78767.info = {"start":18796,"length":556,"line":589,"column":8,"endLine":601,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIndexByOffset","argumentNames":["this","offset"]}
+cardCore_CardSpread_moveCursorIndexByOffset__P81847.info = {"start":18941,"length":556,"line":593,"column":8,"endLine":605,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorIndexByOffset","argumentNames":["this","offset"]}
 
-function cardCore_CardSpread_moveCursorIndexByOffset__P78767_mk(s) {
+function cardCore_CardSpread_moveCursorIndexByOffset__P81847_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_moveCursorIndexByOffset__P78767, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_moveCursorIndexByOffset__P81847, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -43290,7 +43290,7 @@ function cardCore_CardSpread_moveCursorIndexByOffset__P78767_mk(s) {
   tmp_7: undefined,
   tmp_8: undefined,
   tmp_9: undefined,
-  index___80840: undefined,
+  index___83286: undefined,
   arg0: undefined,
   arg1: undefined,
 } }
@@ -43299,7 +43299,7 @@ function cardCore_CardSpread_moveCursorIndexByOffset__P78767_mk(s) {
 
 
 
-function cardCore_CardSpread_reposition__P78765(s) {
+function cardCore_CardSpread_reposition__P81845(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43309,16 +43309,16 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.width___80906 = undefined;
-    s.x___80921 = undefined;
-    s.height___80977 = undefined;
-    s.y___80991 = undefined;
+    s.width___83352 = undefined;
+    s.x___83367 = undefined;
+    s.height___83423 = undefined;
+    s.y___83437 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_2 = r0;
     r0 = pxsim_Array__length(s.tmp_2);
@@ -43342,7 +43342,7 @@ switch (step) {
     s.tmp_8 = r0;
     r0 = pxsim_Array__getAt(s.tmp_8, 0);
     s.tmp_7.arg0 = r0;
-    s.callLocIdx = 308; s.pc = 10; return s.tmp_7;
+    s.callLocIdx = 311; s.pc = 10; return s.tmp_7;
   case 10:
     r0 = s.retval;
     s.tmp_6 = r0;
@@ -43361,7 +43361,7 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = pxsim_Array__getAt(s.tmp_5, 0);
     s.tmp_4.arg0 = r0;
-    s.callLocIdx = 309; s.pc = 11; return s.tmp_4;
+    s.callLocIdx = 312; s.pc = 11; return s.tmp_4;
   case 11:
     r0 = s.retval;
     s.tmp_3 = r0;
@@ -43387,26 +43387,26 @@ switch (step) {
     r0 = s.arg0.fields["_spacing"];
     s.tmp_7 = r0;
     r0 = (s.tmp_1 - s.tmp_7);
-    s.width___80906 = (r0);
+    s.width___83352 = (r0);
     r0 = pxsim_pxtrt.mklocRef();
-    s.x___80921 = (r0);
-    s.tmp_0 = r0 = s.x___80921;
+    s.x___83367 = (r0);
+    s.tmp_0 = r0 = s.x___83367;
     r0 = s.arg0.fields["x"];
     s.tmp_2 = r0;
-    r0 = (s.width___80906 / 2);
+    r0 = (s.width___83352 / 2);
     s.tmp_3 = r0;
     r0 = (s.tmp_2 - s.tmp_3);
     s.tmp_1 = r0;
     r0 = pxsim_pxtrt_stlocRef(s.tmp_0, s.tmp_1);
-    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardSpread_reposition_inline__P80930);
+    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardSpread_reposition_inline__P83376);
     s.tmp_0 = r0;
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.x___80921);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.x___83367);
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.arg0);
     s.tmp_1 = helpers_arrayForEach__P45865_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1.arg0 = r0;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 312; s.pc = 12; return s.tmp_1;
+    s.callLocIdx = 315; s.pc = 12; return s.tmp_1;
   case 12:
     r0 = s.retval;
     { step = 8; continue; }
@@ -43426,26 +43426,26 @@ switch (step) {
     r0 = s.arg0.fields["_spacing"];
     s.tmp_6 = r0;
     r0 = (s.tmp_0 - s.tmp_6);
-    s.height___80977 = (r0);
+    s.height___83423 = (r0);
     r0 = pxsim_pxtrt.mklocRef();
-    s.y___80991 = (r0);
-    s.tmp_0 = r0 = s.y___80991;
+    s.y___83437 = (r0);
+    s.tmp_0 = r0 = s.y___83437;
     r0 = s.arg0.fields["y"];
     s.tmp_2 = r0;
-    r0 = (s.height___80977 / 2);
+    r0 = (s.height___83423 / 2);
     s.tmp_3 = r0;
     r0 = (s.tmp_2 - s.tmp_3);
     s.tmp_1 = r0;
     r0 = pxsim_pxtrt_stlocRef(s.tmp_0, s.tmp_1);
-    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardSpread_reposition_inline__P81000);
+    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardSpread_reposition_inline__P83446);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
-    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.y___80991);
+    r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.y___83437);
     s.tmp_1 = helpers_arrayForEach__P45865_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1.arg0 = r0;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 315; s.pc = 13; return s.tmp_1;
+    s.callLocIdx = 318; s.pc = 13; return s.tmp_1;
   case 13:
     r0 = s.retval;
   case 8:
@@ -43454,12 +43454,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_reposition__P78765.info = {"start":16779,"length":1721,"line":542,"column":8,"endLine":579,"endColumn":9,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
+cardCore_CardSpread_reposition__P81845.info = {"start":16924,"length":1721,"line":546,"column":8,"endLine":583,"endColumn":9,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
 
-function cardCore_CardSpread_reposition__P78765_mk(s) {
+function cardCore_CardSpread_reposition__P81845_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_reposition__P78765, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_reposition__P81845, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -43470,10 +43470,10 @@ function cardCore_CardSpread_reposition__P78765_mk(s) {
   tmp_6: undefined,
   tmp_7: undefined,
   tmp_8: undefined,
-  width___80906: undefined,
-  x___80921: undefined,
-  height___80977: undefined,
-  y___80991: undefined,
+  width___83352: undefined,
+  x___83367: undefined,
+  height___83423: undefined,
+  y___83437: undefined,
   arg0: undefined,
 } }
 
@@ -43481,7 +43481,7 @@ function cardCore_CardSpread_reposition__P78765_mk(s) {
 
 
 
-function cardCore_CardSpread_reposition_inline__P80930(s) {
+function cardCore_CardSpread_reposition_inline__P83376(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43496,7 +43496,7 @@ switch (step) {
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
-    r0 = (globals.cursorTarget___78799 === s.arg0);
+    r0 = (globals.cursorTarget___81879 === s.arg0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
@@ -43507,7 +43507,7 @@ switch (step) {
   case 2:
     // jmp value (already in r0)
     s.tmp_1 = r0;
-    r0 = (globals.cursorTarget___78799 === s.arg0);
+    r0 = (globals.cursorTarget___81879 === s.arg0);
     s.tmp_2 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_2);
     if (!r0) { step = 3; continue; }
@@ -43534,9 +43534,9 @@ switch (step) {
     s.tmp_9 = r0;
     r0 = (s.tmp_9 + s.tmp_3);
     s.tmp_4.arg2 = r0;
-    s.tmp_4.arg3 = globals.slideAnimationDuration___78677;
+    s.tmp_4.arg3 = globals.slideAnimationDuration___81757;
     s.tmp_4.arg4 = null;
-    s.callLocIdx = 310; s.pc = 7; return s.tmp_4;
+    s.callLocIdx = 313; s.pc = 7; return s.tmp_4;
   case 7:
     r0 = s.retval;
     s.tmp_0 = r0 = s.caps[0];
@@ -43577,7 +43577,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["set/z"];
       if (s.tmp_5.fn === null) { s.tmp_5.arg0.fields["z"] = s.tmp_5.arg1; }
       else if (s.tmp_5.fn === undefined) { failedCast(s.tmp_5.arg0) } 
-     else { s.callLocIdx = 311; s.pc = 8; return s.tmp_5; }
+     else { s.callLocIdx = 314; s.pc = 8; return s.tmp_5; }
     }
   case 8:
     r0 = s.retval;
@@ -43585,12 +43585,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_reposition_inline__P80930.info = {"start":17309,"length":480,"line":555,"column":35,"endLine":564,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","index"]}
+cardCore_CardSpread_reposition_inline__P83376.info = {"start":17454,"length":480,"line":559,"column":35,"endLine":568,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","index"]}
 
-function cardCore_CardSpread_reposition_inline__P80930_mk(s) {
+function cardCore_CardSpread_reposition_inline__P83376_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_reposition_inline__P80930, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_reposition_inline__P83376, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -43610,7 +43610,7 @@ function cardCore_CardSpread_reposition_inline__P80930_mk(s) {
 
 
 
-function cardCore_CardSpread_reposition_inline__P81000(s) {
+function cardCore_CardSpread_reposition_inline__P83446(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43625,7 +43625,7 @@ switch (step) {
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
-    r0 = (globals.cursorTarget___78799 === s.arg0);
+    r0 = (globals.cursorTarget___81879 === s.arg0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
@@ -43636,7 +43636,7 @@ switch (step) {
   case 2:
     // jmp value (already in r0)
     s.tmp_1 = r0;
-    r0 = (globals.cursorTarget___78799 === s.arg0);
+    r0 = (globals.cursorTarget___81879 === s.arg0);
     s.tmp_2 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_2);
     if (!r0) { step = 3; continue; }
@@ -43663,9 +43663,9 @@ switch (step) {
     s.tmp_6 = r0;
     r0 = (s.tmp_6 + s.tmp_3);
     s.tmp_4.arg2 = r0;
-    s.tmp_4.arg3 = globals.slideAnimationDuration___78677;
+    s.tmp_4.arg3 = globals.slideAnimationDuration___81757;
     s.tmp_4.arg4 = null;
-    s.callLocIdx = 313; s.pc = 7; return s.tmp_4;
+    s.callLocIdx = 316; s.pc = 7; return s.tmp_4;
   case 7:
     r0 = s.retval;
     s.tmp_0 = r0 = s.caps[1];
@@ -43706,7 +43706,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["set/z"];
       if (s.tmp_5.fn === null) { s.tmp_5.arg0.fields["z"] = s.tmp_5.arg1; }
       else if (s.tmp_5.fn === undefined) { failedCast(s.tmp_5.arg0) } 
-     else { s.callLocIdx = 314; s.pc = 8; return s.tmp_5; }
+     else { s.callLocIdx = 317; s.pc = 8; return s.tmp_5; }
     }
   case 8:
     r0 = s.retval;
@@ -43714,12 +43714,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_reposition_inline__P81000.info = {"start":17993,"length":482,"line":568,"column":35,"endLine":577,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","index"]}
+cardCore_CardSpread_reposition_inline__P83446.info = {"start":18138,"length":482,"line":572,"column":35,"endLine":581,"endColumn":17,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card","index"]}
 
-function cardCore_CardSpread_reposition_inline__P81000_mk(s) {
+function cardCore_CardSpread_reposition_inline__P83446_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_reposition_inline__P81000, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_reposition_inline__P83446, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -43739,7 +43739,7 @@ function cardCore_CardSpread_reposition_inline__P81000_mk(s) {
 
 
 
-function cardCore_CardSpread_moveCursorToIndex__P78766(s) {
+function cardCore_CardSpread_moveCursorToIndex__P81846(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43755,7 +43755,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
     r0 = (s.arg1 >= 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
@@ -43774,12 +43774,12 @@ switch (step) {
     s.tmp_4 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_4);
     if (!r0) { step = 3; continue; }
-    s.tmp_5 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_5 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_6 = r0;
     r0 = pxsim_Array__getAt(s.tmp_6, s.arg1);
     s.tmp_5.arg0 = r0;
-    s.callLocIdx = 316; s.pc = 7; return s.tmp_5;
+    s.callLocIdx = 319; s.pc = 7; return s.tmp_5;
   case 7:
     r0 = s.retval;
     { step = 6; continue; }
@@ -43792,12 +43792,12 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 4; continue; }
-    s.tmp_3 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_3 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_4 = r0;
     r0 = pxsim_Array__getAt(s.tmp_4, 0);
     s.tmp_3.arg0 = r0;
-    s.callLocIdx = 317; s.pc = 8; return s.tmp_3;
+    s.callLocIdx = 320; s.pc = 8; return s.tmp_3;
   case 8:
     r0 = s.retval;
   case 4:
@@ -43807,12 +43807,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_moveCursorToIndex__P78766.info = {"start":18510,"length":276,"line":581,"column":8,"endLine":587,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorToIndex","argumentNames":["this","index"]}
+cardCore_CardSpread_moveCursorToIndex__P81846.info = {"start":18655,"length":276,"line":585,"column":8,"endLine":591,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorToIndex","argumentNames":["this","index"]}
 
-function cardCore_CardSpread_moveCursorToIndex__P78766_mk(s) {
+function cardCore_CardSpread_moveCursorToIndex__P81846_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_moveCursorToIndex__P78766, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_moveCursorToIndex__P81846, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -43829,7 +43829,7 @@ function cardCore_CardSpread_moveCursorToIndex__P78766_mk(s) {
 
 
 
-function cardCore_CardSpread_moveCursorBack__P78769(s) {
+function cardCore_CardSpread_moveCursorBack__P81849(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43844,23 +43844,23 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardSpread_moveCursorIndexByOffset__P78767_mk(s);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardSpread_moveCursorIndexByOffset__P81847_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 1;
-    s.callLocIdx = 325; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 328; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_moveCursorBack__P78769.info = {"start":19448,"length":72,"line":607,"column":8,"endLine":609,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorBack","argumentNames":["this"]}
+cardCore_CardSpread_moveCursorBack__P81849.info = {"start":19593,"length":72,"line":611,"column":8,"endLine":613,"endColumn":9,"fileName":"sprites.ts","functionName":"moveCursorBack","argumentNames":["this"]}
 
-function cardCore_CardSpread_moveCursorBack__P78769_mk(s) {
+function cardCore_CardSpread_moveCursorBack__P81849_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_moveCursorBack__P78769, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_moveCursorBack__P81849, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -43870,7 +43870,7 @@ function cardCore_CardSpread_moveCursorBack__P78769_mk(s) {
 
 
 
-function cardCore_CardSpread_isLeftRight__P78761(s) {
+function cardCore_CardSpread_isLeftRight__P81841(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43885,18 +43885,18 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
     r0 = s.arg0.fields["isSpreadingLeftRight"];
     return leaveAccessor(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_isLeftRight__P78761.info = {"start":16143,"length":83,"line":518,"column":8,"endLine":520,"endColumn":9,"fileName":"sprites.ts","functionName":"isLeftRight","argumentNames":["this"]}
-cardCore_CardSpread_isLeftRight__P78761.isGetter = true;
+cardCore_CardSpread_isLeftRight__P81841.info = {"start":16288,"length":83,"line":522,"column":8,"endLine":524,"endColumn":9,"fileName":"sprites.ts","functionName":"isLeftRight","argumentNames":["this"]}
+cardCore_CardSpread_isLeftRight__P81841.isGetter = true;
 
-function cardCore_CardSpread_isLeftRight__P78761_mk(s) {
+function cardCore_CardSpread_isLeftRight__P81841_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_isLeftRight__P78761, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_isLeftRight__P81841, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -43905,7 +43905,7 @@ function cardCore_CardSpread_isLeftRight__P78761_mk(s) {
 
 
 
-function cardCore_getMostRecentCursorContainer__P78851(s) {
+function cardCore_getMostRecentCursorContainer__P81931(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -43915,16 +43915,16 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    r0 = globals.mostRecentCursorContainer___78797;
+    r0 = globals.mostRecentCursorContainer___81877;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_getMostRecentCursorContainer__P78851.info = {"start":37175,"length":100,"line":1061,"column":4,"endLine":1063,"endColumn":5,"fileName":"sprites.ts","functionName":"getMostRecentCursorContainer","argumentNames":[]}
+cardCore_getMostRecentCursorContainer__P81931.info = {"start":37320,"length":100,"line":1065,"column":4,"endLine":1067,"endColumn":5,"fileName":"sprites.ts","functionName":"getMostRecentCursorContainer","argumentNames":[]}
 
-function cardCore_getMostRecentCursorContainer__P78851_mk(s) {
+function cardCore_getMostRecentCursorContainer__P81931_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_getMostRecentCursorContainer__P78851, depth: s.depth + 1,
+        parent: s, fn: cardCore_getMostRecentCursorContainer__P81931, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
 } }
 
@@ -44499,7 +44499,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["x"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["x"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 460; s.pc = 11; return s.tmp_5; }
+     else { s.callLocIdx = 463; s.pc = 11; return s.tmp_5; }
     }
   case 11:
     r0 = s.retval;
@@ -44523,7 +44523,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 461; s.pc = 13; return s.tmp_7; }
+     else { s.callLocIdx = 464; s.pc = 13; return s.tmp_7; }
     }
   case 13:
     r0 = s.retval;
@@ -44536,7 +44536,7 @@ switch (step) {
       s.tmp_9.fn = s.tmp_9.arg0.vtable.iface["x"];
       if (s.tmp_9.fn == null) { s.retval = s.tmp_9.arg0.fields["x"]; }
       else if (!s.tmp_9.fn.isGetter) { s.retval = bind(s.tmp_9); }
-     else { s.callLocIdx = 462; s.pc = 14; return s.tmp_9; }
+     else { s.callLocIdx = 465; s.pc = 14; return s.tmp_9; }
     }
   case 14:
     r0 = s.retval;
@@ -44549,14 +44549,14 @@ switch (step) {
       s.tmp_11.fn = s.tmp_11.arg0.vtable.iface["step"];
       if (s.tmp_11.fn == null) { s.retval = s.tmp_11.arg0.fields["step"]; }
       else if (!s.tmp_11.fn.isGetter) { s.retval = bind(s.tmp_11); }
-     else { s.callLocIdx = 463; s.pc = 15; return s.tmp_11; }
+     else { s.callLocIdx = 466; s.pc = 15; return s.tmp_11; }
     }
   case 15:
     r0 = s.retval;
     s.tmp_10 = r0;
     r0 = pxsim_Array__getAt(s.tmp_8, s.tmp_10);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 464; s.pc = 12; return s.tmp_6;
+    s.callLocIdx = 467; s.pc = 12; return s.tmp_6;
   case 12:
     r0 = s.retval;
   case 1:
@@ -44569,7 +44569,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["y"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["y"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 465; s.pc = 16; return s.tmp_5; }
+     else { s.callLocIdx = 468; s.pc = 16; return s.tmp_5; }
     }
   case 16:
     r0 = s.retval;
@@ -44593,7 +44593,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 466; s.pc = 18; return s.tmp_7; }
+     else { s.callLocIdx = 469; s.pc = 18; return s.tmp_7; }
     }
   case 18:
     r0 = s.retval;
@@ -44606,7 +44606,7 @@ switch (step) {
       s.tmp_9.fn = s.tmp_9.arg0.vtable.iface["y"];
       if (s.tmp_9.fn == null) { s.retval = s.tmp_9.arg0.fields["y"]; }
       else if (!s.tmp_9.fn.isGetter) { s.retval = bind(s.tmp_9); }
-     else { s.callLocIdx = 467; s.pc = 19; return s.tmp_9; }
+     else { s.callLocIdx = 470; s.pc = 19; return s.tmp_9; }
     }
   case 19:
     r0 = s.retval;
@@ -44619,14 +44619,14 @@ switch (step) {
       s.tmp_11.fn = s.tmp_11.arg0.vtable.iface["step"];
       if (s.tmp_11.fn == null) { s.retval = s.tmp_11.arg0.fields["step"]; }
       else if (!s.tmp_11.fn.isGetter) { s.retval = bind(s.tmp_11); }
-     else { s.callLocIdx = 468; s.pc = 20; return s.tmp_11; }
+     else { s.callLocIdx = 471; s.pc = 20; return s.tmp_11; }
     }
   case 20:
     r0 = s.retval;
     s.tmp_10 = r0;
     r0 = pxsim_Array__getAt(s.tmp_8, s.tmp_10);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 469; s.pc = 17; return s.tmp_6;
+    s.callLocIdx = 472; s.pc = 17; return s.tmp_6;
   case 17:
     r0 = s.retval;
   case 3:
@@ -44639,7 +44639,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["sx"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["sx"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 470; s.pc = 21; return s.tmp_5; }
+     else { s.callLocIdx = 473; s.pc = 21; return s.tmp_5; }
     }
   case 21:
     r0 = s.retval;
@@ -44663,7 +44663,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 471; s.pc = 23; return s.tmp_7; }
+     else { s.callLocIdx = 474; s.pc = 23; return s.tmp_7; }
     }
   case 23:
     r0 = s.retval;
@@ -44676,7 +44676,7 @@ switch (step) {
       s.tmp_9.fn = s.tmp_9.arg0.vtable.iface["sx"];
       if (s.tmp_9.fn == null) { s.retval = s.tmp_9.arg0.fields["sx"]; }
       else if (!s.tmp_9.fn.isGetter) { s.retval = bind(s.tmp_9); }
-     else { s.callLocIdx = 472; s.pc = 24; return s.tmp_9; }
+     else { s.callLocIdx = 475; s.pc = 24; return s.tmp_9; }
     }
   case 24:
     r0 = s.retval;
@@ -44689,14 +44689,14 @@ switch (step) {
       s.tmp_11.fn = s.tmp_11.arg0.vtable.iface["step"];
       if (s.tmp_11.fn == null) { s.retval = s.tmp_11.arg0.fields["step"]; }
       else if (!s.tmp_11.fn.isGetter) { s.retval = bind(s.tmp_11); }
-     else { s.callLocIdx = 473; s.pc = 25; return s.tmp_11; }
+     else { s.callLocIdx = 476; s.pc = 25; return s.tmp_11; }
     }
   case 25:
     r0 = s.retval;
     s.tmp_10 = r0;
     r0 = pxsim_Array__getAt(s.tmp_8, s.tmp_10);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 474; s.pc = 22; return s.tmp_6;
+    s.callLocIdx = 477; s.pc = 22; return s.tmp_6;
   case 22:
     r0 = s.retval;
   case 5:
@@ -44709,7 +44709,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["sy"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["sy"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 475; s.pc = 26; return s.tmp_5; }
+     else { s.callLocIdx = 478; s.pc = 26; return s.tmp_5; }
     }
   case 26:
     r0 = s.retval;
@@ -44733,7 +44733,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 476; s.pc = 28; return s.tmp_7; }
+     else { s.callLocIdx = 479; s.pc = 28; return s.tmp_7; }
     }
   case 28:
     r0 = s.retval;
@@ -44746,7 +44746,7 @@ switch (step) {
       s.tmp_9.fn = s.tmp_9.arg0.vtable.iface["sy"];
       if (s.tmp_9.fn == null) { s.retval = s.tmp_9.arg0.fields["sy"]; }
       else if (!s.tmp_9.fn.isGetter) { s.retval = bind(s.tmp_9); }
-     else { s.callLocIdx = 477; s.pc = 29; return s.tmp_9; }
+     else { s.callLocIdx = 480; s.pc = 29; return s.tmp_9; }
     }
   case 29:
     r0 = s.retval;
@@ -44759,14 +44759,14 @@ switch (step) {
       s.tmp_11.fn = s.tmp_11.arg0.vtable.iface["step"];
       if (s.tmp_11.fn == null) { s.retval = s.tmp_11.arg0.fields["step"]; }
       else if (!s.tmp_11.fn.isGetter) { s.retval = bind(s.tmp_11); }
-     else { s.callLocIdx = 478; s.pc = 30; return s.tmp_11; }
+     else { s.callLocIdx = 481; s.pc = 30; return s.tmp_11; }
     }
   case 30:
     r0 = s.retval;
     s.tmp_10 = r0;
     r0 = pxsim_Array__getAt(s.tmp_8, s.tmp_10);
     s.tmp_6.arg1 = r0;
-    s.callLocIdx = 479; s.pc = 27; return s.tmp_6;
+    s.callLocIdx = 482; s.pc = 27; return s.tmp_6;
   case 27:
     r0 = s.retval;
   case 7:
@@ -44779,7 +44779,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["onAnimateStep"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["onAnimateStep"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 480; s.pc = 31; return s.tmp_5; }
+     else { s.callLocIdx = 483; s.pc = 31; return s.tmp_5; }
     }
   case 31:
     r0 = s.retval;
@@ -44804,7 +44804,7 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 481; s.pc = 33; return s.tmp_7; }
+     else { s.callLocIdx = 484; s.pc = 33; return s.tmp_7; }
     }
   case 33:
     r0 = s.retval;
@@ -44817,19 +44817,19 @@ switch (step) {
       s.tmp_8.fn = s.tmp_8.arg0.vtable.iface["step"];
       if (s.tmp_8.fn == null) { s.retval = s.tmp_8.arg0.fields["step"]; }
       else if (!s.tmp_8.fn.isGetter) { s.retval = bind(s.tmp_8); }
-     else { s.callLocIdx = 482; s.pc = 34; return s.tmp_8; }
+     else { s.callLocIdx = 485; s.pc = 34; return s.tmp_8; }
     }
   case 34:
     r0 = s.retval;
     s.tmp_6.arg2 = r0;
     if (!s.tmp_6.arg0.vtable.iface) {
       setupLambda(s.tmp_6, pxsim_pxtrt.mapGetByString(s.tmp_6.arg0, "onAnimateStep"), 3);
-      s.callLocIdx = 483; s.pc = 32; return s.tmp_6;
+      s.callLocIdx = 486; s.pc = 32; return s.tmp_6;
     } else {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["onAnimateStep"];
-      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onAnimateStep"], 3); s.callLocIdx = 483; s.pc = 32; return s.tmp_6; }
-      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 483; s.pc = 32; return s.tmp_6;; }
-     else { s.callLocIdx = 483; s.pc = 32; return s.tmp_6; }
+      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onAnimateStep"], 3); s.callLocIdx = 486; s.pc = 32; return s.tmp_6; }
+      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 486; s.pc = 32; return s.tmp_6;; }
+     else { s.callLocIdx = 486; s.pc = 32; return s.tmp_6; }
     }
   case 32:
     r0 = s.retval;
@@ -44887,7 +44887,7 @@ switch (step) {
     s.tmp_1 = helpers_arrayFind__P45867_mk(s);
     s.tmp_1.arg0 = globals.fixedFrameTrackers___74333;
     s.tmp_1.arg1 = s.tmp_0;
-    s.callLocIdx = 445; s.pc = 12; return s.tmp_1;
+    s.callLocIdx = 448; s.pc = 12; return s.tmp_1;
   case 12:
     r0 = s.retval;
     s.oldTracker___77906 = (r0);
@@ -44905,7 +44905,7 @@ switch (step) {
     r0 = pxsim_Array_.indexOf(globals.fixedFrameTrackers___74333, s.oldTracker___77906, undefined);
     s.tmp_2.arg1 = r0;
     s.tmp_2.arg2 = 1;
-    s.callLocIdx = 446; s.pc = 13; return s.tmp_2;
+    s.callLocIdx = 449; s.pc = 13; return s.tmp_2;
   case 13:
     r0 = s.retval;
     r0 = pxsim_numops_toBoolDecr(s.arg1);
@@ -44921,7 +44921,7 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["step"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["step"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 448; s.pc = 15; return s.tmp_3; }
+     else { s.callLocIdx = 451; s.pc = 15; return s.tmp_3; }
     }
   case 15:
     r0 = s.retval;
@@ -44934,7 +44934,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["direction"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["direction"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 447; s.pc = 16; return s.tmp_5; }
+     else { s.callLocIdx = 450; s.pc = 16; return s.tmp_5; }
     }
   case 16:
     r0 = s.retval;
@@ -44947,7 +44947,7 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/step"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["step"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 449; s.pc = 14; return s.tmp_0; }
+     else { s.callLocIdx = 452; s.pc = 14; return s.tmp_0; }
     }
   case 14:
     r0 = s.retval;
@@ -44960,7 +44960,7 @@ switch (step) {
       s.tmp_2.fn = s.tmp_2.arg0.vtable.iface["step"];
       if (s.tmp_2.fn == null) { s.retval = s.tmp_2.arg0.fields["step"]; }
       else if (!s.tmp_2.fn.isGetter) { s.retval = bind(s.tmp_2); }
-     else { s.callLocIdx = 450; s.pc = 17; return s.tmp_2; }
+     else { s.callLocIdx = 453; s.pc = 17; return s.tmp_2; }
     }
   case 17:
     r0 = s.retval;
@@ -44980,7 +44980,7 @@ switch (step) {
       s.tmp_4.fn = s.tmp_4.arg0.vtable.iface["step"];
       if (s.tmp_4.fn == null) { s.retval = s.tmp_4.arg0.fields["step"]; }
       else if (!s.tmp_4.fn.isGetter) { s.retval = bind(s.tmp_4); }
-     else { s.callLocIdx = 451; s.pc = 18; return s.tmp_4; }
+     else { s.callLocIdx = 454; s.pc = 18; return s.tmp_4; }
     }
   case 18:
     r0 = s.retval;
@@ -44993,7 +44993,7 @@ switch (step) {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["totalSteps"];
       if (s.tmp_6.fn == null) { s.retval = s.tmp_6.arg0.fields["totalSteps"]; }
       else if (!s.tmp_6.fn.isGetter) { s.retval = bind(s.tmp_6); }
-     else { s.callLocIdx = 452; s.pc = 19; return s.tmp_6; }
+     else { s.callLocIdx = 455; s.pc = 19; return s.tmp_6; }
     }
   case 19:
     r0 = s.retval;
@@ -45006,7 +45006,7 @@ switch (step) {
     if (!r0) { step = 6; continue; }
     s.tmp_8 = extraAnimations_updateFixedFrameAnimation__P74410_mk(s);
     s.tmp_8.arg0 = s.oldTracker___77906;
-    s.callLocIdx = 453; s.pc = 20; return s.tmp_8;
+    s.callLocIdx = 456; s.pc = 20; return s.tmp_8;
   case 20:
     r0 = s.retval;
     s.tmp_0 = if_step_2_mk(s);
@@ -45020,7 +45020,7 @@ switch (step) {
       s.tmp_3.fn = s.tmp_3.arg0.vtable.iface["step"];
       if (s.tmp_3.fn == null) { s.retval = s.tmp_3.arg0.fields["step"]; }
       else if (!s.tmp_3.fn.isGetter) { s.retval = bind(s.tmp_3); }
-     else { s.callLocIdx = 455; s.pc = 22; return s.tmp_3; }
+     else { s.callLocIdx = 458; s.pc = 22; return s.tmp_3; }
     }
   case 22:
     r0 = s.retval;
@@ -45033,7 +45033,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["direction"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["direction"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 454; s.pc = 23; return s.tmp_5; }
+     else { s.callLocIdx = 457; s.pc = 23; return s.tmp_5; }
     }
   case 23:
     r0 = s.retval;
@@ -45046,7 +45046,7 @@ switch (step) {
       s.tmp_0.fn = s.tmp_0.arg0.vtable.iface["set/step"];
       if (s.tmp_0.fn === null) { s.tmp_0.arg0.fields["step"] = s.tmp_0.arg1; }
       else if (s.tmp_0.fn === undefined) { failedCast(s.tmp_0.arg0) } 
-     else { s.callLocIdx = 456; s.pc = 21; return s.tmp_0; }
+     else { s.callLocIdx = 459; s.pc = 21; return s.tmp_0; }
     }
   case 21:
     r0 = s.retval;
@@ -45062,7 +45062,7 @@ switch (step) {
       s.tmp_5.fn = s.tmp_5.arg0.vtable.iface["onComplete"];
       if (s.tmp_5.fn == null) { s.retval = s.tmp_5.arg0.fields["onComplete"]; }
       else if (!s.tmp_5.fn.isGetter) { s.retval = bind(s.tmp_5); }
-     else { s.callLocIdx = 457; s.pc = 24; return s.tmp_5; }
+     else { s.callLocIdx = 460; s.pc = 24; return s.tmp_5; }
     }
   case 24:
     r0 = s.retval;
@@ -45087,19 +45087,19 @@ switch (step) {
       s.tmp_7.fn = s.tmp_7.arg0.vtable.iface["sprite"];
       if (s.tmp_7.fn == null) { s.retval = s.tmp_7.arg0.fields["sprite"]; }
       else if (!s.tmp_7.fn.isGetter) { s.retval = bind(s.tmp_7); }
-     else { s.callLocIdx = 458; s.pc = 26; return s.tmp_7; }
+     else { s.callLocIdx = 461; s.pc = 26; return s.tmp_7; }
     }
   case 26:
     r0 = s.retval;
     s.tmp_6.arg1 = r0;
     if (!s.tmp_6.arg0.vtable.iface) {
       setupLambda(s.tmp_6, pxsim_pxtrt.mapGetByString(s.tmp_6.arg0, "onComplete"), 2);
-      s.callLocIdx = 459; s.pc = 25; return s.tmp_6;
+      s.callLocIdx = 462; s.pc = 25; return s.tmp_6;
     } else {
       s.tmp_6.fn = s.tmp_6.arg0.vtable.iface["onComplete"];
-      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onComplete"], 2); s.callLocIdx = 459; s.pc = 25; return s.tmp_6; }
-      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 459; s.pc = 25; return s.tmp_6;; }
-     else { s.callLocIdx = 459; s.pc = 25; return s.tmp_6; }
+      if (s.tmp_6.fn == null) { setupLambda(s.tmp_6, s.tmp_6.arg0.fields["onComplete"], 2); s.callLocIdx = 462; s.pc = 25; return s.tmp_6; }
+      else if (s.tmp_6.fn.isGetter) { s.tmp_6.stage2Call = true; s.callLocIdx = 462; s.pc = 25; return s.tmp_6;; }
+     else { s.callLocIdx = 462; s.pc = 25; return s.tmp_6; }
     }
   case 25:
     r0 = s.retval;
@@ -45157,7 +45157,7 @@ switch (step) {
       s.tmp_1.fn = s.tmp_1.arg0.vtable.iface["sprite"];
       if (s.tmp_1.fn == null) { s.retval = s.tmp_1.arg0.fields["sprite"]; }
       else if (!s.tmp_1.fn.isGetter) { s.retval = bind(s.tmp_1); }
-     else { s.callLocIdx = 444; s.pc = 1; return s.tmp_1; }
+     else { s.callLocIdx = 447; s.pc = 1; return s.tmp_1; }
     }
   case 1:
     r0 = s.retval;
@@ -45467,7 +45467,7 @@ function Sprite_x__P48110_mk(s) {
 
 
 
-function cardCore_setCursorAnchor__P78820(s) {
+function cardCore_setCursorAnchor__P81900(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -45481,8 +45481,8 @@ switch (step) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    globals.cursorAnchor___78791 = (s.arg0);
-    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___78799);
+    globals.cursorAnchor___81871 = (s.arg0);
+    r0 = pxsim_numops_toBoolDecr(globals.cursorTarget___81879);
     s.tmp_1 = r0;
     r0 = pxsim_Boolean__bang(s.tmp_1);
     s.tmp_0 = r0;
@@ -45491,7 +45491,7 @@ switch (step) {
     { step = 17; continue; }
   case 1:
   case 2:
-    s.tmp_2 = r0 = globals.cursorAnchor___78791;
+    s.tmp_2 = r0 = globals.cursorAnchor___81871;
     r0 = pxsim_pxtcore.switch_eq(3, s.tmp_2);
     if (r0) { step = 3; continue; }
     r0 = pxsim_pxtcore.switch_eq(0, s.tmp_2);
@@ -45510,29 +45510,29 @@ switch (step) {
   case 4:
   case 5:
     s.tmp_5 = Sprite_width__P48153_mk(s);
-    s.tmp_5.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 408; s.pc = 18; return s.tmp_5;
+    s.tmp_5.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 411; s.pc = 18; return s.tmp_5;
   case 18:
     r0 = s.retval;
     s.tmp_4 = r0;
     r0 = (0 - s.tmp_4);
     s.tmp_3 = r0;
     r0 = (s.tmp_3 / 2);
-    globals.cursorOffsetX___78793 = (r0);
+    globals.cursorOffsetX___81873 = (r0);
     { step = 9; continue; }
   case 6:
   case 7:
   case 8:
     s.tmp_1 = Sprite_height__P48154_mk(s);
-    s.tmp_1.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 409; s.pc = 19; return s.tmp_1;
+    s.tmp_1.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 412; s.pc = 19; return s.tmp_1;
   case 19:
     r0 = s.retval;
     s.tmp_0 = r0;
     r0 = (s.tmp_0 / 2);
-    globals.cursorOffsetX___78793 = (r0);
+    globals.cursorOffsetX___81873 = (r0);
   case 9:
-    s.tmp_0 = r0 = globals.cursorAnchor___78791;
+    s.tmp_0 = r0 = globals.cursorAnchor___81871;
     r0 = pxsim_pxtcore.switch_eq(1, s.tmp_0);
     if (r0) { step = 10; continue; }
     r0 = pxsim_pxtcore.switch_eq(0, s.tmp_0);
@@ -45551,39 +45551,39 @@ switch (step) {
   case 11:
   case 12:
     s.tmp_3 = Sprite_height__P48154_mk(s);
-    s.tmp_3.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 410; s.pc = 20; return s.tmp_3;
+    s.tmp_3.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 413; s.pc = 20; return s.tmp_3;
   case 20:
     r0 = s.retval;
     s.tmp_2 = r0;
     r0 = (0 - s.tmp_2);
     s.tmp_1 = r0;
     r0 = (s.tmp_1 / 2);
-    globals.cursorOffsetY___78795 = (r0);
+    globals.cursorOffsetY___81875 = (r0);
     { step = 16; continue; }
   case 13:
   case 14:
   case 15:
     s.tmp_1 = Sprite_height__P48154_mk(s);
-    s.tmp_1.arg0 = globals.cursorTarget___78799;
-    s.callLocIdx = 411; s.pc = 21; return s.tmp_1;
+    s.tmp_1.arg0 = globals.cursorTarget___81879;
+    s.callLocIdx = 414; s.pc = 21; return s.tmp_1;
   case 21:
     r0 = s.retval;
     s.tmp_0 = r0;
     r0 = (s.tmp_0 / 2);
-    globals.cursorOffsetY___78795 = (r0);
+    globals.cursorOffsetY___81875 = (r0);
   case 16:
   case 17:
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_setCursorAnchor__P78820.info = {"start":35377,"length":1071,"line":1008,"column":4,"endLine":1036,"endColumn":5,"fileName":"sprites.ts","functionName":"setCursorAnchor","argumentNames":["anchor"]}
+cardCore_setCursorAnchor__P81900.info = {"start":35522,"length":1071,"line":1012,"column":4,"endLine":1040,"endColumn":5,"fileName":"sprites.ts","functionName":"setCursorAnchor","argumentNames":["anchor"]}
 
-function cardCore_setCursorAnchor__P78820_mk(s) {
+function cardCore_setCursorAnchor__P81900_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_setCursorAnchor__P78820, depth: s.depth + 1,
+        parent: s, fn: cardCore_setCursorAnchor__P81900, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -45891,7 +45891,7 @@ function sprites_create_inline__P65197_mk(s) {
 
 
 
-function cardCore_CardStack_destroyCards__P78729(s) {
+function cardCore_CardStack_destroyCards__P81809(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -45906,11 +45906,11 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     s.tmp_0 = helpers_arrayForEach__P45865_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
-    s.tmp_0.arg1 = cardCore_CardStack_destroyCards_inline__P81125;
+    s.tmp_0.arg1 = cardCore_CardStack_destroyCards_inline__P83571;
     s.callLocIdx = 276; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
@@ -45918,7 +45918,7 @@ switch (step) {
     r0 = pxsim_Array__mk();
     s.tmp_1 = r0;
     r0 = (s.tmp_0).fields["transitionCards"] = (s.tmp_1);
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 277; s.pc = 2; return s.tmp_0;
   case 2:
@@ -45927,12 +45927,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_destroyCards__P78729.info = {"start":11218,"length":157,"line":353,"column":8,"endLine":357,"endColumn":9,"fileName":"sprites.ts","functionName":"destroyCards","argumentNames":["this"]}
+cardCore_CardStack_destroyCards__P81809.info = {"start":11218,"length":157,"line":353,"column":8,"endLine":357,"endColumn":9,"fileName":"sprites.ts","functionName":"destroyCards","argumentNames":["this"]}
 
-function cardCore_CardStack_destroyCards__P78729_mk(s) {
+function cardCore_CardStack_destroyCards__P81809_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_destroyCards__P78729, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_destroyCards__P81809, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -45943,7 +45943,7 @@ function cardCore_CardStack_destroyCards__P78729_mk(s) {
 
 
 
-function cardCore_CardStack_destroyCards_inline__P81125(s) {
+function cardCore_CardStack_destroyCards_inline__P83571(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -45968,12 +45968,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_destroyCards_inline__P81125.info = {"start":11272,"length":22,"line":354,"column":31,"endLine":354,"endColumn":53,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
+cardCore_CardStack_destroyCards_inline__P83571.info = {"start":11272,"length":22,"line":354,"column":31,"endLine":354,"endColumn":53,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
 
-function cardCore_CardStack_destroyCards_inline__P81125_mk(s) {
+function cardCore_CardStack_destroyCards_inline__P83571_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_destroyCards_inline__P81125, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_destroyCards_inline__P83571, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -45983,7 +45983,7 @@ function cardCore_CardStack_destroyCards_inline__P81125_mk(s) {
 
 
 
-function cardCore_Card_detachFromContainer__P78695(s) {
+function cardCore_Card_detachFromContainer__P81775(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -45998,7 +45998,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["container"];
     s.tmp_1 = r0;
     r0 = (s.tmp_1 != null);
@@ -46026,12 +46026,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_detachFromContainer__P78695.info = {"start":2730,"length":143,"line":104,"column":8,"endLine":108,"endColumn":9,"fileName":"sprites.ts","functionName":"detachFromContainer","argumentNames":["this"]}
+cardCore_Card_detachFromContainer__P81775.info = {"start":2730,"length":143,"line":104,"column":8,"endLine":108,"endColumn":9,"fileName":"sprites.ts","functionName":"detachFromContainer","argumentNames":["this"]}
 
-function cardCore_Card_detachFromContainer__P78695_mk(s) {
+function cardCore_Card_detachFromContainer__P81775_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_detachFromContainer__P78695, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_detachFromContainer__P81775, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -56372,7 +56372,7 @@ function effects_ScreenEffect_endScreenEffect__P49025_mk(s) {
 
 
 
-function cardCore_CardSpread_constructor__P78770(s) {
+function cardCore_CardSpread_constructor__P81850(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -56398,13 +56398,13 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardSpread__C78759_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardSpread__C81839_VT)) failedCast(r0);
     r0 = (s.arg0).fields["isSpreadingLeftRight"] = (s.arg7);
     r0 = (s.arg0).fields["_spacing"] = (s.arg8);
     r0 = (s.arg0).fields["hoverX"] = (s.arg9);
     r0 = (s.arg0).fields["hoverY"] = (s.arg10);
     r0 = (s.arg0).fields["isWrappingSelection"] = (s.arg11);
-    s.tmp_0 = cardCore_LayoutContainer_constructor__P78758_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer_constructor__P81838_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = s.arg1;
     s.tmp_0.arg2 = s.arg2;
@@ -56412,14 +56412,14 @@ switch (step) {
     s.tmp_0.arg4 = s.arg4;
     s.tmp_0.arg5 = s.arg5;
     s.tmp_0.arg6 = s.arg6;
-    s.callLocIdx = 307; s.pc = 1; return s.tmp_0;
+    s.callLocIdx = 310; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     r0 = (s.arg0).fields["cardWidth"] = (-1);
     r0 = (s.arg0).fields["cardHeight"] = (-1);
-    s.tmp_0 = cardCore_CardSpread__C78759_v1_1_mk(s);
+    s.tmp_0 = cardCore_CardSpread__C81839_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardSpread__C78759_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_CardSpread__C81839_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 2; return s.tmp_0;
   case 2:
@@ -56428,12 +56428,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardSpread_constructor__P78770.info = {"start":15584,"length":549,"line":499,"column":8,"endLine":516,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","isInsertFaceUp","isSpreadingLeftRight","_spacing","hoverX","hoverY","isWrappingSelection"]}
+cardCore_CardSpread_constructor__P81850.info = {"start":15729,"length":549,"line":503,"column":8,"endLine":520,"endColumn":9,"fileName":"sprites.ts","functionName":"inline","argumentNames":["this","id","x","y","z","cards","isInsertFaceUp","isSpreadingLeftRight","_spacing","hoverX","hoverY","isWrappingSelection"]}
 
-function cardCore_CardSpread_constructor__P78770_mk(s) {
+function cardCore_CardSpread_constructor__P81850_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardSpread_constructor__P78770, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardSpread_constructor__P81850, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -57267,7 +57267,7 @@ function sprites_SpriteSet_length__P48222_mk(s) {
 
 
 
-function cardCore_CardGrid_removeCardAt__P78781(s) {
+function cardCore_CardGrid_removeCardAt__P81861(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57283,7 +57283,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
@@ -57322,7 +57322,7 @@ switch (step) {
     s.tmp_7 = r0;
     r0 = s.tmp_7.fields["card"];
     s.tmp_9 = r0;
-    r0 = (s.tmp_9 === globals.EmptyData___78683);
+    r0 = (s.tmp_9 === globals.EmptyData___81763);
   case 6:
     // jmp value (already in r0)
     s.tmp_10 = r0;
@@ -57338,25 +57338,25 @@ switch (step) {
     r0 = pxsim_Array__getAt(s.tmp_12, s.arg1);
     s.tmp_11.arg0 = r0;
     s.tmp_11.arg1 = true;
-    s.callLocIdx = 382; s.pc = 12; return s.tmp_11;
+    s.callLocIdx = 385; s.pc = 12; return s.tmp_11;
   case 12:
     r0 = s.retval;
     r0 = s.arg0.fields["isLocked"];
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 9; continue; }
-    s.tmp_1 = cardCore_LayoutContainer_replaceCardWithBlankAt__P78753_mk(s);
+    s.tmp_1 = cardCore_LayoutContainer_replaceCardWithBlankAt__P81833_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.tmp_1.arg1 = s.arg1;
-    s.callLocIdx = 383; s.pc = 13; return s.tmp_1;
+    s.callLocIdx = 386; s.pc = 13; return s.tmp_1;
   case 13:
     r0 = s.retval;
     { step = 10; continue; }
   case 9:
-    s.tmp_2 = cardCore_LayoutContainer_removeCardAt__P78752_mk(s);
+    s.tmp_2 = cardCore_LayoutContainer_removeCardAt__P81832_mk(s);
     s.tmp_2.arg0 = s.arg0;
     s.tmp_2.arg1 = s.arg1;
-    s.callLocIdx = 384; s.pc = 14; return s.tmp_2;
+    s.callLocIdx = 387; s.pc = 14; return s.tmp_2;
   case 14:
     r0 = s.retval;
   case 10:
@@ -57367,12 +57367,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_removeCardAt__P78781.info = {"start":30701,"length":415,"line":873,"column":8,"endLine":881,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
+cardCore_CardGrid_removeCardAt__P81861.info = {"start":30846,"length":415,"line":877,"column":8,"endLine":885,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
 
-function cardCore_CardGrid_removeCardAt__P78781_mk(s) {
+function cardCore_CardGrid_removeCardAt__P81861_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_removeCardAt__P78781, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_removeCardAt__P81861, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -57395,7 +57395,7 @@ function cardCore_CardGrid_removeCardAt__P78781_mk(s) {
 
 
 
-function cardCore_LayoutContainer_replaceCardWithBlankAt__P78753(s) {
+function cardCore_LayoutContainer_replaceCardWithBlankAt__P81833(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57405,15 +57405,15 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.blank___81216 = undefined;
-    s.card___81224 = undefined;
+    s.blank___83662 = undefined;
+    s.card___83670 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
@@ -57444,12 +57444,12 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_6);
     if (!r0) { step = 5; continue; }
     r0 = null;
-    { step = 7; continue; }
+    { step = 11; continue; }
   case 5:
   case 6:
-    r0 = pxsim_pxtcore_mkClassInstance(cardCore_Card__C78686_VT);
+    r0 = pxsim_pxtcore_mkClassInstance(cardCore_Card__C81766_VT);
     s.tmp_7 = r0;
-    s.tmp_8 = cardCore_Card_constructor__P78699_mk(s);
+    s.tmp_8 = cardCore_Card_constructor__P81779_mk(s);
     s.tmp_8.arg0 = s.tmp_7;
     r0 = s.arg0.fields["cards"];
     s.tmp_10 = r0;
@@ -57457,60 +57457,88 @@ switch (step) {
     s.tmp_9 = r0;
     r0 = s.tmp_9.fields["design"];
     s.tmp_8.arg1 = r0;
-    s.tmp_8.arg2 = globals.EmptyData___78683;
+    s.tmp_8.arg2 = globals.EmptyData___81763;
     s.tmp_8.arg3 = true;
-    s.callLocIdx = 299; s.pc = 8; return s.tmp_8;
-  case 8:
+    s.callLocIdx = 299; s.pc = 12; return s.tmp_8;
+  case 12:
     r0 = s.retval;
-    s.blank___81216 = (s.tmp_7);
+    s.blank___83662 = (s.tmp_7);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
     r0 = pxsim_Array__getAt(s.tmp_0, s.arg1);
-    s.card___81224 = (r0);
+    s.card___83670 = (r0);
     s.tmp_0 = Sprite_setPosition__P48165_mk(s);
-    s.tmp_0.arg0 = s.blank___81216;
+    s.tmp_0.arg0 = s.blank___83662;
     s.tmp_1 = Sprite_x__P48110_mk(s);
-    s.tmp_1.arg0 = s.card___81224;
-    s.callLocIdx = 300; s.pc = 10; return s.tmp_1;
-  case 10:
+    s.tmp_1.arg0 = s.card___83670;
+    s.callLocIdx = 300; s.pc = 14; return s.tmp_1;
+  case 14:
     r0 = s.retval;
     s.tmp_0.arg1 = r0;
     s.tmp_2 = Sprite_y__P48112_mk(s);
-    s.tmp_2.arg0 = s.card___81224;
-    s.callLocIdx = 301; s.pc = 11; return s.tmp_2;
-  case 11:
+    s.tmp_2.arg0 = s.card___83670;
+    s.callLocIdx = 301; s.pc = 15; return s.tmp_2;
+  case 15:
     r0 = s.retval;
     s.tmp_0.arg2 = r0;
-    s.callLocIdx = 302; s.pc = 9; return s.tmp_0;
-  case 9:
-    r0 = s.retval;
-    s.tmp_0 = cardCore_pointCursorAt__P78849_mk(s);
-    s.tmp_0.arg0 = s.blank___81216;
-    s.callLocIdx = 303; s.pc = 12; return s.tmp_0;
-  case 12:
+    s.callLocIdx = 302; s.pc = 13; return s.tmp_0;
+  case 13:
     r0 = s.retval;
     s.tmp_0 = helpers_arraySplice__P45856_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
     s.tmp_0.arg1 = s.arg1;
     s.tmp_0.arg2 = 1;
-    s.callLocIdx = 304; s.pc = 13; return s.tmp_0;
-  case 13:
+    s.callLocIdx = 303; s.pc = 16; return s.tmp_0;
+  case 16:
     r0 = s.retval;
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
-    r0 = pxsim_Array_.insertAt(s.tmp_0, s.arg1, s.blank___81216);
-    r0 = s.card___81224;
+    r0 = pxsim_Array_.insertAt(s.tmp_0, s.arg1, s.blank___83662);
+    s.tmp_2 = cardCore_LayoutContainer_getCardCount__P81824_mk(s);
+    s.tmp_2.arg0 = s.arg0;
+    s.callLocIdx = 304; s.pc = 17; return s.tmp_2;
+  case 17:
+    r0 = s.retval;
+    s.tmp_1 = r0;
+    r0 = (s.tmp_1 === 0);
+    s.tmp_0 = r0;
+    r0 = pxsim_numops_toBoolDecr(s.tmp_0);
+    if (!r0) { step = 7; continue; }
+    s.tmp_3 = cardCore_removeCursor__P81930_mk(s);
+    s.callLocIdx = 305; s.pc = 18; return s.tmp_3;
+  case 18:
+    r0 = s.retval;
+    { step = 10; continue; }
   case 7:
+    s.tmp_2 = cardCore_getCursorCard__P81934_mk(s);
+    s.callLocIdx = 306; s.pc = 19; return s.tmp_2;
+  case 19:
+    r0 = s.retval;
+    s.tmp_1 = r0;
+    r0 = (s.tmp_1 === s.card___83670);
+    s.tmp_0 = r0;
+    r0 = pxsim_numops_toBoolDecr(s.tmp_0);
+    if (!r0) { step = 8; continue; }
+    s.tmp_3 = cardCore_pointCursorAt__P81929_mk(s);
+    s.tmp_3.arg0 = s.blank___83662;
+    s.callLocIdx = 307; s.pc = 20; return s.tmp_3;
+  case 20:
+    r0 = s.retval;
+  case 8:
+  case 9:
+  case 10:
+    r0 = s.card___83670;
+  case 11:
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_replaceCardWithBlankAt__P78753.info = {"start":14466,"length":495,"line":462,"column":8,"endLine":473,"endColumn":9,"fileName":"sprites.ts","functionName":"replaceCardWithBlankAt","argumentNames":["this","index"]}
+cardCore_LayoutContainer_replaceCardWithBlankAt__P81833.info = {"start":14466,"length":640,"line":462,"column":8,"endLine":477,"endColumn":9,"fileName":"sprites.ts","functionName":"replaceCardWithBlankAt","argumentNames":["this","index"]}
 
-function cardCore_LayoutContainer_replaceCardWithBlankAt__P78753_mk(s) {
+function cardCore_LayoutContainer_replaceCardWithBlankAt__P81833_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_replaceCardWithBlankAt__P78753, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_replaceCardWithBlankAt__P81833, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -57523,8 +57551,8 @@ function cardCore_LayoutContainer_replaceCardWithBlankAt__P78753_mk(s) {
   tmp_8: undefined,
   tmp_9: undefined,
   tmp_10: undefined,
-  blank___81216: undefined,
-  card___81224: undefined,
+  blank___83662: undefined,
+  card___83670: undefined,
   arg0: undefined,
   arg1: undefined,
 } }
@@ -57533,7 +57561,7 @@ function cardCore_LayoutContainer_replaceCardWithBlankAt__P78753_mk(s) {
 
 
 
-function cardCore_Card_getDesign__P78690(s) {
+function cardCore_Card_getDesign__P81770(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57548,17 +57576,17 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     r0 = s.arg0.fields["design"];
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_getDesign__P78690.info = {"start":2143,"length":66,"line":81,"column":8,"endLine":83,"endColumn":9,"fileName":"sprites.ts","functionName":"getDesign","argumentNames":["this"]}
+cardCore_Card_getDesign__P81770.info = {"start":2143,"length":66,"line":81,"column":8,"endLine":83,"endColumn":9,"fileName":"sprites.ts","functionName":"getDesign","argumentNames":["this"]}
 
-function cardCore_Card_getDesign__P78690_mk(s) {
+function cardCore_Card_getDesign__P81770_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_getDesign__P78690, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_getDesign__P81770, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -57567,7 +57595,7 @@ function cardCore_Card_getDesign__P78690_mk(s) {
 
 
 
-function cardCore_LayoutContainer_reposition__P78757(s) {
+function cardCore_LayoutContainer_reposition__P81837(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57582,17 +57610,17 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_reposition__P78757.info = {"start":15423,"length":21,"line":492,"column":8,"endLine":492,"endColumn":29,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
+cardCore_LayoutContainer_reposition__P81837.info = {"start":15568,"length":21,"line":496,"column":8,"endLine":496,"endColumn":29,"fileName":"sprites.ts","functionName":"reposition","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_reposition__P78757_mk(s) {
+function cardCore_LayoutContainer_reposition__P81837_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_reposition__P78757, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_reposition__P81837, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -57601,7 +57629,7 @@ function cardCore_LayoutContainer_reposition__P78757_mk(s) {
 
 
 
-function cardCore_CardGrid_isCardGrid__P78773(s) {
+function cardCore_CardGrid_isCardGrid__P81853(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57616,17 +57644,17 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardGrid__C78771_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardGrid__C81851_VT)) failedCast(r0);
     r0 = true;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardGrid_isCardGrid__P78773.info = {"start":20837,"length":37,"line":658,"column":8,"endLine":658,"endColumn":45,"fileName":"sprites.ts","functionName":"isCardGrid","argumentNames":["this"]}
+cardCore_CardGrid_isCardGrid__P81853.info = {"start":20982,"length":37,"line":662,"column":8,"endLine":662,"endColumn":45,"fileName":"sprites.ts","functionName":"isCardGrid","argumentNames":["this"]}
 
-function cardCore_CardGrid_isCardGrid__P78773_mk(s) {
+function cardCore_CardGrid_isCardGrid__P81853_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardGrid_isCardGrid__P78773, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardGrid_isCardGrid__P81853, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -57635,7 +57663,7 @@ function cardCore_CardGrid_isCardGrid__P78773_mk(s) {
 
 
 
-function cardCore_LayoutContainer_removeCardAt__P78752(s) {
+function cardCore_LayoutContainer_removeCardAt__P81832(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57645,14 +57673,14 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.card___81269 = undefined;
+    s.card___83723 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
@@ -57689,13 +57717,13 @@ switch (step) {
     r0 = s.arg0.fields["cards"];
     s.tmp_7 = r0;
     r0 = pxsim_Array__getAt(s.tmp_7, s.arg1);
-    s.card___81269 = (r0);
-    s.tmp_2 = cardCore_getCursorCard__P78854_mk(s);
+    s.card___83723 = (r0);
+    s.tmp_2 = cardCore_getCursorCard__P81934_mk(s);
     s.callLocIdx = 292; s.pc = 14; return s.tmp_2;
   case 14:
     r0 = s.retval;
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 === s.card___81269);
+    r0 = (s.tmp_1 === s.card___83723);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 11; continue; }
@@ -57707,7 +57735,7 @@ switch (step) {
     s.tmp_3 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_3);
     if (!r0) { step = 7; continue; }
-    s.tmp_6 = cardCore_removeCursor__P78850_mk(s);
+    s.tmp_6 = cardCore_removeCursor__P81930_mk(s);
     s.callLocIdx = 293; s.pc = 15; return s.tmp_6;
   case 15:
     r0 = s.retval;
@@ -57724,7 +57752,7 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 8; continue; }
-    s.tmp_5 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_5 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_6 = r0;
     r0 = (s.arg1 - 1);
@@ -57736,7 +57764,7 @@ switch (step) {
     r0 = s.retval;
     { step = 9; continue; }
   case 8:
-    s.tmp_0 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_0 = cardCore_pointCursorAt__P81929_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_1 = r0;
     r0 = (s.arg1 + 1);
@@ -57750,8 +57778,8 @@ switch (step) {
   case 10:
   case 11:
   case 12:
-    s.tmp_0 = cardCore_Card_resetTransforms__P78694_mk(s);
-    s.tmp_0.arg0 = s.card___81269;
+    s.tmp_0 = cardCore_Card_resetTransforms__P81774_mk(s);
+    s.tmp_0.arg0 = s.card___83723;
     s.callLocIdx = 296; s.pc = 18; return s.tmp_0;
   case 18:
     r0 = s.retval;
@@ -57763,24 +57791,24 @@ switch (step) {
     s.callLocIdx = 297; s.pc = 19; return s.tmp_0;
   case 19:
     r0 = s.retval;
-    s.tmp_0 = cardCore_LayoutContainer__C78742_v1_1_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer__C81822_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C78742_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C81822_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 20; return s.tmp_0;
   case 20:
     r0 = s.retval;
-    r0 = s.card___81269;
+    r0 = s.card___83723;
   case 13:
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_removeCardAt__P78752.info = {"start":13755,"length":701,"line":442,"column":8,"endLine":460,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
+cardCore_LayoutContainer_removeCardAt__P81832.info = {"start":13755,"length":701,"line":442,"column":8,"endLine":460,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
 
-function cardCore_LayoutContainer_removeCardAt__P78752_mk(s) {
+function cardCore_LayoutContainer_removeCardAt__P81832_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_removeCardAt__P78752, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_removeCardAt__P81832, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -57790,7 +57818,7 @@ function cardCore_LayoutContainer_removeCardAt__P78752_mk(s) {
   tmp_5: undefined,
   tmp_6: undefined,
   tmp_7: undefined,
-  card___81269: undefined,
+  card___83723: undefined,
   arg0: undefined,
   arg1: undefined,
 } }
@@ -57799,7 +57827,7 @@ function cardCore_LayoutContainer_removeCardAt__P78752_mk(s) {
 
 
 
-function cardCore_Card_resetTransforms__P78694(s) {
+function cardCore_Card_resetTransforms__P81774(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57814,7 +57842,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_Card__C78686_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_Card__C81766_VT)) failedCast(r0);
     s.tmp_0 = Sprite_sx__P48127_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.tmp_0.arg1 = 1;
@@ -57838,12 +57866,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_Card_resetTransforms__P78694.info = {"start":2585,"length":135,"line":98,"column":8,"endLine":102,"endColumn":9,"fileName":"sprites.ts","functionName":"resetTransforms","argumentNames":["this"]}
+cardCore_Card_resetTransforms__P81774.info = {"start":2585,"length":135,"line":98,"column":8,"endLine":102,"endColumn":9,"fileName":"sprites.ts","functionName":"resetTransforms","argumentNames":["this"]}
 
-function cardCore_Card_resetTransforms__P78694_mk(s) {
+function cardCore_Card_resetTransforms__P81774_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_Card_resetTransforms__P78694, depth: s.depth + 1,
+        parent: s, fn: cardCore_Card_resetTransforms__P81774, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -57853,7 +57881,7 @@ function cardCore_Card_resetTransforms__P78694_mk(s) {
 
 
 
-function cardCore_LayoutContainer_removeCardSprite__P78751(s) {
+function cardCore_LayoutContainer_removeCardSprite__P81831(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57869,14 +57897,14 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_LayoutContainer__C78742_v0_2_mk(s);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_LayoutContainer__C81822_v0_2_mk(s);
     s.tmp_0.arg0 = s.arg0;
     r0 = s.arg0.fields["cards"];
     s.tmp_1 = r0;
     r0 = pxsim_Array_.indexOf(s.tmp_1, s.arg1, undefined);
     s.tmp_0.arg1 = r0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C78742_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C81822_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.removeCardAt;
     s.pc = 1; return s.tmp_0;
   case 1:
@@ -57885,12 +57913,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_removeCardSprite__P78751.info = {"start":13643,"length":102,"line":438,"column":8,"endLine":440,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardSprite","argumentNames":["this","card"]}
+cardCore_LayoutContainer_removeCardSprite__P81831.info = {"start":13643,"length":102,"line":438,"column":8,"endLine":440,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardSprite","argumentNames":["this","card"]}
 
-function cardCore_LayoutContainer_removeCardSprite__P78751_mk(s) {
+function cardCore_LayoutContainer_removeCardSprite__P81831_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_removeCardSprite__P78751, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_removeCardSprite__P81831, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -57902,7 +57930,7 @@ function cardCore_LayoutContainer_removeCardSprite__P78751_mk(s) {
 
 
 
-function cardCore_LayoutContainer_insertCard__P78750(s) {
+function cardCore_LayoutContainer_insertCard__P81830(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -57919,7 +57947,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
@@ -57927,7 +57955,7 @@ switch (step) {
     { step = 11; continue; }
   case 1:
   case 2:
-    s.tmp_2 = cardCore_resolveEvents__P78709_mk(s);
+    s.tmp_2 = cardCore_resolveEvents__P81789_mk(s);
     s.tmp_2.arg0 = s.arg1;
     s.tmp_2.arg1 = s.arg0;
     r0 = s.arg0.fields["events"];
@@ -57938,7 +57966,7 @@ switch (step) {
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     if (!r0) { step = 9; continue; }
-    s.tmp_3 = cardCore_Card_isFaceUp__P78692_mk(s);
+    s.tmp_3 = cardCore_Card_isFaceUp__P81772_mk(s);
     s.tmp_3.arg0 = s.arg1;
     r0 = s.arg0.fields["isInsertFaceUp"];
     s.tmp_3.arg1 = r0;
@@ -57958,16 +57986,16 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_Array_.insertAt(s.tmp_0, s.arg2, s.arg1);
   case 4:
-    s.tmp_0 = cardCore_LayoutContainer__C78742_v1_1_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer__C81822_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C78742_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C81822_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 14; return s.tmp_0;
   case 14:
     r0 = s.retval;
     s.tmp_0 = if_z_2_mk(s);
     s.tmp_0.arg0 = s.arg1;
-    s.tmp_0.arg1 = globals.transitionZ___78679;
+    s.tmp_0.arg1 = globals.transitionZ___81759;
     if (!s.tmp_0.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapSetByString(s.tmp_0.arg0, "z", s.tmp_0.arg1);
     } else {
@@ -57989,7 +58017,7 @@ switch (step) {
     r0 = s.tmp_0;
     { step = 6; continue; }
   case 5:
-    r0 = globals.mostRecentCursorContainer___78797;
+    r0 = globals.mostRecentCursorContainer___81877;
     s.tmp_3 = r0;
     r0 = (s.tmp_3 === s.arg0);
   case 6:
@@ -57997,7 +58025,7 @@ switch (step) {
     s.tmp_4 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_4);
     if (!r0) { step = 7; continue; }
-    s.tmp_5 = cardCore_pointCursorAt__P78849_mk(s);
+    s.tmp_5 = cardCore_pointCursorAt__P81929_mk(s);
     s.tmp_5.arg0 = s.arg1;
     s.callLocIdx = 291; s.pc = 16; return s.tmp_5;
   case 16:
@@ -58011,12 +58039,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_insertCard__P78750.info = {"start":12990,"length":643,"line":419,"column":8,"endLine":436,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCard","argumentNames":["this","card","index"]}
+cardCore_LayoutContainer_insertCard__P81830.info = {"start":12990,"length":643,"line":419,"column":8,"endLine":436,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCard","argumentNames":["this","card","index"]}
 
-function cardCore_LayoutContainer_insertCard__P78750_mk(s) {
+function cardCore_LayoutContainer_insertCard__P81830_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_insertCard__P78750, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_insertCard__P81830, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -58033,7 +58061,7 @@ function cardCore_LayoutContainer_insertCard__P78750_mk(s) {
 
 
 
-function cardCore_resolveEvents__P78709(s) {
+function cardCore_resolveEvents__P81789(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58043,10 +58071,10 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.origin___81379 = undefined;
-    s.event___81386 = undefined;
-    s.unnamed390___U2 = undefined;
-    s.unnamed391___U3 = undefined;
+    s.origin___83833 = undefined;
+    s.event___83840 = undefined;
+    s.unnamed418___U2 = undefined;
+    s.unnamed419___U3 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
@@ -58088,25 +58116,25 @@ switch (step) {
   case 3:
   case 4:
     r0 = s.arg0.fields["container"];
-    s.origin___81379 = (r0);
+    s.origin___83833 = (r0);
     r0 = (s.arg0).fields["container"] = (s.arg1);
-    s.event___81386 = (undefined);
-    s.unnamed390___U2 = (s.arg2);
-    s.unnamed391___U3 = (0);
+    s.event___83840 = (undefined);
+    s.unnamed418___U2 = (s.arg2);
+    s.unnamed419___U3 = (0);
   case 5:
-    s.tmp_0 = r0 = s.unnamed391___U3;
-    r0 = pxsim_Array__length(s.unnamed390___U2);
+    s.tmp_0 = r0 = s.unnamed419___U3;
+    r0 = pxsim_Array__length(s.unnamed418___U2);
     s.tmp_1 = r0;
     r0 = (s.tmp_0 < s.tmp_1);
     if (!r0) { step = 12; continue; }
-    r0 = pxsim_Array__getAt(s.unnamed390___U2, s.unnamed391___U3);
-    s.event___81386 = (r0);
+    r0 = pxsim_Array__getAt(s.unnamed418___U2, s.unnamed419___U3);
+    s.event___83840 = (r0);
     s.tmp_3 = cardCore_CardData_attributeEquals__P74100_mk(s);
     r0 = s.arg0.fields["card"];
     s.tmp_3.arg0 = r0;
     s.tmp_4 = if_attribute_1_mk(s);
     s.tmp_5 = if_condition_1_mk(s);
-    s.tmp_5.arg0 = s.event___81386;
+    s.tmp_5.arg0 = s.event___83840;
     if (!s.tmp_5.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapGetByString(s.tmp_5.arg0, "condition");
     } else {
@@ -58131,7 +58159,7 @@ switch (step) {
     s.tmp_3.arg1 = r0;
     s.tmp_6 = if_value_1_mk(s);
     s.tmp_7 = if_condition_1_mk(s);
-    s.tmp_7.arg0 = s.event___81386;
+    s.tmp_7.arg0 = s.event___83840;
     if (!s.tmp_7.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapGetByString(s.tmp_7.arg0, "condition");
     } else {
@@ -58161,8 +58189,8 @@ switch (step) {
     r0 = pxsim_numops_toBoolDecr(s.tmp_2);
     if (!r0) { step = 10; continue; }
     s.tmp_8 = if_handler_3_mk(s);
-    s.tmp_8.arg0 = s.event___81386;
-    s.tmp_8.arg1 = s.origin___81379;
+    s.tmp_8.arg0 = s.event___83840;
+    s.tmp_8.arg1 = s.origin___83833;
     s.tmp_8.arg2 = s.arg0;
     if (!s.tmp_8.arg0.vtable.iface) {
       setupLambda(s.tmp_8, pxsim_pxtrt.mapGetByString(s.tmp_8.arg0, "handler"), 3);
@@ -58198,22 +58226,22 @@ switch (step) {
   case 9:
   case 10:
   case 11:
-    r0 = (s.unnamed391___U3 + 1);
-    s.unnamed391___U3 = (r0);
+    r0 = (s.unnamed419___U3 + 1);
+    s.unnamed419___U3 = (r0);
     { step = 5; continue; }
   case 12:
-    s.unnamed390___U2 = (undefined);
+    s.unnamed418___U2 = (undefined);
     r0 = true;
   case 13:
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_resolveEvents__P78709.info = {"start":4422,"length":646,"line":162,"column":4,"endLine":177,"endColumn":5,"fileName":"sprites.ts","functionName":"resolveEvents","argumentNames":["card","target","events"]}
+cardCore_resolveEvents__P81789.info = {"start":4422,"length":646,"line":162,"column":4,"endLine":177,"endColumn":5,"fileName":"sprites.ts","functionName":"resolveEvents","argumentNames":["card","target","events"]}
 
-function cardCore_resolveEvents__P78709_mk(s) {
+function cardCore_resolveEvents__P81789_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_resolveEvents__P78709, depth: s.depth + 1,
+        parent: s, fn: cardCore_resolveEvents__P81789, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -58224,10 +58252,10 @@ function cardCore_resolveEvents__P78709_mk(s) {
   tmp_6: undefined,
   tmp_7: undefined,
   tmp_8: undefined,
-  origin___81379: undefined,
-  event___81386: undefined,
-  unnamed390___U2: undefined,
-  unnamed391___U3: undefined,
+  origin___83833: undefined,
+  event___83840: undefined,
+  unnamed418___U2: undefined,
+  unnamed419___U3: undefined,
   arg0: undefined,
   arg1: undefined,
   arg2: undefined,
@@ -58237,7 +58265,7 @@ function cardCore_resolveEvents__P78709_mk(s) {
 
 
 
-function cardCore_LayoutContainer_shuffle__P78749(s) {
+function cardCore_LayoutContainer_shuffle__P81829(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58252,16 +58280,16 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_shuffle__P78681_mk(s);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_shuffle__P81761_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
     s.callLocIdx = 286; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
-    s.tmp_0 = cardCore_LayoutContainer__C78742_v1_1_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer__C81822_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C78742_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C81822_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 2; return s.tmp_0;
   case 2:
@@ -58270,12 +58298,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_shuffle__P78749.info = {"start":12891,"length":89,"line":414,"column":8,"endLine":417,"endColumn":9,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["this"]}
+cardCore_LayoutContainer_shuffle__P81829.info = {"start":12891,"length":89,"line":414,"column":8,"endLine":417,"endColumn":9,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_shuffle__P78749_mk(s) {
+function cardCore_LayoutContainer_shuffle__P81829_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_shuffle__P78749, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_shuffle__P81829, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -58285,7 +58313,7 @@ function cardCore_LayoutContainer_shuffle__P78749_mk(s) {
 
 
 
-function cardCore_shuffle__P78681(s) {
+function cardCore_shuffle__P81761(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58295,16 +58323,16 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.i___81418 = undefined;
-    s.j___81424 = undefined;
-    s.temp___81430 = undefined;
+    s.i___83872 = undefined;
+    s.j___83878 = undefined;
+    s.temp___83884 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.lambdaArgs = null;
     }
-    s.i___81418 = (0);
+    s.i___83872 = (0);
   case 1:
-    s.tmp_1 = r0 = s.i___81418;
+    s.tmp_1 = r0 = s.i___83872;
     r0 = pxsim_Array__length(s.arg0);
     s.tmp_2 = r0;
     r0 = (s.tmp_1 < s.tmp_2);
@@ -58316,38 +58344,38 @@ switch (step) {
     r0 = (s.tmp_4 - 1);
     s.tmp_3 = r0;
     r0 = pxsim.Math_.randomRange(0, s.tmp_3);
-    s.j___81424 = (r0);
-    r0 = pxsim_Array__getAt(s.arg0, s.i___81418);
-    s.temp___81430 = (r0);
+    s.j___83878 = (r0);
+    r0 = pxsim_Array__getAt(s.arg0, s.i___83872);
+    s.temp___83884 = (r0);
     s.tmp_0 = r0 = s.arg0;
-    s.tmp_1 = r0 = s.i___81418;
-    r0 = pxsim_Array__getAt(s.arg0, s.j___81424);
+    s.tmp_1 = r0 = s.i___83872;
+    r0 = pxsim_Array__getAt(s.arg0, s.j___83878);
     s.tmp_2 = r0;
     r0 = pxsim_Array_.setAt(s.tmp_0, s.tmp_1, s.tmp_2);
-    r0 = pxsim_Array_.setAt(s.arg0, s.j___81424, s.temp___81430);
-    r0 = (s.i___81418 + 1);
-    s.i___81418 = (r0);
+    r0 = pxsim_Array_.setAt(s.arg0, s.j___83878, s.temp___83884);
+    r0 = (s.i___83872 + 1);
+    s.i___83872 = (r0);
     { step = 1; continue; }
   case 2:
     r0 = undefined;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_shuffle__P78681.info = {"start":879,"length":235,"line":36,"column":4,"endLine":43,"endColumn":5,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["list"]}
+cardCore_shuffle__P81761.info = {"start":879,"length":235,"line":36,"column":4,"endLine":43,"endColumn":5,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["list"]}
 
-function cardCore_shuffle__P78681_mk(s) {
+function cardCore_shuffle__P81761_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_shuffle__P78681, depth: s.depth + 1,
+        parent: s, fn: cardCore_shuffle__P81761, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
   tmp_2: undefined,
   tmp_3: undefined,
   tmp_4: undefined,
-  i___81418: undefined,
-  j___81424: undefined,
-  temp___81430: undefined,
+  i___83872: undefined,
+  j___83878: undefined,
+  temp___83884: undefined,
   arg0: undefined,
 } }
 
@@ -58355,7 +58383,7 @@ function cardCore_shuffle__P78681_mk(s) {
 
 
 
-function cardCore_LayoutContainer_setPosition__P78746(s) {
+function cardCore_LayoutContainer_setPosition__P81826(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58372,12 +58400,12 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     r0 = (s.arg0).fields["x"] = (s.arg1);
     r0 = (s.arg0).fields["y"] = (s.arg2);
-    s.tmp_0 = cardCore_LayoutContainer__C78742_v1_1_mk(s);
+    s.tmp_0 = cardCore_LayoutContainer__C81822_v1_1_mk(s);
     s.tmp_0.arg0 = s.arg0;
-    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C78742_VT)) failedCast(s.tmp_0.arg0);
+    if (!checkSubtype(s.tmp_0.arg0, cardCore_LayoutContainer__C81822_VT)) failedCast(s.tmp_0.arg0);
     s.tmp_0.fn = s.tmp_0.arg0.vtable.methods.reposition;
     s.pc = 1; return s.tmp_0;
   case 1:
@@ -58386,12 +58414,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_setPosition__P78746.info = {"start":12487,"length":127,"line":399,"column":8,"endLine":403,"endColumn":9,"fileName":"sprites.ts","functionName":"setPosition","argumentNames":["this","x","y"]}
+cardCore_LayoutContainer_setPosition__P81826.info = {"start":12487,"length":127,"line":399,"column":8,"endLine":403,"endColumn":9,"fileName":"sprites.ts","functionName":"setPosition","argumentNames":["this","x","y"]}
 
-function cardCore_LayoutContainer_setPosition__P78746_mk(s) {
+function cardCore_LayoutContainer_setPosition__P81826_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_setPosition__P78746, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_setPosition__P81826, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -58403,7 +58431,7 @@ function cardCore_LayoutContainer_setPosition__P78746_mk(s) {
 
 
 
-function cardCore_LayoutContainer_getCardsCopy__P78745(s) {
+function cardCore_LayoutContainer_getCardsCopy__P81825(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58418,7 +58446,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     s.tmp_0 = helpers_arrayFilter__P45866_mk(s);
     s.tmp_1 = helpers_arraySlice__P45871_mk(s);
     r0 = s.arg0.fields["cards"];
@@ -58429,19 +58457,19 @@ switch (step) {
   case 2:
     r0 = s.retval;
     s.tmp_0.arg0 = r0;
-    s.tmp_0.arg1 = cardCore_LayoutContainer_getCardsCopy_inline__P81462;
+    s.tmp_0.arg1 = cardCore_LayoutContainer_getCardsCopy_inline__P83916;
     s.callLocIdx = 285; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_getCardsCopy__P78745.info = {"start":12367,"length":110,"line":395,"column":8,"endLine":397,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardsCopy","argumentNames":["this"]}
+cardCore_LayoutContainer_getCardsCopy__P81825.info = {"start":12367,"length":110,"line":395,"column":8,"endLine":397,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardsCopy","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_getCardsCopy__P78745_mk(s) {
+function cardCore_LayoutContainer_getCardsCopy__P81825_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_getCardsCopy__P78745, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_getCardsCopy__P81825, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -58452,7 +58480,7 @@ function cardCore_LayoutContainer_getCardsCopy__P78745_mk(s) {
 
 
 
-function cardCore_LayoutContainer_getCardsCopy_inline__P81462(s) {
+function cardCore_LayoutContainer_getCardsCopy_inline__P83916(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58468,7 +58496,7 @@ switch (step) {
     }
     r0 = s.arg0.fields["card"];
     s.tmp_2 = r0;
-    r0 = (s.tmp_2 === globals.EmptyData___78683);
+    r0 = (s.tmp_2 === globals.EmptyData___81763);
     s.tmp_1 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_1);
     s.tmp_0 = r0;
@@ -58476,12 +58504,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_getCardsCopy_inline__P81462.info = {"start":12437,"length":29,"line":396,"column":45,"endLine":396,"endColumn":74,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
+cardCore_LayoutContainer_getCardsCopy_inline__P83916.info = {"start":12437,"length":29,"line":396,"column":45,"endLine":396,"endColumn":74,"fileName":"sprites.ts","functionName":"inline","argumentNames":["card"]}
 
-function cardCore_LayoutContainer_getCardsCopy_inline__P81462_mk(s) {
+function cardCore_LayoutContainer_getCardsCopy_inline__P83916_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_getCardsCopy_inline__P81462, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_getCardsCopy_inline__P83916, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -58493,7 +58521,7 @@ function cardCore_LayoutContainer_getCardsCopy_inline__P81462_mk(s) {
 
 
 
-function cardCore_LayoutContainer_getCardCount__P78744(s) {
+function cardCore_LayoutContainer_getCardCount__P81824(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58508,11 +58536,11 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_LayoutContainer__C78742_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_LayoutContainer__C81822_VT)) failedCast(r0);
     s.tmp_0 = helpers_arrayReduce__P45868_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
-    s.tmp_0.arg1 = cardCore_LayoutContainer_getCardCount_inline__P81471;
+    s.tmp_0.arg1 = cardCore_LayoutContainer_getCardCount_inline__P83925;
     s.tmp_0.arg2 = 0;
     s.callLocIdx = 282; s.pc = 1; return s.tmp_0;
   case 1:
@@ -58520,12 +58548,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_getCardCount__P78744.info = {"start":12226,"length":131,"line":391,"column":8,"endLine":393,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardCount","argumentNames":["this"]}
+cardCore_LayoutContainer_getCardCount__P81824.info = {"start":12226,"length":131,"line":391,"column":8,"endLine":393,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardCount","argumentNames":["this"]}
 
-function cardCore_LayoutContainer_getCardCount__P78744_mk(s) {
+function cardCore_LayoutContainer_getCardCount__P81824_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_getCardCount__P78744, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_getCardCount__P81824, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -58535,7 +58563,7 @@ function cardCore_LayoutContainer_getCardCount__P78744_mk(s) {
 
 
 
-function cardCore_LayoutContainer_getCardCount_inline__P81471(s) {
+function cardCore_LayoutContainer_getCardCount_inline__P83925(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -58552,7 +58580,7 @@ switch (step) {
     }
     r0 = s.arg1.fields["card"];
     s.tmp_1 = r0;
-    r0 = (s.tmp_1 === globals.EmptyData___78683);
+    r0 = (s.tmp_1 === globals.EmptyData___81763);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
@@ -58567,12 +58595,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_LayoutContainer_getCardCount_inline__P81471.info = {"start":12288,"length":55,"line":392,"column":37,"endLine":392,"endColumn":92,"fileName":"sprites.ts","functionName":"inline","argumentNames":["count","card"]}
+cardCore_LayoutContainer_getCardCount_inline__P83925.info = {"start":12288,"length":55,"line":392,"column":37,"endLine":392,"endColumn":92,"fileName":"sprites.ts","functionName":"inline","argumentNames":["count","card"]}
 
-function cardCore_LayoutContainer_getCardCount_inline__P81471_mk(s) {
+function cardCore_LayoutContainer_getCardCount_inline__P83925_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_LayoutContainer_getCardCount_inline__P81471, depth: s.depth + 1,
+        parent: s, fn: cardCore_LayoutContainer_getCardCount_inline__P83925, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68334,7 +68362,7 @@ function info_PlayerInfoImpl_id__P48361_mk(s) {
 
 
 
-function cardCore_CardStack_getCursorIndex__P78730(s) {
+function cardCore_CardStack_getCursorIndex__P81810(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68349,8 +68377,8 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
-    r0 = globals.cursor___78801;
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
+    r0 = globals.cursor___81881;
     s.tmp_1 = r0;
     r0 = (s.tmp_1 === s.arg0);
     s.tmp_0 = r0;
@@ -68367,12 +68395,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_getCursorIndex__P78730.info = {"start":11385,"length":95,"line":359,"column":8,"endLine":361,"endColumn":9,"fileName":"sprites.ts","functionName":"getCursorIndex","argumentNames":["this"]}
+cardCore_CardStack_getCursorIndex__P81810.info = {"start":11385,"length":95,"line":359,"column":8,"endLine":361,"endColumn":9,"fileName":"sprites.ts","functionName":"getCursorIndex","argumentNames":["this"]}
 
-function cardCore_CardStack_getCursorIndex__P78730_mk(s) {
+function cardCore_CardStack_getCursorIndex__P81810_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_getCursorIndex__P78730, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_getCursorIndex__P81810, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68384,7 +68412,7 @@ function cardCore_CardStack_getCursorIndex__P78730_mk(s) {
 
 
 
-function cardCore_getCursorSprite__P78848(s) {
+function cardCore_getCursorSprite__P81928(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68394,16 +68422,16 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    r0 = globals.cursor___78801;
+    r0 = globals.cursor___81881;
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_getCursorSprite__P78848.info = {"start":35296,"length":71,"line":1004,"column":4,"endLine":1006,"endColumn":5,"fileName":"sprites.ts","functionName":"getCursorSprite","argumentNames":[]}
+cardCore_getCursorSprite__P81928.info = {"start":35441,"length":71,"line":1008,"column":4,"endLine":1010,"endColumn":5,"fileName":"sprites.ts","functionName":"getCursorSprite","argumentNames":[]}
 
-function cardCore_getCursorSprite__P78848_mk(s) {
+function cardCore_getCursorSprite__P81928_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_getCursorSprite__P78848, depth: s.depth + 1,
+        parent: s, fn: cardCore_getCursorSprite__P81928, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
 } }
 
@@ -68411,7 +68439,7 @@ function cardCore_getCursorSprite__P78848_mk(s) {
 
 
 
-function cardCore_CardStack_removeCardAt__P78728(s) {
+function cardCore_CardStack_removeCardAt__P81808(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68421,15 +68449,15 @@ if (yieldSteps-- < 0 && maybeYield(s, step, r0) || runtime !== pxsim.runtime) re
 switch (step) {
   case 0:
 
-    s.card___81501 = undefined;
-    s.transitionIndex___81506 = undefined;
+    s.card___83955 = undefined;
+    s.transitionIndex___83960 = undefined;
     if (s.lambdaArgs) {
       s.arg0 = (s.lambdaArgs[0]);
       s.arg1 = (s.lambdaArgs[1]);
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBool(s.tmp_0);
@@ -68466,26 +68494,26 @@ switch (step) {
     r0 = s.arg0.fields["cards"];
     s.tmp_7 = r0;
     r0 = pxsim_Array__getAt(s.tmp_7, s.arg1);
-    s.card___81501 = (r0);
+    s.card___83955 = (r0);
     r0 = s.arg0.fields["transitionCards"];
     s.tmp_0 = r0;
-    r0 = pxsim_Array_.indexOf(s.tmp_0, s.card___81501, undefined);
-    s.transitionIndex___81506 = (r0);
+    r0 = pxsim_Array_.indexOf(s.tmp_0, s.card___83955, undefined);
+    s.transitionIndex___83960 = (r0);
     s.tmp_0 = Sprite_setFlag__P48175_mk(s);
-    s.tmp_0.arg0 = s.card___81501;
+    s.tmp_0.arg0 = s.card___83955;
     s.tmp_0.arg1 = 128;
     s.tmp_0.arg2 = false;
     s.callLocIdx = 267; s.pc = 10; return s.tmp_0;
   case 10:
     r0 = s.retval;
-    r0 = (s.transitionIndex___81506 >= 0);
+    r0 = (s.transitionIndex___83960 >= 0);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 7; continue; }
     s.tmp_1 = extraAnimations_clearAnimations__P74425_mk(s);
     r0 = s.arg0.fields["transitionCards"];
     s.tmp_2 = r0;
-    r0 = pxsim_Array__getAt(s.tmp_2, s.transitionIndex___81506);
+    r0 = pxsim_Array__getAt(s.tmp_2, s.transitionIndex___83960);
     s.tmp_1.arg0 = r0;
     s.tmp_1.arg1 = true;
     s.callLocIdx = 268; s.pc = 11; return s.tmp_1;
@@ -68494,7 +68522,7 @@ switch (step) {
     { step = 8; continue; }
   case 7:
     s.tmp_0 = Sprite_setPosition__P48165_mk(s);
-    s.tmp_0.arg0 = s.card___81501;
+    s.tmp_0.arg0 = s.card___83955;
     s.tmp_1 = Sprite_x__P48110_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.callLocIdx = 269; s.pc = 13; return s.tmp_1;
@@ -68507,7 +68535,7 @@ switch (step) {
   case 14:
     r0 = s.retval;
     s.tmp_2 = r0;
-    s.tmp_5 = cardCore_CardStack_getYOffset__P78713_mk(s);
+    s.tmp_5 = cardCore_CardStack_getYOffset__P81793_mk(s);
     s.tmp_5.arg0 = s.arg0;
     s.callLocIdx = 271; s.pc = 15; return s.tmp_5;
   case 15:
@@ -68527,22 +68555,22 @@ switch (step) {
     s.callLocIdx = 273; s.pc = 16; return s.tmp_0;
   case 16:
     r0 = s.retval;
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 274; s.pc = 17; return s.tmp_0;
   case 17:
     r0 = s.retval;
-    r0 = s.card___81501;
+    r0 = s.card___83955;
   case 9:
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_removeCardAt__P78728.info = {"start":10537,"length":671,"line":336,"column":8,"endLine":351,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
+cardCore_CardStack_removeCardAt__P81808.info = {"start":10537,"length":671,"line":336,"column":8,"endLine":351,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardAt","argumentNames":["this","index"]}
 
-function cardCore_CardStack_removeCardAt__P78728_mk(s) {
+function cardCore_CardStack_removeCardAt__P81808_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_removeCardAt__P78728, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_removeCardAt__P81808, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68552,8 +68580,8 @@ function cardCore_CardStack_removeCardAt__P78728_mk(s) {
   tmp_5: undefined,
   tmp_6: undefined,
   tmp_7: undefined,
-  card___81501: undefined,
-  transitionIndex___81506: undefined,
+  card___83955: undefined,
+  transitionIndex___83960: undefined,
   arg0: undefined,
   arg1: undefined,
 } }
@@ -68562,7 +68590,7 @@ function cardCore_CardStack_removeCardAt__P78728_mk(s) {
 
 
 
-function cardCore_CardStack_getYOffset__P78713(s) {
+function cardCore_CardStack_getYOffset__P81793(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68577,7 +68605,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = s.arg0.fields["_image"];
     s.tmp_1 = r0;
     r0 = s.arg0.fields["defaultStackImage"];
@@ -68606,12 +68634,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_getYOffset__P78713.info = {"start":6353,"length":155,"line":218,"column":8,"endLine":220,"endColumn":9,"fileName":"sprites.ts","functionName":"getYOffset","argumentNames":["this"]}
+cardCore_CardStack_getYOffset__P81793.info = {"start":6353,"length":155,"line":218,"column":8,"endLine":220,"endColumn":9,"fileName":"sprites.ts","functionName":"getYOffset","argumentNames":["this"]}
 
-function cardCore_CardStack_getYOffset__P78713_mk(s) {
+function cardCore_CardStack_getYOffset__P81793_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_getYOffset__P78713, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_getYOffset__P81793, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68692,7 +68720,7 @@ function cardCore_CardDesign_getStackTopYOffset__P74110_mk(s) {
 
 
 
-function cardCore_CardStack_removeCardSprite__P78727(s) {
+function cardCore_CardStack_removeCardSprite__P81807(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68708,8 +68736,8 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_CardStack_removeCardAt__P78728_mk(s);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_CardStack_removeCardAt__P81808_mk(s);
     s.tmp_0.arg0 = s.arg0;
     r0 = s.arg0.fields["cards"];
     s.tmp_1 = r0;
@@ -68722,12 +68750,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_removeCardSprite__P78727.info = {"start":10425,"length":102,"line":332,"column":8,"endLine":334,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardSprite","argumentNames":["this","card"]}
+cardCore_CardStack_removeCardSprite__P81807.info = {"start":10425,"length":102,"line":332,"column":8,"endLine":334,"endColumn":9,"fileName":"sprites.ts","functionName":"removeCardSprite","argumentNames":["this","card"]}
 
-function cardCore_CardStack_removeCardSprite__P78727_mk(s) {
+function cardCore_CardStack_removeCardSprite__P81807_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_removeCardSprite__P78727, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_removeCardSprite__P81807, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68739,7 +68767,7 @@ function cardCore_CardStack_removeCardSprite__P78727_mk(s) {
 
 
 
-function cardCore_CardStack_insertCard__P78726(s) {
+function cardCore_CardStack_insertCard__P81806(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68756,7 +68784,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = (s.arg1 == null);
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
@@ -68794,7 +68822,7 @@ switch (step) {
     r0 = (s.tmp_0).fields["defaultStackImage"] = (s.tmp_1);
   case 3:
   case 4:
-    s.tmp_1 = cardCore_resolveEvents__P78709_mk(s);
+    s.tmp_1 = cardCore_resolveEvents__P81789_mk(s);
     s.tmp_1.arg0 = s.arg1;
     s.tmp_1.arg1 = s.arg0;
     r0 = s.arg0.fields["events"];
@@ -68818,14 +68846,14 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_Array_.insertAt(s.tmp_0, s.arg2, s.arg1);
   case 6:
-    s.tmp_0 = cardCore_Card_isFaceUp__P78692_mk(s);
+    s.tmp_0 = cardCore_Card_isFaceUp__P81772_mk(s);
     s.tmp_0.arg0 = s.arg1;
     r0 = s.arg0.fields["isTopCardFaceUp"];
     s.tmp_0.arg1 = r0;
     s.callLocIdx = 257; s.pc = 13; return s.tmp_0;
   case 13:
     r0 = s.retval;
-    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardStack_insertCard_inline__P81605);
+    r0 = pxsim_pxtcore_mkAction(2, cardCore_CardStack_insertCard_inline__P84059);
     s.tmp_0 = r0;
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 0, s.arg0);
     r0 = pxsim_pxtrt_stclo(s.tmp_0, 1, s.arg1);
@@ -68843,7 +68871,7 @@ switch (step) {
   case 16:
     r0 = s.retval;
     s.tmp_3 = r0;
-    s.tmp_6 = cardCore_CardStack_getYOffset__P78713_mk(s);
+    s.tmp_6 = cardCore_CardStack_getYOffset__P81793_mk(s);
     s.tmp_6.arg0 = s.arg0;
     s.callLocIdx = 260; s.pc = 17; return s.tmp_6;
   case 17:
@@ -68851,7 +68879,7 @@ switch (step) {
     s.tmp_5 = r0;
     r0 = (s.tmp_3 + s.tmp_5);
     s.tmp_1.arg2 = r0;
-    s.tmp_1.arg3 = globals.slideAnimationDuration___78677;
+    s.tmp_1.arg3 = globals.slideAnimationDuration___81757;
     s.tmp_1.arg4 = s.tmp_0;
     s.callLocIdx = 263; s.pc = 14; return s.tmp_1;
   case 14:
@@ -68859,14 +68887,14 @@ switch (step) {
     r0 = s.arg0.fields["transitionCards"];
     s.tmp_0 = r0;
     r0 = pxsim_Array__push(s.tmp_0, s.arg1);
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.arg0;
     s.callLocIdx = 264; s.pc = 18; return s.tmp_0;
   case 18:
     r0 = s.retval;
     s.tmp_0 = if_z_2_mk(s);
     s.tmp_0.arg0 = s.arg1;
-    s.tmp_0.arg1 = globals.transitionZ___78679;
+    s.tmp_0.arg1 = globals.transitionZ___81759;
     if (!s.tmp_0.arg0.vtable.iface) {
       s.retval = pxsim_pxtrt.mapSetByString(s.tmp_0.arg0, "z", s.tmp_0.arg1);
     } else {
@@ -68884,12 +68912,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_insertCard__P78726.info = {"start":9310,"length":1105,"line":302,"column":8,"endLine":330,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCard","argumentNames":["this","card","index"]}
+cardCore_CardStack_insertCard__P81806.info = {"start":9310,"length":1105,"line":302,"column":8,"endLine":330,"endColumn":9,"fileName":"sprites.ts","functionName":"insertCard","argumentNames":["this","card","index"]}
 
-function cardCore_CardStack_insertCard__P78726_mk(s) {
+function cardCore_CardStack_insertCard__P81806_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_insertCard__P78726, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_insertCard__P81806, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68907,7 +68935,7 @@ function cardCore_CardStack_insertCard__P78726_mk(s) {
 
 
 
-function cardCore_CardStack_insertCard_inline__P81605(s) {
+function cardCore_CardStack_insertCard_inline__P84059(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68928,7 +68956,7 @@ switch (step) {
     s.callLocIdx = 261; s.pc = 1; return s.tmp_0;
   case 1:
     r0 = s.retval;
-    s.tmp_0 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_0 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_0.arg0 = s.caps[0];
     s.callLocIdx = 262; s.pc = 2; return s.tmp_0;
   case 2:
@@ -68937,12 +68965,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_insertCard_inline__P81605.info = {"start":10088,"length":164,"line":321,"column":20,"endLine":324,"endColumn":21,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
+cardCore_CardStack_insertCard_inline__P84059.info = {"start":10088,"length":164,"line":321,"column":20,"endLine":324,"endColumn":21,"fileName":"sprites.ts","functionName":"inline","argumentNames":[]}
 
-function cardCore_CardStack_insertCard_inline__P81605_mk(s) {
+function cardCore_CardStack_insertCard_inline__P84059_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_insertCard_inline__P81605, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_insertCard_inline__P84059, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -68952,7 +68980,7 @@ function cardCore_CardStack_insertCard_inline__P81605_mk(s) {
 
 
 
-function cardCore_CardStack_getCardsCopy__P78724(s) {
+function cardCore_CardStack_getCardsCopy__P81804(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -68967,7 +68995,7 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     s.tmp_0 = helpers_arraySlice__P45871_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
@@ -68979,12 +69007,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_getCardsCopy__P78724.info = {"start":9066,"length":72,"line":294,"column":8,"endLine":296,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardsCopy","argumentNames":["this"]}
+cardCore_CardStack_getCardsCopy__P81804.info = {"start":9066,"length":72,"line":294,"column":8,"endLine":296,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardsCopy","argumentNames":["this"]}
 
-function cardCore_CardStack_getCardsCopy__P78724_mk(s) {
+function cardCore_CardStack_getCardsCopy__P81804_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_getCardsCopy__P78724, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_getCardsCopy__P81804, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -68994,7 +69022,7 @@ function cardCore_CardStack_getCardsCopy__P78724_mk(s) {
 
 
 
-function cardCore_CardStack_getCardCount__P78723(s) {
+function cardCore_CardStack_getCardCount__P81803(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -69009,19 +69037,19 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = s.arg0.fields["cards"];
     s.tmp_0 = r0;
     r0 = pxsim_Array__length(s.tmp_0);
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_getCardCount__P78723.info = {"start":8985,"length":71,"line":290,"column":8,"endLine":292,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardCount","argumentNames":["this"]}
+cardCore_CardStack_getCardCount__P81803.info = {"start":8985,"length":71,"line":290,"column":8,"endLine":292,"endColumn":9,"fileName":"sprites.ts","functionName":"getCardCount","argumentNames":["this"]}
 
-function cardCore_CardStack_getCardCount__P78723_mk(s) {
+function cardCore_CardStack_getCardCount__P81803_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_getCardCount__P78723, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_getCardCount__P81803, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   arg0: undefined,
@@ -69031,7 +69059,7 @@ function cardCore_CardStack_getCardCount__P78723_mk(s) {
 
 
 
-function cardCore_CardStack_shuffle__P78716(s) {
+function cardCore_CardStack_shuffle__P81796(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -69046,8 +69074,8 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
-    s.tmp_0 = cardCore_shuffle__P78681_mk(s);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
+    s.tmp_0 = cardCore_shuffle__P81761_mk(s);
     r0 = s.arg0.fields["cards"];
     s.tmp_0.arg0 = r0;
     s.callLocIdx = 245; s.pc = 3; return s.tmp_0;
@@ -69057,7 +69085,7 @@ switch (step) {
     s.tmp_0 = r0;
     r0 = pxsim_numops_toBoolDecr(s.tmp_0);
     if (!r0) { step = 1; continue; }
-    s.tmp_1 = cardCore_CardStack_refreshImage__P78714_mk(s);
+    s.tmp_1 = cardCore_CardStack_refreshImage__P81794_mk(s);
     s.tmp_1.arg0 = s.arg0;
     s.callLocIdx = 246; s.pc = 4; return s.tmp_1;
   case 4:
@@ -69068,12 +69096,12 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_shuffle__P78716.info = {"start":7517,"length":149,"line":243,"column":8,"endLine":248,"endColumn":9,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["this"]}
+cardCore_CardStack_shuffle__P81796.info = {"start":7517,"length":149,"line":243,"column":8,"endLine":248,"endColumn":9,"fileName":"sprites.ts","functionName":"shuffle","argumentNames":["this"]}
 
-function cardCore_CardStack_shuffle__P78716_mk(s) {
+function cardCore_CardStack_shuffle__P81796_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_shuffle__P78716, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_shuffle__P81796, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -69084,7 +69112,7 @@ function cardCore_CardStack_shuffle__P78716_mk(s) {
 
 
 
-function cardCore_CardStack_container__P78715(s) {
+function cardCore_CardStack_container__P81795(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -69099,18 +69127,18 @@ switch (step) {
       s.lambdaArgs = null;
     }
     r0 = s.arg0;
-    if (!checkSubtype(r0, cardCore_CardStack__C78711_VT)) failedCast(r0);
+    if (!checkSubtype(r0, cardCore_CardStack__C81791_VT)) failedCast(r0);
     r0 = s.arg0;
     return leaveAccessor(s, r0)
   default: oops()
 } } }
-cardCore_CardStack_container__P78715.info = {"start":7441,"length":66,"line":239,"column":8,"endLine":241,"endColumn":9,"fileName":"sprites.ts","functionName":"container","argumentNames":["this"]}
-cardCore_CardStack_container__P78715.isGetter = true;
+cardCore_CardStack_container__P81795.info = {"start":7441,"length":66,"line":239,"column":8,"endLine":241,"endColumn":9,"fileName":"sprites.ts","functionName":"container","argumentNames":["this"]}
+cardCore_CardStack_container__P81795.isGetter = true;
 
-function cardCore_CardStack_container__P78715_mk(s) {
+function cardCore_CardStack_container__P81795_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: cardCore_CardStack_container__P78715, depth: s.depth + 1,
+        parent: s, fn: cardCore_CardStack_container__P81795, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   arg0: undefined,
 } }
@@ -73655,7 +73683,7 @@ function if_onComplete_2_mk(s) {
 } }
 
 
-function cardCore_CardGrid__C78771_v1_1_mk(s) {
+function cardCore_CardGrid__C81851_v1_1_mk(s) {
     checkStack(s.depth);
     return {
         parent: s, fn: null, depth: s.depth + 1,
@@ -73711,7 +73739,7 @@ function if_isCardGrid_1_mk(s) {
 } }
 
 
-function cardCore_CardSpread__C78759_v1_1_mk(s) {
+function cardCore_CardSpread__C81839_v1_1_mk(s) {
     checkStack(s.depth);
     return {
         parent: s, fn: null, depth: s.depth + 1,
@@ -73798,7 +73826,7 @@ function if_removeCardSprite_2_mk(s) {
 } }
 
 
-function cardCore_LayoutContainer__C78742_v1_1_mk(s) {
+function cardCore_LayoutContainer__C81822_v1_1_mk(s) {
     checkStack(s.depth);
     return {
         parent: s, fn: null, depth: s.depth + 1,
@@ -73812,7 +73840,7 @@ function cardCore_LayoutContainer__C78742_v1_1_mk(s) {
 } }
 
 
-function cardCore_LayoutContainer__C78742_v0_2_mk(s) {
+function cardCore_LayoutContainer__C81822_v0_2_mk(s) {
     checkStack(s.depth);
     return {
         parent: s, fn: null, depth: s.depth + 1,
@@ -74185,7 +74213,7 @@ const Sprite__C48097_VT = mkVTable({
   },
   toStringMethod: Sprite_toString__P48190,
 });
-const cardCore_Card__C78686_VT = mkVTable({
+const cardCore_Card__C81766_VT = mkVTable({
   name: "Card",
   numFields: 35,
   classNo: 24,
@@ -74271,15 +74299,15 @@ const cardCore_Card__C78686_VT = mkVTable({
     "set/design": null,
     "card": null,
     "set/card": null,
-    "isEmptyCardSlot": cardCore_Card_isEmptyCardSlot__P78688,
-    "refreshImage": cardCore_Card_refreshImage__P78689,
-    "getDesign": cardCore_Card_getDesign__P78690,
-    "getData": cardCore_Card_getData__P78691,
+    "isEmptyCardSlot": cardCore_Card_isEmptyCardSlot__P81768,
+    "refreshImage": cardCore_Card_refreshImage__P81769,
+    "getDesign": cardCore_Card_getDesign__P81770,
+    "getData": cardCore_Card_getData__P81771,
     "isFaceUp": null,
-    "set/isFaceUp": cardCore_Card_isFaceUp__P78692,
-    "resetTransforms": cardCore_Card_resetTransforms__P78694,
-    "detachFromContainer": cardCore_Card_detachFromContainer__P78695,
-    "flip": cardCore_Card_flip__P78696,
+    "set/isFaceUp": cardCore_Card_isFaceUp__P81772,
+    "resetTransforms": cardCore_Card_resetTransforms__P81774,
+    "detachFromContainer": cardCore_Card_detachFromContainer__P81775,
+    "flip": cardCore_Card_flip__P81776,
     "x": Sprite_x__P48110,
     "set/x": Sprite_x__P48111,
     "y": Sprite_y__P48112,
@@ -74343,7 +74371,7 @@ const cardCore_Card__C78686_VT = mkVTable({
     "__draw": sprites_BaseSprite___draw__P47856,
   },
 });
-const cardCore_CardStack__C78711_VT = mkVTable({
+const cardCore_CardStack__C81791_VT = mkVTable({
   name: "CardStack",
   numFields: 38,
   classNo: 25,
@@ -74435,18 +74463,18 @@ const cardCore_CardStack__C78711_VT = mkVTable({
     "set/isStackFaceUp": null,
     "isTopCardFaceUp": null,
     "set/isTopCardFaceUp": null,
-    "getYOffset": cardCore_CardStack_getYOffset__P78713,
-    "refreshImage": cardCore_CardStack_refreshImage__P78714,
-    "container": cardCore_CardStack_container__P78715,
-    "shuffle": cardCore_CardStack_shuffle__P78716,
-    "insertCardData": cardCore_CardStack_insertCardData__P78718,
-    "getCardCount": cardCore_CardStack_getCardCount__P78723,
-    "getCardsCopy": cardCore_CardStack_getCardsCopy__P78724,
-    "insertCard": cardCore_CardStack_insertCard__P78726,
-    "removeCardSprite": cardCore_CardStack_removeCardSprite__P78727,
-    "removeCardAt": cardCore_CardStack_removeCardAt__P78728,
-    "destroyCards": cardCore_CardStack_destroyCards__P78729,
-    "getCursorIndex": cardCore_CardStack_getCursorIndex__P78730,
+    "getYOffset": cardCore_CardStack_getYOffset__P81793,
+    "refreshImage": cardCore_CardStack_refreshImage__P81794,
+    "container": cardCore_CardStack_container__P81795,
+    "shuffle": cardCore_CardStack_shuffle__P81796,
+    "insertCardData": cardCore_CardStack_insertCardData__P81798,
+    "getCardCount": cardCore_CardStack_getCardCount__P81803,
+    "getCardsCopy": cardCore_CardStack_getCardsCopy__P81804,
+    "insertCard": cardCore_CardStack_insertCard__P81806,
+    "removeCardSprite": cardCore_CardStack_removeCardSprite__P81807,
+    "removeCardAt": cardCore_CardStack_removeCardAt__P81808,
+    "destroyCards": cardCore_CardStack_destroyCards__P81809,
+    "getCursorIndex": cardCore_CardStack_getCursorIndex__P81810,
     "x": Sprite_x__P48110,
     "set/x": Sprite_x__P48111,
     "y": Sprite_y__P48112,
@@ -75365,15 +75393,15 @@ const cardCore_CardDesign__C74105_VT = mkVTable({
     "drawCardStack": cardCore_CardDesign_drawCardStack__P74116,
   },
 });
-const cardCore_LayoutContainer__C78742_VT = mkVTable({
+const cardCore_LayoutContainer__C81822_VT = mkVTable({
   name: "LayoutContainer",
   numFields: 7,
   classNo: 52,
   lastSubtypeNo: 54,
   maxBgInstances: null,
   methods: {
-    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P78752,
-    "reposition": cardCore_LayoutContainer_reposition__P78757,
+    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P81832,
+    "reposition": cardCore_LayoutContainer_reposition__P81837,
   },
   iface: {
     "events": null,
@@ -75390,28 +75418,28 @@ const cardCore_LayoutContainer__C78742_VT = mkVTable({
     "set/cards": null,
     "isInsertFaceUp": null,
     "set/isInsertFaceUp": null,
-    "getCardCount": cardCore_LayoutContainer_getCardCount__P78744,
-    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P78745,
-    "setPosition": cardCore_LayoutContainer_setPosition__P78746,
-    "shuffle": cardCore_LayoutContainer_shuffle__P78749,
-    "insertCard": cardCore_LayoutContainer_insertCard__P78750,
-    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P78751,
-    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P78752,
-    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P78753,
-    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P78755,
-    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P78756,
-    "reposition": cardCore_LayoutContainer_reposition__P78757,
+    "getCardCount": cardCore_LayoutContainer_getCardCount__P81824,
+    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P81825,
+    "setPosition": cardCore_LayoutContainer_setPosition__P81826,
+    "shuffle": cardCore_LayoutContainer_shuffle__P81829,
+    "insertCard": cardCore_LayoutContainer_insertCard__P81830,
+    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P81831,
+    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P81832,
+    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P81833,
+    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P81835,
+    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P81836,
+    "reposition": cardCore_LayoutContainer_reposition__P81837,
   },
 });
-const cardCore_CardGrid__C78771_VT = mkVTable({
+const cardCore_CardGrid__C81851_VT = mkVTable({
   name: "CardGrid",
   numFields: 21,
   classNo: 53,
   lastSubtypeNo: 53,
   maxBgInstances: null,
   methods: {
-    "removeCardAt": cardCore_CardGrid_removeCardAt__P78781,
-    "reposition": cardCore_CardGrid_reposition__P78780,
+    "removeCardAt": cardCore_CardGrid_removeCardAt__P81861,
+    "reposition": cardCore_CardGrid_reposition__P81860,
   },
   iface: {
     "events": null,
@@ -75456,25 +75484,25 @@ const cardCore_CardGrid__C78771_VT = mkVTable({
     "set/scrollBackIndicator": null,
     "scrollForwardIndicator": null,
     "set/scrollForwardIndicator": null,
-    "isCardGrid": cardCore_CardGrid_isCardGrid__P78773,
-    "lock": cardCore_CardGrid_lock__P78777,
-    "reposition": cardCore_CardGrid_reposition__P78780,
-    "removeCardAt": cardCore_CardGrid_removeCardAt__P78781,
-    "moveCursorToIndex": cardCore_CardGrid_moveCursorToIndex__P78782,
-    "moveCursorIndexByOffset": cardCore_CardGrid_moveCursorIndexByOffset__P78783,
-    "moveCursorLeft": cardCore_CardGrid_moveCursorLeft__P78784,
-    "moveCursorRight": cardCore_CardGrid_moveCursorRight__P78785,
-    "moveCursorUp": cardCore_CardGrid_moveCursorUp__P78786,
-    "moveCursorDown": cardCore_CardGrid_moveCursorDown__P78787,
-    "getCardCount": cardCore_LayoutContainer_getCardCount__P78744,
-    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P78745,
-    "setPosition": cardCore_LayoutContainer_setPosition__P78746,
-    "shuffle": cardCore_LayoutContainer_shuffle__P78749,
-    "insertCard": cardCore_LayoutContainer_insertCard__P78750,
-    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P78751,
-    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P78753,
-    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P78755,
-    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P78756,
+    "isCardGrid": cardCore_CardGrid_isCardGrid__P81853,
+    "lock": cardCore_CardGrid_lock__P81857,
+    "reposition": cardCore_CardGrid_reposition__P81860,
+    "removeCardAt": cardCore_CardGrid_removeCardAt__P81861,
+    "moveCursorToIndex": cardCore_CardGrid_moveCursorToIndex__P81862,
+    "moveCursorIndexByOffset": cardCore_CardGrid_moveCursorIndexByOffset__P81863,
+    "moveCursorLeft": cardCore_CardGrid_moveCursorLeft__P81864,
+    "moveCursorRight": cardCore_CardGrid_moveCursorRight__P81865,
+    "moveCursorUp": cardCore_CardGrid_moveCursorUp__P81866,
+    "moveCursorDown": cardCore_CardGrid_moveCursorDown__P81867,
+    "getCardCount": cardCore_LayoutContainer_getCardCount__P81824,
+    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P81825,
+    "setPosition": cardCore_LayoutContainer_setPosition__P81826,
+    "shuffle": cardCore_LayoutContainer_shuffle__P81829,
+    "insertCard": cardCore_LayoutContainer_insertCard__P81830,
+    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P81831,
+    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P81833,
+    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P81835,
+    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P81836,
   },
 });
 const sprites_SpriteSet__C48219_VT = mkVTable({
@@ -75788,15 +75816,15 @@ const particles_ColorCount__C51328_VT = mkVTable({
     "set/count": null,
   },
 });
-const cardCore_CardSpread__C78759_VT = mkVTable({
+const cardCore_CardSpread__C81839_VT = mkVTable({
   name: "CardSpread",
   numFields: 14,
   classNo: 54,
   lastSubtypeNo: 54,
   maxBgInstances: null,
   methods: {
-    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P78752,
-    "reposition": cardCore_CardSpread_reposition__P78765,
+    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P81832,
+    "reposition": cardCore_CardSpread_reposition__P81845,
   },
   iface: {
     "events": null,
@@ -75827,22 +75855,22 @@ const cardCore_CardSpread__C78759_VT = mkVTable({
     "set/hoverY": null,
     "isWrappingSelection": null,
     "set/isWrappingSelection": null,
-    "isLeftRight": cardCore_CardSpread_isLeftRight__P78761,
-    "reposition": cardCore_CardSpread_reposition__P78765,
-    "moveCursorToIndex": cardCore_CardSpread_moveCursorToIndex__P78766,
-    "moveCursorIndexByOffset": cardCore_CardSpread_moveCursorIndexByOffset__P78767,
-    "moveCursorForward": cardCore_CardSpread_moveCursorForward__P78768,
-    "moveCursorBack": cardCore_CardSpread_moveCursorBack__P78769,
-    "getCardCount": cardCore_LayoutContainer_getCardCount__P78744,
-    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P78745,
-    "setPosition": cardCore_LayoutContainer_setPosition__P78746,
-    "shuffle": cardCore_LayoutContainer_shuffle__P78749,
-    "insertCard": cardCore_LayoutContainer_insertCard__P78750,
-    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P78751,
-    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P78752,
-    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P78753,
-    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P78755,
-    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P78756,
+    "isLeftRight": cardCore_CardSpread_isLeftRight__P81841,
+    "reposition": cardCore_CardSpread_reposition__P81845,
+    "moveCursorToIndex": cardCore_CardSpread_moveCursorToIndex__P81846,
+    "moveCursorIndexByOffset": cardCore_CardSpread_moveCursorIndexByOffset__P81847,
+    "moveCursorForward": cardCore_CardSpread_moveCursorForward__P81848,
+    "moveCursorBack": cardCore_CardSpread_moveCursorBack__P81849,
+    "getCardCount": cardCore_LayoutContainer_getCardCount__P81824,
+    "getCardsCopy": cardCore_LayoutContainer_getCardsCopy__P81825,
+    "setPosition": cardCore_LayoutContainer_setPosition__P81826,
+    "shuffle": cardCore_LayoutContainer_shuffle__P81829,
+    "insertCard": cardCore_LayoutContainer_insertCard__P81830,
+    "removeCardSprite": cardCore_LayoutContainer_removeCardSprite__P81831,
+    "removeCardAt": cardCore_LayoutContainer_removeCardAt__P81832,
+    "replaceCardWithBlankAt": cardCore_LayoutContainer_replaceCardWithBlankAt__P81833,
+    "getCursorIndex": cardCore_LayoutContainer_getCursorIndex__P81835,
+    "moveCursorIntoContainer": cardCore_LayoutContainer_moveCursorIntoContainer__P81836,
   },
 });
 const controller_ButtonHandler__C47939_VT = mkVTable({
@@ -76236,7 +76264,7 @@ const sprites_BaseSpriteSayRenderer__C48015_VT = mkVTable({
   },
 });
 
-const breakpoints = setupDebugger(1, ["CODE_LOWERCASE_A___52990","CODE_LOWERCASE_Z___52994","CODE_UPPERCASE_A___52998","CODE_UPPERCASE_Z___53002","CODE_0___53006","CODE_9___53010","FONT3_DIGITS___53070","FONT3_ALPHA___53043","FONT3_SPECIALS___53077","Card___78649","CardStack___78652","Cursor___78655","EmptyData___78683","cursor___78801","cursorTarget___78799","cursorAnchor___78791","cursorOffsetX___78793","cursorOffsetY___78795","elapsedTime___74335","fixedFrameTrackers___74333","DEFAULT_CARD_FRONT___78861","DEFAULT_ROUNDED_RECTANGLE___78864","DEFAULT_SCROLL_UP___78899","DEFAULT_SCROLL_DOWN___78902","DEFAULT_SCROLL_LEFT___78905","DEFAULT_SCROLL_RIGHT___78908","autoLayoutControl___78938","isOnTitleScreen___74558","TitleCard___74563","CardsFlipped___74583","FlippedCards___74580","DiscardPile___74579","PlayGrid___74577","CardRank___74573","CardsMatch___74571","flipAnimationDuration___78675","FLIP_SCALES___78663","CardDeck___74575","DeleteCards___74581","mostRecentCursorContainer___78797","slideTrackers___74332","COLLAPSE_SCALE___78668","EXPAND_SCALE___78673","slideAnimationDuration___78677","playingCardsDesignTemplate___56953","transitionZ___78679"])
+const breakpoints = setupDebugger(1, ["CODE_LOWERCASE_A___52990","CODE_LOWERCASE_Z___52994","CODE_UPPERCASE_A___52998","CODE_UPPERCASE_Z___53002","CODE_0___53006","CODE_9___53010","FONT3_DIGITS___53070","FONT3_ALPHA___53043","FONT3_SPECIALS___53077","Card___81729","CardStack___81732","Cursor___81735","EmptyData___81763","cursor___81881","cursorTarget___81879","cursorAnchor___81871","cursorOffsetX___81873","cursorOffsetY___81875","elapsedTime___74335","fixedFrameTrackers___74333","DEFAULT_CARD_FRONT___78861","DEFAULT_ROUNDED_RECTANGLE___78864","DEFAULT_SCROLL_UP___78899","DEFAULT_SCROLL_DOWN___78902","DEFAULT_SCROLL_LEFT___78905","DEFAULT_SCROLL_RIGHT___78908","autoLayoutControl___78938","isOnTitleScreen___74558","TitleCard___74563","CardsFlipped___74583","FlippedCards___74580","DiscardPile___74579","PlayGrid___74577","CardRank___74573","CardsMatch___74571","flipAnimationDuration___81755","FLIP_SCALES___81743","CardDeck___74575","DeleteCards___74581","mostRecentCursorContainer___81877","slideTrackers___74332","COLLAPSE_SCALE___81748","EXPAND_SCALE___81753","slideAnimationDuration___81757","playingCardsDesignTemplate___56953","transitionZ___81759"])
 
-return _main___P78644
+return _main___P81724
 })
