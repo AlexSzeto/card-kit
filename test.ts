@@ -40,27 +40,27 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function SetupPlayField () {
-    CardDeck = cardKit.createPlayingCards()
-    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Suit, "clubs")
+    CardStack = cardKit.createPlayingCards()
+    DeleteCards = cardKit.filterCardListWithCondition(CardStack, CardAttributes.Suit, "clubs")
     for (let DeleteCard of DeleteCards) {
         DeleteCard.destroy()
     }
-    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Suit, "diamonds")
+    DeleteCards = cardKit.filterCardListWithCondition(CardStack, CardAttributes.Suit, "diamonds")
     for (let DeleteCard of DeleteCards) {
         DeleteCard.destroy()
     }
-    DeleteCards = cardKit.filterCardListWithCondition(CardDeck, CardAttributes.Rank, "13")
+    DeleteCards = cardKit.filterCardListWithCondition(CardStack, CardAttributes.Rank, "13")
     for (let DeleteCard of DeleteCards) {
         DeleteCard.destroy()
     }
-    cardKit.shuffleCards(CardDeck)
-    CardDeck.setPosition(20, 60)
+    cardKit.shuffleCards(CardStack)
+    CardStack.setPosition(20, 60)
     PlayGrid = cardKit.createEmptyGrid("Card Grid", 80, 60, 6, 4)
     DiscardPile = cardKit.createEmptyPile("Discard Pile")
     cardKit.setContainerPosition(DiscardPile, 140, 60)
     cardKit.lockGridCardPositions(PlayGrid)
     for (let index = 0; index < 24; index++) {
-        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last)
+        cardKit.moveCardBetween(CardStack, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last)
         // pause(200)
     }
     info.setLife(5)
@@ -79,7 +79,7 @@ function FlippedCardsMatch () {
 }
 let CardsMatch = 0
 let CardRank = 0
-let CardDeck: cardCore.CardStack = null
+let CardStack: cardCore.CardStack = null
 let PlayGrid: cardCore.CardGrid = null
 let DiscardPile: cardCore.CardStack = null
 let FlippedCards: cardCore.Card[] = []

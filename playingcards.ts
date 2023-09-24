@@ -1,7 +1,7 @@
 namespace cardKit {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
-    //% group="Playing Cards Preset" blockSetVariable="myCardDesign"
+    //% group="Playing Cards Preset" blockSetVariable="myDesign"
     //% block="playing cards design"
     export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {
         if (!playingCardsDesignTemplate) {
@@ -57,11 +57,11 @@ namespace cardKit {
         return playingCardsDesignTemplate
     }
 
-    //% group="Playing Cards Preset" blockSetVariable="myCardContainer"
+    //% group="Playing Cards Preset" blockSetVariable="myContainer"
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardStack {
-        let deck = cardDesign.createEmptyDeck(getPlayingCardsDesign(), 'Playing Cards')
-        cardDesign.addCardVariantsToDeck(deck,
+        let deck = cardDesign.createEmptyStack(getPlayingCardsDesign(), 'Playing Cards')
+        cardDesign.addCardVariantsToStack(deck,
             [
                 cardDesign.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
                 cardDesign.createNumberAttributeVariations(0, 1, 13)

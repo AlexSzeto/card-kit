@@ -10,6 +10,12 @@ enum CardCursorAnchors {
     BottomRight
 }
 
+enum CardLayoutSpreadAlignments {
+    Start,
+    Center,
+    End
+}
+
 namespace SpriteKind {
     export const Card = SpriteKind.create()
     export const CardStack = SpriteKind.create()
@@ -544,6 +550,7 @@ namespace cardCore {
             cards: Card[],
             isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
+            private _alignment: CardLayoutSpreadAlignments,
             private _spacing: number,
             private hoverX: number,
             private hoverY: number,
@@ -562,6 +569,13 @@ namespace cardCore {
         set isLeftRight(value: boolean) {
             if (this.isSpreadingLeftRight !== value) {
                 this.isSpreadingLeftRight = value
+                this.reposition()
+            }
+        }
+
+        set alignment(value: CardLayoutSpreadAlignments) {
+            if (this._alignment !== value) {
+                this._alignment = value
                 this.reposition()
             }
         }
@@ -595,9 +609,16 @@ namespace cardCore {
             if (this.cardHeight < 0) {
                 this.cardHeight = this.cards[0].height
             }
-            if(this.isSpreadingLeftRight) {
-                const width = (this.cardWidth + this._spacing) * this.cards.length  - this._spacing
-                let x = this.x - width / 2
+            const direction = this._alignment === CardLayoutSpreadAlignments.End ? -1 : 1
+            if (this.isSpreadingLeftRight) {
+                const width = (this.cardWidth + this._spacing) * this.cards.length - this._spacing
+                let x = this.x
+                switch (this._alignment) {
+                    case CardLayoutSpreadAlignments.Center:
+                        x -= width / 2; break
+                    case CardLayoutSpreadAlignments.End:
+                        x -= width; break
+                }
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
                         card,
@@ -605,12 +626,19 @@ namespace cardCore {
                         this.y + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
-                    x += this.cardWidth + this._spacing
+                    x += (this.cardWidth + this._spacing) * direction
                     card.z = this.z + this._spacing >= 0 ? 0 : index
                 })
             } else {
                 const height = (this.cardHeight + this._spacing) * this.cards.length  - this._spacing
-                let y = this.y - height / 2
+                let y: number = this.y
+                switch (this._alignment) {
+                    case CardLayoutSpreadAlignments.Center:
+                        y -= height / 2; break
+                    case CardLayoutSpreadAlignments.End:
+                        y -= height; break
+                }
+
                 this.cards.forEach((card, index) => {
                     extraAnimations.slide(
                         card,
@@ -618,7 +646,7 @@ namespace cardCore {
                         y + this.cardHeight / 2 + (cursorTarget === card ? this.hoverY : 0),
                         slideAnimationDuration,
                         null)
-                    y += this.cardHeight + this._spacing
+                    y += (this.cardHeight + this._spacing) * direction
                     card.z = this.z + this._spacing >= 0 ? 0 : index
                 })
             }
