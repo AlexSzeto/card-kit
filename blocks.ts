@@ -710,6 +710,20 @@ namespace cardKit {
         destination.insertCard(origin.removeCardAt(start), end)
     }
 
+    //% group="Card List"
+    //% block="copy of $container $position card"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function getContainerCardAtPosition(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {        
+        return container.getCardCopyAt(getPositionIndex(container, position))
+    }
+
+    //% group="Card List"
+    //% block="copy of $container card at $index"
+    //% container.shadow="variables_get" container.defl="myCardContainer"
+    export function getContainerCardAtIndex(container: cardCore.CardContainer, index: number): cardCore.Card {
+        return container.getCardCopyAt(index)
+    }
+
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
     //% block="copy of $container card list"

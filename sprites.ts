@@ -180,6 +180,7 @@ namespace cardCore {
     export interface CardContainer {
         getId(): string
         getCardCount(): number,
+        getCardCopyAt(index: number): Card,
         getCardsCopy(): Card[],
 
         setPosition(x: number, y: number): void
@@ -188,6 +189,7 @@ namespace cardCore {
         shuffle(): void
 
         addEvent(condition: CardEventCondition, handler: CardEventHandler): void
+
         insertCard(card: Card, index: number): void
         removeCardAt(index: number): Card
         removeCardSprite(card: Card): void
@@ -292,6 +294,13 @@ namespace cardCore {
             return this.cards.length
         }
 
+        getCardCopyAt(index: number): Card {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            return this.cards[index]
+        }
+
         getCardsCopy(): Card[] {
             return this.cards.slice()
         }
@@ -391,6 +400,13 @@ namespace cardCore {
 
         getCardCount(): number {
             return this.cards.reduce((count, card) => count + (card.isEmptyCardSlot ? 0 : 1), 0)
+        }
+
+        getCardCopyAt(index: number): Card {
+            if (index == null || index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            return this.cards[index]
         }
 
         getCardsCopy(): Card[] {
