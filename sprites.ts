@@ -364,7 +364,7 @@ namespace cardCore {
                 }
                 card.isFaceUp = this.isTopCardFaceUp
                 extraAnimations.slide(
-                    card, this.x, this.y + this.getYOffset(),
+                    card, this.x, this.y + this.getYOffset(), this.z,
                     slideAnimationDuration,
                     () => {
                         this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
@@ -645,6 +645,7 @@ namespace cardCore {
                         card,
                         x + this.cardWidth / 2 + (cursorTarget === card ? this.hoverX : 0),
                         this.y + (cursorTarget === card ? this.hoverY : 0),
+                        this.z + this._spacing >= 0 ? 0 : index,
                         slideAnimationDuration,
                         null)
                     x += (this.cardWidth + this._spacing) * direction
@@ -665,6 +666,7 @@ namespace cardCore {
                         card,
                         this.x + (cursorTarget === card ? this.hoverX : 0),
                         y + this.cardHeight / 2 + (cursorTarget === card ? this.hoverY : 0),
+                        this.z + this._spacing >= 0 ? 0 : index,
                         slideAnimationDuration,
                         null)
                     y += (this.cardHeight + this._spacing) * direction
@@ -941,7 +943,7 @@ namespace cardCore {
                         }
                     } 
                 } else {
-                    extraAnimations.slide(card, x, y, slideAnimationDuration, null)
+                    extraAnimations.slide(card, x, y, this.z, slideAnimationDuration, null)
                 }
 
                 if (this.isScrollingLeftRight) {

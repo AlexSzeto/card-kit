@@ -9,6 +9,7 @@ namespace extraAnimations {
         timer: number
         x: number
         y: number
+        z: number
     }
 
     type FixedFrameTracker = AnimationTracker & {
@@ -98,6 +99,7 @@ namespace extraAnimations {
         if (jump) {
             oldTracker.sprite.setPosition(oldTracker.x, oldTracker.y)
             oldTracker.sprite.setVelocity(0, 0)
+            oldTracker.sprite.z = oldTracker.z
         }
         if (!!oldTracker.onComplete) {
             oldTracker.onComplete(oldTracker.sprite)
@@ -108,6 +110,7 @@ namespace extraAnimations {
         sprite: Sprite,
         x: number,
         y: number,
+        z: number,
         timeInMs: number,
         onComplete: (sprite: Sprite) => void
     ) {
@@ -138,6 +141,7 @@ namespace extraAnimations {
             timer: setTimeout(() => clearSlideAnimation(sprite, true), timeInMs),
             x: x,
             y: y,
+            z: z,
             onComplete: onComplete
         })
     }
