@@ -61,7 +61,7 @@ function SetupPlayField () {
     cardKit.lockGridCardPositions(PlayGrid)
     for (let index = 0; index < 24; index++) {
         cardKit.moveCardBetween(CardStack, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last)
-        // pause(200)
+        // pause(500)
     }
     info.setLife(5)
     cardKit.moveCursorInsideLayoutWithButtons(PlayGrid)

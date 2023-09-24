@@ -336,6 +336,9 @@ namespace cardCore {
             if (!this.design) {
                 this.design = card.getDesign()
                 this.setImage(this.design.createStackBaseimage())
+                this._x = Fx8(Fx.toFloat(this._x) - this.image.width / 2);
+                this._y = Fx8(Fx.toFloat(this._y) - this.image.height / 2);
+
                 this.defaultStackImage = this.image
             }
             if (resolveEvents(card, this, this.events)) {
