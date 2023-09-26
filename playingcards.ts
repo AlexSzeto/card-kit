@@ -60,7 +60,7 @@ namespace cardKit {
     //% group="Playing Cards Preset" blockSetVariable="myContainer"
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardStack {
-        let deck = cardDesign.createEmptyStack(getPlayingCardsDesign(), 'Playing Cards')
+        let deck = cardDesign.createEmptyStack(getPlayingCardsDesign(), 0)
         cardDesign.addCardVariantsToStack(deck,
             [
                 cardDesign.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),

@@ -55,8 +55,8 @@ function SetupPlayField () {
     }
     cardKit.shuffleCards(CardStack)
     CardStack.setPosition(20, 60)
-    PlayGrid = cardKit.createEmptyGrid("Card Grid", 80, 60, 6, 4)
-    DiscardPile = cardKit.createEmptyPile("Discard Pile")
+    PlayGrid = cardKit.createEmptyGrid(3, 80, 60, 6, 4)
+    DiscardPile = cardKit.createEmptyPile(1)
     cardKit.setContainerPosition(DiscardPile, 140, 60)
     cardKit.lockGridCardPositions(PlayGrid)
     for (let index = 0; index < 24; index++) {

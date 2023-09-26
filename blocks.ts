@@ -290,11 +290,11 @@ namespace cardDesign {
 
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
-    //% block="empty $design stack id $id"
+    //% block="empty $design $kind card deck"
     //% design.shadow="variables_get" design.defl="myDesign"
-    //% id.defl="Card Stack"
-    export function createEmptyStack(design: cardDesign.CardDesignTemplate, id: string): cardCore.CardStack {
-        return new cardCore.CardStack(id, design.export(), [], false, false)
+    //% kind.shadow="containerKindPicker" kind.defl=0
+    export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
+        return new cardCore.CardStack(kind, design.export(), [], false, false)
     }
 
     class CardAttributeVariation {
@@ -381,34 +381,48 @@ namespace cardDesign {
 //% color="#255f74" icon="\uf2bb" block="Card Kit"
 namespace cardKit {
 
+    //% shim=ENUM_GET
+    //% blockId="containerKindPicker"
+    //% blockHidden=true
+    //% block="Type $arg"
+    //% enumName="CardContainerKinds"
+    //% enumMemberName="type"
+    //% enumPromptHint="e.g. Draw, Discard, Hand..."
+    //% enumInitialMembers="Draw, Discard, Hand, Grid"
+    export function _containerKindEnumShim(arg: number) {
+        // This function should do nothing, but must take in a single
+        // argument of type number and return a number value.
+        return arg;
+    }    
+
     //% group="Create" blockSetVariable="myContainer"
-    //% block="empty card pile id $id"
+    //% block="empty $kind card pile"
     //% design.shadow="variables_get" design.defl="myDesign"
-    //% id.defl="Discard Pile"
+    //% kind.shadow="containerKindPicker" kind.defl=1
     export function createEmptyPile(
-        id: string,
+        kind: number,
     ): cardCore.CardStack {
-        return new cardCore.CardStack(id, null, [], true, true)
+        return new cardCore.CardStack(kind, null, [], true, true)
     }
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty card spreadid $id x $x y $y spread $spreadDirection|| from $alignment add cards face up $isFaceUp"
+    //% block="empty $kind card spread x $x y $y spread $spreadDirection|| from $alignment face up $isFaceUp"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
-    //% id.defl="Player Hand"
+    //% kind.shadow="containerKindPicker" kind.defl=2
     //% x.defl=80 y.defl=100
     //% alignment.defl=CardLayoutSpreadAlignments.Center
     //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
     //% isFaceUp.defl=true
     export function createEmptyHand(
-        id: string, x: number, y: number,
+        kind: number, x: number, y: number,
         spreadDirection: CardLayoutSpreadDirections,
         alignment: CardLayoutSpreadAlignments,
         isFaceUp: boolean = true
     ): cardCore.CardSpread {
         return new cardCore.CardSpread(
-            id, x, y, 1, [], isFaceUp,
+            kind, x, y, 1, [], isFaceUp,
             spreadDirection === CardLayoutSpreadDirections.LeftRight,
             alignment,
             1,
@@ -460,22 +474,22 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty card grid id $id x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
+    //% block="empty $kind card grid x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
-    //% id.defl="Card Grid"
+    //% kind.shadow="containerKindPicker" kind.defl=3
     //% columns.defl=6 rows.defl=4
     //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
     //% isFaceUp.defl=true
     export function createEmptyGrid(
-        id: string, x: number, y: number,
+        kind: number, x: number, y: number,
         columns: number, rows: number,
         scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
         isFaceUp: boolean = true,
     ): cardCore.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
         return new cardCore.CardGrid(
-            id, x, y, 1, [],
+            kind, x, y, 1, [],
             rows, columns,
             isScrollingLeftRight,
             isFaceUp,
@@ -593,11 +607,11 @@ namespace cardKit {
 
     //% color="#d54322"
     //% group="Cursor"
-    //% block="cursor card container id"
-    export function getCursorContainerId(): string {
+    //% block="cursor card container type"
+    export function getCursorContainerKind(): string {
         const container = cardCore.getMostRecentCursorContainer()
-        if (!!container.getId) {
-            return container.getId()
+        if (!!container.getKind) {
+            return container.getKind()
         } else {
             return ""
         }
@@ -728,7 +742,7 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="copy of $container card list"
+    //% block="copy of $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
         return container.getCardsCopy()
@@ -736,7 +750,7 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="cards in $container where $attribute is $text"
+    //% block="copy of $container cards where $attribute is $text"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
@@ -749,30 +763,25 @@ namespace cardKit {
 
     //% group="Card Events"
     //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function createContainerEvent(
-        container: cardCore.CardContainer,
-        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
-    ) {
-        container.addEvent(null, handler)
-    }
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% block="on $container $card added from $originContainer where $attribute is $text"
-    //% container.shadow="variables_get" container.defl="myContainer"
+    //% expandableArgumentMode="toggle"
+    //% block="on $card added from $source to $kind $destination|| where $attribute is $text"
+    //% kind.shadow="containerKindPicker" kind.defl=0
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
-    export function addContainerConditionEvent(
-        container: cardCore.CardContainer,
-        attribute: number,
-        text: string,
-        handler: (originContainer: cardCore.CardContainer, card: cardCore.Card) => void
+    export function createContainerEvent(
+        kind: number,
+        handler: (source: cardCore.CardContainer, destinatinon: cardCore.CardContainer, card: cardCore.Card) => void,
+        attribute: number = null,
+        text: string = null,
     ) {
-        container.addEvent({ attribute: attribute, value: text }, handler)
-    }
-    
+        cardCore.addCardEvent(
+            kind,
+            handler,
+            attribute !== null && text !== null
+                ? { attribute: attribute, value: text }
+                : null
+        )
+    }    
     
     function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
         switch (position) {
@@ -807,12 +816,12 @@ namespace cardKit {
     })
 
     //% group="Stack/Spread/Grid Operations"
-    //% block="$container id"
+    //% block="$container type"
     //% container.shadow="variables_get" container.defl="myContainer"
-    export function getContainerId(
+    export function getContainerKind(
         container: cardCore.CardContainer
-    ): string {
-        return container.getId()
+    ): number {
+        return container.getKind()
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -866,12 +875,11 @@ namespace cardKit {
     }
 
     //% group="Stack Operations" blockSetVariable="myContainer"
-    //% block="stack by removing $stack top $count cards"
+    //% block="split from $stack top $count cards"
     //% stack.shadow="variables_get" stack.defl="myContainer"
     //% count.defl=10
-    //% newId.defl="Second Stack"
-    export function splitStack(stack: cardCore.CardStack, count: number, newId: string): cardCore.CardStack {
-        return stack.split(newId, count)
+    export function splitStack(stack: cardCore.CardStack, count: number): cardCore.CardStack {
+        return stack.split(count)
     }
 
     //% group="Stack Operations"
@@ -889,14 +897,14 @@ namespace cardKit {
     }
         
     //% group="Spread/Grid Operations"
-    //% block="set spreador grid $container cursor wrapping to $isWrappingSelection"
+    //% block="set spread or grid $container cursor wrapping to $isWrappingSelection"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function setCardLayoutWrapping(container: cardCore.CardSpread | cardCore.CardGrid, isWrappingSelection: boolean) {
         container.isWrappingSelection = isWrappingSelection            
     }
 
     //% group="Spread/Grid Operations"
-    //% block="set spreador grid $container card spacing to $spacing"
+    //% block="set spread or grid $container card spacing to $spacing"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% spacing.defl=1
     export function setCardLayoutSpacing(container: cardCore.CardSpread | cardCore.CardGrid, spacing: number) {
@@ -904,7 +912,7 @@ namespace cardKit {
     }
 
     //% group="Spread/Grid Operations"
-    //% block="destroy spreador grid $container cards"
+    //% block="destroy spread or grid $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% spacing.defl=1
     export function destroyCardLayoutCards(container: cardCore.LayoutContainer) {
@@ -912,7 +920,7 @@ namespace cardKit {
     }
 
     //% group="Spread Operations"
-    //% block="set spread$spread cursor card offset $distance px $direction"
+    //% block="set spread $spread cursor card offset $distance px $direction"
     //% spread.shadow="variables_get" spread.defl="myContainer"
     //% distance.defl=10    
     export function setSpreadHover(spread: cardCore.CardSpread, direction: PointerDirections, distance: number) {
