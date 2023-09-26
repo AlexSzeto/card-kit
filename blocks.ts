@@ -764,13 +764,13 @@ namespace cardKit {
     //% group="Card Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on $card added from $source to type $kind $destinatinon|| where $attribute is $text"
+    //% block="on $card added from $source to type $kind $destination|| where $attribute is $text"
     //% kind.shadow="containerKindPicker" kind.defl=0
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
     export function createContainerEvent(
         kind: number,
-        handler: (source: cardCore.CardContainer, destinatinon: cardCore.CardContainer, card: cardCore.Card) => void,
+        handler: (source: cardCore.CardContainer, destination: cardCore.CardContainer, card: cardCore.Card) => void,
         attribute: number = null,
         text: string = null,
     ) {

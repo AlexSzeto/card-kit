@@ -179,7 +179,7 @@ namespace cardCore {
     })
 
     export type CardEventCondition = cardCore.CardAttribute
-    export type CardEventHandler = (source: CardContainer, destinatinon: CardContainer, card: Card) => void
+    export type CardEventHandler = (source: CardContainer, destination: CardContainer, card: Card) => void
     type CardEvent = {
         destinationKind: number,
         condition: CardEventCondition
