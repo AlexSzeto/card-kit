@@ -618,6 +618,12 @@ namespace cardKit {
     }
 
     //% group="Cursor"
+    //% block="point cursor at $anchor of target"
+    export function setCursorAnchor(anchor: CardCursorAnchors) {
+        cardCore.setCursorAnchor(anchor)
+    }
+    
+    //% group="Cursor"
     //% block="cursor target"
     export function getCursorTarget(): Sprite {
         return cardCore.getCursorTarget()
