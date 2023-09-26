@@ -292,7 +292,7 @@ namespace cardDesign {
     //% group="Deck Builder" blockSetVariable="myDeck"
     //% block="empty $design $kind deck"
     //% design.shadow="variables_get" design.defl="myDesign"
-    //% kind.shadow="containerKindPicker" kind.defl=0
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
         return new cardCore.CardStack(kind, design.export(), [], false, false)
     }
@@ -398,7 +398,7 @@ namespace cardKit {
     //% group="Create" blockSetVariable="myContainer"
     //% block="empty $kind pile"
     //% design.shadow="variables_get" design.defl="myDesign"
-    //% kind.shadow="containerKindPicker" kind.defl=1
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
     export function createEmptyPile(
         kind: number,
     ): cardCore.CardStack {
@@ -410,7 +410,7 @@ namespace cardKit {
     //% block="empty $kind card spread x $x y $y spread $spreadDirection|| from $alignment face up $isFaceUp"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
-    //% kind.shadow="containerKindPicker" kind.defl=2
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
     //% x.defl=80 y.defl=100
     //% alignment.defl=CardLayoutSpreadAlignments.Center
     //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
@@ -477,7 +477,7 @@ namespace cardKit {
     //% block="empty $kind card grid x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
-    //% kind.shadow="containerKindPicker" kind.defl=3
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Puzzle
     //% columns.defl=6 rows.defl=4
     //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
     //% isFaceUp.defl=true
@@ -765,7 +765,7 @@ namespace cardKit {
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
     //% block="on $card added from $source to type $kind $destination|| where $attribute is $text"
-    //% kind.shadow="containerKindPicker" kind.defl=0
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
     export function createContainerEvent(
