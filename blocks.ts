@@ -384,11 +384,11 @@ namespace cardKit {
     //% shim=ENUM_GET
     //% blockId="containerKindPicker"
     //% blockHidden=true
-    //% block="Type $arg"
+    //% block="$arg"
     //% enumName="CardContainerKinds"
     //% enumMemberName="type"
-    //% enumPromptHint="e.g. Draw, Discard, Hand..."
-    //% enumInitialMembers="Draw, Discard, Hand, Grid"
+    //% enumPromptHint="e.g. Draw, Discard, Player..."
+    //% enumInitialMembers="Draw, Discard, Player, Puzzle"
     export function _containerKindEnumShim(arg: number) {
         // This function should do nothing, but must take in a single
         // argument of type number and return a number value.
