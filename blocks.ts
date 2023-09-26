@@ -598,21 +598,24 @@ namespace cardKit {
         return card.stamp
     }
 
-    //% color="#d54322"
     //% group="Cursor"
-    //% block="cursor sprite"
-    export function getCursorSprite(): Sprite {
+    //% block="cursor"
+    export function getCursor(): Sprite {
         return cardCore.getCursorSprite()
     }
 
-    //% color="#d54322"
+    //% group="Cursor"
+    //% block="cursor target"
+    export function getCursorTarget(): Sprite {
+        return cardCore.getCursorTarget()
+    }
+
     //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
         return cardCore.getCursorCard()
     }
 
-    //% color="#d54322"
     //% group="Cursor"
     //% block="cursor card container type"
     export function getCursorContainerKind(): number {
@@ -671,7 +674,6 @@ namespace cardKit {
         }
     }
 
-    //% color="#d54322"
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
@@ -679,7 +681,6 @@ namespace cardKit {
         cardCore.pointCursorAt(sprite)
     }
 
-    //% color="#d54322"
     //% group="Cursor"
     //% block="hide cursor"
     export function removeCursor() {
