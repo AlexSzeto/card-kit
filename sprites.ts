@@ -179,22 +179,31 @@ namespace cardCore {
     })
 
     export type CardEventCondition = cardCore.CardAttribute
-    export type CardEventHandler = (origin: CardContainer, card: Card) => void
+    export type CardEventHandler = (source: CardContainer, destination: CardContainer, card: Card) => void
     type CardEvent = {
+        destinationKind: number,
         condition: CardEventCondition
         handler: CardEventHandler
     }
 
-    function resolveEvents(card: Card, target: CardContainer, events: CardEvent[]) {
-        if (card.container != null && card.container !== target) {
+    export function addCardEvent(destinationKind: number, handler: CardEventHandler, condition: CardEventCondition = null) {
+        cardEvents.push({ destinationKind: destinationKind, condition: condition, handler: handler })
+    }
+
+    const cardEvents: CardEvent[] = []
+    function resolveEvents(card: Card, destination: CardContainer): boolean {
+        if (card.container != null && card.container !== destination) {
             card.container.removeCardSprite(card)
         }
-        const origin = card.container
-        card.container = target
-        for (let event of events) {
-            if(card.getData().attributeEquals(event.condition.attribute, event.condition.value)) {
-                event.handler(origin, card)
-                if(card.container !== target || (card.flags & sprites.Flag.Destroyed)) {
+        const source = card.container
+        card.container = destination
+        for (let event of cardEvents) {
+            if (
+                event.destinationKind === destination.getKind()
+                && (!event.condition || card.getData().attributeEquals(event.condition.attribute, event.condition.value))
+            ) {
+                event.handler(source, destination, card)
+                if(card.container !== destination || (card.flags & sprites.Flag.Destroyed)) {
                     return false
                 }
             }
@@ -203,7 +212,7 @@ namespace cardCore {
     }
 
     export interface CardContainer {
-        getId(): string
+        getKind(): number
         getCardCount(): number,
         getCardCopyAt(index: number): Card,
         getCardsCopy(): Card[],
@@ -213,8 +222,6 @@ namespace cardCore {
         setDesign(design: CardDesign): void
 
         shuffle(): void
-
-        addEvent(condition: CardEventCondition, handler: CardEventHandler): void
 
         insertCard(card: Card, index: number): void
         removeCardAt(index: number): Card
@@ -226,11 +233,10 @@ namespace cardCore {
     }
 
     export class CardStack extends Sprite implements CardContainer {
-        private events: CardEvent[]
         private transitionCards: Card[]
         private defaultStackImage: Image
         constructor(
-            private containerId: string,
+            private containerKind: number,
             private design: CardDesign,
             private cards: Card[],
             private isStackFaceUp: boolean,
@@ -238,7 +244,6 @@ namespace cardCore {
         ) {
             super(!!design ? design.createStackBaseimage() : image.create(1, 1))
             this.defaultStackImage = this.image
-            this.events = []
             this.transitionCards = []
             this.refreshImage()
             activate(this, SpriteKind.CardStack)
@@ -282,10 +287,10 @@ namespace cardCore {
             this.refreshImage()
         }
 
-        split(id: string, count: number) {
+        split(count: number) {
             const cards = this.cards.slice(0, count)
             this.cards.splice(this.cards.length - count, count)
-            const stack = new CardStack(id, this.design, cards, this.isStackFaceUp, this.isTopCardFaceUp)
+            const stack = new CardStack(this.containerKind, this.design, cards, this.isStackFaceUp, this.isTopCardFaceUp)
             stack.setPosition(this.x, this.y - this.design.getStackThickness(this.getCardCount()) - 1)
             stack.setLayer(this.z)
             this.refreshImage()
@@ -318,8 +323,8 @@ namespace cardCore {
             this.z = z
         }
 
-        getId(): string {
-            return this.containerId
+        getKind(): number {
+            return this.containerKind
         }
 
         getCardCount(): number {
@@ -340,10 +345,6 @@ namespace cardCore {
             return this.cards.slice()
         }
 
-        addEvent(condition: CardAttribute, handler: CardEventHandler): void {
-            this.events.push({ condition: condition, handler: handler })
-        }
-
         insertCard(card: Card, index: number = -1): void {
             if (card == null) {
                 return
@@ -356,7 +357,7 @@ namespace cardCore {
 
                 this.defaultStackImage = this.image
             }
-            if (resolveEvents(card, this, this.events)) {
+            if (resolveEvents(card, this)) {
                 if (index < 0) {
                     this.cards.push(card)
                 } else {
@@ -420,20 +421,21 @@ namespace cardCore {
     })
 
     export class LayoutContainer implements CardContainer {
-        private events: CardEvent[]        
         constructor(
-            private id: string,
+            private kind: number,
             protected x: number,
             protected y: number,
             protected z: number,
             protected cards: Card[],
             public isInsertFaceUp: boolean,
-        ) { 
-            this.events = []
+        ) {
+            if (cards.length > 0) {
+                this.reposition()
+            }
         }
 
-        getId(): string {
-            return this.id
+        getKind(): number {
+            return this.kind
         }
 
         getCardCount(): number {
@@ -465,10 +467,6 @@ namespace cardCore {
             this.reposition()
         }
 
-        addEvent(condition: CardEventCondition, handler: CardEventHandler): void {
-            this.events.push({ condition: condition, handler: handler })
-        }
-
         shuffle(): void {
             shuffle(this.cards)
             this.reposition()
@@ -483,7 +481,7 @@ namespace cardCore {
             if (card == null) {
                 return
             }
-            if (resolveEvents(card, this, this.events)) {
+            if (resolveEvents(card, this)) {
                 card.isFaceUp = this.isInsertFaceUp
                 if (index < 0) {
                     this.cards.push(card)
@@ -564,7 +562,7 @@ namespace cardCore {
         private cardHeight: number
 
         constructor(
-            id: string,
+            kind: number,
             x: number,
             y: number,
             z: number,
@@ -577,7 +575,7 @@ namespace cardCore {
             private hoverY: number,
             public isWrappingSelection: boolean
         ) {
-            super(id, x, y, z, cards, isInsertFaceUp)
+            super(kind, x, y, z, cards, isInsertFaceUp)
             this.cardWidth = -1
             this.cardHeight = -1
             this.reposition()
@@ -728,7 +726,7 @@ namespace cardCore {
         private expandPositions: number[]
 
         constructor(
-            id: string,
+            kind: number,
             x: number,
             y: number,
             z: number,
@@ -742,7 +740,7 @@ namespace cardCore {
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
-            super(id, x, y, z, cards, isInsertFaceUp)
+            super(kind, x, y, z, cards, isInsertFaceUp)
             this.firstLine = 0
             this.scrollToLine = 0
             this.cardWidth = -1
