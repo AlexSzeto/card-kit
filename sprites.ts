@@ -1142,7 +1142,7 @@ namespace cardCore {
         const hasPreviousTarget = !!cursorTarget
         cursorTarget = target
         if (cursorTarget instanceof Card) {
-            cursorContainer = getCursorCard().container
+            (cursorTarget as Card).container
         }
         if (cursorTarget instanceof CardStack) {
             cursorContainer = cursorTarget
