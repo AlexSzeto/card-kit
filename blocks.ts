@@ -656,7 +656,6 @@ namespace cardKit {
     //% block="stop cursor controls"
     export function disableLayoutButtonControl() {         
         autoLayoutControl = false
-        cardCore.removeCursor()
     }
 
     export function moveCursorInDirection(direction: PointerDirections) {
