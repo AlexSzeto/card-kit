@@ -290,7 +290,7 @@ namespace cardDesign {
 
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
-    //% block="empty $design $kind card deck"
+    //% block="empty $design $kind deck"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=0
     export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
@@ -396,7 +396,7 @@ namespace cardKit {
     }    
 
     //% group="Create" blockSetVariable="myContainer"
-    //% block="empty $kind card pile"
+    //% block="empty $kind pile"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=1
     export function createEmptyPile(
@@ -764,7 +764,7 @@ namespace cardKit {
     //% group="Card Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on $card added from $source to $kind $destination|| where $attribute is $text"
+    //% block="on $card added from $source to type $kind $destinatinon|| where $attribute is $text"
     //% kind.shadow="containerKindPicker" kind.defl=0
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
