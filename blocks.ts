@@ -600,6 +600,13 @@ namespace cardKit {
 
     //% color="#d54322"
     //% group="Cursor"
+    //% block="cursor sprite"
+    export function getCursorSprite(): Sprite {
+        return cardCore.getCursorSprite()
+    }
+
+    //% color="#d54322"
+    //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
         return cardCore.getCursorCard()
@@ -608,12 +615,12 @@ namespace cardKit {
     //% color="#d54322"
     //% group="Cursor"
     //% block="cursor card container type"
-    export function getCursorContainerKind(): string {
+    export function getCursorContainerKind(): number {
         const container = cardCore.getMostRecentCursorContainer()
         if (!!container.getKind) {
             return container.getKind()
         } else {
-            return ""
+            return -1
         }
     }
 
