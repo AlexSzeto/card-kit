@@ -508,14 +508,14 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
-        return card.createView(design) : null
+        return card.createView(design)
     }
     
     //% group="Create" blockSetVariable="myCard"
     //% block="clone of $card"
     //% card.shadow="variables_get" card.defl="myCard"
     export function createCardClone(card: cardCore.Card): cardCore.Card {
-        return card.clone() : null
+        return card.clone()
     }
     
     //% group="Card"
