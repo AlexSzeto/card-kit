@@ -88,7 +88,7 @@ namespace extraAnimations {
         }
     }
 
-    function clearSlideAnimation(sprite: Sprite, jump: boolean = false) {
+    export function clearSlideAnimation(sprite: Sprite, jump: boolean = false) {
         const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
         if (!oldTracker) {
             return

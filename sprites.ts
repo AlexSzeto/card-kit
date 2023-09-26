@@ -1,18 +1,30 @@
 enum CardCursorAnchors {
+    //% block="top left"
     TopLeft,
+    //% block="top"
     Top,
+    //% block="top right"
     TopRight,
+    //% block="left"
     Left,
+    //% block="center"
     Center,
+    //% block="right"
     Right,
+    //% block="bottom left"
     BottomLeft,
+    //% block="bottom"
     Bottom,
+    //% block="bottom right"
     BottomRight
 }
 
 enum CardLayoutSpreadAlignments {
+    //% block="start"
     Start,
+    //% block="center"
     Center,
+    //% block="end"
     End
 }
 
@@ -101,7 +113,7 @@ namespace cardCore {
         }
 
         set isFaceUp(value: boolean) {
-            extraAnimations.clearAnimations(this, true)
+            extraAnimations.clearFixedFrameAnimation(this, true)
             if (value != this._isFaceUp) {
                 this._isFaceUp = value
                 this.refreshImage()
@@ -320,6 +332,9 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
+            if (index == -1 && this.cards.length > 0) {
+                return this.cards[this.cards.length - 1]
+            }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
@@ -337,6 +352,9 @@ namespace cardCore {
             if (!this.design) {
                 this.design = card.getDesign()
                 this.setImage(this.design.createStackBaseimage())
+                this._x = Fx8(Fx.toFloat(this._x) - this.image.width / 2);
+                this._y = Fx8(Fx.toFloat(this._y) - this.image.height / 2);
+
                 this.defaultStackImage = this.image
             }
             if (resolveEvents(card, this)) {
@@ -425,6 +443,9 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
+            if (index == -1 && this.cards.length > 0) {
+                return this.cards[this.cards.length - 1]
+            }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
