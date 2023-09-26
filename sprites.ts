@@ -1144,6 +1144,9 @@ namespace cardCore {
         if (cursorTarget instanceof Card) {
             cursorContainer = getCursorCard().container
         }
+        if (cursorTarget instanceof CardStack) {
+            cursorContainer = cursorTarget
+        }
         cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
         setCursorAnchor(cursorAnchor)
         if (!hasPreviousTarget) {
