@@ -42,6 +42,7 @@ namespace cardCore {
     let flipAnimationDuration = 300
     let slideAnimationDuration = 500
     let transitionZ = 100
+    let cursorZ = 1000
 
     function activate(sprite: Sprite, kind: number) {
         const scene = game.currentScene();
@@ -691,11 +692,11 @@ namespace cardCore {
         }
 
         moveCursorForward() {
-            this.moveCursorIndexByOffset(-1)
+            this.moveCursorIndexByOffset(1)
         }
 
         moveCursorBack() {
-            this.moveCursorIndexByOffset(1)
+            this.moveCursorIndexByOffset(-1)
         }
     }
 
@@ -1079,7 +1080,7 @@ namespace cardCore {
         . . f d 1 1 1 d f
         . . . f f f f f .
     `, SpriteKind.Cursor)
-    cursor.z = 1000
+    cursor.z = cursorZ
     cursor.setFlag(SpriteFlag.Invisible, true)
 
     game.onUpdate(() => {
@@ -1134,11 +1135,12 @@ namespace cardCore {
         const hasPreviousTarget = !!cursorTarget
         cursorTarget = target
         if (cursorTarget instanceof Card) {
-            (cursorTarget as Card).container
+            cursorContainer = (cursorTarget as Card).container
         }
         if (cursorTarget instanceof CardStack) {
             cursorContainer = cursorTarget
         }
+            
         cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
         setCursorAnchor(cursorAnchor)
         if (!hasPreviousTarget) {

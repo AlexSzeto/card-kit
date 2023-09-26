@@ -622,7 +622,7 @@ namespace cardKit {
     export function setCursorAnchor(anchor: CardCursorAnchors) {
         cardCore.setCursorAnchor(anchor)
     }
-    
+
     //% group="Cursor"
     //% block="cursor target"
     export function getCursorTarget(): Sprite {
@@ -692,7 +692,11 @@ namespace cardKit {
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
     export function pointCursorAt(sprite: Sprite) {
+        const previousContainer = cardCore.getCursorContainer()
         cardCore.pointCursorAt(sprite)
+        if (cardCore.getCursorContainer() != previousContainer) {
+            disableLayoutButtonControl()
+        }
     }
 
     //% group="Cursor"
