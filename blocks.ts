@@ -617,14 +617,9 @@ namespace cardKit {
     }
 
     //% group="Cursor"
-    //% block="cursor card container type"
-    export function getCursorContainerKind(): number {
-        const container = cardCore.getMostRecentCursorContainer()
-        if (!!container.getKind) {
-            return container.getKind()
-        } else {
-            return -1
-        }
+    //% block="cursor card container"
+    export function getCursorContainer(): cardCore.CardContainer {
+        return cardCore.getCursorContainer()
     }
 
     //% color="#d54322"
@@ -646,11 +641,11 @@ namespace cardKit {
     }
 
     export function moveCursorInDirection(direction: PointerDirections) {
-        const layer = cardCore.getMostRecentCursorContainer()
+        const layer = cardCore.getCursorContainer()
         if (!layer) {
             return
         }
-        if (!!layer.isCardSpread) {
+        if (layer instanceof cardCore.CardSpread) {
             const spread = layer as cardCore.CardSpread
             if (spread.isLeftRight) {
                 switch (direction) {
@@ -663,7 +658,7 @@ namespace cardKit {
                     case PointerDirections.Down: spread.moveCursorForward(); break
                 }
             }
-        } else if (!!layer.isCardGrid) {
+        } else if (layer instanceof cardCore.CardGrid) {
             const grid = layer as cardCore.CardGrid
             switch (direction) {
                 case PointerDirections.Up: grid.moveCursorUp(); break
@@ -824,12 +819,14 @@ namespace cardKit {
     })
 
     //% group="Stack/Spread/Grid Operations"
-    //% block="$container type"
+    //% block="$container is type $kind"
     //% container.shadow="variables_get" container.defl="myContainer"
-    export function getContainerKind(
-        container: cardCore.CardContainer
-    ): number {
-        return container.getKind()
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function isContainerOfKind(
+        container: cardCore.CardContainer,
+        kind: number
+    ): boolean {
+        return container.getKind() === kind
     }
 
     //% group="Stack/Spread/Grid Operations"

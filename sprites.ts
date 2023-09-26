@@ -490,7 +490,7 @@ namespace cardCore {
                 }
                 this.reposition()
                 card.z = transitionZ
-                if (this.cards.length === 1 && getMostRecentCursorContainer() === this) {
+                if (this.cards.length === 1 && getCursorContainer() === this) {
                     pointCursorAt(card)
                 }
             }
@@ -749,8 +749,6 @@ namespace cardCore {
 
             this.reposition()            
         }
-
-        isCardGrid(): boolean { return true }
 
         set isLeftRight(value: boolean) {
             if (this.isScrollingLeftRight !== value) {
@@ -1075,7 +1073,7 @@ namespace cardCore {
     let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
     let cursorOffsetX = 0
     let cursorOffsetY = 0
-    let mostRecentCursorContainer: any = null
+    let cursorContainer: CardContainer = null
     let cursorTarget: Sprite = null
     const cursor = sprites.create(img`
         . . . f f . . . .
@@ -1143,8 +1141,8 @@ namespace cardCore {
         }
         const hasPreviousTarget = !!cursorTarget
         cursorTarget = target
-        if (!!(cursorTarget as any).container) {
-            mostRecentCursorContainer = (cursorTarget as any).container
+        if (cursorTarget instanceof Card) {
+            cursorContainer = getCursorCard().container
         }
         cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
         setCursorAnchor(cursorAnchor)
@@ -1159,12 +1157,12 @@ namespace cardCore {
         cursor.setFlag(SpriteFlag.Invisible, true)
     }
 
-    export function getMostRecentCursorContainer(): any {
-        return mostRecentCursorContainer
+    export function getCursorContainer(): CardContainer {
+        return cursorContainer
     }
 
-    export function preselectCursorContainer(container: any) {
-        mostRecentCursorContainer = container
+    export function preselectCursorContainer(container: CardContainer) {
+        cursorContainer = container
     }
 
     export function getCursorTarget(): Sprite {
