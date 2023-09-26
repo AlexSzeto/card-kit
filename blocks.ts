@@ -508,21 +508,21 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
-        return card.createView(design)
+        return card.createView(design) : null
     }
     
     //% group="Create" blockSetVariable="myCard"
     //% block="clone of $card"
     //% card.shadow="variables_get" card.defl="myCard"
     export function createCardClone(card: cardCore.Card): cardCore.Card {
-        return card.clone()
+        return card.clone() : null
     }
     
     //% group="Card"
     //% block="$card is face up"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardFaceUp(card: cardCore.Card) {
-        return card.isFaceUp
+        return !!card ? card.isFaceUp : false
     }
 
     //% group="Card"
@@ -570,6 +570,9 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function getCardNumberAttribute(card: cardCore.Card, attribute: number) {
+        if (!!card) {
+            return 0
+        }
         const value = card.getData().getAttribute(attribute)
         if(typeof value == "number") {
             return value
@@ -583,6 +586,9 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function getCardTextAttribute(card: cardCore.Card, attribute: number) {
+        if (!!card) {
+            return ""
+        }
         const value = card.getData().getAttribute(attribute)
         if (typeof value == "string") {
             return value
@@ -595,6 +601,9 @@ namespace cardKit {
     //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardCore.Card) {
+        if (!!card) {
+            return ""
+        }
         return card.stamp
     }
 
@@ -826,7 +835,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         kind: number
     ): boolean {
-        return container.getKind() === kind
+        return !!container ? container.getKind() === kind : false
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -835,7 +844,7 @@ namespace cardKit {
     export function getContainerCardCount(
         container: cardCore.CardContainer
     ): number {
-        return container.getCardCount()
+        return !! container ? container.getCardCount() : -1
     }
 
     //% group="Stack/Spread/Grid Operations"
