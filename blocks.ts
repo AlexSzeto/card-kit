@@ -752,14 +752,14 @@ namespace cardKit {
     }
 
     //% group="Card List"
-    //% block="copy of $container $position card"
+    //% block="$container $position card"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getContainerCardAtPosition(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {        
         return container.getCardCopyAt(getPositionIndex(container, position))
     }
 
     //% group="Card List"
-    //% block="copy of $container card at $index"
+    //% block="$container card at $index"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getContainerCardAtIndex(container: cardCore.CardContainer, index: number): cardCore.Card {
         return container.getCardCopyAt(index)
@@ -767,7 +767,7 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="copy of $container cards"
+    //% block="$container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
         return container.getCardsCopy()
@@ -775,7 +775,7 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Card List" blockSetVariable="list"
-    //% block="copy of $container cards where $attribute is $text"
+    //% block="$container cards where $attribute is $text"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true

@@ -384,6 +384,9 @@ namespace cardCore {
         }
 
         removeCardAt(index: number = 0): Card {
+            if (index === -1) {
+                index = this.cards.length - 1
+            }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
@@ -500,6 +503,9 @@ namespace cardCore {
         }
 
         removeCardAt(index: number = 0): Card {
+            if (index === -1) {
+                index = this.cards.length - 1
+            }            
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
