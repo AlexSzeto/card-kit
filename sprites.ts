@@ -30,7 +30,7 @@ enum CardLayoutSpreadAlignments {
 
 namespace SpriteKind {
     export const Card = SpriteKind.create()
-    export const CardStack = SpriteKind.create()
+    export const CardContainer = SpriteKind.create()
     export const Cursor = SpriteKind.create()
 }
 
@@ -199,7 +199,7 @@ namespace cardCore {
         card.container = destination
         for (let event of cardEvents) {
             if (
-                event.destinationKind === destination.getKind()
+                event.destinationKind === destination.getContainerKind()
                 && (!event.condition || card.getData().attributeEquals(event.condition.attribute, event.condition.value))
             ) {
                 event.handler(source, destination, card)
@@ -212,13 +212,13 @@ namespace cardCore {
     }
 
     export interface CardContainer {
-        getKind(): number
+        getContainerKind(): number
         getCardCount(): number,
         getCardCopyAt(index: number): Card,
         getCardsCopy(): Card[],
 
         setPosition(x: number, y: number): void
-        setLayer(z: number): void
+        setDepth(z: number): void
         setDesign(design: CardDesign): void
 
         shuffle(): void
@@ -246,7 +246,7 @@ namespace cardCore {
             this.defaultStackImage = this.image
             this.transitionCards = []
             this.refreshImage()
-            activate(this, SpriteKind.CardStack)
+            activate(this, SpriteKind.CardContainer)
         }
 
         private getYOffset(): number {
@@ -292,7 +292,7 @@ namespace cardCore {
             this.cards.splice(this.cards.length - count, count)
             const stack = new CardStack(this.containerKind, this.design, cards, this.isStackFaceUp, this.isTopCardFaceUp)
             stack.setPosition(this.x, this.y - this.design.getStackThickness(this.getCardCount()) - 1)
-            stack.setLayer(this.z)
+            stack.setDepth(this.z)
             this.refreshImage()
             return stack
         }
@@ -319,11 +319,11 @@ namespace cardCore {
             this.refreshImage()
         }
 
-        setLayer(z: number): void {
+        setDepth(z: number): void {
             this.z = z
         }
 
-        getKind(): number {
+        getContainerKind(): number {
             return this.containerKind
         }
 
@@ -414,28 +414,27 @@ namespace cardCore {
         }
     }
 
-    sprites.onDestroyed(SpriteKind.CardStack, function (sprite: Sprite) {
+    sprites.onDestroyed(SpriteKind.CardContainer, function (sprite: Sprite) {
         if (sprite instanceof CardStack) {
             (sprite as any as CardStack).destroyCards()
         }
     })
 
-    export class LayoutContainer implements CardContainer {
+    export class LayoutContainer extends Sprite implements CardContainer {
         constructor(
-            private kind: number,
-            protected x: number,
-            protected y: number,
-            protected z: number,
+            private containerKind: number,
             protected cards: Card[],
             public isInsertFaceUp: boolean,
         ) {
+            super(image.create(1, 1))
             if (cards.length > 0) {
                 this.reposition()
             }
+            activate(this, SpriteKind.CardContainer)
         }
 
-        getKind(): number {
-            return this.kind
+        getContainerKind(): number {
+            return this.containerKind
         }
 
         getCardCount(): number {
@@ -457,12 +456,11 @@ namespace cardCore {
         }
 
         setPosition(x: number, y: number): void {
-            this.x = x
-            this.y = y
+            super.setPosition(x, y)
             this.reposition()
         }
 
-        setLayer(z: number): void {
+        setDepth(z: number): void {
             this.z = z
             this.reposition()
         }
@@ -563,9 +561,6 @@ namespace cardCore {
 
         constructor(
             kind: number,
-            x: number,
-            y: number,
-            z: number,
             cards: Card[],
             isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
@@ -575,7 +570,7 @@ namespace cardCore {
             private hoverY: number,
             public isWrappingSelection: boolean
         ) {
-            super(kind, x, y, z, cards, isInsertFaceUp)
+            super(kind, cards, isInsertFaceUp)
             this.cardWidth = -1
             this.cardHeight = -1
             this.reposition()
@@ -727,9 +722,6 @@ namespace cardCore {
 
         constructor(
             kind: number,
-            x: number,
-            y: number,
-            z: number,
             cards: Card[],
             private rows: number,
             private columns: number,
@@ -740,7 +732,7 @@ namespace cardCore {
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
-            super(kind, x, y, z, cards, isInsertFaceUp)
+            super(kind, cards, isInsertFaceUp)
             this.firstLine = 0
             this.scrollToLine = 0
             this.cardWidth = -1
