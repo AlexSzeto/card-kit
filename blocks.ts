@@ -421,14 +421,16 @@ namespace cardKit {
         alignment: CardLayoutSpreadAlignments,
         isFaceUp: boolean = true
     ): cardCore.CardSpread {
-        return new cardCore.CardSpread(
-            kind, x, y, 1, [], isFaceUp,
+        const spread = new cardCore.CardSpread(
+            kind, [], isFaceUp,
             spreadDirection === CardLayoutSpreadDirections.LeftRight,
             alignment,
             1,
             0, 0,
             false
         )
+        spread.setPosition(x, y)
+        return spread
     }
 
     const DEFAULT_SCROLL_UP = img`
@@ -488,8 +490,8 @@ namespace cardKit {
         isFaceUp: boolean = true,
     ): cardCore.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
-        return new cardCore.CardGrid(
-            kind, x, y, 1, [],
+        const grid = new cardCore.CardGrid(
+            kind, [],
             rows, columns,
             isScrollingLeftRight,
             isFaceUp,
@@ -501,6 +503,8 @@ namespace cardKit {
                 ? sprites.create(DEFAULT_SCROLL_RIGHT, SpriteKind.Cursor)
                 : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
         )
+        grid.setPosition(x, y)
+        return grid
     }
 
     //% group="Create" blockSetVariable="myCard"
@@ -835,7 +839,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         kind: number
     ): boolean {
-        return !!container ? container.getKind() === kind : false
+        return !!container ? container.getContainerKind() === kind : false
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -867,7 +871,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         layer: number
     ) {
-        container.setLayer(layer)
+        container.setDepth(layer)
     }
 
     //% group="Stack/Spread/Grid Operations"
