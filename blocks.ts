@@ -812,7 +812,7 @@ namespace cardKit {
         switch (position) {
             case CardContainerPositions.First: return 0
             case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
-            case CardContainerPositions.Last: return -1
+            case CardContainerPositions.Last: return cardCore.LAST_CARD_INDEX
             case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
             case CardContainerPositions.Cursor: return container.getCursorIndex()
         }

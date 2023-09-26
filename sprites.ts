@@ -38,6 +38,7 @@ namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
     const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
     const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
+    export const LAST_CARD_INDEX = -2
 
     let flipAnimationDuration = 300
     let slideAnimationDuration = 500
@@ -333,7 +334,7 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
-            if (index == -1 && this.cards.length > 0) {
+            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
                 return this.cards[this.cards.length - 1]
             }
             if (index == null || index < 0 || index > this.cards.length - 1) {
@@ -346,7 +347,7 @@ namespace cardCore {
             return this.cards.slice()
         }
 
-        insertCard(card: Card, index: number = -1): void {
+        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
             if (card == null) {
                 return
             }
@@ -359,7 +360,7 @@ namespace cardCore {
                 this.defaultStackImage = this.image
             }
             if (resolveEvents(card, this)) {
-                if (index < 0) {
+                if (index === LAST_CARD_INDEX) {
                     this.cards.push(card)
                 } else {
                     this.cards.insertAt(index, card)
@@ -384,7 +385,7 @@ namespace cardCore {
         }
 
         removeCardAt(index: number = 0): Card {
-            if (index === -1) {
+            if (index === LAST_CARD_INDEX) {
                 index = this.cards.length - 1
             }
             if (index == null || index < 0 || index > this.cards.length - 1) {
@@ -446,7 +447,7 @@ namespace cardCore {
         }
 
         getCardCopyAt(index: number): Card {
-            if (index == -1 && this.cards.length > 0) {
+            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
                 return this.cards[this.cards.length - 1]
             }
             if (index == null || index < 0 || index > this.cards.length - 1) {
@@ -485,7 +486,7 @@ namespace cardCore {
             }
             if (resolveEvents(card, this)) {
                 card.isFaceUp = this.isInsertFaceUp
-                if (index < 0) {
+                if (index === LAST_CARD_INDEX) {
                     this.cards.push(card)
                 } else {
                     this.cards.insertAt(index, card)
@@ -503,7 +504,7 @@ namespace cardCore {
         }
 
         removeCardAt(index: number = 0): Card {
-            if (index === -1) {
+            if (index === LAST_CARD_INDEX) {
                 index = this.cards.length - 1
             }            
             if (index == null || index < 0 || index > this.cards.length - 1) {
