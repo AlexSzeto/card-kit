@@ -103,6 +103,7 @@ namespace cardCore {
         attribute?: number
         text?: string
         color?: number
+        colorAttribute?: number
         width?: number
         height?: number
         isDynamic?: boolean
@@ -268,11 +269,26 @@ namespace cardCore {
                 let drawZone: DrawZone
                 let rowHeight: number = 0
                 let attribute: CardAttributeValues
+                let color: number = 0
                 row.forEach(zone => {
                     drawZone = null
+
+                    color = zone.color
+                    if (zone.colorAttribute != null) {
+                        const lookupColor = card.getAttribute(zone.colorAttribute)
+                        if (typeof lookupColor === 'number') {
+                            color = lookupColor
+                        } else {
+                            const lookupTextColor = parseInt(lookupColor)
+                            if (!isNaN(lookupTextColor)) {
+                                color = lookupTextColor
+                            }
+                        }
+                    }
+                        
                     switch (zone.zoneType) {
                         case ZoneTypes.Text:
-                            drawZone = createTextDrawZone(zone.text, zone.color, zone.height, zone.width, zone.isDynamic)
+                            drawZone = createTextDrawZone(zone.text, color, zone.height, zone.width, zone.isDynamic)
                             break
                         case ZoneTypes.Image:
                             drawZone = createImageDrawZone(zone.image, 1)
@@ -283,9 +299,9 @@ namespace cardCore {
                         case ZoneTypes.AttributeText:
                             attribute = card.getAttribute(zone.attribute)
                             if (typeof attribute === 'number') {
-                                drawZone = createTextDrawZone(attribute.toString(), zone.color, zone.height, zone.width, zone.isDynamic)
+                                drawZone = createTextDrawZone(attribute.toString(), color, zone.height, zone.width, zone.isDynamic)
                             } else if (attribute != null) {
-                                drawZone = createTextDrawZone(attribute, zone.color, zone.height, zone.width, zone.isDynamic)
+                                drawZone = createTextDrawZone(attribute, color, zone.height, zone.width, zone.isDynamic)
                             }
                             break
                         case ZoneTypes.RepeatImage:
@@ -300,7 +316,7 @@ namespace cardCore {
                             const lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
                             if (!!lookupValue) {
                                 if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.LookupAttributeAsText) {
-                                    drawZone = createTextDrawZone(lookupValue.drawable, zone.color, zone.height, zone.width, zone.isDynamic)
+                                    drawZone = createTextDrawZone(lookupValue.drawable, color, zone.height, zone.width, zone.isDynamic)
                                 } else if (zone.zoneType === ZoneTypes.LookupAttributeAsImage) {
                                     drawZone = createImageDrawZone(lookupValue.drawable as Image, 1)
                                 }
@@ -385,6 +401,7 @@ namespace cardCore {
             align: align,
             text: text,
             color: color,
+            colorAttribute: -1,
             width: columns,
             height: rows,
             isDynamic: isDynamic,
@@ -396,6 +413,7 @@ namespace cardCore {
             align: align,
             attribute: attribute,
             color: color,
+            colorAttribute: -1,
             width: columns,
             height: rows,
             isDynamic: isDynamic,
@@ -407,6 +425,7 @@ namespace cardCore {
             align: align,
             attribute: attribute,
             color: color,
+            colorAttribute: -1,
             width: columns,
             height: rows,
             isDynamic: isDynamic,
@@ -435,5 +454,8 @@ namespace cardCore {
             attribute: attribute,
             lookupTable: lookupTable
         }
+    }
+    export function modifyTextColumnWithAttributeColorLookup(column: DesignColumn, colorAttribute: number): void {
+        column.colorAttribute = colorAttribute
     }
 }

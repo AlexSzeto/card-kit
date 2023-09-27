@@ -15,6 +15,7 @@ namespace cardKit {
             . 2 2 2 2 .
             `
             cardDesign.addAttributeIndexText(design, CardZoneAlignments.Center, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
+            cardDesign.modifyColumnWithAttributeTextColor(design, 2)
             cardDesign.addEmptySpace(design, CardZoneAlignments.Center, 2, 0)
             cardDesign.editNextRow(design)
             cardDesign.addAttributeTextToImage(design, CardZoneAlignments.Center, 1, [
@@ -63,7 +64,29 @@ namespace cardKit {
         let deck = cardDesign.createEmptyStack(getPlayingCardsDesign(), 0)
         cardDesign.addCardVariantsToStack(deck,
             [
-                cardDesign.createTextAttributeVariations(1, ['spades', 'diamonds', 'clubs', 'hearts']),
+                cardDesign.createNumberAttributeVariations(2, 15, 15),
+                cardDesign.createTextAttributeVariations(1, ['spades']),
+                cardDesign.createNumberAttributeVariations(0, 1, 13)
+            ]
+        )
+        cardDesign.addCardVariantsToStack(deck,
+            [
+                cardDesign.createNumberAttributeVariations(2, 2, 2),
+                cardDesign.createTextAttributeVariations(1, ['diamonds']),
+                cardDesign.createNumberAttributeVariations(0, 1, 13)
+            ]
+        )
+        cardDesign.addCardVariantsToStack(deck,
+            [
+                cardDesign.createNumberAttributeVariations(2, 15, 15),
+                cardDesign.createTextAttributeVariations(1, ['clubs']),
+                cardDesign.createNumberAttributeVariations(0, 1, 13)
+            ]
+        )
+        cardDesign.addCardVariantsToStack(deck,
+            [
+                cardDesign.createNumberAttributeVariations(2, 2, 2),
+                cardDesign.createTextAttributeVariations(1, ['hearts']),
                 cardDesign.createNumberAttributeVariations(0, 1, 13)
             ]
         )

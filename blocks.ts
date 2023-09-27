@@ -178,6 +178,11 @@ namespace cardDesign {
         design.rows[design.rows.length - 1].push(column)
     }
 
+    function getMostRecentColumn(design: CardDesignTemplate): cardCore.DesignColumn {
+        const row = design.rows[design.rows.length - 1]
+        return row.length > 0 ? row[row.length - 1] : null
+    }
+
     //% group="Add Text"
     //% weight=100
     //% inlineInputMode=inline
@@ -213,6 +218,18 @@ namespace cardDesign {
     //% isFixedSize.defl=false
     export function addAttributeIndexText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
         addDesignColumn(design, cardCore.createAttributeAsLookupTextColumn(align, attribute, cardCore.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
+    }
+
+    //% group="Add Text"
+    //% weight=97
+    //% block="modify current text column in $design set text color index to $attribute value"
+    //% design.shadow="variables_get" design.defl="myDesign"
+    //% attribute.shadow="attributePicker"
+    export function modifyColumnWithAttributeTextColor(design: CardDesignTemplate, attribute: number) {
+        const column = getMostRecentColumn(design)
+        if (!!column) {
+            cardCore.modifyTextColumnWithAttributeColorLookup(column, attribute)
+        }
     }
 
     //% group="Add Image"
@@ -281,7 +298,7 @@ namespace cardDesign {
     //% enumName="CardAttributes"
     //% enumMemberName="attribute"
     //% enumPromptHint="e.g. Name, Cost, Power..."
-    //% enumInitialMembers="Rank, Suit"
+    //% enumInitialMembers="Rank, Suit, SuitColor"
     export function _cardAttributeEnumShim(arg: number) {
         // This function should do nothing, but must take in a single
         // argument of type number and return a number value.
