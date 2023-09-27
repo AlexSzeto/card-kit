@@ -424,14 +424,13 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card spread x $x y $y spread $spreadDirection|| from $alignment face up $isFaceUp"
+    //% block="empty $kind card spread x $x y $y spread $spreadDirection|| from $alignment"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
     //% x.defl=80 y.defl=100
     //% alignment.defl=CardLayoutSpreadAlignments.Center
     //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
-    //% isFaceUp.defl=true
     export function createEmptyHand(
         kind: number, x: number, y: number,
         spreadDirection: CardLayoutSpreadDirections,
@@ -439,7 +438,7 @@ namespace cardKit {
         isFaceUp: boolean = true
     ): cardCore.CardSpread {
         const spread = new cardCore.CardSpread(
-            kind, [], isFaceUp,
+            kind, [],
             spreadDirection === CardLayoutSpreadDirections.LeftRight,
             alignment,
             1,
@@ -493,25 +492,22 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card grid x $x y $y columns $columns rows $rows|| add cards face up $isFaceUp scroll $scrollDirection"
+    //% block="empty $kind card grid x $x y $y columns $columns rows $rows|| scroll $scrollDirection"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Puzzle
     //% columns.defl=6 rows.defl=4
     //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
-    //% isFaceUp.defl=true
     export function createEmptyGrid(
         kind: number, x: number, y: number,
         columns: number, rows: number,
         scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
-        isFaceUp: boolean = true,
     ): cardCore.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
         const grid = new cardCore.CardGrid(
             kind, [],
             rows, columns,
             isScrollingLeftRight,
-            isFaceUp,
             1, false,
             isScrollingLeftRight 
                 ? sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor) 
@@ -635,9 +631,10 @@ namespace cardKit {
     }
 
     //% group="Cursor"
-    //% block="point cursor at $anchor of target"
-    export function setCursorAnchor(anchor: CardCursorAnchors) {
-        cardCore.setCursorAnchor(anchor)
+    //% block="point cursor at $anchor of target|| offset x $x y $y"
+    //% x.defl=0 y.defl=0
+    export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
+        cardCore.setCursorAnchor(anchor, x, y)
     }
 
     //% group="Cursor"
@@ -735,27 +732,28 @@ namespace cardKit {
     }
 
     //% group="Move Card"
-    //% block="add $card to $container at $position position"
+    //% block="add $card to $container at $position position $facing"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% card.shadow="variables_get" card.defl="myCard"
-    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions) {
+    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFacingModifiers) {
         const index = getPositionIndex(container, position)
         if (index == null) {
             return
         }
-        container.insertCard(card, getPositionIndex(container, position))
+        container.insertCard(card, getPositionIndex(container, position), facing)
     }
 
     //% group="Move Card"
     //% inlineInputMode=inline
-    //% block="move $startPosition card from $origin to $destination $endPosition position"
+    //% block="move $startPosition card from $origin to $destination $endPosition position $facing"
     //% origin.shadow="variables_get" origin.defl="myContainer"
     //% destination.shadow="variables_get" destination.defl="myContainer"    
     export function moveCardBetween(
         origin: cardCore.CardContainer,
         startPosition: CardContainerPositions,
         destination: cardCore.CardContainer,
-        endPosition: CardContainerPositions
+        endPosition: CardContainerPositions,
+        facing: CardFacingModifiers
     ) {
         const start = getPositionIndex(origin, startPosition)
         if (start == null) {
@@ -765,7 +763,7 @@ namespace cardKit {
         if (end == null) {
             return
         }
-        destination.insertCard(origin.removeCardAt(start), end)
+        destination.insertCard(origin.removeCardAt(start), end, facing)
     }
 
     //% group="Card List"

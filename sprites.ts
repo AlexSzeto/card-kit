@@ -28,10 +28,13 @@ enum CardLayoutSpreadAlignments {
     End
 }
 
-namespace SpriteKind {
-    export const Card = SpriteKind.create()
-    export const CardContainer = SpriteKind.create()
-    export const Cursor = SpriteKind.create()
+enum CardFacingModifiers {
+    //% block="face unchanged"
+    Unchanged,
+    //% block="face up"
+    FaceUp,
+    //% block="face down"
+    FaceDown,
 }
 
 namespace cardCore {
@@ -225,7 +228,7 @@ namespace cardCore {
 
         shuffle(): void
 
-        insertCard(card: Card, index: number): void
+        insertCard(card: Card, index: number, facing: CardFacingModifiers): void
         removeCardAt(index: number): Card
         removeCardSprite(card: Card): void
         destroyCards(): void
@@ -429,7 +432,6 @@ namespace cardCore {
         constructor(
             private containerKind: number,
             protected cards: Card[],
-            public isInsertFaceUp: boolean,
         ) {
             super(image.create(1, 1))
             if (cards.length > 0) {
@@ -480,12 +482,14 @@ namespace cardCore {
             this.reposition()
         }
 
-        insertCard(card: Card, index: number = -1): void {
+        insertCard(card: Card, index: number = -1, facing: CardFacingModifiers = CardFacingModifiers.Unchanged): void {
             if (card == null) {
                 return
             }
             if (resolveEvents(card, this)) {
-                card.isFaceUp = this.isInsertFaceUp
+                if (facing != CardFacingModifiers.Unchanged) {
+                    card.isFaceUp = facing === CardFacingModifiers.FaceUp
+                }
                 if (index === LAST_CARD_INDEX) {
                     this.cards.push(card)
                 } else {
@@ -570,7 +574,6 @@ namespace cardCore {
         constructor(
             kind: number,
             cards: Card[],
-            isInsertFaceUp: boolean,
             private isSpreadingLeftRight: boolean,
             private _alignment: CardLayoutSpreadAlignments,
             private _spacing: number,
@@ -578,7 +581,7 @@ namespace cardCore {
             private hoverY: number,
             public isWrappingSelection: boolean
         ) {
-            super(kind, cards, isInsertFaceUp)
+            super(kind, cards)
             this.cardWidth = -1
             this.cardHeight = -1
             this.reposition()
@@ -734,13 +737,12 @@ namespace cardCore {
             private rows: number,
             private columns: number,
             private isScrollingLeftRight: boolean,
-            isInsertFaceUp: boolean,
             private _spacing: number,
             public isWrappingSelection: boolean,
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
-            super(kind, cards, isInsertFaceUp)
+            super(kind, cards)
             this.firstLine = 0
             this.scrollToLine = 0
             this.cardWidth = -1
@@ -1071,6 +1073,8 @@ namespace cardCore {
     }
 
     let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
+    let cursorExtraOffsetX = 0
+    let cursorExtraOffsetY = 0
     let cursorOffsetX = 0
     let cursorOffsetY = 0
     let cursorContainer: CardContainer = null
@@ -1093,7 +1097,7 @@ namespace cardCore {
     game.onUpdate(() => {
         if (!!cursor) {
             if (!!cursorTarget) {
-                setCursorAnchor(cursorAnchor)
+                updateCursorOffset()
                 cursor.x = Math.round((cursorTarget.x + cursor.x + cursorOffsetX) / 2)
                 cursor.y = Math.round((cursorTarget.y + cursor.y + cursorOffsetY) / 2)
             }
@@ -1104,8 +1108,13 @@ namespace cardCore {
         return cursor
     }
     
-    export function setCursorAnchor(anchor: CardCursorAnchors) {
+    export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
         cursorAnchor = anchor
+        cursorExtraOffsetX = x
+        cursorExtraOffsetY = y
+    }
+
+    export function updateCursorOffset() {
         if (!cursorTarget) {
             return
         }
@@ -1120,7 +1129,9 @@ namespace cardCore {
             case CardCursorAnchors.BottomRight:
                 cursorOffsetX = cursorTarget.height / 2
                 break
-        }
+            case CardCursorAnchors.Center:
+                cursorOffsetX = 0
+            }
         switch (cursorAnchor) {
             case CardCursorAnchors.Top:
             case CardCursorAnchors.TopLeft:
@@ -1131,7 +1142,12 @@ namespace cardCore {
             case CardCursorAnchors.BottomLeft:
             case CardCursorAnchors.BottomRight:
                 cursorOffsetY = cursorTarget.height / 2
-        }        
+                break
+            case CardCursorAnchors.Center:
+                cursorOffsetY = 0
+        }
+        cursorOffsetX += cursorExtraOffsetX
+        cursorOffsetY += cursorExtraOffsetY
     }
 
     export function pointCursorAt(target: Sprite) {
@@ -1149,7 +1165,7 @@ namespace cardCore {
         }
             
         cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
-        setCursorAnchor(cursorAnchor)
+        updateCursorOffset()
         if (!hasPreviousTarget) {
             cursor.x = cursorTarget.x + cursorOffsetX
             cursor.y = cursorTarget.y + cursorOffsetY
