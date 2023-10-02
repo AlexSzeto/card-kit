@@ -307,11 +307,14 @@ namespace cardDesign {
 
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
-    //% block="empty $design $kind deck"
+    //% inlineInputMode=inline
+    //% block="empty $design $kind deck x $x y $y"
+    //% x.shadow="positionPicker" x.defl=80
+    //% y.shadow="positionPicker" y.defl=60
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
-        return new cardCore.CardStack(kind, design.export(), [], false, false)
+    export function createEmptyStack(x: number, y: number, design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
+        return new cardCore.CardStack(x, y, 1, kind, design.export(), [], false, false)
     }
 
     class CardAttributeVariation {
@@ -413,13 +416,18 @@ namespace cardKit {
     }    
 
     //% group="Create" blockSetVariable="myContainer"
-    //% block="empty $kind pile"
+    //% inlineInputMode=inline
+    //% block="empty $kind pile x $x y $y"
+    //% x.shadow="positionPicker" x.defl=80
+    //% y.shadow="positionPicker" y.defl=60
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
     export function createEmptyPile(
+        x: number,
+        y: number,
         kind: number,
     ): cardCore.CardStack {
-        return new cardCore.CardStack(kind, null, [], true, true)
+        return new cardCore.CardStack(x, y, 1, kind, null, [], true, true)
     }
 
     //% group="Create" blockSetVariable="myContainer"

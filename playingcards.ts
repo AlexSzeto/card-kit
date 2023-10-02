@@ -61,7 +61,10 @@ namespace cardKit {
     //% group="Playing Cards Preset" blockSetVariable="myContainer"
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardStack {
-        let deck = cardDesign.createEmptyStack(getPlayingCardsDesign(), 0)
+        let deck = cardDesign.createEmptyStack(
+            scene.screenWidth() / 2,
+            scene.screenHeight() / 2,
+            getPlayingCardsDesign(), 0)
         cardDesign.addCardVariantsToStack(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 15, 15),

@@ -237,35 +237,45 @@ namespace cardCore {
         moveCursorIntoContainer(): void
     }
 
-    export class CardStack extends Sprite implements CardContainer {
+    export class CardStack implements CardContainer {
+        private isCustomSprite: boolean
+        private stackSprite: Sprite
         private transitionCards: Card[]
-        private defaultStackImage: Image
+
         constructor(
+            public x: number,
+            public y: number,
+            z: number,
             private containerKind: number,
             private design: CardDesign,
             private cards: Card[],
             private isStackFaceUp: boolean,
             private isTopCardFaceUp: boolean,
         ) {
-            super(!!design ? design.createStackBaseimage() : image.create(1, 1))
-            this.defaultStackImage = this.image
             this.transitionCards = []
-            this.refreshImage()
-            activate(this, SpriteKind.CardContainer)
+            this.isCustomSprite = false
+            if (!!design) {
+                this.stackSprite = sprites.create(design.createStackBaseimage(), SpriteKind.CardContainer)
+                this.refreshImage()
+            } else {
+                this.stackSprite = sprites.create(image.create(1, 1), SpriteKind.CardContainer)
+            }
+            this.setPosition(x, y)
+            this.setDepth(z)
         }
 
         private getYOffset(): number {
-            return (this.image === this.defaultStackImage ? this.design.getStackTopYOffset(this.cards.length) : 0)
+            return (this.isCustomSprite ? this.design.getStackTopYOffset(this.cards.length) : 0)
         }
 
         public refreshImage() {
-            if (this.image !== this.defaultStackImage || this.design === null) {
+            if (this.isCustomSprite || this.design === null) {
                 return
             }            
-            this.image.fill(0)
+            this.stackSprite.image.fill(0)
             const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
             if (this.cards.length - this.transitionCards.length > 0) {
-                this.design.drawCardStack(this.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
+                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
             }
             this.cards.forEach(card => {
                 if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
@@ -279,11 +289,14 @@ namespace cardCore {
             return this
         }
 
-        shuffle(): void {
-            shuffle(this.cards)
-            if (this.isTopCardFaceUp) {
-                this.refreshImage()
-            }
+        setPosition(x: number, y: number): void {
+            this.x = x
+            this.y = y
+            this.stackSprite.setPosition(x, y)
+        }
+
+        setDepth(z: number): void {
+            this.stackSprite.z = z
         }
 
         setDesign(design: CardDesign): void {
@@ -292,12 +305,26 @@ namespace cardCore {
             this.refreshImage()
         }
 
+        shuffle(): void {
+            shuffle(this.cards)
+            if (this.isTopCardFaceUp) {
+                this.refreshImage()
+            }
+        }
+
         split(count: number) {
             const cards = this.cards.slice(0, count)
             this.cards.splice(this.cards.length - count, count)
-            const stack = new CardStack(this.containerKind, this.design, cards, this.isStackFaceUp, this.isTopCardFaceUp)
-            stack.setPosition(this.x, this.y - this.design.getStackThickness(this.getCardCount()) - 1)
-            stack.setDepth(this.z)
+            const stack = new CardStack(
+                this.x,
+                this.y - this.design.getStackThickness(this.getCardCount()) - 1,
+                this.stackSprite.z,
+                this.containerKind,
+                this.design,
+                cards,
+                this.isStackFaceUp,
+                this.isTopCardFaceUp
+            )
             this.refreshImage()
             return stack
         }
@@ -322,10 +349,6 @@ namespace cardCore {
         flipTopCard(): void {
             this.isTopCardFaceUp = !this.isTopCardFaceUp
             this.refreshImage()
-        }
-
-        setDepth(z: number): void {
-            this.z = z
         }
 
         getContainerKind(): number {
@@ -356,11 +379,9 @@ namespace cardCore {
             }
             if (!this.design) {
                 this.design = card.getDesign()
-                this.setImage(this.design.createStackBaseimage())
-                this._x = Fx8(Fx.toFloat(this._x) - this.image.width / 2);
-                this._y = Fx8(Fx.toFloat(this._y) - this.image.height / 2);
-
-                this.defaultStackImage = this.image
+                this.stackSprite.setImage(this.design.createStackBaseimage())
+                this.stackSprite._x = Fx8(Fx.toFloat(this.stackSprite._x) - this.stackSprite.image.width / 2);
+                this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
             }
             if (resolveEvents(card, this)) {
                 if (index === LAST_CARD_INDEX) {
@@ -370,7 +391,7 @@ namespace cardCore {
                 }
                 card.isFaceUp = this.isTopCardFaceUp
                 extraAnimations.slide(
-                    card, this.x, this.y + this.getYOffset(), this.z,
+                    card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
                     slideAnimationDuration,
                     () => {
                         this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
@@ -414,11 +435,11 @@ namespace cardCore {
         }
 
         getCursorIndex(): number {
-            return (getCursorSprite() === this) ? 0 : null
+            return (getCursorSprite() === this.stackSprite) ? 0 : null
         }
 
         moveCursorIntoContainer(): void {
-            pointCursorAt(this)
+            pointCursorAt(this.stackSprite)
         }
     }
 
