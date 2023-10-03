@@ -56,6 +56,10 @@ namespace cardCore {
             })
             return clone
         }
+
+        toString(): string {
+            return this._attributes.map(attribute => `${attribute.attribute}:${attribute.value}`).join(',')
+        }
     }
 
     enum ZoneTypes {

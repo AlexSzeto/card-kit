@@ -1,3 +1,9 @@
+namespace SpriteKind {
+    export const Card = SpriteKind.create()
+    export const CardContainer = SpriteKind.create()
+    export const Cursor = SpriteKind.create()
+}
+
 enum CardCursorAnchors {
     //% block="top left"
     TopLeft,
@@ -69,24 +75,23 @@ namespace cardCore {
     const EmptyData = new CardData([])
     
     export class Card extends Sprite {
-        container: CardContainer
         stamp: string
         private _isFaceUp: boolean
 
         constructor(
             private design: CardDesign,
-            private card: CardData,
+            public data: CardData,
+            public container: CardContainer,
             isFaceUp: boolean
         ) {
             super(design.createCardBaseImage())
-            this.container = null
             this._isFaceUp = isFaceUp
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
 
         get isEmptyCardSlot(): boolean {
-            return this.card === EmptyData
+            return this.data === EmptyData
         }
 
         refreshImage() {
@@ -95,7 +100,7 @@ namespace cardCore {
             }
             this.image.fill(0)
             if(this._isFaceUp) {
-                this.design.drawCardFront(this.image, 0, 0, this.card)
+                this.design.drawCardFront(this.image, 0, 0, this.data)
                 this.design.drawStamp(this.image, this.stamp)
             } else {
                 this.design.drawCardBack(this.image, 0, 0)
@@ -111,10 +116,6 @@ namespace cardCore {
                 this.design = design
                 this.refreshImage()
             }
-        }
-
-        getData(): CardData {
-            return this.card
         }
 
         set isFaceUp(value: boolean) {
@@ -164,13 +165,13 @@ namespace cardCore {
         }
 
         clone(): Card {
-            const card = new Card(this.design, this.card.clone(), this._isFaceUp)
+            const card = new Card(this.design, this.data.clone(), null, this._isFaceUp)
             card.setPosition(this.x, this.y)
             return card
         }
 
         createView(newDesign: CardDesign): Card {
-            const card = new Card(newDesign, this.card, this._isFaceUp)
+            const card = new Card(newDesign, this.data, null, this._isFaceUp)
             card.setPosition(this.x, this.y)
             return card
         }
@@ -205,7 +206,7 @@ namespace cardCore {
         for (let event of cardEvents) {
             if (
                 event.destinationKind === destination.getContainerKind()
-                && (!event.condition || card.getData().attributeEquals(event.condition.attribute, event.condition.value))
+                && (!event.condition || card.data.attributeEquals(event.condition.attribute, event.condition.value))
             ) {
                 event.handler(source, destination, card)
                 if(card.container !== destination || (card.flags & sprites.Flag.Destroyed)) {
@@ -396,7 +397,7 @@ namespace cardCore {
             this.stackSprite.image.fill(0)
             const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
             if (this.cards.length - this.transitionCards.length > 0) {
-                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
+                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.data, this.isStackFaceUp, this.isTopCardFaceUp)                
             }
             this.cards.forEach(card => {
                 if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
@@ -425,9 +426,8 @@ namespace cardCore {
 
         insertCardData(data: CardData[]) {
             if (!!this.design) {
-                this.cards = data.map(cardData => {
-                    const card = new Card(this.design, cardData, this.isStackFaceUp)
-                    card.container = this
+                this.cards = data.map(cardData => {                    
+                    const card = new Card(this.design, cardData, this, this.isStackFaceUp)
                     return card
                 }).concat(this.cards)
                 this.refreshImage()
@@ -564,7 +564,7 @@ namespace cardCore {
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
-            const blank = new Card(this.cards[index].getDesign(), EmptyData, true)
+            const blank = new Card(this.cards[index].getDesign(), EmptyData, this, true)
             const card = this.cards[index]
             blank.setPosition(card.x, card.y)
             this.cards.splice(index, 1)

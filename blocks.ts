@@ -557,7 +557,7 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardNumberAttribute(card: cardCore.Card, attribute: number, value: number) {
-        card.getData().setAttribute(attribute, value)
+        card.data.setAttribute(attribute, value)
         card.refreshImage()
     }
 
@@ -566,7 +566,7 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardTextAttribute(card: cardCore.Card, attribute: number, text: string) {
-        card.getData().setAttribute(attribute, text)
+        card.data.setAttribute(attribute, text)
         card.refreshImage()
     }
 
@@ -583,10 +583,10 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function getCardNumberAttribute(card: cardCore.Card, attribute: number) {
-        if (!!card) {
+        if (!card) {
             return 0
         }
-        const value = card.getData().getAttribute(attribute)
+        const value = card.data.getAttribute(attribute)
         if(typeof value == "number") {
             return value
         } else {
@@ -599,10 +599,10 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function getCardTextAttribute(card: cardCore.Card, attribute: number) {
-        if (!!card) {
+        if (!card) {
             return ""
         }
-        const value = card.getData().getAttribute(attribute)
+        const value = card.data.getAttribute(attribute)
         if (typeof value == "string") {
             return value
         } else {
@@ -614,7 +614,7 @@ namespace cardKit {
     //% block="$card stamp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function getCardStampText(card: cardCore.Card) {
-        if (!!card) {
+        if (!card) {
             return ""
         }
         return card.stamp
@@ -792,7 +792,7 @@ namespace cardKit {
     //% text.shadowOptions.toString=true
     export function filterCardListWithCondition(container: cardCore.CardContainer, attribute: number, text: string): cardCore.Card[] {
         return container.getCardsCopy().filter(card => {
-            const data = card.getData()
+            const data = card.data
             return !!data && data.attributeEquals(attribute, text)
         })
     }
