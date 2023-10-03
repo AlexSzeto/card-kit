@@ -217,6 +217,8 @@ namespace cardCore {
     }
 
     export interface CardContainer {
+        isCardContainer(): boolean
+
         getContainerKind(): number
         getCardCount(): number,
         getCardCopyAt(index: number): Card,
@@ -243,10 +245,10 @@ namespace cardCore {
         private transitionCards: Card[]
 
         constructor(
-            public x: number,
-            public y: number,
+            private x: number,
+            private y: number,
             z: number,
-            private containerKind: number,
+            private containerKind: number,            
             private design: CardDesign,
             private cards: Card[],
             private isStackFaceUp: boolean,
@@ -264,29 +266,30 @@ namespace cardCore {
             this.setDepth(z)
         }
 
-        private getYOffset(): number {
-            return (this.isCustomSprite ? this.design.getStackTopYOffset(this.cards.length) : 0)
+        isCardContainer(): boolean {
+            return true
         }
 
-        public refreshImage() {
-            if (this.isCustomSprite || this.design === null) {
-                return
-            }            
-            this.stackSprite.image.fill(0)
-            const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
-            if (this.cards.length - this.transitionCards.length > 0) {
-                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
+        getContainerKind(): number {
+            return this.containerKind
+        }
+
+        getCardCount(): number {
+            return this.cards.length
+        }
+
+        getCardCopyAt(index: number): Card {
+            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
+                return this.cards[this.cards.length - 1]
             }
-            this.cards.forEach(card => {
-                if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
-                    card.setFlag(SpriteFlag.Invisible, true)
-                    card.isFaceUp = card === topCard ? this.isTopCardFaceUp : this.isStackFaceUp
-                }
-            })
+            if (index == null || index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            return this.cards[index]
         }
 
-        get container(): CardContainer {
-            return this
+        getCardsCopy(): Card[] {
+            return this.cards.slice()
         }
 
         setPosition(x: number, y: number): void {
@@ -310,6 +313,97 @@ namespace cardCore {
             if (this.isTopCardFaceUp) {
                 this.refreshImage()
             }
+        }
+
+        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
+            if (card == null) {
+                return
+            }
+            if (!this.design) {
+                this.design = card.getDesign()
+                this.stackSprite.setImage(this.design.createStackBaseimage())
+                this.stackSprite._x = Fx8(Fx.toFloat(this.stackSprite._x) - this.stackSprite.image.width / 2);
+                this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
+            }
+            if (resolveEvents(card, this)) {
+                if (index === LAST_CARD_INDEX) {
+                    this.cards.push(card)
+                } else {
+                    this.cards.insertAt(index, card)
+                }
+                card.isFaceUp = this.isTopCardFaceUp
+                extraAnimations.slide(
+                    card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
+                    slideAnimationDuration,
+                    () => {
+                        this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
+                        this.refreshImage()
+                    }
+                )
+                this.transitionCards.push(card)
+                this.refreshImage()
+                card.z = transitionZ
+            }
+        }
+
+        removeCardAt(index: number = 0): Card {
+            if (index === LAST_CARD_INDEX) {
+                index = this.cards.length - 1
+            }
+            if (index == null || index < 0 || index > this.cards.length - 1) {
+                return null
+            }
+            const card = this.cards[index]
+            const transitionIndex = this.transitionCards.indexOf(card)
+            if (transitionIndex >= 0) {
+                extraAnimations.clearAnimations(this.transitionCards[transitionIndex], true)
+                this.transitionCards.splice(transitionIndex, 1)
+            } else {
+                card.setPosition(this.x, this.y + this.getYOffset())
+            }
+            card.setFlag(SpriteFlag.Invisible, false)
+            this.cards.splice(index, 1)
+            this.refreshImage()
+            return card
+        }
+
+        removeCardSprite(card: Card): void {
+            this.removeCardAt(this.cards.indexOf(card))
+        }
+        
+        destroyCards(): void {
+            this.cards.forEach(card => card.destroy())
+            this.transitionCards = []
+            this.refreshImage()
+        }
+
+        getCursorIndex(): number {
+            return (getCursorSprite() === this.stackSprite) ? 0 : null
+        }
+
+        moveCursorIntoContainer(): void {
+            pointCursorAt(this.stackSprite)
+        }
+        
+        private getYOffset(): number {
+            return (this.isCustomSprite ? this.design.getStackTopYOffset(this.cards.length) : 0)
+        }
+
+        public refreshImage() {
+            if (this.isCustomSprite || this.design === null) {
+                return
+            }            
+            this.stackSprite.image.fill(0)
+            const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
+            if (this.cards.length - this.transitionCards.length > 0) {
+                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.getData(), this.isStackFaceUp, this.isTopCardFaceUp)                
+            }
+            this.cards.forEach(card => {
+                if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
+                    card.setFlag(SpriteFlag.Invisible, true)
+                    card.isFaceUp = card === topCard ? this.isTopCardFaceUp : this.isStackFaceUp
+                }
+            })
         }
 
         split(count: number) {
@@ -350,97 +444,6 @@ namespace cardCore {
             this.isTopCardFaceUp = !this.isTopCardFaceUp
             this.refreshImage()
         }
-
-        getContainerKind(): number {
-            return this.containerKind
-        }
-
-        getCardCount(): number {
-            return this.cards.length
-        }
-
-        getCardCopyAt(index: number): Card {
-            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
-                return this.cards[this.cards.length - 1]
-            }
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
-            }
-            return this.cards[index]
-        }
-
-        getCardsCopy(): Card[] {
-            return this.cards.slice()
-        }
-
-        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
-            if (card == null) {
-                return
-            }
-            if (!this.design) {
-                this.design = card.getDesign()
-                this.stackSprite.setImage(this.design.createStackBaseimage())
-                this.stackSprite._x = Fx8(Fx.toFloat(this.stackSprite._x) - this.stackSprite.image.width / 2);
-                this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
-            }
-            if (resolveEvents(card, this)) {
-                if (index === LAST_CARD_INDEX) {
-                    this.cards.push(card)
-                } else {
-                    this.cards.insertAt(index, card)
-                }
-                card.isFaceUp = this.isTopCardFaceUp
-                extraAnimations.slide(
-                    card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
-                    slideAnimationDuration,
-                    () => {
-                        this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
-                        this.refreshImage()
-                    }
-                )
-                this.transitionCards.push(card)
-                this.refreshImage()
-                card.z = transitionZ
-            }
-        }
-
-        removeCardSprite(card: Card): void {
-            this.removeCardAt(this.cards.indexOf(card))
-        }
-
-        removeCardAt(index: number = 0): Card {
-            if (index === LAST_CARD_INDEX) {
-                index = this.cards.length - 1
-            }
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
-            }
-            const card = this.cards[index]
-            const transitionIndex = this.transitionCards.indexOf(card)
-            card.setFlag(SpriteFlag.Invisible, false)
-            if (transitionIndex >= 0) {
-                extraAnimations.clearAnimations(this.transitionCards[transitionIndex], true)
-            } else {
-                card.setPosition(this.x, this.y + this.getYOffset())
-            }
-            this.cards.splice(index, 1)
-            this.refreshImage()
-            return card
-        }
-
-        destroyCards(): void {
-            this.cards.forEach(card => card.destroy())
-            this.transitionCards = []
-            this.refreshImage()
-        }
-
-        getCursorIndex(): number {
-            return (getCursorSprite() === this.stackSprite) ? 0 : null
-        }
-
-        moveCursorIntoContainer(): void {
-            pointCursorAt(this.stackSprite)
-        }
     }
 
     sprites.onDestroyed(SpriteKind.CardContainer, function (sprite: Sprite) {
@@ -449,18 +452,23 @@ namespace cardCore {
         }
     })
 
-    export class LayoutContainer extends Sprite implements CardContainer {
+    export class LayoutContainer implements CardContainer {
         constructor(
+            protected x: number,
+            protected y: number,
+            protected z: number,
             private containerKind: number,
             protected cards: Card[],
         ) {
-            super(image.create(1, 1))
             if (cards.length > 0) {
                 this.reposition()
             }
-            activate(this, SpriteKind.CardContainer)
         }
 
+        isCardContainer(): boolean {
+            return true
+        }
+        
         getContainerKind(): number {
             return this.containerKind
         }
@@ -484,7 +492,8 @@ namespace cardCore {
         }
 
         setPosition(x: number, y: number): void {
-            super.setPosition(x, y)
+            this.x = x
+            this.y = y
             this.reposition()
         }
 
@@ -493,13 +502,13 @@ namespace cardCore {
             this.reposition()
         }
 
-        shuffle(): void {
-            shuffle(this.cards)
+        setDesign(design: CardDesign): void {
+            this.cards.forEach(card => card.setDesign(design))
             this.reposition()
         }
 
-        setDesign(design: CardDesign): void {
-            this.cards.forEach(card => card.setDesign(design))
+        shuffle(): void {
+            shuffle(this.cards)
             this.reposition()
         }
 
@@ -524,10 +533,6 @@ namespace cardCore {
             }
         }
 
-        removeCardSprite(card: Card): void {
-            this.removeCardAt(this.cards.indexOf(card))
-        }
-
         removeCardAt(index: number = 0): Card {
             if (index === LAST_CARD_INDEX) {
                 index = this.cards.length - 1
@@ -549,6 +554,10 @@ namespace cardCore {
             this.cards.splice(index, 1)
             this.reposition()
             return card
+        }
+
+        removeCardSprite(card: Card): void {
+            this.removeCardAt(this.cards.indexOf(card))
         }
 
         replaceCardWithBlankAt(index: number = 0): Card {
@@ -593,6 +602,9 @@ namespace cardCore {
         private cardHeight: number
 
         constructor(
+            x: number,
+            y: number,
+            z: number,
             kind: number,
             cards: Card[],
             private isSpreadingLeftRight: boolean,
@@ -602,12 +614,18 @@ namespace cardCore {
             private hoverY: number,
             public isWrappingSelection: boolean
         ) {
-            super(kind, cards)
+            super(x, y, z, kind, cards)
             this.cardWidth = -1
             this.cardHeight = -1
             this.reposition()
         }
 
+        setDesign(design: CardDesign): void {
+            this.cardWidth = -1
+            this.cardHeight = -1
+            super.setDesign(design)
+        }
+        
         get isLeftRight(): boolean {
             return this.isSpreadingLeftRight
         }
@@ -639,12 +657,6 @@ namespace cardCore {
             this.reposition()
         }
 
-        setDesign(design: CardDesign): void {
-            this.cardWidth = -1
-            this.cardHeight = -1
-            super.setDesign(design)
-        }
-        
         reposition() {
             if (this.cards.length === 0) {
                 return
@@ -731,17 +743,6 @@ namespace cardCore {
         }
     }
 
-    type GridLayoutPosition = {
-        x: number,
-        y: number,
-        animated: boolean,
-        xFrames: number[],
-        yFrames: number[],
-        sxFrames: number[],
-        syFrames: number[],
-
-    }
-
     export class CardGrid extends LayoutContainer {
         private firstLine: number
         private scrollToLine: number
@@ -753,6 +754,9 @@ namespace cardCore {
         private expandPositions: number[]
 
         constructor(
+            x: number,
+            y: number,
+            z: number,
             kind: number,
             cards: Card[],
             private rows: number,
@@ -763,7 +767,7 @@ namespace cardCore {
             private scrollBackIndicator: Sprite,
             private scrollForwardIndicator: Sprite,
         ) {
-            super(kind, cards)
+            super(x, y, z, kind, cards)
             this.firstLine = 0
             this.scrollToLine = 0
             this.cardWidth = -1
@@ -1171,13 +1175,23 @@ namespace cardCore {
         cursorOffsetY += cursorExtraOffsetY
     }
 
-    export function pointCursorAt(target: Sprite) {
+    export function pointCursorAt(target: any) {
         if (!target) {
             removeCursor()
             return
         }
         const hasPreviousTarget = !!cursorTarget
-        cursorTarget = target
+
+        if (target instanceof Sprite) {
+            cursorTarget = target
+        } else if (target.isCardContainer()) {
+            (target as CardContainer).moveCursorIntoContainer()
+            return
+        } else {
+            removeCursor()
+            return
+        }
+
         if (cursorTarget instanceof Card) {
             cursorContainer = (cursorTarget as Card).container
         }
@@ -1185,7 +1199,7 @@ namespace cardCore {
             cursorContainer = cursorTarget
         }
             
-        cursor.setFlag(SpriteFlag.Invisible, !cursorTarget)
+        cursor.setFlag(SpriteFlag.Invisible, false)
         updateCursorOffset()
         if (!hasPreviousTarget) {
             cursor.x = cursorTarget.x + cursorOffsetX

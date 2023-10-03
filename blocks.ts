@@ -308,13 +308,11 @@ namespace cardDesign {
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
     //% inlineInputMode=inline
-    //% block="empty $design $kind deck x $x y $y"
-    //% x.shadow="positionPicker" x.defl=80
-    //% y.shadow="positionPicker" y.defl=60
+    //% block="empty $design $kind deck"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(x: number, y: number, design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
-        return new cardCore.CardStack(x, y, 1, kind, design.export(), [], false, false)
+    export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
+        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, 1, kind, design.export(), [], false, false)
     }
 
     class CardAttributeVariation {
@@ -417,35 +415,28 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind pile x $x y $y"
-    //% x.shadow="positionPicker" x.defl=80
-    //% y.shadow="positionPicker" y.defl=60
+    //% block="empty $kind pile"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
     export function createEmptyPile(
-        x: number,
-        y: number,
         kind: number,
     ): cardCore.CardStack {
-        return new cardCore.CardStack(x, y, 1, kind, null, [], true, true)
+        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, 1, kind, null, [], true, true)
     }
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card spread x $x y $y spread $spreadDirection|| from $alignment"
-    //% x.shadow="positionPicker" x.defl=80
-    //% y.shadow="positionPicker" y.defl=60
+    //% block="empty $kind card spread spread $spreadDirection|| from $alignment"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
-    //% x.defl=80 y.defl=100
     //% alignment.defl=CardLayoutSpreadAlignments.Center
     //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
     export function createEmptyHand(
-        kind: number, x: number, y: number,
+        kind: number,
         spreadDirection: CardLayoutSpreadDirections,
         alignment: CardLayoutSpreadAlignments,
-        isFaceUp: boolean = true
     ): cardCore.CardSpread {
         const spread = new cardCore.CardSpread(
+            scene.screenWidth() / 2, scene.screenHeight() / 2, 1,
             kind, [],
             spreadDirection === CardLayoutSpreadDirections.LeftRight,
             alignment,
@@ -453,7 +444,6 @@ namespace cardKit {
             0, 0,
             false
         )
-        spread.setPosition(x, y)
         return spread
     }
 
@@ -500,19 +490,18 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card grid x $x y $y columns $columns rows $rows|| scroll $scrollDirection"
-    //% x.shadow="positionPicker" x.defl=80
-    //% y.shadow="positionPicker" y.defl=60
+    //% block="empty $kind card grid columns $columns rows $rows|| scroll $scrollDirection"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Puzzle
     //% columns.defl=6 rows.defl=4
     //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
     export function createEmptyGrid(
-        kind: number, x: number, y: number,
+        kind: number,
         columns: number, rows: number,
         scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
     ): cardCore.CardGrid {
         const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
         const grid = new cardCore.CardGrid(
+            scene.screenWidth() / 2, scene.screenHeight() / 2, 1,
             kind, [],
             rows, columns,
             isScrollingLeftRight,
@@ -524,7 +513,6 @@ namespace cardKit {
                 ? sprites.create(DEFAULT_SCROLL_RIGHT, SpriteKind.Cursor)
                 : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
         )
-        grid.setPosition(x, y)
         return grid
     }
 
