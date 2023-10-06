@@ -296,7 +296,11 @@ namespace cardCore {
         setPosition(x: number, y: number): void {
             this.x = x
             this.y = y
-            this.stackSprite.setPosition(x, y)
+            if (!!this.design) {
+                this.stackSprite.setPosition(x, y - this.stackSprite.image.height / 2 + this.design.height / 2)
+            } else {
+                this.stackSprite.setPosition(x, y)
+            }
         }
 
         setDepth(z: number): void {
@@ -325,6 +329,7 @@ namespace cardCore {
                 this.stackSprite.setImage(this.design.createStackBaseimage())
                 this.stackSprite._x = Fx8(Fx.toFloat(this.stackSprite._x) - this.stackSprite.image.width / 2);
                 this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
+                this.setPosition(this.x, this.y)
             }
             if (resolveEvents(card, this)) {
                 if (index === LAST_CARD_INDEX) {
@@ -387,7 +392,7 @@ namespace cardCore {
         }
         
         private getYOffset(): number {
-            return (this.isCustomSprite ? this.design.getStackTopYOffset(this.cards.length) : 0)
+            return (this.isCustomSprite ? -this.design.getStackHeight(this.cards.length) : 0)
         }
 
         public refreshImage() {

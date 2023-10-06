@@ -171,10 +171,6 @@ namespace cardCore {
             return this.height + this.maxStackHeight
         }
 
-        private getStackHeight(cardStackSize: number): number {
-            return this.getStackThickness(cardStackSize) + this.height
-        }
-
         private getStackImage(cardStackSize: number, isFaceUp: boolean): Image {
             const stackHeight = this.getStackHeight(cardStackSize)
             if (isFaceUp) {
@@ -190,10 +186,10 @@ namespace cardCore {
             return Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel)))
         }
         
-        getStackTopYOffset(cardStackSize: number): number {
-            return this.getStackImageFullHeight() / 2 - this.getStackHeight(cardStackSize) + this.height / 2
+        getStackHeight(cardStackSize: number): number {
+            return this.getStackThickness(cardStackSize) + this.height
         }
-        
+
         createCardBaseImage(): Image {
             return image.create(this.width, this.height)
         }
