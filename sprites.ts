@@ -77,6 +77,7 @@ namespace cardCore {
     export class Card extends Sprite {
         stamp: string
         private _isFaceUp: boolean
+        private _card: CardData
 
         constructor(
             private design: CardDesign,
@@ -86,21 +87,31 @@ namespace cardCore {
         ) {
             super(design.createCardBaseImage())
             this._isFaceUp = isFaceUp
+            this._card = data
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
 
         get isEmptyCardSlot(): boolean {
-            return this.data === EmptyData
+            return this._card === EmptyData
         }
 
+        set cardData(data: CardData) {
+            this._card = data
+            this.refreshImage()
+        }
+
+        get cardData(): CardData {
+            return this._card
+        }
+        
         refreshImage() {
             if (this.isEmptyCardSlot) {
                 return
             }
             this.image.fill(0)
             if(this._isFaceUp) {
-                this.design.drawCardFront(this.image, 0, 0, this.data)
+                this.design.drawCardFront(this.image, 0, 0, this._card)
                 this.design.drawStamp(this.image, this.stamp)
             } else {
                 this.design.drawCardBack(this.image, 0, 0)
@@ -165,13 +176,13 @@ namespace cardCore {
         }
 
         clone(): Card {
-            const card = new Card(this.design, this.data.clone(), null, this._isFaceUp)
+            const card = new Card(this.design, this._card.clone(), null, this._isFaceUp)
             card.setPosition(this.x, this.y)
             return card
         }
 
         createView(newDesign: CardDesign): Card {
-            const card = new Card(newDesign, this.data, null, this._isFaceUp)
+            const card = new Card(newDesign, this._card, null, this._isFaceUp)
             card.setPosition(this.x, this.y)
             return card
         }
@@ -206,7 +217,7 @@ namespace cardCore {
         for (let event of cardEvents) {
             if (
                 event.destinationKind === destination.getContainerKind()
-                && (!event.condition || card.data.attributeEquals(event.condition.attribute, event.condition.value))
+                && (!event.condition || card.cardData.attributeEquals(event.condition.attribute, event.condition.value))
             ) {
                 event.handler(source, destination, card)
                 if(card.container !== destination || (card.flags & sprites.Flag.Destroyed)) {
@@ -402,7 +413,7 @@ namespace cardCore {
             this.stackSprite.image.fill(0)
             const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
             if (this.cards.length - this.transitionCards.length > 0) {
-                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.data, this.isStackFaceUp, this.isTopCardFaceUp)                
+                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.cardData, this.isStackFaceUp, this.isTopCardFaceUp)                
             }
             this.cards.forEach(card => {
                 if (!this.transitionCards.some(transitionCard => card === transitionCard)) {

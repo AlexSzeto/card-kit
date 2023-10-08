@@ -557,7 +557,7 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardNumberAttribute(card: cardCore.Card, attribute: number, value: number) {
-        card.data.setAttribute(attribute, value)
+        card.cardData.setAttribute(attribute, value)
         card.refreshImage()
     }
 
@@ -566,7 +566,7 @@ namespace cardKit {
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function setCardTextAttribute(card: cardCore.Card, attribute: number, text: string) {
-        card.data.setAttribute(attribute, text)
+        card.cardData.setAttribute(attribute, text)
         card.refreshImage()
     }
 
@@ -586,7 +586,7 @@ namespace cardKit {
         if (!card) {
             return 0
         }
-        const value = card.data.getAttribute(attribute)
+        const value = card.cardData.getAttribute(attribute)
         if(typeof value == "number") {
             return value
         } else {
@@ -602,7 +602,7 @@ namespace cardKit {
         if (!card) {
             return ""
         }
-        const value = card.data.getAttribute(attribute)
+        const value = card.cardData.getAttribute(attribute)
         if (typeof value == "string") {
             return value
         } else {
@@ -792,7 +792,7 @@ namespace cardKit {
     //% text.shadowOptions.toString=true
     export function filterCardListWithCondition(container: cardCore.CardContainer, attribute: number, text: string): cardCore.Card[] {
         return container.getCardsCopy().filter(card => {
-            const data = card.data
+            const data = card.cardData
             return !!data && data.attributeEquals(attribute, text)
         })
     }
