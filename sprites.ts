@@ -208,36 +208,41 @@ namespace cardCore {
     })
 
     export type CardEventCondition = cardCore.CardAttribute
-    export type CardEventHandler = (source: CardContainer, destination: CardContainer, card: Card) => void
+    export type CardEventHandler = (container: CardContainer, card: Card) => void
     type CardEvent = {
-        destinationKind: number,
+        containerKind: number,
+        isEmptyCardHandler: boolean
         condition: CardEventCondition
         handler: CardEventHandler
     }
 
-    export function addCardEvent(destinationKind: number, handler: CardEventHandler, condition: CardEventCondition = null) {
-        cardEvents.push({ destinationKind: destinationKind, condition: condition, handler: handler })
+    export function addCardEvent(containerKind: number, handler: CardEventHandler, isEmptyCardHandler: boolean, condition: CardEventCondition = null) {
+        cardEvents.push({ containerKind: containerKind, condition: condition, isEmptyCardHandler: isEmptyCardHandler, handler: handler })
     }
 
     const cardEvents: CardEvent[] = []
-    function resolveEvents(card: Card, destination: CardContainer): boolean {
+    function resolveCardSelect(card: Card) {
+        const container = card.container
+        if (!container) {
+            return
+        }
+        for (let event of cardEvents) {
+            if (
+                event.containerKind === container.getContainerKind()
+                && (event.isEmptyCardHandler === card.isEmptyCardSlot)
+                && (!event.condition || card.cardData.attributeEquals(event.condition.attribute, event.condition.value))
+            ) {
+                event.handler(container, card)
+            }
+        }        
+    }
+
+
+    function resolveCardInsert(card: Card, destination: CardContainer) {
         if (card.container != null && card.container !== destination) {
             card.container.removeCardSprite(card)
         }
-        const source = card.container
         card.container = destination
-        for (let event of cardEvents) {
-            if (
-                event.destinationKind === destination.getContainerKind()
-                && (!event.condition || card.cardData.attributeEquals(event.condition.attribute, event.condition.value))
-            ) {
-                event.handler(source, destination, card)
-                if(card.container !== destination || (card.flags & sprites.Flag.Destroyed)) {
-                    return false
-                }
-            }
-        }
-        return true
     }
 
     export interface CardContainer {
@@ -268,7 +273,6 @@ namespace cardCore {
         private isCustomSprite: boolean
         private stackSprite: Sprite
         private transitionCards: Card[]
-        private defaultStackImage: Image
         private isEmptyCardInvisible: boolean
         constructor(
             private x: number,
@@ -362,25 +366,24 @@ namespace cardCore {
                 this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
                 this.setPosition(this.x, this.y)
             }
-            if (resolveEvents(card, this)) {
-                if (index === LAST_CARD_INDEX) {
-                    this.cards.push(card)
-                } else {
-                    this.cards.insertAt(index, card)
-                }
-                card.isFaceUp = this.isTopCardFaceUp
-                extraAnimations.slide(
-                    card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
-                    slideAnimationDuration,
-                    () => {
-                        this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
-                        this.refreshImage()
-                    }
-                )
-                this.transitionCards.push(card)
-                this.refreshImage()
-                card.z = transitionZ
+            resolveCardInsert(card, this)
+            if (index === LAST_CARD_INDEX) {
+                this.cards.push(card)
+            } else {
+                this.cards.insertAt(index, card)
             }
+            card.isFaceUp = this.isTopCardFaceUp
+            extraAnimations.slide(
+                card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
+                slideAnimationDuration,
+                () => {
+                    this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
+                    this.refreshImage()
+                }
+            )
+            this.transitionCards.push(card)
+            this.refreshImage()
+            card.z = transitionZ
         }
 
         removeCardAt(index: number = 0): Card {
@@ -562,21 +565,20 @@ namespace cardCore {
             if (card == null) {
                 return
             }
-            if (resolveEvents(card, this)) {
-                if (facing != CardFacingModifiers.Unchanged) {
-                    card.isFaceUp = facing === CardFacingModifiers.FaceUp
-                }
-                card.isInvisibleWhenEmpty = this.isEmptyCardInvisible
-                if (index === LAST_CARD_INDEX) {
-                    this.cards.push(card)
-                } else {
-                    this.cards.insertAt(index, card)
-                }
-                this.reposition()
-                card.z = transitionZ
-                if (this.cards.length === 1 && getCursorContainer() === this) {
-                    pointCursorAt(card)
-                }
+            resolveCardInsert(card, this)
+            if (facing != CardFacingModifiers.Unchanged) {
+                card.isFaceUp = facing === CardFacingModifiers.FaceUp
+            }
+            card.isInvisibleWhenEmpty = this.isEmptyCardInvisible
+            if (index === LAST_CARD_INDEX) {
+                this.cards.push(card)
+            } else {
+                this.cards.insertAt(index, card)
+            }
+            this.reposition()
+            card.z = transitionZ
+            if (this.cards.length === 1 && getCursorContainer() === this) {
+                pointCursorAt(card)
             }
         }
 
@@ -1294,6 +1296,12 @@ namespace cardCore {
             return cursorTarget
         } else {
             return null
+        }
+    }
+
+    export function selectCursorCard() {
+        if(!!cursorTarget && cursorTarget instanceof Card) {
+            resolveCardSelect(cursorTarget)
         }
     }
 }

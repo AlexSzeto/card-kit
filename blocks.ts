@@ -810,25 +810,43 @@ namespace cardKit {
     //% group="Card Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on $card added from $source to type $kind $destination|| where $attribute is $text"
+    //% block="on selected $card in $kind $container || where $attribute is $text"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
-    export function createContainerEvent(
+    export function createSelectEvent(
         kind: number,
-        handler: (source: cardCore.CardContainer, destination: cardCore.CardContainer, card: cardCore.Card) => void,
+        handler: (container: cardCore.CardContainer, card: cardCore.Card) => void,
         attribute: number = null,
         text: string = null,
     ) {
         cardCore.addCardEvent(
             kind,
             handler,
+            false,
             attribute !== null && text !== null
                 ? { attribute: attribute, value: text }
                 : null
         )
-    }    
+    }
     
+    //% group="Card Events"
+    //% draggableParameters="reporter"
+    //% expandableArgumentMode="toggle"
+    //% block="on selected empty $kind $container"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function createSelectEmptyContainerEvent(
+        kind: number,
+        handler: (container: cardCore.CardContainer, card: cardCore.Card) => void,
+    ) {
+        cardCore.addCardEvent(
+            kind,
+            handler,
+            true,
+            null
+        )
+    }
+
     function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
         switch (position) {
             case CardContainerPositions.First: return 0
@@ -862,7 +880,7 @@ namespace cardKit {
     })
 
     //% group="Stack/Spread/Grid Operations"
-    //% block="$container is type $kind"
+    //% block="$container is $kind"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function isContainerOfKind(
