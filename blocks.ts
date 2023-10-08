@@ -3,6 +3,8 @@ enum CardDesignFrameTypes {
     Front,
     //% block="back"
     Back,
+    //% block="empty"
+    Empty,
     //% block="front stack"
     FrontStack,
     //% block="back stack"
@@ -57,6 +59,11 @@ namespace cardDesign {
     1 1 1
     . 1 .
     `
+    const DEFAULT_ROUNDED_OUTLINE = img`
+    . 1 .
+    1 . 1
+    . 1 .
+    `    
     function createFlatColorImage(image: Image, color: number): Image {
         const result = image.clone()
         for (let c = 1; c < 16; c++) {
@@ -101,6 +108,7 @@ namespace cardDesign {
 
         frontFrame: Image
         backFrame: Image
+        emptyFrame: Image
         frontStackFrame: Image
         backStackFrame: Image
 
@@ -115,7 +123,7 @@ namespace cardDesign {
             this.backFrame = createFlatColorImage(DEFAULT_ROUNDED_RECTANGLE, 4)
             this.frontStackFrame = createFlatColorImage(DEFAULT_ROUNDED_RECTANGLE, 11)
             this.backStackFrame = createFlatColorImage(DEFAULT_ROUNDED_RECTANGLE, 14)
-
+            this.emptyFrame = createFlatColorImage(DEFAULT_ROUNDED_OUTLINE, 1)
             this.cardThickness = 0.2
             this.maxStackSize = 60
 
@@ -132,6 +140,7 @@ namespace cardDesign {
                 this.height,
                 this.frontFrame,
                 this.backFrame,
+                this.emptyFrame,
                 this.frontStackFrame,
                 this.backStackFrame,
                 Math.ceil(1.0 / this.cardThickness),
@@ -152,6 +161,7 @@ namespace cardDesign {
         switch (frameType) {
             case CardDesignFrameTypes.Front: design.frontFrame = image; break;
             case CardDesignFrameTypes.Back: design.backFrame = image; break;
+            case CardDesignFrameTypes.Empty: design.emptyFrame = image; break;
             case CardDesignFrameTypes.FrontStack: design.frontStackFrame = image; break;
             case CardDesignFrameTypes.BackStack: design.backStackFrame = image; break;
         }
@@ -903,6 +913,16 @@ namespace cardKit {
         design: cardDesign.CardDesignTemplate
     ) {
         container.setDesign(design.export())
+    }
+
+    //% group="Stack/Spread/Grid Operations"
+    //% block="set $container to draw empty slots"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    //% design.shadow="variables_get" design.defl="myDesign"
+    export function setContainerDrawEmptySlots(
+        container: cardCore.CardContainer,
+    ) {
+        container.setCardIsInvisibleWhenEmpty(false)
     }
 
     //% group="Stack/Spread/Grid Operations"

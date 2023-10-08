@@ -134,6 +134,7 @@ namespace cardCore {
     export class CardDesign {
         frontImage: Image
         backImage: Image
+        blankImage: Image
         private frontStackResizableImage: game.BaseDialog
         private backStackResizableImage: game.BaseDialog
 
@@ -142,6 +143,7 @@ namespace cardCore {
             public height: number,
             frontFrame: Image,
             backFrame: Image,
+            blankFrame: Image,
             private frontStackFrame: Image,
             private backStackFrame: Image,
             private cardsPerPixel: number,
@@ -162,6 +164,14 @@ namespace cardCore {
             } else {
                 frame.resize(width, height, backFrame)
                 this.backImage = frame.image
+            }
+            if (!!blankFrame) {
+                if (blankFrame.width === width && blankFrame.height === height) {
+                    this.blankImage = blankFrame
+                } else {
+                    frame.resize(width, height, blankFrame)
+                    this.blankImage = frame.image
+                }
             }
             this.frontStackResizableImage = new game.BaseDialog(width, height, frontStackFrame)
             this.backStackResizableImage = new game.BaseDialog(width, height, backStackFrame)
@@ -368,15 +378,25 @@ namespace cardCore {
         drawCardBack(image: Image, x: number, y: number) {
             image.drawTransparentImage(this.backImage, x, y)
         }
+
+        drawEmptyCard(image: Image, x: number, y: number) {
+            if (!!this.blankImage) {
+                image.drawTransparentImage(this.blankImage, x, y)
+            }
+        }
     
-        drawCardStack(image: Image, x: number, y: number, cardCount: number, topCardData: CardData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, ) {
+        drawCardStack(image: Image, x: number, y: number, cardCount: number, topCardData: CardData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, isEmptyCardInvisible: boolean) {
             if (cardCount > 1) {
                 const stackImage = this.getStackImage(cardCount, isStackFaceUp)
                 y = y + this.getStackImageFullHeight() - stackImage.height
                 image.drawTransparentImage(stackImage, x, y)
             } else if (cardCount === 1) {
                 y = y + this.getStackImageFullHeight() - this.height
+            } else if (isEmptyCardInvisible) {
+                return
             } else {
+                y = y + this.getStackImageFullHeight() - this.height
+                image.drawTransparentImage(this.blankImage, x, y)
                 return
             }
             if (isTopCardFaceUp) {

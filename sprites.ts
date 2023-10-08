@@ -76,6 +76,7 @@ namespace cardCore {
     
     export class Card extends Sprite {
         stamp: string
+        private _isInvisibleWhenEmpty: boolean
         private _isFaceUp: boolean
         private _card: CardData
 
@@ -88,6 +89,7 @@ namespace cardCore {
             super(design.createCardBaseImage())
             this._isFaceUp = isFaceUp
             this._card = data
+            this._isInvisibleWhenEmpty = false
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
@@ -106,11 +108,13 @@ namespace cardCore {
         }
         
         refreshImage() {
-            if (this.isEmptyCardSlot) {
+            if (this.isEmptyCardSlot && this._isInvisibleWhenEmpty) {
                 return
             }
             this.image.fill(0)
-            if(this._isFaceUp) {
+            if (this.isEmptyCardSlot) {
+                this.design.drawEmptyCard(this.image, 0, 0)
+            } else if(this._isFaceUp) {
                 this.design.drawCardFront(this.image, 0, 0, this._card)
                 this.design.drawStamp(this.image, this.stamp)
             } else {
@@ -128,6 +132,14 @@ namespace cardCore {
                 this.refreshImage()
             }
         }
+
+        set isInvisibleWhenEmpty(value: boolean) {
+            this._isInvisibleWhenEmpty = value
+            if (this.isEmptyCardSlot) {
+                this.refreshImage()
+            }
+        }
+        get isInvisibleWhenEmpty(): boolean { return this._isInvisibleWhenEmpty }
 
         set isFaceUp(value: boolean) {
             extraAnimations.clearFixedFrameAnimation(this, true)
@@ -239,6 +251,7 @@ namespace cardCore {
         setPosition(x: number, y: number): void
         setDepth(z: number): void
         setDesign(design: CardDesign): void
+        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void
 
         shuffle(): void
 
@@ -255,7 +268,8 @@ namespace cardCore {
         private isCustomSprite: boolean
         private stackSprite: Sprite
         private transitionCards: Card[]
-
+        private defaultStackImage: Image
+        private isEmptyCardInvisible: boolean
         constructor(
             private x: number,
             private y: number,
@@ -268,6 +282,7 @@ namespace cardCore {
         ) {
             this.transitionCards = []
             this.isCustomSprite = false
+            this.isEmptyCardInvisible = true
             if (!!design) {
                 this.stackSprite = sprites.create(design.createStackBaseimage(), SpriteKind.CardContainer)
                 this.refreshImage()
@@ -321,6 +336,11 @@ namespace cardCore {
         setDesign(design: CardDesign): void {
             this.design = design
             this.cards.forEach(card => card.setDesign(design))
+            this.refreshImage()
+        }
+
+        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
+            this.isEmptyCardInvisible = isInvisible
             this.refreshImage()
         }
 
@@ -412,9 +432,15 @@ namespace cardCore {
             }            
             this.stackSprite.image.fill(0)
             const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
-            if (this.cards.length - this.transitionCards.length > 0) {
-                this.design.drawCardStack(this.stackSprite.image, 0, 0, this.cards.length - this.transitionCards.length, topCard.cardData, this.isStackFaceUp, this.isTopCardFaceUp)                
-            }
+            this.design.drawCardStack(
+                this.stackSprite.image,
+                0, 0,
+                this.cards.length - this.transitionCards.length,
+                !!topCard ? topCard.cardData : null,
+                this.isStackFaceUp,
+                this.isTopCardFaceUp,
+                this.isEmptyCardInvisible
+            )                
             this.cards.forEach(card => {
                 if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
                     card.setFlag(SpriteFlag.Invisible, true)
@@ -469,6 +495,7 @@ namespace cardCore {
     })
 
     export class LayoutContainer implements CardContainer {
+        protected isEmptyCardInvisible: boolean
         constructor(
             protected x: number,
             protected y: number,
@@ -476,6 +503,7 @@ namespace cardCore {
             private containerKind: number,
             protected cards: Card[],
         ) {
+            this.isEmptyCardInvisible = true
             if (cards.length > 0) {
                 this.reposition()
             }
@@ -528,6 +556,8 @@ namespace cardCore {
             this.reposition()
         }
 
+        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void { }
+
         insertCard(card: Card, index: number = -1, facing: CardFacingModifiers = CardFacingModifiers.Unchanged): void {
             if (card == null) {
                 return
@@ -536,6 +566,7 @@ namespace cardCore {
                 if (facing != CardFacingModifiers.Unchanged) {
                     card.isFaceUp = facing === CardFacingModifiers.FaceUp
                 }
+                card.isInvisibleWhenEmpty = this.isEmptyCardInvisible
                 if (index === LAST_CARD_INDEX) {
                     this.cards.push(card)
                 } else {
@@ -616,6 +647,7 @@ namespace cardCore {
     export class CardSpread extends LayoutContainer {
         private cardWidth: number
         private cardHeight: number
+        private emptyCard: Card
 
         constructor(
             x: number,
@@ -631,6 +663,7 @@ namespace cardCore {
             public isWrappingSelection: boolean
         ) {
             super(x, y, z, kind, cards)
+            this.emptyCard = new Card(null, EmptyData, this, true)
             this.cardWidth = -1
             this.cardHeight = -1
             this.reposition()
@@ -642,6 +675,11 @@ namespace cardCore {
             super.setDesign(design)
         }
         
+        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
+            this.emptyCard.isInvisibleWhenEmpty = isInvisible
+            this.emptyCard.refreshImage()
+        }
+
         get isLeftRight(): boolean {
             return this.isSpreadingLeftRight
         }
@@ -675,7 +713,11 @@ namespace cardCore {
 
         reposition() {
             if (this.cards.length === 0) {
+                this.emptyCard.setPosition(this.x, this.y)
+                this.emptyCard.setFlag(SpriteFlag.Invisible, false)
                 return
+            } else {
+                this.emptyCard.setFlag(SpriteFlag.Invisible, true)
             }
             if (this.cardWidth < 0) {
                 this.cardWidth = this.cards[0].width
@@ -844,6 +886,13 @@ namespace cardCore {
             this.cardWidth = -1
             this.cardHeight = -1
             super.setDesign(design)
+        }
+
+        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
+            this.isEmptyCardInvisible = isInvisible
+            for (let card of this.cards) {
+                card.isInvisibleWhenEmpty = isInvisible
+            }
         }
 
         setScrollSprites(back: Sprite, forward: Sprite) {
