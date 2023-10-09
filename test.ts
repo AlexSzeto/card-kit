@@ -88,11 +88,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function SetupPlayField () {
-    PlayGrid = cardKit.createEmptyGrid(CardContainerKinds.Grid, 6, 3, CardLayoutSpreadDirections.UpDown)
-    PlayGrid.setCardIsInvisibleWhenEmpty(false)
+    PlayGrid = cardKit.createEmptyGrid(CardContainerKinds.Grid, 3, 6, CardGridScrollDirections.UpDown)
     cardKit.setCardLayoutWrapping(PlayGrid, true)
     DiscardPile = cardKit.createEmptyPile(CardContainerKinds.Discard)
-    DiscardPile.setCardIsInvisibleWhenEmpty(false)
     cardKit.setContainerPosition(DiscardPile, 140, 60)
     cardKit.lockGridCardPositions(PlayGrid)
     while (cardKit.getContainerCardCount(CardDeck) > 0) {
@@ -104,7 +102,6 @@ function SetupPlayField () {
 }
 function SetupDeck () {
     CardDeck = cardKit.createPlayingCards()
-    CardDeck.setCardIsInvisibleWhenEmpty(false)
     CardDeck.setPosition(20, 60)
     DeleteCardsList = cardKit.getLayoutCardListCopy(CardDeck)
     for (let Card of DeleteCardsList) {

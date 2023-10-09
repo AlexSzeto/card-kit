@@ -35,12 +35,25 @@ enum PointerDirections {
     Right
 }
 
-enum CardLayoutSpreadDirections {
-    //% block="left and right"
-    LeftRight,
+enum CardGridScrollDirections {
     //% block="up and down"
     UpDown,
+    //% block="left and right"
+    LeftRight,
 }
+
+cardCursor.setImage(img`
+. . . f f . . . .
+. . f 1 1 f . . .
+. . f 1 1 f . . .
+. . f 1 1 f f . .
+. f f 1 1 b b f .
+f 1 f 1 1 d d d f
+f 1 d 1 1 1 1 1 f
+. f d 1 1 1 1 1 f
+. . f d 1 1 1 d f
+. . . f f f f f .
+`)
 
 //% color="#307d9c" icon="\uf2bb" block="Card Design"
 //% advanced="true"
@@ -322,7 +335,9 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
-        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, 1, kind, design.export(), [], false, false)
+        const stack = new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
+        stack.design = design.export()
+        return stack
     }
 
     class CardAttributeVariation {
@@ -431,30 +446,24 @@ namespace cardKit {
     export function createEmptyPile(
         kind: number,
     ): cardCore.CardStack {
-        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, 1, kind, null, [], true, true)
+        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, kind, true)
     }
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card spread spread $spreadDirection|| from $alignment"
+    //% block="empty $kind card spread $direction"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
-    //% alignment.defl=CardLayoutSpreadAlignments.Center
-    //% spreadDirection.defl=CardLayoutSpreadDirections.LeftRight
+    //% direction.defl=CardLayoutDirections.CenteredLeftRight
     export function createEmptyHand(
         kind: number,
-        spreadDirection: CardLayoutSpreadDirections,
-        alignment: CardLayoutDirections,
+        direction: CardLayoutDirections,
     ): cardCore.CardSpread {
-        const spread = new cardCore.CardSpread(
-            scene.screenWidth() / 2, scene.screenHeight() / 2, 1,
-            kind, [],
-            spreadDirection === CardLayoutSpreadDirections.LeftRight,
-            alignment,
-            1,
-            0, 0,
-            false
+        return new cardCore.CardSpread(
+            scene.screenWidth() / 2,
+            scene.screenHeight() / 2,
+            kind,
+            direction
         )
-        return spread
     }
 
     const DEFAULT_SCROLL_UP = img`
@@ -500,28 +509,27 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card grid columns $columns rows $rows|| scroll $scrollDirection"
+    //% block="empty $kind card grid columns $columns rows $rows|| scroll $direction"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Puzzle
     //% columns.defl=6 rows.defl=4
-    //% scrollDirection.defl=CardLayoutSpreadDirections.UpDown
+    //% direction.defl=CardGridScrollDirections.UpDown
     export function createEmptyGrid(
         kind: number,
-        columns: number, rows: number,
-        scrollDirection: CardLayoutSpreadDirections = CardLayoutSpreadDirections.UpDown,
+        rows: number, columns: number,
+        direction: CardGridScrollDirections = CardGridScrollDirections.UpDown,
     ): cardCore.CardGrid {
-        const isScrollingLeftRight = scrollDirection == CardLayoutSpreadDirections.LeftRight
+        const scrollVertical = direction == CardGridScrollDirections.UpDown
         const grid = new cardCore.CardGrid(
-            scene.screenWidth() / 2, scene.screenHeight() / 2, 1,
-            kind, [],
+            scene.screenWidth() / 2, scene.screenHeight() / 2,
+            kind,
             rows, columns,
-            isScrollingLeftRight,
-            1, false,
-            isScrollingLeftRight 
-                ? sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor) 
-                : sprites.create(DEFAULT_SCROLL_UP, SpriteKind.Cursor),
-            isScrollingLeftRight 
-                ? sprites.create(DEFAULT_SCROLL_RIGHT, SpriteKind.Cursor)
-                : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
+            scrollVertical,
+            scrollVertical 
+                ? sprites.create(DEFAULT_SCROLL_UP, SpriteKind.Cursor)
+                : sprites.create(DEFAULT_SCROLL_LEFT, SpriteKind.Cursor),
+            scrollVertical 
+                ? sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
+                : sprites.create(DEFAULT_SCROLL_RIGHT, SpriteKind.Cursor),
         )
         return grid
     }
@@ -618,32 +626,32 @@ namespace cardKit {
     //% group="Cursor"
     //% block="cursor"
     export function getCursor(): Sprite {
-        return cardCore.getCursorSprite()
+        return cardCursor.selectedSprite()
     }
 
     //% group="Cursor"
     //% block="point cursor at $anchor of target|| offset x $x y $y"
     //% x.defl=0 y.defl=0
     export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
-        cardCore.setCursorAnchor(anchor, x, y)
+        cardCursor.setAnchor(anchor, x, y)
     }
 
     //% group="Cursor"
     //% block="cursor target"
     export function getCursorTarget(): Sprite {
-        return cardCore.getCursorTarget()
+        return cardCursor.selectedSprite()
     }
 
     //% group="Cursor"
     //% block="cursor card"
     export function getCursorCard(): cardCore.Card {
-        return cardCore.getCursorCard()
+        return cardCursor.selectedCard()
     }
 
     //% group="Cursor"
     //% block="cursor card container"
     export function getCursorContainer(): cardCore.CardContainer {
-        return cardCore.getCursorContainer()
+        return cardCursor.selectedContainer()
     }
 
     //% color="#d54322"
@@ -651,8 +659,7 @@ namespace cardKit {
     //% block="move cursor between cards in $container with buttons"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function moveCursorInsideLayoutWithButtons(container: cardCore.CardContainer) {
-        cardCore.preselectCursorContainer(container)
-        container.moveCursorIntoContainer()
+        cardCursor.select(container)
         autoLayoutControl = true
     }
 
@@ -664,31 +671,15 @@ namespace cardKit {
     }
 
     export function moveCursorInDirection(direction: PointerDirections) {
-        const layer = cardCore.getCursorContainer()
+        const layer = getCursorContainer()
         if (!layer) {
             return
         }
-        if (layer instanceof cardCore.CardSpread) {
-            const spread = layer as cardCore.CardSpread
-            if (spread.isLeftRight) {
-                switch (direction) {
-                    case PointerDirections.Left: spread.moveCursorBack(); break
-                    case PointerDirections.Right: spread.moveCursorForward(); break
-                }
-            } else {
-                switch (direction) {
-                    case PointerDirections.Up: spread.moveCursorBack(); break
-                    case PointerDirections.Down: spread.moveCursorForward(); break
-                }
-            }
-        } else if (layer instanceof cardCore.CardGrid) {
-            const grid = layer as cardCore.CardGrid
-            switch (direction) {
-                case PointerDirections.Up: grid.moveCursorUp(); break
-                case PointerDirections.Down: grid.moveCursorDown(); break
-                case PointerDirections.Left: grid.moveCursorLeft(); break
-                case PointerDirections.Right: grid.moveCursorRight(); break
-            }
+        switch (direction) {
+            case PointerDirections.Up: layer.selectUp(); break
+            case PointerDirections.Down: layer.selectDown(); break
+            case PointerDirections.Left: layer.selectLeft(); break
+            case PointerDirections.Right: layer.selectRight(); break
         }
     }
 
@@ -696,17 +687,13 @@ namespace cardKit {
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
     export function pointCursorAt(sprite: Sprite) {
-        const previousContainer = cardCore.getCursorContainer()
-        cardCore.pointCursorAt(sprite)
-        if (cardCore.getCursorContainer() != previousContainer) {
-            disableLayoutButtonControl()
-        }
+        cardCursor.select(sprite)
     }
 
     //% group="Cursor"
     //% block="hide cursor"
     export function removeCursor() {
-        cardCore.removeCursor()
+        cardCursor.deselect()
     }
     
     //% group="Move Card" blockSetVariable="myCard"
@@ -835,10 +822,10 @@ namespace cardKit {
     function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
         switch (position) {
             case CardContainerPositions.First: return 0
-            case CardContainerPositions.Middle: return Math.floor(container.getCardCount() / 2)
+            case CardContainerPositions.Middle: return Math.floor(container.max / 2)
             case CardContainerPositions.Last: return cardCore.LAST_CARD_INDEX
-            case CardContainerPositions.Random: return Math.randomRange(0, container.getCardCount() - 1)
-            case CardContainerPositions.Cursor: return container.getCursorIndex()
+            case CardContainerPositions.Random: return Math.randomRange(0, container.max - 1)
+            case CardContainerPositions.Cursor: return container.cursorIndex
         }
     }
 
@@ -872,7 +859,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         kind: number
     ): boolean {
-        return !!container ? container.getContainerKind() === kind : false
+        return !!container ? container.kind === kind : false
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -881,7 +868,7 @@ namespace cardKit {
     export function getContainerCardCount(
         container: cardCore.CardContainer
     ): number {
-        return !! container ? container.getCardCount() : -1
+        return !! container ? container.count : -1
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -904,7 +891,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         layer: number
     ) {
-        container.setDepth(layer)
+        container.z = layer
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -915,7 +902,7 @@ namespace cardKit {
         container: cardCore.CardContainer,
         design: cardDesign.CardDesignTemplate
     ) {
-        container.setDesign(design.export())
+        container.design = design.export()
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -925,7 +912,7 @@ namespace cardKit {
     export function setContainerDrawEmptySlots(
         container: cardCore.CardContainer,
     ) {
-        container.setCardIsInvisibleWhenEmpty(false)
+        container.showEmpty = true
     }
 
     //% group="Stack/Spread/Grid Operations"
@@ -934,34 +921,21 @@ namespace cardKit {
     export function shuffleCards(container: cardCore.CardContainer) {
         container.shuffle()
     }
-
-    //% group="Stack Operations" blockSetVariable="myContainer"
-    //% block="split from $stack top $count cards"
-    //% stack.shadow="variables_get" stack.defl="myContainer"
-    //% count.defl=10
-    export function splitStack(stack: cardCore.CardStack, count: number): cardCore.CardStack {
-        return stack.split(count)
-    }
-
-    //% group="Stack Operations"
-    //% block="flip entire stack $stack"
-    //% stack.shadow="variables_get" stack.defl="myContainer"
-    export function flipEntireStack(stack: cardCore.CardStack) {
-        stack.flipStack()
-    }
         
     //% group="Stack Operations"
-    //% block="flip stack $stack top card"
+    //% block="flip stack $stack top card $face"
     //% stack.shadow="variables_get" stack.defl="myContainer"
-    export function flipStackTopCard(stack: cardCore.CardStack) {
-        stack.flipTopCard()
+    export function flipStackTopCard(stack: cardCore.CardStack, face: CardFaces) {
+        if(face !== CardFaces.Unchanged) {
+            stack.topIsFaceUp = face === CardFaces.Up
+        }
     }
         
     //% group="Spread/Grid Operations"
     //% block="set spread or grid $container cursor wrapping to $isWrappingSelection"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function setCardLayoutWrapping(container: cardCore.CardSpread | cardCore.CardGrid, isWrappingSelection: boolean) {
-        container.isWrappingSelection = isWrappingSelection            
+        container.wrapSelection = isWrappingSelection            
     }
 
     //% group="Spread/Grid Operations"
@@ -978,26 +952,6 @@ namespace cardKit {
     //% spacing.defl=1
     export function destroyCardLayoutCards(container: cardCore.CardContainer) {
         container.destroy()
-    }
-
-    //% group="Spread Operations"
-    //% block="set spread $spread cursor card offset $distance px $direction"
-    //% spread.shadow="variables_get" spread.defl="myContainer"
-    //% distance.defl=10    
-    export function setSpreadHover(spread: cardCore.CardSpread, direction: PointerDirections, distance: number) {
-        let offsetX = 0
-        switch (direction) {
-            case PointerDirections.Left: offsetX = -distance; break;
-            case PointerDirections.Right: offsetX = distance; break;
-        }
-        
-        let offsetY = 0
-        switch (direction) {
-            case PointerDirections.Up: offsetY = -distance; break;
-            case PointerDirections.Down: offsetY = distance; break;
-        }
-
-        spread.setHoverOffset(offsetX, offsetY)
     }
 
     //% group="Grid Operations"

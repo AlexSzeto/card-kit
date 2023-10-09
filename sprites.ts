@@ -26,14 +26,14 @@ enum CardCursorAnchors {
 }
 
 enum CardLayoutDirections {
-    //% block="centered left right"
+    //% block="left and right from center"
     CenteredLeftRight,
     //% block="left to right"
     LeftToRight,
     //% block="right to left"
     RightToLeft,
 
-    //% block="centered up down"
+    //% block="up and down from center"
     CenteredUpDown,
     //% block="top to bottom"
     TopToBottom,
@@ -52,9 +52,7 @@ enum CardFaces {
 
 namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
-
-    let DEFAULT_FLIP_DURATION = 300
-    // let cursorZ = 1000
+    const DEFAULT_FLIP_DURATION = 300
 
     function activate(sprite: Sprite, kind: number) {
         const scene = game.currentScene();
@@ -68,18 +66,23 @@ namespace cardCore {
     export const EMPTY_CARD_DATA = new CardData([])
     
     export class Card extends Sprite {
+        private _design: CardDesign
         private _stamp: string
         private _showEmpty: boolean
         private _faceUp: boolean
         private _card: CardData
 
         constructor(
-            private _design: CardDesign,
+            design: CardDesign,
             public data: CardData,
             public container: CardContainer,
             faceUp: boolean
         ) {
-            super(_design.createCardBaseImage())
+            super(!!design
+                ? design.createCardBaseImage()
+                : image.create(1, 1)
+            )
+            this.design = design
             this._faceUp = faceUp
             this._card = data
             this._showEmpty = false
@@ -106,8 +109,11 @@ namespace cardCore {
         }
 
         set design(value: CardDesign) {
-            if (this._design != value) {
+            if (!!value && this._design != value) {
                 this._design = value
+                this.setImage(this._design.createCardBaseImage())
+                this._x = Fx8(Fx.toFloat(this._x) - this.image.width / 2)
+                this._y = Fx8(Fx.toFloat(this._y) - this.image.height / 2)
                 this.refreshImage()
             }
         }
@@ -156,6 +162,9 @@ namespace cardCore {
         }
 
         refreshImage() {
+            if (!this.design) {
+                return
+            }
             this.image.fill(0)
             if (this.isEmpty && !this._showEmpty) {
                 return
@@ -220,7 +229,7 @@ namespace cardCore {
     }
 
     const cardEvents: CardEvent[] = []
-    function triggerCardSelectEvents(card: Card) {
+    export function dispatchActivateEvents(card: Card) {
         const container = card.container
         if (!container) {
             return
@@ -245,25 +254,35 @@ namespace cardCore {
 
     export const LAST_CARD_INDEX = -2
 
-    export class CardContainer {
-        protected empty: Card
-        protected cards: Card[]
+    export class CardContainer {        
+        private _kind: number
         protected _design: CardDesign
         protected _z: number
+        protected _visible: boolean
+
         protected _spacing: number
         protected _wrapSelection: boolean
-        protected _visible: boolean
         protected _showEmpty: boolean
+
+        protected empty: Card
+        protected cards: Card[]
 
         constructor(
             protected x: number,
             protected y: number,
-            private _kind: number,
+            kind: number,
         ) {
+            this._kind = kind
+            this._design = null
             this._z = DEFAULT_CONTAINER_Z
-            this._showEmpty = true
             this._visible = true
+
+            this._spacing = 1
+            this._wrapSelection = false
+            this._showEmpty = true
+
             this.empty = new Card(this._design, EMPTY_CARD_DATA, this, true)
+            this.cards = []
         }
 
         get isCardContainer(): boolean {
@@ -276,6 +295,10 @@ namespace cardCore {
 
         get count(): number {
             return this.cards.reduce((count, card) => count + (card.isEmpty ? 0 : 1), 0)
+        }
+
+        get max(): number {
+            return this.cards.length
         }
 
         setPosition(x: number, y: number): void {
@@ -311,9 +334,12 @@ namespace cardCore {
                 this.refresh()
             }
         }
+        get design(): CardDesign { return this._design }
 
         set showEmpty(value: boolean) {
             this._showEmpty = value
+            this.empty.showEmpty = value
+
             for (let card of this.cards) {
                 card.showEmpty = value
             }
@@ -332,9 +358,9 @@ namespace cardCore {
 
         getCard(index: number): Card {
             if (index == LAST_CARD_INDEX) {
-                index = this.cards.length - 1
+                index = this.max - 1
             }
-            if (index == null || index < 0 || index > this.cards.length - 1) {
+            if (index == null || index < 0 || index > this.max - 1) {
                 return null
             }
             return this.cards[index]
@@ -345,8 +371,8 @@ namespace cardCore {
         }
 
         shuffle(): void {
-            for (let i = 0; i < this.cards.length; i++) {
-                const j = randint(0, this.cards.length - 1)
+            for (let i = 0; i < this.max; i++) {
+                const j = randint(0, this.max - 1)
                 const temp = this.cards[i]
                 this.cards[i] = this.cards[j]
                 this.cards[j] = temp
@@ -375,12 +401,10 @@ namespace cardCore {
             } else {
                 this.cards.insertAt(index, card)
             }
-            // TODO: adjust card Z
             this.refresh()
 
-            // TODO: move this elsewhere            
-            if (this.cards.length === 1 && getCursorContainer() === this) {
-                pointCursorAt(card)
+            if (this.max === 1 && cardCursor.selectedContainer() === this) {
+                cardCursor.select(card)
             }
         }
 
@@ -390,16 +414,7 @@ namespace cardCore {
                 return card
             }
 
-            // TODO: move this elsewhere
-            if (getCursorCard() === card) {
-                if (this.cards.length === 1) {
-                    removeCursor()
-                } else if (index === this.cards.length - 1) {
-                    pointCursorAt(this.cards[index - 1])
-                } else {
-                    pointCursorAt(this.cards[index + 1])
-                }
-            }
+            this.deselect(index)
 
             extraAnimations.clearAnimations(card, true)
             card.resetTransforms()
@@ -427,12 +442,8 @@ namespace cardCore {
             this.cards.insertAt(index, blank)
             this.refresh()
 
-            // TODO: move this elsewhere
-            if (this.count === 0) {
-                removeCursor()
-            } else if (getCursorCard() === card) {
-                pointCursorAt(blank)
-            }
+            this.deselect(index)
+            cardCursor.select(blank)
 
             return card
         }
@@ -442,24 +453,11 @@ namespace cardCore {
                 card.destroy()
             }
             this.cards = []
-        }
-        
-        // TODO: move this elsewhere
-        getCursorIndex(): number {
-            const index = this.cards.indexOf(getCursorCard())
-            return index >= 0 ? index : null
-        }
-
-        moveCursorIntoContainer(): void {
-            if (this.cards.length < 1) {
-                return
-            }
-            pointCursorAt(this.cards[0])
-        }
+        }        
 
         protected refreshEmptyCard(): void { 
             if (this.count === 0) {
-                this.empty.visible = this._showEmpty
+                this.empty.visible = true
                 this.empty.setPosition(this.x, this.y)
                 this.empty.z = this._z
             } else {
@@ -467,7 +465,56 @@ namespace cardCore {
             }
         }
 
-        refresh(): void {}
+        refresh(): void { }
+
+        set cursorIndex(index: number) {
+            if (index === LAST_CARD_INDEX) {
+                index = this.max - 1
+            }
+            if (index < 0 || index >= this.max) {
+                return
+            }
+            cardCursor.select(this.cards[index])
+        }
+        
+        get cursorIndex(): number {
+            return this.cards.indexOf(cardCursor.selectedCard())
+        }
+
+        startSelection(): void {
+            if (cardCursor.selectedContainer() !== this) {
+                return
+            }
+
+            if (this.cursorIndex >= 0) {
+                return
+            }
+
+            if (this.max < 1) {
+                cardCursor.select(this.empty)
+            } else {
+                cardCursor.select(this.cards[0])
+            }
+        }
+
+        protected deselect(index: number): void {
+            if (this.cursorIndex != index) {
+                return
+            }
+
+            if (this.max === 1) {
+                cardCursor.select(this.empty)
+            } else if (index === this.max - 1) {
+                cardCursor.select(this.cards[index - 1])
+            } else {
+                cardCursor.select(this.cards[index + 1])
+            }
+        }
+
+        selectLeft(): void { }
+        selectRight(): void { }
+        selectUp(): void { }
+        selectDown(): void { }
     }
 }
 
@@ -504,7 +551,7 @@ namespace cardCore {
             }
         }
 
-        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
+        insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
             if (!card) {
                 return
             }
@@ -519,22 +566,14 @@ namespace cardCore {
         }
 
         removeCardAt(index: number): Card {
-            const card = super.removeCardAt(index)
-
-            if (!card) {
-                return card
-            }
-
+            const card = this.getCard(index)
             const stackIndex = this.stackedCards.indexOf(card)
             if (stackIndex >= 0) {
-                this.stackedCards.splice(this.stackedCards.indexOf(card), 1)
+                this.stackedCards.splice(stackIndex, 1)
             }
 
+            super.removeCardAt(index)
             return card
-        }
-
-        removeCard(card: Card): void {
-            this.removeCardAt(this.cards.indexOf(card))
         }
         
         destroy(): void {
@@ -569,7 +608,7 @@ namespace cardCore {
             const topY = this.y - this.design.getStackThickness(this.stackedCards.length)
 
             let findingTopCard = true
-            for (let i = 0; i < this.cards.length; i++) {
+            for (let i = 0; i < this.max; i++) {
                 const card = this.cards[i]
                 if (this.stackedCards.indexOf(card) >= 0) {
                     card.setPosition(this.x, topY)
@@ -591,8 +630,11 @@ namespace cardCore {
                         this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET,
                         DEFAULT_SLIDE_DURATION,
                         () => {
-                            this.stackedCards.push(card)
-                            this.refresh()
+                            if (this.cards.indexOf(card) >= 0) {
+                                this.stackedCards.push(card)
+                                console.log(this.stackedCards.length)
+                                // this.refresh()
+                            }
                         }
                     )
                 }
@@ -601,10 +643,12 @@ namespace cardCore {
 
         insertData(data: CardData[]) {
             if (!!this.design) {
-                this.cards = data
+                const insert = this.cards = data
                     .map(cardData => new Card(this.design, cardData, this, this._stackIsFaceUp))
-                    .concat(this.cards)
+                this.cards = insert.concat(this.cards)
+                this.stackedCards = insert.concat(this.stackedCards)
                 this.refresh()
+                this.startSelection()
             }
         }
     }
@@ -662,8 +706,8 @@ namespace cardCore {
                 offsetY = -offsetY
             }
 
-            const width = (this._design.width + this._spacing) * this.cards.length - this._spacing
-            const height = (this._design.height + this._spacing) * this.cards.length - this._spacing
+            const width = (this._design.width + this._spacing) * this.max - this._spacing
+            const height = (this._design.height + this._spacing) * this.max - this._spacing
             
             switch (this._direction) {
                 case CardLayoutDirections.RightToLeft:
@@ -680,7 +724,7 @@ namespace cardCore {
                     break
             }
 
-            for (let i = 0; i < this.cards.length; i++) {
+            for (let i = 0; i < this.max; i++) {
                 const card = this.cards[i]
                 card.z = this._z + this._spacing >= 0 ? 0 : i + DEFAULT_TRANSITION_Z_OFFSET
                 extraAnimations.slide(
@@ -694,35 +738,42 @@ namespace cardCore {
             }
         }
 
-        // moveCursorToIndex(index: number) {
-        //     if (index >= 0 && index < this.cards.length) {
-        //         pointCursorAt(this.cards[index])                
-        //     } else if (this.cards.length >= 1) {
-        //         pointCursorAt(this.cards[0])
-        //     }
-        // }
+        private selectByOffset(offset: number) {
+            const index = this.cursorIndex
+            if (index >= 0) {
+                if (this._wrapSelection) {
+                    this.cursorIndex = ((index + this.max + offset) % this.max)
+                } else {
+                    this.cursorIndex = (Math.min(this.max - 1, Math.max(0, index + offset)))
+                }
+            } else {
+                this.startSelection()
+            }
+        }
 
-        // private moveCursorIndexByOffset(offset: number) {
-        //     const index = this.cards.indexOf(getCursorCard())
-        //     if (index >= 0) {
-        //         if (this.isWrappingSelection) {
-        //             this.moveCursorToIndex((index + this.cards.length + offset) % this.cards.length)
-        //         } else {
-        //             this.moveCursorToIndex(Math.min(this.cards.length - 1, Math.max(0, index + offset)))
-        //         }
-        //     } else {
-        //         this.moveCursorToIndex(-1)
-        //     }
-        //     this.refresh()
-        // }
+        selectLeft(): void {
+            if (this.isHorizonal) {
+                this.selectByOffset(-1)
+            }
+        }
 
-        // moveCursorForward() {
-        //     this.moveCursorIndexByOffset(1)
-        // }
+        selectRight(): void {
+            if (this.isHorizonal) {
+                this.selectByOffset(1)
+            }
+        }
 
-        // moveCursorBack() {
-        //     this.moveCursorIndexByOffset(-1)
-        // }
+        selectUp(): void {
+            if (!this.isHorizonal) {
+                this.selectByOffset(-1)
+            }
+        }
+
+        selectDown(): void {
+            if (!this.isHorizonal) {
+                this.selectByOffset(1)
+            }
+        }
     }
 }
 
@@ -780,8 +831,8 @@ namespace cardCore {
             }
 
             const filler = this.scrollUpDown
-                ? this.columns - (this.cards.length % this.columns)
-                : this.rows - (this.cards.length % this.rows)
+                ? this.columns - (this.max % this.columns)
+                : this.rows - (this.max % this.rows)
             
             for (let i = 0; i < filler; i++) {
                 this.cards.push(new Card(this._design, EMPTY_CARD_DATA, this, true))
@@ -791,18 +842,10 @@ namespace cardCore {
 
         unlock() {
             this._locked = false
-            for (let i = 0; i < this.cards.length; i++) {
+            for (let i = 0; i < this.max; i++) {
                 const card = this.cards[i]
                 if (card.isEmpty) {
-                    // if (getCursorCard() === card) {
-                    //     if (this.cards.length === 1) {
-                    //         removeCursor()
-                    //     } else if (i > 0) {
-                    //         pointCursorAt(this.cards[i - 1])
-                    //     } else {
-                    //         pointCursorAt(this.cards[i + 1])
-                    //     }
-                    // }
+                    this.deselect(i)
                     card.destroy()
                     this.cards.splice(i, 1)
                     i--
@@ -817,7 +860,7 @@ namespace cardCore {
             }
 
             super.refreshEmptyCard()
-            if (this.cards.length === 0) {
+            if (this.max === 0) {
                 this.back.setFlag(SpriteFlag.Invisible, true)
                 this.forward.setFlag(SpriteFlag.Invisible, true)
                 return
@@ -858,9 +901,9 @@ namespace cardCore {
 
             // Calculate scroll
             if (this.scrollUpDown) {
-                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.cards.length / this.columns) - this.rows))
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.max / this.columns) - this.rows))
             } else {
-                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.cards.length / this.rows) - this.columns))
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.max / this.rows) - this.columns))
             }
             const scrolling: boolean = Math.abs(this.startLine - this.scrollLine) == 1
             const scrollDirection = this.scrollLine - this.startLine
@@ -894,14 +937,15 @@ namespace cardCore {
                 : this.startLine * this.rows
             const lastIndex = firstIndex + this.rows * this.columns
 
+            // Update cursor
+            const cursorIndex = this.cursorIndex
+            if (cursorIndex >= 0 && (cursorIndex < firstIndex || cursorIndex >= lastIndex)) {
+                this.cursorIndex = Math.max(firstIndex, Math.min(lastIndex - 1, cursorIndex))
+            }
+
             let index = firstIndex
             let row = 0
             let column = 0
-
-            // const cursorIndex = this.cards.indexOf(getCursorCard())
-            // if (cursorIndex >= 0 && (cursorIndex < index || cursorIndex >= lastIndex)) {
-            //     pointCursorAt(this.cards[Math.max(index, Math.min(lastIndex - 1, cursorIndex))])
-            // }
 
             // Reset animations
             for (let card of this.cards) {
@@ -992,7 +1036,7 @@ namespace cardCore {
                     }
                 }
                 index++
-            } while (index < this.cards.length && index < lastIndex)
+            } while (index < this.max && index < lastIndex)
             this.lastShown = nextShown
             
             // Update indicators visibility
@@ -1001,8 +1045,8 @@ namespace cardCore {
             }
             if (!!this.forward) {
                 this.forward.setFlag(SpriteFlag.Invisible, this.scrollUpDown
-                    ? this.startLine + this.rows >= Math.ceil(this.cards.length / this.columns)
-                    : this.startLine + this.columns >= Math.ceil(this.cards.length / this.rows)
+                    ? this.startLine + this.rows >= Math.ceil(this.max / this.columns)
+                    : this.startLine + this.columns >= Math.ceil(this.max / this.rows)
                 )
             }
         }
@@ -1013,237 +1057,226 @@ namespace cardCore {
                 : super.removeCardAt(index)
         }
 
-        // moveCursorToIndex(index: number) {
-        //     if (this.cards.length === 0) {
-        //         return
-        //     }
-        //     if (index < 0 || index >= this.cards.length) {
-        //         index = 0
-        //     }
-        //     this.scrollLine = this.startLine
-        //     if(this.scrollLeftRight) {
-        //         if(index < this.startLine * this.rows) {
-        //             this.scrollLine = Math.floor(index / this.rows)
-        //         } else if(index > (this.startLine + this.columns - 1) * this.rows) {
-        //             this.scrollLine = Math.floor(index / this.rows - (this.columns - 1))
-        //         }
-        //     } else {
-        //         if(index < this.startLine * this.columns) {
-        //             this.scrollLine = Math.floor(index / this.columns)
-        //         } else if(index > (this.startLine + this.rows - 1) * this.columns) {
-        //             this.scrollLine = Math.floor(index / this.columns - (this.rows - 1))
-        //         }
-        //     }
-        //     if(this.startLine !== this.scrollLine) {
-        //         this.refresh()
-        //     }
-        //     pointCursorAt(this.cards[index])
-        // }
-        
-        // private moveCursorIndexByOffset(rowOffset: number, columnOffset: number) {
-        //     let index = this.getCursorIndex()
-        //     if (index < 0) {
-        //         this.moveCursorToIndex(0)
-        //         return
-        //     }
+        private scrollToSelect(index: number) {
+            this.cursorIndex = index
+            if (this.cursorIndex < 0) {
+                return
+            }
 
-        //     let row = this.scrollLeftRight
-        //         ? index % this.rows
-        //         : Math.floor(index / this.columns)
-        //     let column = this.scrollLeftRight
-        //         ? Math.floor(index / this.rows)
-        //         : index % this.columns
-        //     let maxRow = this.scrollLeftRight
-        //         ? this.rows
-        //         : Math.ceil(this.cards.length / this.columns)
-        //     let maxColumn = this.scrollLeftRight
-        //         ? Math.ceil(this.cards.length / this.rows)
-        //         : this.columns
-        //     row += rowOffset
-        //     column += columnOffset
+            this.scrollLine = this.startLine
+            if(this.scrollUpDown) {
+                if(index < this.startLine * this.columns) {
+                    this.scrollLine = Math.floor(index / this.columns)
+                } else if(index > (this.startLine + this.rows - 1) * this.columns) {
+                    this.scrollLine = Math.floor(index / this.columns - (this.rows - 1))
+                }
+            } else {
+                if(index < this.startLine * this.rows) {
+                    this.scrollLine = Math.floor(index / this.rows)
+                } else if(index > (this.startLine + this.columns - 1) * this.rows) {
+                    this.scrollLine = Math.floor(index / this.rows - (this.columns - 1))
+                }
+            }
 
-        //     if (this.isWrappingSelection) {
-        //         if (row < 0) {
-        //             row = maxRow + row
-        //         } else if (row >= maxRow) {
-        //             row -= maxRow
-        //         }
-        //         if (column < 0) {
-        //             column = maxColumn + column
-        //         } else if (column >= maxColumn) {
-        //             column -= maxColumn
-        //         }
-        //     } else {
-        //         row = Math.max(0, Math.min(row, maxRow - 1))
-        //         column = Math.max(0, Math.min(column, maxColumn - 1))
-        //     }
+            if(this.startLine !== this.scrollLine) {
+                this.refresh()
+            }
+        }
 
-        //     index = this.scrollLeftRight
-        //         ? column * this.rows + row
-        //         : row * this.columns + column            
-        //     if (index >= this.cards.length) {
-        //         index = this.cards.length - 1
-        //     }
-        //     this.moveCursorToIndex(index)
-        // }
+        private selectOffset(rowOffset: number, columnOffset: number) {
+            let index = this.cursorIndex
+            if (index < 0) {
+                this.startSelection()
+                return
+            }
 
-        // moveCursorLeft() {
-        //     this.moveCursorIndexByOffset(0, -1)
-        // }
+            let row = this.scrollUpDown
+                ? Math.floor(index / this.columns)
+                : index % this.rows
+            let column = this.scrollUpDown
+                ? index % this.columns
+                : Math.floor(index / this.rows)
+            const bottom = this.scrollUpDown
+                ? Math.ceil(this.max / this.columns)
+                : this.rows
+            const right = this.scrollUpDown
+                ? this.columns
+                : Math.ceil(this.max / this.rows)
+            
+            row += rowOffset
+            column += columnOffset
 
-        // moveCursorRight() {
-        //     this.moveCursorIndexByOffset(0, 1)
-        // }
+            if (this._wrapSelection) {
+                if (row < 0) {
+                    row = bottom + row
+                } else if (row >= bottom) {
+                    row -= bottom
+                }
+                if (column < 0) {
+                    column = right + column
+                } else if (column >= right) {
+                    column -= right
+                }
+            } else {
+                row = Math.max(0, Math.min(row, bottom - 1))
+                column = Math.max(0, Math.min(column, right - 1))
+            }
 
-        // moveCursorUp() {
-        //     this.moveCursorIndexByOffset(-1, 0)
-        // }
+            index = this.scrollUpDown
+                ? row * this.columns + column
+                : column * this.rows + row
+            if (index >= this.max) {
+                index = this.max - 1
+            }
 
-        // moveCursorDown() {
-        //     this.moveCursorIndexByOffset(1, 0)
-        // }
+            this.scrollToSelect(index)
+        }
+
+        selectLeft() {
+            this.selectOffset(0, -1)
+        }
+
+        selectRight() {
+            this.selectOffset(0, 1)
+        }
+
+        selectUp() {
+            this.selectOffset(-1, 0)
+        }
+
+        selectDown() {
+            this.selectOffset(1, 0)
+        }
     }
 }
 
-namespace cardCore {
-    let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
-    let cursorExtraOffsetX = 0
-    let cursorExtraOffsetY = 0
-    let cursorOffsetX = 0
-    let cursorOffsetY = 0
-    let cursorContainer: CardContainer = null
-    let cursorTarget: Sprite = null
-    const cursor = sprites.create(img`
-        . . . f f . . . .
-        . . f 1 1 f . . .
-        . . f 1 1 f . . .
-        . . f 1 1 f f . .
-        . f f 1 1 b b f .
-        f 1 f 1 1 d d d f
-        f 1 d 1 1 1 1 1 f
-        . f d 1 1 1 1 1 f
-        . . f d 1 1 1 d f
-        . . . f f f f f .
-    `, SpriteKind.Cursor)
-    cursor.z = cursorZ
+namespace cardCursor {
+    const DEFAULT_CURSOR_Z = 1000
+
+    let anchor: CardCursorAnchors = CardCursorAnchors.Bottom
+    let targetOffsetX = 0
+    let targetOffsetY = 0
+    let extraOffsetX = 0
+    let extraOffsetY = 0
+    
+    let container: cardCore.CardContainer = null
+    let target: Sprite = null
+
+    const cursor = sprites.create(image.create(1, 1), SpriteKind.Cursor)
+    cursor.z = DEFAULT_CURSOR_Z
     cursor.setFlag(SpriteFlag.Invisible, true)
 
     game.onUpdate(() => {
         if (!!cursor) {
-            if (!!cursorTarget) {
-                updateCursorOffset()
-                cursor.x = Math.round((cursorTarget.x + cursor.x + cursorOffsetX) / 2)
-                cursor.y = Math.round((cursorTarget.y + cursor.y + cursorOffsetY) / 2)
+            if (!!target) {
+                updateOffset()
+                cursor.x = Math.round((target.x + cursor.x + targetOffsetX) / 2)
+                cursor.y = Math.round((target.y + cursor.y + targetOffsetY) / 2)
             }
         }
     })
 
-    export function getCursorSprite(): Sprite {
-        return cursor
-    }
-    
-    export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
-        cursorAnchor = anchor
-        cursorExtraOffsetX = x
-        cursorExtraOffsetY = y
+    export function setImage(image: Image) {
+        cursor.setImage(image)
+        cursor._x = Fx8(Fx.toFloat(cursor._x) - image.width / 2)
+        cursor._y = Fx8(Fx.toFloat(cursor._y) - image.height / 2)
     }
 
-    export function updateCursorOffset() {
-        if (!cursorTarget) {
+    export function setAnchor(anchor: CardCursorAnchors, offsetX: number = 0, offsetY: number = 0) {
+        anchor = anchor
+        extraOffsetX = offsetX
+        extraOffsetY = offsetY
+    }
+
+    function updateOffset() {
+        if (!target) {
             return
         }
-        switch (cursorAnchor) {
+        switch (anchor) {
             case CardCursorAnchors.Left:
             case CardCursorAnchors.TopLeft:
             case CardCursorAnchors.BottomLeft:
-                cursorOffsetX = -cursorTarget.width / 2
+                targetOffsetX = -target.width / 2
                 break
             case CardCursorAnchors.Right:
             case CardCursorAnchors.TopRight:
             case CardCursorAnchors.BottomRight:
-                cursorOffsetX = cursorTarget.height / 2
+                targetOffsetX = target.height / 2
                 break
             case CardCursorAnchors.Center:
-                cursorOffsetX = 0
+                targetOffsetX = 0
             }
-        switch (cursorAnchor) {
+        switch (anchor) {
             case CardCursorAnchors.Top:
             case CardCursorAnchors.TopLeft:
             case CardCursorAnchors.TopRight:
-                cursorOffsetY = -cursorTarget.height / 2
+                targetOffsetY = -target.height / 2
                 break
             case CardCursorAnchors.Bottom:
             case CardCursorAnchors.BottomLeft:
             case CardCursorAnchors.BottomRight:
-                cursorOffsetY = cursorTarget.height / 2
+                targetOffsetY = target.height / 2
                 break
             case CardCursorAnchors.Center:
-                cursorOffsetY = 0
+                targetOffsetY = 0
         }
-        cursorOffsetX += cursorExtraOffsetX
-        cursorOffsetY += cursorExtraOffsetY
+        targetOffsetX += extraOffsetX
+        targetOffsetY += extraOffsetY
     }
 
-    export function pointCursorAt(target: any) {
-        if (!target) {
-            removeCursor()
-            return
-        }
-        const hasPreviousTarget = !!cursorTarget
+    export function select(next: any) {
+        const prev = target
 
-        if (target instanceof Sprite) {
-            cursorTarget = target
-        } else if (target.isCardContainer()) {
-            (target as CardContainer).moveCursorIntoContainer()
+        if (next instanceof cardCore.Card) {
+            target = next
+            container = next.container
+        } else if (next instanceof cardCore.CardContainer) {
+            container = next
+            container.startSelection()
             return
+        } else if (next instanceof Sprite) {
+            target = next
+            container = null
         } else {
-            removeCursor()
+            deselect()
             return
-        }
-
-        if (cursorTarget instanceof Card) {
-            cursorContainer = (cursorTarget as Card).container
-        }
-        if (cursorTarget instanceof CardStack) {
-            cursorContainer = cursorTarget
         }
             
         cursor.setFlag(SpriteFlag.Invisible, false)
-        updateCursorOffset()
-        if (!hasPreviousTarget) {
-            cursor.x = cursorTarget.x + cursorOffsetX
-            cursor.y = cursorTarget.y + cursorOffsetY
+        updateOffset()
+        if (!prev) {
+            cursor.x = target.x + targetOffsetX
+            cursor.y = target.y + targetOffsetY
         }
     }
 
-    export function removeCursor() {
-        cursorTarget = null
+    export function deselect() {
+        target = null
+        container = null
         cursor.setFlag(SpriteFlag.Invisible, true)
     }
 
-    export function getCursorContainer(): CardContainer {
-        return cursorContainer
+    export function selectedSprite(): Sprite {
+        return target
     }
 
-    export function preselectCursorContainer(container: CardContainer) {
-        cursorContainer = container
-    }
-
-    export function getCursorTarget(): Sprite {
-        return cursorTarget
-    }
-
-    export function getCursorCard(): Card {
-        if (!!cursorTarget && cursorTarget instanceof Card) {
-            return cursorTarget
+    export function selectedCard(): cardCore.Card {
+        if (!!target && target instanceof cardCore.Card) {
+            return target
         } else {
             return null
         }
     }
 
-    export function selectCursorCard() {
-        if(!!cursorTarget && cursorTarget instanceof Card) {
-            triggerCardSelectEvents(cursorTarget)
+    export function selectedContainer(): cardCore.CardContainer {
+        return container
+    }
+
+    export function activateCard() {
+        const card = selectedCard()
+        if (!card) {
+            return
         }
+        cardCore.dispatchActivateEvents(card)
     }
 }
