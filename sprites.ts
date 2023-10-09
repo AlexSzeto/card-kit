@@ -63,7 +63,7 @@ namespace cardCore {
             .forEach(h => h.handler(sprite));
     }
 
-    export const EMPTY_CARD_DATA = new CardData([])
+    export const EMPTY_CARD_DATA = new CardData()
     
     export class Card extends Sprite {
         private _design: CardDesign
@@ -78,11 +78,8 @@ namespace cardCore {
             public container: CardContainer,
             faceUp: boolean
         ) {
-            super(!!design
-                ? design.createCardBaseImage()
-                : image.create(1, 1)
-            )
-            this.design = design
+            super(design.createCardBaseImage())
+            this._design = design
             this._faceUp = faceUp
             this._card = data
             this._showEmpty = false
@@ -162,9 +159,6 @@ namespace cardCore {
         }
 
         refreshImage() {
-            if (!this.design) {
-                return
-            }
             this.image.fill(0)
             if (this.isEmpty && !this._showEmpty) {
                 return
@@ -268,12 +262,13 @@ namespace cardCore {
         protected cards: Card[]
 
         constructor(
+            design: CardDesign,
             protected x: number,
             protected y: number,
             kind: number,
         ) {
+            this._design = design
             this._kind = kind
-            this._design = null
             this._z = DEFAULT_CONTAINER_Z
             this._visible = true
 
@@ -297,7 +292,7 @@ namespace cardCore {
             return this.cards.reduce((count, card) => count + (card.isEmpty ? 0 : 1), 0)
         }
 
-        get max(): number {
+        get slots(): number {
             return this.cards.length
         }
 
@@ -323,7 +318,7 @@ namespace cardCore {
             this._wrapSelection = value
         }
 
-        set design(value: CardDesign) {
+        protected setDesign(value: CardDesign) {
             this._design = value
             this.empty.design = value
 
@@ -334,6 +329,11 @@ namespace cardCore {
                 this.refresh()
             }
         }
+
+        set design(value: CardDesign) {
+            this.setDesign(value)
+        }
+
         get design(): CardDesign { return this._design }
 
         set showEmpty(value: boolean) {
@@ -358,9 +358,9 @@ namespace cardCore {
 
         getCard(index: number): Card {
             if (index == LAST_CARD_INDEX) {
-                index = this.max - 1
+                index = this.slots - 1
             }
-            if (index == null || index < 0 || index > this.max - 1) {
+            if (index == null || index < 0 || index > this.slots - 1) {
                 return null
             }
             return this.cards[index]
@@ -371,8 +371,8 @@ namespace cardCore {
         }
 
         shuffle(): void {
-            for (let i = 0; i < this.max; i++) {
-                const j = randint(0, this.max - 1)
+            for (let i = 0; i < this.slots; i++) {
+                const j = randint(0, this.slots - 1)
                 const temp = this.cards[i]
                 this.cards[i] = this.cards[j]
                 this.cards[j] = temp
@@ -383,10 +383,6 @@ namespace cardCore {
         insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
             if (!card) {
                 return
-            }
-
-            if (!this._design) {
-                this.design = card.design
             }
 
             card.detachFromContainer()
@@ -402,8 +398,9 @@ namespace cardCore {
                 this.cards.insertAt(index, card)
             }
             this.refresh()
+            card.z += DEFAULT_TRANSITION_Z_OFFSET
 
-            if (this.max === 1 && cardCursor.selectedContainer() === this) {
+            if (this.slots === 1 && cardCursor.selectedContainer() === this) {
                 cardCursor.select(card)
             }
         }
@@ -469,9 +466,9 @@ namespace cardCore {
 
         set cursorIndex(index: number) {
             if (index === LAST_CARD_INDEX) {
-                index = this.max - 1
+                index = this.slots - 1
             }
-            if (index < 0 || index >= this.max) {
+            if (index < 0 || index >= this.slots) {
                 return
             }
             cardCursor.select(this.cards[index])
@@ -490,7 +487,7 @@ namespace cardCore {
                 return
             }
 
-            if (this.max < 1) {
+            if (this.slots < 1) {
                 cardCursor.select(this.empty)
             } else {
                 cardCursor.select(this.cards[0])
@@ -502,9 +499,9 @@ namespace cardCore {
                 return
             }
 
-            if (this.max === 1) {
+            if (this.slots === 1) {
                 cardCursor.select(this.empty)
-            } else if (index === this.max - 1) {
+            } else if (index === this.slots - 1) {
                 cardCursor.select(this.cards[index - 1])
             } else {
                 cardCursor.select(this.cards[index + 1])
@@ -524,17 +521,27 @@ namespace cardCore {
         private stack: Sprite
         private stackedCards: Card[]
         private _topIsFaceUp: boolean
+        private _stackIsFaceUp: boolean
 
         constructor(
+            design: CardDesign,
             x: number,
             y: number,
             kind: number,
-            private _stackIsFaceUp: boolean,
+            stackIsFaceUp: boolean,
         ) {
-            super(x, y, kind)
-            this.stack = sprites.create(image.create(1, 1), SpriteKind.CardContainer)
+            super(design, x, y, kind)
+            this.stack = sprites.create(design.createStackBaseimage(), SpriteKind.CardContainer)
             this.stackedCards = []
+            this._stackIsFaceUp = stackIsFaceUp
             this._topIsFaceUp = this._stackIsFaceUp
+        }
+
+        protected setDesign(value: CardDesign) {
+            this.stack.setImage(value.createStackBaseimage())
+            this.stack._x = Fx8(Fx.toFloat(this.stack._x) - this.stack.image.width / 2)
+            this.stack._y = Fx8(Fx.toFloat(this.stack._y) - this.stack.image.height / 2)
+            super.setDesign(value)
         }
 
         set stackIsFaceUp(value: boolean) {
@@ -555,13 +562,6 @@ namespace cardCore {
             if (!card) {
                 return
             }
-
-            if (!this._design) {
-                this.stack.setImage(card.design.createStackBaseimage())
-                this.stack._x = Fx8(Fx.toFloat(this.stack._x) - this.stack.image.width / 2);
-                this.stack._y = Fx8(Fx.toFloat(this.stack._y) - this.stack.image.height / 2);
-            }
-
             super.insertCard(card, index, this._stackIsFaceUp ? CardFaces.Up : CardFaces.Down)
         }
 
@@ -583,11 +583,6 @@ namespace cardCore {
         }
 
         public refresh() {
-            if (!this.design) {
-                this.stack.setPosition(this.x, this.y)
-                return
-            }
-
             this.refreshEmptyCard()
             if (this.count === 0) {
                 this.stack.setFlag(SpriteFlag.Invisible, true)
@@ -608,7 +603,7 @@ namespace cardCore {
             const topY = this.y - this.design.getStackThickness(this.stackedCards.length)
 
             let findingTopCard = true
-            for (let i = 0; i < this.max; i++) {
+            for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
                 if (this.stackedCards.indexOf(card) >= 0) {
                     card.setPosition(this.x, topY)
@@ -621,13 +616,14 @@ namespace cardCore {
                         card.visible = false
                     }
                 } else {
+                    console.log(`slide #${i} stack@${this.stackedCards.length}`)
                     card.visible = true
-                    card.z = this._z + DEFAULT_TRANSITION_Z_OFFSET + this.count - i
+                    card.z = this._z + this.count - i
                     extraAnimations.slide(
                         card,
                         this.x,
                         topY,
-                        this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET,
+                        this._z + this.count - i,
                         DEFAULT_SLIDE_DURATION,
                         () => {
                             if (this.cards.indexOf(card) >= 0) {
@@ -643,9 +639,9 @@ namespace cardCore {
 
         insertData(data: CardData[]) {
             if (!!this.design) {
-                const insert = this.cards = data
+                const insert = data
                     .map(cardData => new Card(this.design, cardData, this, this._stackIsFaceUp))
-                this.cards = insert.concat(this.cards)
+                this.cards = insert.slice().concat(this.cards)
                 this.stackedCards = insert.concat(this.stackedCards)
                 this.refresh()
                 this.startSelection()
@@ -657,14 +653,17 @@ namespace cardCore {
 namespace cardCore {
 
     export class CardSpread extends CardContainer {
+        private _direction: CardLayoutDirections
+
         constructor(
+            design: CardDesign,
             x: number,
             y: number,
             kind: number,
-            private _direction: CardLayoutDirections,
+            direction: CardLayoutDirections,
         ) {
-            super(x, y, kind)
-            this._spacing = 1
+            super(design, x, y, kind)
+            this._direction = direction
         }
 
         private get isHorizonal(): boolean {
@@ -679,10 +678,6 @@ namespace cardCore {
         }
 
         refresh() {
-            if (!this.design) {
-                return
-            }
-
             super.refreshEmptyCard()
             if (this.count === 0) {
                 return
@@ -706,8 +701,8 @@ namespace cardCore {
                 offsetY = -offsetY
             }
 
-            const width = (this._design.width + this._spacing) * this.max - this._spacing
-            const height = (this._design.height + this._spacing) * this.max - this._spacing
+            const width = (this._design.width + this._spacing) * this.slots - this._spacing
+            const height = (this._design.height + this._spacing) * this.slots - this._spacing
             
             switch (this._direction) {
                 case CardLayoutDirections.RightToLeft:
@@ -724,7 +719,7 @@ namespace cardCore {
                     break
             }
 
-            for (let i = 0; i < this.max; i++) {
+            for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
                 card.z = this._z + this._spacing >= 0 ? 0 : i + DEFAULT_TRANSITION_Z_OFFSET
                 extraAnimations.slide(
@@ -742,9 +737,9 @@ namespace cardCore {
             const index = this.cursorIndex
             if (index >= 0) {
                 if (this._wrapSelection) {
-                    this.cursorIndex = ((index + this.max + offset) % this.max)
+                    this.cursorIndex = ((index + this.slots + offset) % this.slots)
                 } else {
-                    this.cursorIndex = (Math.min(this.max - 1, Math.max(0, index + offset)))
+                    this.cursorIndex = (Math.min(this.slots - 1, Math.max(0, index + offset)))
                 }
             } else {
                 this.startSelection()
@@ -792,6 +787,7 @@ namespace cardCore {
         private expand: number[]
 
         constructor(
+            design: CardDesign,
             x: number,
             y: number,
             kind: number,
@@ -801,7 +797,7 @@ namespace cardCore {
             private back: Sprite = null,
             private forward: Sprite = null,
         ) {
-            super(x, y, kind)
+            super(design, x, y, kind)
             this.startLine = 0
             this.scrollLine = 0
             this._spacing = 1
@@ -831,8 +827,8 @@ namespace cardCore {
             }
 
             const filler = this.scrollUpDown
-                ? this.columns - (this.max % this.columns)
-                : this.rows - (this.max % this.rows)
+                ? this.columns - (this.slots % this.columns)
+                : this.rows - (this.slots % this.rows)
             
             for (let i = 0; i < filler; i++) {
                 this.cards.push(new Card(this._design, EMPTY_CARD_DATA, this, true))
@@ -842,7 +838,7 @@ namespace cardCore {
 
         unlock() {
             this._locked = false
-            for (let i = 0; i < this.max; i++) {
+            for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
                 if (card.isEmpty) {
                     this.deselect(i)
@@ -855,12 +851,8 @@ namespace cardCore {
         }
 
         refresh() {
-            if (!this.design) {
-                return
-            }
-
             super.refreshEmptyCard()
-            if (this.max === 0) {
+            if (this.slots === 0) {
                 this.back.setFlag(SpriteFlag.Invisible, true)
                 this.forward.setFlag(SpriteFlag.Invisible, true)
                 return
@@ -901,9 +893,9 @@ namespace cardCore {
 
             // Calculate scroll
             if (this.scrollUpDown) {
-                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.max / this.columns) - this.rows))
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.slots / this.columns) - this.rows))
             } else {
-                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.max / this.rows) - this.columns))
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.slots / this.rows) - this.columns))
             }
             const scrolling: boolean = Math.abs(this.startLine - this.scrollLine) == 1
             const scrollDirection = this.scrollLine - this.startLine
@@ -1018,6 +1010,7 @@ namespace cardCore {
                         )
                     }
                 } else {
+                    extraAnimations.clearSlideAnimation(card, false)
                     extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION, null)
                 }
                 nextShown.push(card)
@@ -1036,7 +1029,7 @@ namespace cardCore {
                     }
                 }
                 index++
-            } while (index < this.max && index < lastIndex)
+            } while (index < this.slots && index < lastIndex)
             this.lastShown = nextShown
             
             // Update indicators visibility
@@ -1045,8 +1038,8 @@ namespace cardCore {
             }
             if (!!this.forward) {
                 this.forward.setFlag(SpriteFlag.Invisible, this.scrollUpDown
-                    ? this.startLine + this.rows >= Math.ceil(this.max / this.columns)
-                    : this.startLine + this.columns >= Math.ceil(this.max / this.rows)
+                    ? this.startLine + this.rows >= Math.ceil(this.slots / this.columns)
+                    : this.startLine + this.columns >= Math.ceil(this.slots / this.rows)
                 )
             }
         }
@@ -1097,11 +1090,11 @@ namespace cardCore {
                 ? index % this.columns
                 : Math.floor(index / this.rows)
             const bottom = this.scrollUpDown
-                ? Math.ceil(this.max / this.columns)
+                ? Math.ceil(this.slots / this.columns)
                 : this.rows
             const right = this.scrollUpDown
                 ? this.columns
-                : Math.ceil(this.max / this.rows)
+                : Math.ceil(this.slots / this.rows)
             
             row += rowOffset
             column += columnOffset
@@ -1125,8 +1118,8 @@ namespace cardCore {
             index = this.scrollUpDown
                 ? row * this.columns + column
                 : column * this.rows + row
-            if (index >= this.max) {
-                index = this.max - 1
+            if (index >= this.slots) {
+                index = this.slots - 1
             }
 
             this.scrollToSelect(index)

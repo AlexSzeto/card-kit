@@ -93,6 +93,19 @@ namespace cardDesign {
         return { value: text, drawable: image }
     }
 
+    let current: CardDesignTemplate = createCardDesignTemplate()
+
+    //% group="Create"
+    //% block="set current design to $design"
+    //% design.shadow="variables_get" design.defl="myDesign"
+    export function setCurrentDesign(design: CardDesignTemplate) {
+        current = design
+    }
+
+    export function getCurrent(): cardCore.CardDesign {
+        return current.export()
+    }
+
     //% group="Create" blockSetVariable="myDesign"
     //% block="blank design"
     export function createCardDesignTemplate(): CardDesignTemplate {
@@ -331,12 +344,10 @@ namespace cardDesign {
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
     //% inlineInputMode=inline
-    //% block="empty $design $kind deck"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% block="empty $kind deck"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(design: cardDesign.CardDesignTemplate, kind: number): cardCore.CardStack {
-        const stack = new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
-        stack.design = design.export()
+    export function createEmptyStack(kind: number): cardCore.CardStack {
+        const stack = new cardCore.CardStack(cardDesign.getCurrent(), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
         return stack
     }
 
@@ -446,7 +457,12 @@ namespace cardKit {
     export function createEmptyPile(
         kind: number,
     ): cardCore.CardStack {
-        return new cardCore.CardStack(scene.screenWidth() / 2, scene.screenHeight() / 2, kind, true)
+        return new cardCore.CardStack(
+            cardDesign.getCurrent(),
+            scene.screenWidth() / 2,
+            scene.screenHeight() / 2,
+            kind, true
+        )
     }
 
     //% group="Create" blockSetVariable="myContainer"
@@ -459,6 +475,7 @@ namespace cardKit {
         direction: CardLayoutDirections,
     ): cardCore.CardSpread {
         return new cardCore.CardSpread(
+            cardDesign.getCurrent(),
             scene.screenWidth() / 2,
             scene.screenHeight() / 2,
             kind,
@@ -520,6 +537,7 @@ namespace cardKit {
     ): cardCore.CardGrid {
         const scrollVertical = direction == CardGridScrollDirections.UpDown
         const grid = new cardCore.CardGrid(
+            cardDesign.getCurrent(),
             scene.screenWidth() / 2, scene.screenHeight() / 2,
             kind,
             rows, columns,
@@ -822,9 +840,9 @@ namespace cardKit {
     function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
         switch (position) {
             case CardContainerPositions.First: return 0
-            case CardContainerPositions.Middle: return Math.floor(container.max / 2)
+            case CardContainerPositions.Middle: return Math.floor(container.slots / 2)
             case CardContainerPositions.Last: return cardCore.LAST_CARD_INDEX
-            case CardContainerPositions.Random: return Math.randomRange(0, container.max - 1)
+            case CardContainerPositions.Random: return Math.randomRange(0, container.slots - 1)
             case CardContainerPositions.Cursor: return container.cursorIndex
         }
     }

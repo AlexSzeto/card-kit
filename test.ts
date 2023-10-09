@@ -76,13 +76,14 @@ function FlipCards () {
         FlipCount = 0
     }
 }
+
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (isOnTitleScreen) {
         isOnTitleScreen = false
         sprites.destroy(TitleCard, effects.blizzard, 500)
         pause(1000)
         SetupDeck()
-        SetupPlayField()
+        // SetupPlayField()
     } else {
         FlipCards()
     }
@@ -113,7 +114,7 @@ function SetupDeck () {
             sprites.destroy(Card)
         }
     }
-    pause(200)
+    pause(400)
     cardKit.shuffleCards(CardDeck)
 }
 let DeleteCardsList: cardCore.Card[] = []
@@ -154,3 +155,11 @@ TitleCard = sprites.create(img`
     ............................................................ccccc...
     `, SpriteKind.Player)
 FlipCount = 0
+
+if (isOnTitleScreen) {
+    isOnTitleScreen = false
+    sprites.destroy(TitleCard)
+    SetupDeck()
+    SetupPlayField()
+}
+

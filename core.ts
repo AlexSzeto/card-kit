@@ -15,10 +15,8 @@ namespace cardCore {
     export class CardData {
         private _attributes: CardAttribute[]
 
-        constructor(
-            public attributes?: CardAttribute[],
-        ) {
-            this._attributes = attributes ? attributes : []
+        constructor() {
+            this._attributes = []
         }
 
         getAttribute(id: number): CardAttributeValues {
@@ -58,7 +56,7 @@ namespace cardCore {
         }
 
         toString(): string {
-            return this._attributes.map(attribute => `${attribute.attribute}:${attribute.value}`).join(',')
+            return `[${this._attributes.map(attribute => `${attribute.attribute}:${attribute.value}`).join(',')}]`
         }
     }
 
