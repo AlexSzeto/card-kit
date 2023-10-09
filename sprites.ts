@@ -25,34 +25,36 @@ enum CardCursorAnchors {
     BottomRight
 }
 
-enum CardLayoutSpreadAlignments {
-    //% block="start"
-    Start,
-    //% block="center"
-    Center,
-    //% block="end"
-    End
+enum CardLayoutDirections {
+    //% block="centered left right"
+    CenteredLeftRight,
+    //% block="left to right"
+    LeftToRight,
+    //% block="right to left"
+    RightToLeft,
+
+    //% block="centered up down"
+    CenteredUpDown,
+    //% block="top to bottom"
+    TopToBottom,
+    //% block="bottom to top"
+    BottomToTop,
 }
 
-enum CardFacingModifiers {
+enum CardFaces {
     //% block="face unchanged"
     Unchanged,
     //% block="face up"
-    FaceUp,
+    Up,
     //% block="face down"
-    FaceDown,
+    Down,
 }
 
 namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
-    const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
-    const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
-    export const LAST_CARD_INDEX = -2
 
-    let flipAnimationDuration = 300
-    let slideAnimationDuration = 500
-    let transitionZ = 100
-    let cursorZ = 1000
+    let DEFAULT_FLIP_DURATION = 300
+    // let cursorZ = 1000
 
     function activate(sprite: Sprite, kind: number) {
         const scene = game.currentScene();
@@ -63,39 +65,30 @@ namespace cardCore {
             .forEach(h => h.handler(sprite));
     }
 
-    function shuffle(list: any[]) {
-        for (let i = 0; i < list.length; i++) {
-            const j = randint(0, list.length - 1)
-            const temp = list[i]
-            list[i] = list[j]
-            list[j] = temp
-        }
-    }
-
-    const EmptyData = new CardData([])
+    export const EMPTY_CARD_DATA = new CardData([])
     
     export class Card extends Sprite {
-        stamp: string
-        private _isInvisibleWhenEmpty: boolean
-        private _isFaceUp: boolean
+        private _stamp: string
+        private _showEmpty: boolean
+        private _faceUp: boolean
         private _card: CardData
 
         constructor(
-            private design: CardDesign,
+            private _design: CardDesign,
             public data: CardData,
             public container: CardContainer,
-            isFaceUp: boolean
+            faceUp: boolean
         ) {
-            super(design.createCardBaseImage())
-            this._isFaceUp = isFaceUp
+            super(_design.createCardBaseImage())
+            this._faceUp = faceUp
             this._card = data
-            this._isInvisibleWhenEmpty = false
+            this._showEmpty = false
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
 
-        get isEmptyCardSlot(): boolean {
-            return this._card === EmptyData
+        get isEmpty(): boolean {
+            return this._card === EMPTY_CARD_DATA
         }
 
         set cardData(data: CardData) {
@@ -107,48 +100,54 @@ namespace cardCore {
             return this._card
         }
         
-        refreshImage() {
-            if (this.isEmptyCardSlot && this._isInvisibleWhenEmpty) {
-                return
-            }
-            this.image.fill(0)
-            if (this.isEmptyCardSlot) {
-                this.design.drawEmptyCard(this.image, 0, 0)
-            } else if(this._isFaceUp) {
-                this.design.drawCardFront(this.image, 0, 0, this._card)
-                this.design.drawStamp(this.image, this.stamp)
-            } else {
-                this.design.drawCardBack(this.image, 0, 0)
-            }
+        set stamp(value: string) {
+            this._stamp = value
+            this.refreshImage()
         }
 
-        getDesign(): CardDesign {
-            return this.design
-        }
-
-        setDesign(design: CardDesign): void {
-            if (this.design != design) {
-                this.design = design
+        set design(value: CardDesign) {
+            if (this._design != value) {
+                this._design = value
                 this.refreshImage()
             }
         }
 
-        set isInvisibleWhenEmpty(value: boolean) {
-            this._isInvisibleWhenEmpty = value
-            if (this.isEmptyCardSlot) {
+        get design(): CardDesign {
+            return this._design
+        }
+
+        set visible(value: boolean) {
+            this.setFlag(SpriteFlag.Invisible, !value)
+        }
+
+        get visible(): boolean {
+            return !(this.flags & sprites.Flag.Invisible)
+        }        
+
+        set showEmpty(value: boolean) {
+            this._showEmpty = value
+            if (this.isEmpty) {
                 this.refreshImage()
             }
         }
-        get isInvisibleWhenEmpty(): boolean { return this._isInvisibleWhenEmpty }
+
+        get showEmpty(): boolean { return this._showEmpty }
 
         set isFaceUp(value: boolean) {
             extraAnimations.clearFixedFrameAnimation(this, true)
-            if (value != this._isFaceUp) {
-                this._isFaceUp = value
+            if (value != this._faceUp) {
+                this._faceUp = value
                 this.refreshImage()
             }
         }
-        get isFaceUp(): boolean { return this._isFaceUp }
+
+        get isFaceUp(): boolean { return this._faceUp }
+
+        detachFromContainer() {
+            if (this.container != null) {
+                this.container.removeCard(this)
+            }
+        }
 
         resetTransforms() {
             this.sx = 1.0
@@ -156,49 +155,46 @@ namespace cardCore {
             this.setFlag(SpriteFlag.Invisible, false)
         }
 
-        detachFromContainer() {
-            if (this.container != null) {
-                this.container.removeCardSprite(this)
+        refreshImage() {
+            this.image.fill(0)
+            if (this.isEmpty && !this._showEmpty) {
+                return
+            } else if (this.isEmpty) {
+                this._design.drawEmptyCard(this.image, 0, 0)                    
+            } else if (this._faceUp) {
+                this._design.drawCardFront(this.image, 0, 0, this._card)
+                this._design.drawStamp(this.image, this._stamp)
+            } else {
+                this._design.drawCardBack(this.image, 0, 0)
             }
         }
 
         flip() {
-            if (this.isEmptyCardSlot) {
+            if (this.isEmpty) {
                 return
             }
-            this._isFaceUp = !this._isFaceUp
+            this._faceUp = !this._faceUp
             if (extraAnimations.hasFixedFrameAnimation(this)) {
                 extraAnimations.reverseFixedFrameAnimation(this)
+            } else {
+                extraAnimations.fixedFrameAnimate(
+                    this,
+                    DEFAULT_FLIP_DURATION,
+                    FLIP_SCALES.length,
+                    null,
+                    null,
+                    FLIP_SCALES,
+                    null,
+                    (_, step) => {
+                        if (step == FLIP_SCALES.length / 2) {
+                            this.refreshImage()
+                        }
+                    },
+                    null
+                )
+    
             }
-            extraAnimations.fixedFrameAnimate(
-                this,
-                flipAnimationDuration,
-                FLIP_SCALES.length,
-                null,
-                null,
-                FLIP_SCALES,
-                null,
-                (_, step) => {
-                    if (step == FLIP_SCALES.length / 2) {
-                        this.refreshImage()
-                    }
-                },
-                null
-            )
         }
-
-        clone(): Card {
-            const card = new Card(this.design, this._card.clone(), null, this._isFaceUp)
-            card.setPosition(this.x, this.y)
-            return card
-        }
-
-        createView(newDesign: CardDesign): Card {
-            const card = new Card(newDesign, this._card, null, this._isFaceUp)
-            card.setPosition(this.x, this.y)
-            return card
-        }
-
     }
 
     sprites.onDestroyed(SpriteKind.Card, function (sprite: Sprite) {
@@ -206,390 +202,195 @@ namespace cardCore {
             sprite.detachFromContainer()
         }
     })
+}
 
+namespace cardCore {
     export type CardEventCondition = cardCore.CardAttribute
     export type CardEventHandler = (container: CardContainer, card: Card) => void
+
     type CardEvent = {
-        containerKind: number,
-        isEmptyCardHandler: boolean
+        kind: number,
+        forEmpty: boolean
         condition: CardEventCondition
         handler: CardEventHandler
     }
 
-    export function addCardEvent(containerKind: number, handler: CardEventHandler, isEmptyCardHandler: boolean, condition: CardEventCondition = null) {
-        cardEvents.push({ containerKind: containerKind, condition: condition, isEmptyCardHandler: isEmptyCardHandler, handler: handler })
+    export function addCardEvent(kind: number, handler: CardEventHandler, forEmpty: boolean, condition: CardEventCondition = null) {
+        cardEvents.push({ kind: kind, condition: condition, forEmpty: forEmpty, handler: handler })
     }
 
     const cardEvents: CardEvent[] = []
-    function resolveCardSelect(card: Card) {
+    function triggerCardSelectEvents(card: Card) {
         const container = card.container
         if (!container) {
             return
         }
         for (let event of cardEvents) {
             if (
-                event.containerKind === container.getContainerKind()
-                && (event.isEmptyCardHandler === card.isEmptyCardSlot)
+                event.kind === container.kind
+                && (event.forEmpty === card.isEmpty)
                 && (!event.condition || card.cardData.attributeEquals(event.condition.attribute, event.condition.value))
             ) {
                 event.handler(container, card)
             }
-        }        
-    }
-
-
-    function resolveCardInsert(card: Card, destination: CardContainer) {
-        if (card.container != null && card.container !== destination) {
-            card.container.removeCardSprite(card)
         }
-        card.container = destination
     }
+}
 
-    export interface CardContainer {
-        isCardContainer(): boolean
+namespace cardCore {
+    export const DEFAULT_CONTAINER_Z = 0
+    export const DEFAULT_TRANSITION_Z_OFFSET = 100
 
-        getContainerKind(): number
-        getCardCount(): number,
-        getCardCopyAt(index: number): Card,
-        getCardsCopy(): Card[],
+    export const DEFAULT_SLIDE_DURATION = 500
 
-        setPosition(x: number, y: number): void
-        setDepth(z: number): void
-        setDesign(design: CardDesign): void
-        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void
+    export const LAST_CARD_INDEX = -2
 
-        shuffle(): void
+    export class CardContainer {
+        protected empty: Card
+        protected cards: Card[]
+        protected _design: CardDesign
+        protected _z: number
+        protected _spacing: number
+        protected _wrapSelection: boolean
+        protected _visible: boolean
+        protected _showEmpty: boolean
 
-        insertCard(card: Card, index: number, facing: CardFacingModifiers): void
-        removeCardAt(index: number): Card
-        removeCardSprite(card: Card): void
-        destroyCards(): void
-
-        getCursorIndex(): number
-        moveCursorIntoContainer(): void
-    }
-
-    export class CardStack implements CardContainer {
-        private isCustomSprite: boolean
-        private stackSprite: Sprite
-        private transitionCards: Card[]
-        private isEmptyCardInvisible: boolean
         constructor(
-            private x: number,
-            private y: number,
-            z: number,
-            private containerKind: number,            
-            private design: CardDesign,
-            private cards: Card[],
-            private isStackFaceUp: boolean,
-            private isTopCardFaceUp: boolean,
+            protected x: number,
+            protected y: number,
+            private _kind: number,
         ) {
-            this.transitionCards = []
-            this.isCustomSprite = false
-            this.isEmptyCardInvisible = true
-            if (!!design) {
-                this.stackSprite = sprites.create(design.createStackBaseimage(), SpriteKind.CardContainer)
-                this.refreshImage()
-            } else {
-                this.stackSprite = sprites.create(image.create(1, 1), SpriteKind.CardContainer)
-            }
-            this.setPosition(x, y)
-            this.setDepth(z)
+            this._z = DEFAULT_CONTAINER_Z
+            this._showEmpty = true
+            this._visible = true
+            this.empty = new Card(this._design, EMPTY_CARD_DATA, this, true)
         }
 
-        isCardContainer(): boolean {
+        get isCardContainer(): boolean {
             return true
         }
-
-        getContainerKind(): number {
-            return this.containerKind
+        
+        get kind(): number {
+            return this._kind
         }
 
-        getCardCount(): number {
-            return this.cards.length
-        }
-
-        getCardCopyAt(index: number): Card {
-            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
-                return this.cards[this.cards.length - 1]
-            }
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
-            }
-            return this.cards[index]
-        }
-
-        getCardsCopy(): Card[] {
-            return this.cards.slice()
+        get count(): number {
+            return this.cards.reduce((count, card) => count + (card.isEmpty ? 0 : 1), 0)
         }
 
         setPosition(x: number, y: number): void {
             this.x = x
             this.y = y
-            if (!!this.design) {
-                this.stackSprite.setPosition(x, y - this.stackSprite.image.height / 2 + this.design.height / 2)
-            } else {
-                this.stackSprite.setPosition(x, y)
+            this.refresh()
+        }
+
+        set z(value: number) {
+            this._z = value
+            this.refresh()
+        }
+
+        set spacing(value: number) {
+            if (this._spacing !== value) {
+                this._spacing = value
+                this.refresh()
             }
         }
 
-        setDepth(z: number): void {
-            this.stackSprite.z = z
+        set wrapSelection(value: boolean) {
+            this._wrapSelection = value
         }
 
-        setDesign(design: CardDesign): void {
-            this.design = design
-            this.cards.forEach(card => card.setDesign(design))
-            this.refreshImage()
-        }
+        set design(value: CardDesign) {
+            this._design = value
+            this.empty.design = value
 
-        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
-            this.isEmptyCardInvisible = isInvisible
-            this.refreshImage()
-        }
-
-        shuffle(): void {
-            shuffle(this.cards)
-            if (this.isTopCardFaceUp) {
-                this.refreshImage()
-            }
-        }
-
-        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
-            if (card == null) {
-                return
-            }
-            if (!this.design) {
-                this.design = card.getDesign()
-                this.stackSprite.setImage(this.design.createStackBaseimage())
-                this.stackSprite._x = Fx8(Fx.toFloat(this.stackSprite._x) - this.stackSprite.image.width / 2);
-                this.stackSprite._y = Fx8(Fx.toFloat(this.stackSprite._y) - this.stackSprite.image.height / 2);
-                this.setPosition(this.x, this.y)
-            }
-            resolveCardInsert(card, this)
-            if (index === LAST_CARD_INDEX) {
-                this.cards.push(card)
-            } else {
-                this.cards.insertAt(index, card)
-            }
-            card.isFaceUp = this.isTopCardFaceUp
-            extraAnimations.slide(
-                card, this.x, this.y + this.getYOffset(), this.stackSprite.z,
-                slideAnimationDuration,
-                () => {
-                    this.transitionCards.splice(this.transitionCards.indexOf(card), 1)
-                    this.refreshImage()
+            if (this.count > 0) {
+                for (let card of this.cards) {
+                    card.design = value
                 }
-            )
-            this.transitionCards.push(card)
-            this.refreshImage()
-            card.z = transitionZ
+                this.refresh()
+            }
         }
 
-        removeCardAt(index: number = 0): Card {
-            if (index === LAST_CARD_INDEX) {
+        set showEmpty(value: boolean) {
+            this._showEmpty = value
+            for (let card of this.cards) {
+                card.showEmpty = value
+            }
+        }
+
+        set visible(value: boolean) {
+            this._visible = value
+            if (!this._visible) {
+                for (let card of this.cards) {
+                    card.visible = false
+                }
+            } else {
+                this.refresh()
+            }
+        }
+
+        getCard(index: number): Card {
+            if (index == LAST_CARD_INDEX) {
                 index = this.cards.length - 1
             }
             if (index == null || index < 0 || index > this.cards.length - 1) {
                 return null
             }
-            const card = this.cards[index]
-            const transitionIndex = this.transitionCards.indexOf(card)
-            if (transitionIndex >= 0) {
-                extraAnimations.clearAnimations(this.transitionCards[transitionIndex], true)
-                this.transitionCards.splice(transitionIndex, 1)
-            } else {
-                card.setPosition(this.x, this.y + this.getYOffset())
-            }
-            card.setFlag(SpriteFlag.Invisible, false)
-            this.cards.splice(index, 1)
-            this.refreshImage()
-            return card
-        }
-
-        removeCardSprite(card: Card): void {
-            this.removeCardAt(this.cards.indexOf(card))
-        }
-        
-        destroyCards(): void {
-            this.cards.forEach(card => card.destroy())
-            this.transitionCards = []
-            this.refreshImage()
-        }
-
-        getCursorIndex(): number {
-            return (getCursorSprite() === this.stackSprite) ? 0 : null
-        }
-
-        moveCursorIntoContainer(): void {
-            pointCursorAt(this.stackSprite)
-        }
-        
-        private getYOffset(): number {
-            return (this.isCustomSprite ? -this.design.getStackHeight(this.cards.length) : 0)
-        }
-
-        public refreshImage() {
-            if (this.isCustomSprite || this.design === null) {
-                return
-            }            
-            this.stackSprite.image.fill(0)
-            const topCard = this.cards.find(card => !this.transitionCards.some(transitionCard => transitionCard === card))
-            this.design.drawCardStack(
-                this.stackSprite.image,
-                0, 0,
-                this.cards.length - this.transitionCards.length,
-                !!topCard ? topCard.cardData : null,
-                this.isStackFaceUp,
-                this.isTopCardFaceUp,
-                this.isEmptyCardInvisible
-            )                
-            this.cards.forEach(card => {
-                if (!this.transitionCards.some(transitionCard => card === transitionCard)) {
-                    card.setFlag(SpriteFlag.Invisible, true)
-                    card.isFaceUp = card === topCard ? this.isTopCardFaceUp : this.isStackFaceUp
-                }
-            })
-        }
-
-        split(count: number) {
-            const cards = this.cards.slice(0, count)
-            this.cards.splice(this.cards.length - count, count)
-            const stack = new CardStack(
-                this.x,
-                this.y - this.design.getStackThickness(this.getCardCount()) - 1,
-                this.stackSprite.z,
-                this.containerKind,
-                this.design,
-                cards,
-                this.isStackFaceUp,
-                this.isTopCardFaceUp
-            )
-            this.refreshImage()
-            return stack
-        }
-
-        insertCardData(data: CardData[]) {
-            if (!!this.design) {
-                this.cards = data.map(cardData => {                    
-                    const card = new Card(this.design, cardData, this, this.isStackFaceUp)
-                    return card
-                }).concat(this.cards)
-                this.refreshImage()
-            }
-        }
-
-        flipStack(): void {
-            this.isStackFaceUp = !this.isStackFaceUp
-            this.isTopCardFaceUp = this.isStackFaceUp
-            this.refreshImage()
-        }
-
-        flipTopCard(): void {
-            this.isTopCardFaceUp = !this.isTopCardFaceUp
-            this.refreshImage()
-        }
-    }
-
-    sprites.onDestroyed(SpriteKind.CardContainer, function (sprite: Sprite) {
-        if (sprite instanceof CardStack) {
-            (sprite as any as CardStack).destroyCards()
-        }
-    })
-
-    export class LayoutContainer implements CardContainer {
-        protected isEmptyCardInvisible: boolean
-        constructor(
-            protected x: number,
-            protected y: number,
-            protected z: number,
-            private containerKind: number,
-            protected cards: Card[],
-        ) {
-            this.isEmptyCardInvisible = true
-            if (cards.length > 0) {
-                this.reposition()
-            }
-        }
-
-        isCardContainer(): boolean {
-            return true
-        }
-        
-        getContainerKind(): number {
-            return this.containerKind
-        }
-
-        getCardCount(): number {
-            return this.cards.reduce((count, card) => count + (card.isEmptyCardSlot ? 0 : 1), 0)
-        }
-
-        getCardCopyAt(index: number): Card {
-            if (index == LAST_CARD_INDEX && this.cards.length > 0) {
-                return this.cards[this.cards.length - 1]
-            }
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
-            }
             return this.cards[index]
         }
 
-        getCardsCopy(): Card[] {
-            return this.cards.slice().filter(card => !card.isEmptyCardSlot)
-        }
-
-        setPosition(x: number, y: number): void {
-            this.x = x
-            this.y = y
-            this.reposition()
-        }
-
-        setDepth(z: number): void {
-            this.z = z
-            this.reposition()
-        }
-
-        setDesign(design: CardDesign): void {
-            this.cards.forEach(card => card.setDesign(design))
-            this.reposition()
+        getCards(): Card[] {
+            return this.cards.slice().filter(card => !card.isEmpty)
         }
 
         shuffle(): void {
-            shuffle(this.cards)
-            this.reposition()
+            for (let i = 0; i < this.cards.length; i++) {
+                const j = randint(0, this.cards.length - 1)
+                const temp = this.cards[i]
+                this.cards[i] = this.cards[j]
+                this.cards[j] = temp
+            }
+            this.refresh()
         }
 
-        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void { }
-
-        insertCard(card: Card, index: number = -1, facing: CardFacingModifiers = CardFacingModifiers.Unchanged): void {
-            if (card == null) {
+        insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
+            if (!card) {
                 return
             }
-            resolveCardInsert(card, this)
-            if (facing != CardFacingModifiers.Unchanged) {
-                card.isFaceUp = facing === CardFacingModifiers.FaceUp
+
+            if (!this._design) {
+                this.design = card.design
             }
-            card.isInvisibleWhenEmpty = this.isEmptyCardInvisible
+
+            card.detachFromContainer()
+            card.container = this
+            card.isFaceUp = facing != CardFaces.Unchanged
+                ? facing === CardFaces.Up
+                : card.isFaceUp
+            card.showEmpty = this._showEmpty
+
             if (index === LAST_CARD_INDEX) {
                 this.cards.push(card)
             } else {
                 this.cards.insertAt(index, card)
             }
-            this.reposition()
-            card.z = transitionZ
+            // TODO: adjust card Z
+            this.refresh()
+
+            // TODO: move this elsewhere            
             if (this.cards.length === 1 && getCursorContainer() === this) {
                 pointCursorAt(card)
             }
         }
 
-        removeCardAt(index: number = 0): Card {
-            if (index === LAST_CARD_INDEX) {
-                index = this.cards.length - 1
-            }            
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
+        removeCardAt(index: number): Card {
+            const card = this.getCard(index)
+            if (!card) {
+                return card
             }
-            const card = this.cards[index]
+
+            // TODO: move this elsewhere
             if (getCursorCard() === card) {
                 if (this.cards.length === 1) {
                     removeCursor()
@@ -599,38 +400,51 @@ namespace cardCore {
                     pointCursorAt(this.cards[index + 1])
                 }
             }
+
+            extraAnimations.clearAnimations(card, true)
             card.resetTransforms()
             this.cards.splice(index, 1)
-            this.reposition()
+
+            this.refresh()
             return card
         }
 
-        removeCardSprite(card: Card): void {
+        removeCard(card: Card): void {
             this.removeCardAt(this.cards.indexOf(card))
         }
 
-        replaceCardWithBlankAt(index: number = 0): Card {
-            if (index == null || index < 0 || index > this.cards.length - 1) {
-                return null
+        replaceWithEmptyAt(index: number): Card {
+            const card = this.getCard(index)
+            if (!card) {
+                return card
             }
-            const blank = new Card(this.cards[index].getDesign(), EmptyData, this, true)
-            const card = this.cards[index]
-            blank.setPosition(card.x, card.y)
+
+            extraAnimations.clearAnimations(card, true)
+            card.resetTransforms()
             this.cards.splice(index, 1)
+
+            const blank = new Card(card.design, EMPTY_CARD_DATA, this, true)
             this.cards.insertAt(index, blank)
-            if (this.getCardCount() === 0) {
+            this.refresh()
+
+            // TODO: move this elsewhere
+            if (this.count === 0) {
                 removeCursor()
             } else if (getCursorCard() === card) {
                 pointCursorAt(blank)
             }
+
             return card
         }
 
-        destroyCards() {
-            this.cards.forEach(card => card.destroy())
+        destroy() {
+            for (let card of this.cards) {
+                card.destroy()
+            }
             this.cards = []
         }
         
+        // TODO: move this elsewhere
         getCursorIndex(): number {
             const index = this.cards.indexOf(getCursorCard())
             return index >= 0 ? index : null
@@ -643,527 +457,655 @@ namespace cardCore {
             pointCursorAt(this.cards[0])
         }
 
-        reposition(): void {}
-    }
+        protected refreshEmptyCard(): void { 
+            if (this.count === 0) {
+                this.empty.visible = this._showEmpty
+                this.empty.setPosition(this.x, this.y)
+                this.empty.z = this._z
+            } else {
+                this.empty.visible = false
+            }
+        }
 
-    export class CardSpread extends LayoutContainer {
-        private cardWidth: number
-        private cardHeight: number
-        private emptyCard: Card
+        refresh(): void {}
+    }
+}
+
+namespace cardCore {
+
+    export class CardStack extends CardContainer {
+        private stack: Sprite
+        private stackedCards: Card[]
+        private _topIsFaceUp: boolean
 
         constructor(
             x: number,
             y: number,
-            z: number,
             kind: number,
-            cards: Card[],
-            private isSpreadingLeftRight: boolean,
-            private _alignment: CardLayoutSpreadAlignments,
-            private _spacing: number,
-            private hoverX: number,
-            private hoverY: number,
-            public isWrappingSelection: boolean
+            private _stackIsFaceUp: boolean,
         ) {
-            super(x, y, z, kind, cards)
-            this.emptyCard = new Card(null, EmptyData, this, true)
-            this.cardWidth = -1
-            this.cardHeight = -1
-            this.reposition()
+            super(x, y, kind)
+            this.stack = sprites.create(image.create(1, 1), SpriteKind.CardContainer)
+            this.stackedCards = []
+            this._topIsFaceUp = this._stackIsFaceUp
         }
 
-        setDesign(design: CardDesign): void {
-            this.cardWidth = -1
-            this.cardHeight = -1
-            super.setDesign(design)
-        }
-        
-        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
-            this.emptyCard.isInvisibleWhenEmpty = isInvisible
-            this.emptyCard.refreshImage()
-        }
-
-        get isLeftRight(): boolean {
-            return this.isSpreadingLeftRight
-        }
-        
-        set isLeftRight(value: boolean) {
-            if (this.isSpreadingLeftRight !== value) {
-                this.isSpreadingLeftRight = value
-                this.reposition()
+        set stackIsFaceUp(value: boolean) {
+            if (this._stackIsFaceUp !== value) {
+                this._stackIsFaceUp = value
+                this.refresh()
             }
         }
 
-        set alignment(value: CardLayoutSpreadAlignments) {
-            if (this._alignment !== value) {
-                this._alignment = value
-                this.reposition()
+        set topIsFaceUp(value: boolean) {
+            if (this._topIsFaceUp !== value) {
+                this._topIsFaceUp = value
+                this.refresh()
             }
         }
 
-        set spacing(value: number) {
-            if (this._spacing !== value) {
-                this._spacing = value
-                this.reposition()
-            }
-        }
-
-        setHoverOffset(x: number, y: number) {
-            this.hoverX = x
-            this.hoverY = y
-            this.reposition()
-        }
-
-        reposition() {
-            if (this.cards.length === 0) {
-                this.emptyCard.setPosition(this.x, this.y)
-                this.emptyCard.setFlag(SpriteFlag.Invisible, false)
+        insertCard(card: Card, index: number = LAST_CARD_INDEX): void {
+            if (!card) {
                 return
-            } else {
-                this.emptyCard.setFlag(SpriteFlag.Invisible, true)
             }
-            if (this.cardWidth < 0) {
-                this.cardWidth = this.cards[0].width
-            }
-            if (this.cardHeight < 0) {
-                this.cardHeight = this.cards[0].height
-            }
-            const direction = this._alignment === CardLayoutSpreadAlignments.End ? -1 : 1
-            if (this.isSpreadingLeftRight) {
-                const width = (this.cardWidth + this._spacing) * this.cards.length - this._spacing
-                let x = this.x
-                switch (this._alignment) {
-                    case CardLayoutSpreadAlignments.Center:
-                        x -= width / 2; break
-                    case CardLayoutSpreadAlignments.End:
-                        x -= width; break
-                }
-                this.cards.forEach((card, index) => {
-                    extraAnimations.slide(
-                        card,
-                        x + this.cardWidth / 2 + (cursorTarget === card ? this.hoverX : 0),
-                        this.y + (cursorTarget === card ? this.hoverY : 0),
-                        this.z + this._spacing >= 0 ? 0 : index,
-                        slideAnimationDuration,
-                        null)
-                    x += (this.cardWidth + this._spacing) * direction
-                    card.z = this.z + this._spacing >= 0 ? 0 : index
-                })
-            } else {
-                const height = (this.cardHeight + this._spacing) * this.cards.length  - this._spacing
-                let y: number = this.y
-                switch (this._alignment) {
-                    case CardLayoutSpreadAlignments.Center:
-                        y -= height / 2; break
-                    case CardLayoutSpreadAlignments.End:
-                        y -= height; break
-                }
 
-                this.cards.forEach((card, index) => {
-                    extraAnimations.slide(
-                        card,
-                        this.x + (cursorTarget === card ? this.hoverX : 0),
-                        y + this.cardHeight / 2 + (cursorTarget === card ? this.hoverY : 0),
-                        this.z + this._spacing >= 0 ? 0 : index,
-                        slideAnimationDuration,
-                        null)
-                    y += (this.cardHeight + this._spacing) * direction
-                    card.z = this.z + this._spacing >= 0 ? 0 : index
-                })
+            if (!this._design) {
+                this.stack.setImage(card.design.createStackBaseimage())
+                this.stack._x = Fx8(Fx.toFloat(this.stack._x) - this.stack.image.width / 2);
+                this.stack._y = Fx8(Fx.toFloat(this.stack._y) - this.stack.image.height / 2);
             }
+
+            super.insertCard(card, index, this._stackIsFaceUp ? CardFaces.Up : CardFaces.Down)
         }
 
-        moveCursorToIndex(index: number) {
-            if (index >= 0 && index < this.cards.length) {
-                pointCursorAt(this.cards[index])                
-            } else if (this.cards.length >= 1) {
-                pointCursorAt(this.cards[0])
+        removeCardAt(index: number): Card {
+            const card = super.removeCardAt(index)
+
+            if (!card) {
+                return card
             }
+
+            const stackIndex = this.stackedCards.indexOf(card)
+            if (stackIndex >= 0) {
+                this.stackedCards.splice(this.stackedCards.indexOf(card), 1)
+            }
+
+            return card
         }
 
-        private moveCursorIndexByOffset(offset: number) {
-            const index = this.cards.indexOf(getCursorCard())
-            if (index >= 0) {
-                if (this.isWrappingSelection) {
-                    this.moveCursorToIndex((index + this.cards.length + offset) % this.cards.length)
+        removeCard(card: Card): void {
+            this.removeCardAt(this.cards.indexOf(card))
+        }
+        
+        destroy(): void {
+            super.destroy()
+            this.stackedCards = []
+            this.refresh()
+        }
+
+        public refresh() {
+            if (!this.design) {
+                this.stack.setPosition(this.x, this.y)
+                return
+            }
+
+            this.refreshEmptyCard()
+            if (this.count === 0) {
+                this.stack.setFlag(SpriteFlag.Invisible, true)
+                return
+            }
+
+            this.stack.setFlag(SpriteFlag.Invisible, false)
+            this.stack.image.fill(0)
+            this.design.drawCardStack(
+                this.stack.image,
+                0, 0,
+                this.stackedCards.length,
+                this._stackIsFaceUp,
+            )
+            this.stack.setPosition(this.x, this.y - this.stack.image.height / 2 + this.design.height / 2)
+            this.stack.z = this._z
+
+            const topY = this.y - this.design.getStackThickness(this.stackedCards.length)
+
+            let findingTopCard = true
+            for (let i = 0; i < this.cards.length; i++) {
+                const card = this.cards[i]
+                if (this.stackedCards.indexOf(card) >= 0) {
+                    card.setPosition(this.x, topY)
+                    card.z = this._z + this.count - i
+                    if (findingTopCard) {
+                        findingTopCard = false
+                        card.visible = true
+                        card.isFaceUp = this._topIsFaceUp
+                    } else {
+                        card.visible = false
+                    }
                 } else {
-                    this.moveCursorToIndex(Math.min(this.cards.length - 1, Math.max(0, index + offset)))
+                    card.visible = true
+                    card.z = this._z + DEFAULT_TRANSITION_Z_OFFSET + this.count - i
+                    extraAnimations.slide(
+                        card,
+                        this.x,
+                        topY,
+                        this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET,
+                        DEFAULT_SLIDE_DURATION,
+                        () => {
+                            this.stackedCards.push(card)
+                            this.refresh()
+                        }
+                    )
                 }
-            } else {
-                this.moveCursorToIndex(-1)
             }
-            this.reposition()
         }
 
-        moveCursorForward() {
-            this.moveCursorIndexByOffset(1)
-        }
-
-        moveCursorBack() {
-            this.moveCursorIndexByOffset(-1)
+        insertData(data: CardData[]) {
+            if (!!this.design) {
+                this.cards = data
+                    .map(cardData => new Card(this.design, cardData, this, this._stackIsFaceUp))
+                    .concat(this.cards)
+                this.refresh()
+            }
         }
     }
+}
 
-    export class CardGrid extends LayoutContainer {
-        private firstLine: number
-        private scrollToLine: number
-        private cardWidth: number
-        private cardHeight: number
-        private isLocked: boolean
+namespace cardCore {
 
-        private collapsePositions: number[]
-        private expandPositions: number[]
+    export class CardSpread extends CardContainer {
+        constructor(
+            x: number,
+            y: number,
+            kind: number,
+            private _direction: CardLayoutDirections,
+        ) {
+            super(x, y, kind)
+            this._spacing = 1
+        }
+
+        private get isHorizonal(): boolean {
+            return this._direction === CardLayoutDirections.LeftToRight
+                || this._direction === CardLayoutDirections.RightToLeft
+                || this._direction === CardLayoutDirections.CenteredLeftRight
+        }
+
+        private get isReversed(): boolean {
+            return this._direction === CardLayoutDirections.RightToLeft
+                || this._direction === CardLayoutDirections.BottomToTop
+        }
+
+        refresh() {
+            if (!this.design) {
+                return
+            }
+
+            super.refreshEmptyCard()
+            if (this.count === 0) {
+                return
+            }
+
+            let x: number = this.x
+            let y: number = this.y
+            let offsetX: number = 0
+            let offsetY: number = 0
+
+            if (this.isHorizonal) {
+                x += this._design.width / 2
+                offsetX = this._design.width + this._spacing
+            } else {
+                y += this._design.height / 2
+                offsetY = this._design.height + this._spacing
+            }
+
+            if (this.isReversed) {
+                offsetX = -offsetX
+                offsetY = -offsetY
+            }
+
+            const width = (this._design.width + this._spacing) * this.cards.length - this._spacing
+            const height = (this._design.height + this._spacing) * this.cards.length - this._spacing
+            
+            switch (this._direction) {
+                case CardLayoutDirections.RightToLeft:
+                    x -= width
+                    break
+                case CardLayoutDirections.CenteredLeftRight:
+                    x -= width / 2
+                    break
+                case CardLayoutDirections.BottomToTop:
+                    y -= height
+                    break
+                case CardLayoutDirections.CenteredUpDown:
+                    y -= height / 2
+                    break
+            }
+
+            for (let i = 0; i < this.cards.length; i++) {
+                const card = this.cards[i]
+                card.z = this._z + this._spacing >= 0 ? 0 : i + DEFAULT_TRANSITION_Z_OFFSET
+                extraAnimations.slide(
+                    card, x, y,
+                    this.z + this._spacing >= 0 ? 0 : i,
+                    DEFAULT_SLIDE_DURATION,
+                    null
+                )
+                x += offsetX
+                y += offsetY
+            }
+        }
+
+        // moveCursorToIndex(index: number) {
+        //     if (index >= 0 && index < this.cards.length) {
+        //         pointCursorAt(this.cards[index])                
+        //     } else if (this.cards.length >= 1) {
+        //         pointCursorAt(this.cards[0])
+        //     }
+        // }
+
+        // private moveCursorIndexByOffset(offset: number) {
+        //     const index = this.cards.indexOf(getCursorCard())
+        //     if (index >= 0) {
+        //         if (this.isWrappingSelection) {
+        //             this.moveCursorToIndex((index + this.cards.length + offset) % this.cards.length)
+        //         } else {
+        //             this.moveCursorToIndex(Math.min(this.cards.length - 1, Math.max(0, index + offset)))
+        //         }
+        //     } else {
+        //         this.moveCursorToIndex(-1)
+        //     }
+        //     this.refresh()
+        // }
+
+        // moveCursorForward() {
+        //     this.moveCursorIndexByOffset(1)
+        // }
+
+        // moveCursorBack() {
+        //     this.moveCursorIndexByOffset(-1)
+        // }
+    }
+}
+
+namespace cardCore {
+    const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
+    const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
+
+    export class CardGrid extends CardContainer {
+        private startLine: number
+        private scrollLine: number
+
+        private _locked: boolean
+
+        private lastShown: Card[]
+        private collapse: number[]
+        private expand: number[]
 
         constructor(
             x: number,
             y: number,
-            z: number,
             kind: number,
-            cards: Card[],
             private rows: number,
             private columns: number,
-            private isScrollingLeftRight: boolean,
-            private _spacing: number,
-            public isWrappingSelection: boolean,
-            private scrollBackIndicator: Sprite,
-            private scrollForwardIndicator: Sprite,
+            private scrollUpDown: boolean,
+            private back: Sprite = null,
+            private forward: Sprite = null,
         ) {
-            super(x, y, z, kind, cards)
-            this.firstLine = 0
-            this.scrollToLine = 0
-            this.cardWidth = -1
-            this.cardHeight = -1
-            this.isLocked = false
-
-            this.reposition()            
+            super(x, y, kind)
+            this.startLine = 0
+            this.scrollLine = 0
+            this._spacing = 1
+            this._locked = false
+            this._wrapSelection = false
+            this.lastShown = []
         }
 
-        set isLeftRight(value: boolean) {
-            if (this.isScrollingLeftRight !== value) {
-                this.isScrollingLeftRight = value
-                this.reposition()
+        setIndicators(back: Sprite, forward: Sprite) {
+            if (!!this.back) {
+                this.back.destroy()
             }
-        }
-
-        set spacing(value: number) {
-            if (this._spacing !== value) {
-                this._spacing = value
-                this.reposition()
+            if (!!this.forward) {
+                this.forward.destroy()
             }
-        }
-
-        set isWrapping(value: boolean) {
-            if (this.isWrappingSelection !== value) {
-                this.isWrappingSelection = value
-                this.reposition()
-            }
+            this.back = back
+            this.forward = forward
+            this.refresh()
         }
 
         lock() {
-            this.isLocked = true
-        }
+            this._locked = true
 
-        unlock() {
-            this.isLocked = false
-            for (let i = 0; i < this.cards.length; i++) {
-                const card = this.cards[i]
-                if (card.isEmptyCardSlot) {
-                    if (getCursorCard() === card) {
-                        if (this.cards.length === 1) {
-                            removeCursor()
-                        } else if (i > 0) {
-                            pointCursorAt(this.cards[i - 1])
-                        } else {
-                            pointCursorAt(this.cards[i + 1])
-                        }
-                    }
-                    card.destroy()
-                    this.cards.splice(i, 1)
-                    i--    
-                }
-            }
-            this.reposition()
-        }
-
-        setDesign(design: CardDesign): void {
-            this.cardWidth = -1
-            this.cardHeight = -1
-            super.setDesign(design)
-        }
-
-        setCardIsInvisibleWhenEmpty(isInvisible: boolean): void {
-            this.isEmptyCardInvisible = isInvisible
-            for (let card of this.cards) {
-                card.isInvisibleWhenEmpty = isInvisible
-            }
-        }
-
-        setScrollSprites(back: Sprite, forward: Sprite) {
-            if (!!this.scrollBackIndicator) {
-                this.scrollBackIndicator.destroy()
-            }
-            if (!!this.scrollForwardIndicator) {
-                this.scrollForwardIndicator.destroy()
-            }
-            this.scrollBackIndicator = back
-            this.scrollForwardIndicator = forward
-            this.reposition()
-        }
-
-        reposition() {
-            if (this.cards.length === 0) {
-                this.scrollBackIndicator.setFlag(SpriteFlag.Invisible, true)
-                this.scrollForwardIndicator.setFlag(SpriteFlag.Invisible, true)
+            if ((this.scrollUpDown && this.count % this.columns === 0)
+                || (!this.scrollUpDown && this.count % this.rows === 0)) {
                 return
             }
 
-            if (this.cardWidth < 0) {
-                this.cardWidth = this.cards[0].width
-            }
-            if (this.cardHeight < 0) {
-                this.cardHeight = this.cards[0].height
-            }
-
-            const maxScroll = Math.max(0, Math.ceil(this.cards.length / this.columns) - this.rows)
-            this.scrollToLine = Math.min(this.scrollToLine, maxScroll)
+            const filler = this.scrollUpDown
+                ? this.columns - (this.cards.length % this.columns)
+                : this.rows - (this.cards.length % this.rows)
             
-            const isScrolling: boolean = Math.abs(this.firstLine - this.scrollToLine) == 1
-            const scrollDirection = this.scrollToLine - this.firstLine
-            this.firstLine = this.scrollToLine
+            for (let i = 0; i < filler; i++) {
+                this.cards.push(new Card(this._design, EMPTY_CARD_DATA, this, true))
+            }
+            this.refresh()
+        }
 
-            const width = (this.cardWidth + this._spacing) * this.columns - this._spacing
-            const height = (this.cardHeight + this._spacing) * this.rows - this._spacing
+        unlock() {
+            this._locked = false
+            for (let i = 0; i < this.cards.length; i++) {
+                const card = this.cards[i]
+                if (card.isEmpty) {
+                    // if (getCursorCard() === card) {
+                    //     if (this.cards.length === 1) {
+                    //         removeCursor()
+                    //     } else if (i > 0) {
+                    //         pointCursorAt(this.cards[i - 1])
+                    //     } else {
+                    //         pointCursorAt(this.cards[i + 1])
+                    //     }
+                    // }
+                    card.destroy()
+                    this.cards.splice(i, 1)
+                    i--
+                }
+            }
+            this.refresh()
+        }
 
-            const columnLeft = this.x - width / 2 + this.cardWidth / 2
-            const rowTop = this.y - height / 2 + this.cardHeight / 2
-            const columnRight = columnLeft + (this.columns - 1) * (this.cardWidth + this._spacing)
-            const columnBottom = rowTop + (this.rows - 1) * (this.cardHeight + this._spacing)
-
-            let index = this.isScrollingLeftRight
-                ? this.firstLine * this.rows 
-                : this.firstLine * this.columns
-            const lastIndex = index + this.rows * this.columns
-
-            const cursorIndex = this.cards.indexOf(getCursorCard())
-            if (cursorIndex >= 0 && (cursorIndex < index || cursorIndex >= lastIndex)) {
-                pointCursorAt(this.cards[Math.max(index, Math.min(lastIndex - 1, cursorIndex))])
+        refresh() {
+            if (!this.design) {
+                return
             }
 
-            if (this.isScrollingLeftRight) {
-                if (!!this.scrollBackIndicator) {
-                    this.scrollBackIndicator.x = this.x - width / 2 - this.scrollBackIndicator.width / 2 - this._spacing
-                    this.scrollBackIndicator.y = this.y
+            super.refreshEmptyCard()
+            if (this.cards.length === 0) {
+                this.back.setFlag(SpriteFlag.Invisible, true)
+                this.forward.setFlag(SpriteFlag.Invisible, true)
+                return
+            }
+
+            // Calculate dimensions
+            const cardWidth = this._design.width
+            const cardHeight = this._design.height
+
+            const width = (cardWidth + this._spacing) * this.columns - this._spacing
+            const height = (cardHeight + this._spacing) * this.rows - this._spacing
+
+            const left = this.x - width / 2 + cardWidth / 2
+            const top = this.y - height / 2 + cardHeight / 2
+            const right = left + (this.columns - 1) * (cardWidth + this._spacing)
+            const bottom = top + (this.rows - 1) * (cardHeight + this._spacing)
+
+            // Reposition indicators
+            if (this.scrollUpDown) {
+                if (!!this.back) {
+                    this.back.x = this.x
+                    this.back.y = this.y - height / 2 - this.back.height / 2 - this._spacing
                 }
-                if (!!this.scrollForwardIndicator) {
-                    this.scrollForwardIndicator.x = this.x + width / 2 + this.scrollForwardIndicator.width / 2 + this._spacing
-                    this.scrollForwardIndicator.y = this.y
-                }               
+                if (!!this.forward) {
+                    this.forward.x = this.x
+                    this.forward.y = this.y + height / 2 + this.forward.height / 2 + this._spacing
+                }
             } else {
-                if (!!this.scrollBackIndicator) {
-                    this.scrollBackIndicator.x = this.x
-                    this.scrollBackIndicator.y = this.y - height / 2 - this.scrollBackIndicator.height / 2 - this._spacing
+                if (!!this.back) {
+                    this.back.x = this.x - width / 2 - this.back.width / 2 - this._spacing
+                    this.back.y = this.y
                 }
-                if (!!this.scrollForwardIndicator) {
-                    this.scrollForwardIndicator.x = this.x
-                    this.scrollForwardIndicator.y = this.y + height / 2 + this.scrollForwardIndicator.height / 2 + this._spacing
-                }               
+                if (!!this.forward) {
+                    this.forward.x = this.x + width / 2 + this.forward.width / 2 + this._spacing
+                    this.forward.y = this.y
+                }
             }
 
-            const isVisible = (card: Card): boolean => !(card.flags & SpriteFlag.Invisible)
+            // Calculate scroll
+            if (this.scrollUpDown) {
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.cards.length / this.columns) - this.rows))
+            } else {
+                this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.cards.length / this.rows) - this.columns))
+            }
+            const scrolling: boolean = Math.abs(this.startLine - this.scrollLine) == 1
+            const scrollDirection = this.scrollLine - this.startLine
+            this.startLine = this.scrollLine
+            
             const createPositionLookup = (scales: number[], center: number, size: number, direction: number): number[] => scales.map(scale =>
                 center + (size / 2 * direction) - (size * scale / 2 * direction)
             )
-
-            if (isScrolling) {
-                if (this.isScrollingLeftRight) {
+            if (scrolling) {
+                if (this.scrollUpDown) {
                     if (scrollDirection > 0) {
-                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnLeft, this.cardWidth, -1)
-                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnRight, this.cardWidth, 1)
+                        this.collapse = createPositionLookup(COLLAPSE_SCALE, top, cardHeight, -1)
+                        this.expand = createPositionLookup(EXPAND_SCALE, bottom, cardHeight, 1)
                     } else {
-                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnRight, this.cardWidth, 1)
-                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnLeft, this.cardWidth, -1)
+                        this.collapse = createPositionLookup(COLLAPSE_SCALE, bottom, cardHeight, 1)
+                        this.expand = createPositionLookup(EXPAND_SCALE, top, cardHeight, -1)
                     }
                 } else {
                     if (scrollDirection > 0) {
-                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, rowTop, this.cardHeight, -1)
-                        this.expandPositions = createPositionLookup(EXPAND_SCALE, columnBottom, this.cardHeight, 1)
+                        this.collapse = createPositionLookup(COLLAPSE_SCALE, left, cardWidth, -1)
+                        this.expand = createPositionLookup(EXPAND_SCALE, right, cardWidth, 1)
                     } else {
-                        this.collapsePositions = createPositionLookup(COLLAPSE_SCALE, columnBottom, this.cardHeight, 1)
-                        this.expandPositions = createPositionLookup(EXPAND_SCALE, rowTop, this.cardHeight, -1)
+                        this.collapse = createPositionLookup(COLLAPSE_SCALE, right, cardWidth, 1)
+                        this.expand = createPositionLookup(EXPAND_SCALE, left, cardWidth, -1)
                     }
                 }
             }
-            
+
+            const firstIndex = this.scrollUpDown
+                ? this.startLine * this.columns
+                : this.startLine * this.rows
+            const lastIndex = firstIndex + this.rows * this.columns
+
+            let index = firstIndex
             let row = 0
             let column = 0
-                
-            this.cards.forEach((card, i) => {
+
+            // const cursorIndex = this.cards.indexOf(getCursorCard())
+            // if (cursorIndex >= 0 && (cursorIndex < index || cursorIndex >= lastIndex)) {
+            //     pointCursorAt(this.cards[Math.max(index, Math.min(lastIndex - 1, cursorIndex))])
+            // }
+
+            // Reset animations
+            for (let card of this.cards) {
                 extraAnimations.clearFixedFrameAnimation(card, true)
-                card.sx = 1.0
-                card.sy = 1.0
-                card.z = this.z
-                if ((i < index || i >= index + this.rows * this.columns) && isVisible(card)) {
-                    if (isScrolling) {
-                        extraAnimations.clearAnimations(card, true)
-                        if (this.isScrollingLeftRight) {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, this.collapsePositions, null, COLLAPSE_SCALE, null, null, () => card.setFlag(SpriteFlag.Invisible, true))
+                card.resetTransforms()
+                card.z = this._z
+            }
+
+            // Hide and collapse previously visible cards
+            this.cards.forEach((card, i) => {
+                if (i < index || i >= index + this.rows * this.columns) {
+                    if (scrolling && this.lastShown.indexOf(card) >= 0) {
+                        extraAnimations.clearSlideAnimation(card, true)
+                        if (this.scrollUpDown) {
+                            extraAnimations.fixedFrameAnimate(
+                                card,
+                                DEFAULT_SLIDE_DURATION,
+                                this.collapse.length,
+                                null, this.collapse,
+                                null, COLLAPSE_SCALE,
+                                null,
+                                () => card.visible = false
+                            )
                         } else {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.collapsePositions.length, null, this.collapsePositions, null, COLLAPSE_SCALE, null, () => card.setFlag(SpriteFlag.Invisible, true))
+                            extraAnimations.fixedFrameAnimate(
+                                card,
+                                DEFAULT_SLIDE_DURATION,
+                                this.collapse.length,
+                                this.collapse, null,
+                                COLLAPSE_SCALE, null,
+                                null,
+                                () => card.visible = false)
                         }
                     } else {
-                        card.setFlag(SpriteFlag.Invisible, true)
+                        card.visible = false
                     }
                 }
             })
 
+            // Slide and expand visible cards
+            const nextShown: Card[] = []
             do {
-                const x = columnLeft + column * (this.cardWidth + this._spacing)
-                const y = rowTop + row * (this.cardHeight + this._spacing)
+                const x = left + column * (cardWidth + this._spacing)
+                const y = top + row * (cardHeight + this._spacing)
                 const card = this.cards[index]
 
-                if (!isVisible(card)) {
-                    card.setFlag(SpriteFlag.Invisible, false)
+                if (scrolling && this.lastShown.indexOf(card) < 0) {
+                    extraAnimations.clearSlideAnimation(card, true)
                     card.x = x
                     card.y = y
-                    extraAnimations.clearAnimations(card, true)                    
-                    if (isScrolling) {
-                        if (this.isScrollingLeftRight) {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, this.expandPositions, null, EXPAND_SCALE, null, null, null)
-                        } else {
-                            extraAnimations.fixedFrameAnimate(card, slideAnimationDuration, this.expandPositions.length, null, this.expandPositions, null, EXPAND_SCALE, null, null)
-                        }
-                    } 
-                } else {
-                    extraAnimations.slide(card, x, y, this.z, slideAnimationDuration, null)
-                }
-
-                if (this.isScrollingLeftRight) {
-                    row++
-                    if(row >= this.rows) {
-                        column++
-                        row = 0
+                    if (this.scrollUpDown) {
+                        extraAnimations.fixedFrameAnimate(
+                            card,
+                            DEFAULT_SLIDE_DURATION,
+                            this.expand.length,
+                            null, this.expand,
+                            null, EXPAND_SCALE,
+                            null,
+                            null
+                        )
+                    } else {
+                        extraAnimations.fixedFrameAnimate(
+                            card,
+                            DEFAULT_SLIDE_DURATION,
+                            this.expand.length,
+                            this.expand, null,
+                            EXPAND_SCALE, null,
+                            null,
+                            null
+                        )
                     }
                 } else {
+                    extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION, null)
+                }
+                nextShown.push(card)
+
+                if (this.scrollUpDown) {
                     column++
-                    if(column >= this.columns) {
+                    if (column >= this.columns) {
                         row++
                         column = 0
+                    }
+                } else {
+                    row++
+                    if (row >= this.rows) {
+                        column++
+                        row = 0
                     }
                 }
                 index++
             } while (index < this.cards.length && index < lastIndex)
+            this.lastShown = nextShown
             
-            if (!!this.scrollBackIndicator) {
-                this.scrollBackIndicator.setFlag(SpriteFlag.Invisible, this.firstLine === 0)
+            // Update indicators visibility
+            if (!!this.back) {
+                this.back.setFlag(SpriteFlag.Invisible, this.startLine === 0)
             }
-            if (!!this.scrollForwardIndicator) {
-                this.scrollForwardIndicator.setFlag(SpriteFlag.Invisible, this.isScrollingLeftRight
-                    ? this.firstLine + this.columns >= Math.ceil(this.cards.length / this.rows)
-                    : this.firstLine + this.rows >= Math.ceil(this.cards.length / this.columns)
+            if (!!this.forward) {
+                this.forward.setFlag(SpriteFlag.Invisible, this.scrollUpDown
+                    ? this.startLine + this.rows >= Math.ceil(this.cards.length / this.columns)
+                    : this.startLine + this.columns >= Math.ceil(this.cards.length / this.rows)
                 )
             }
         }
 
-        removeCardAt(index?: number): Card {
-            if (index == null || index < 0 || index > this.cards.length - 1 || this.cards[index].isEmptyCardSlot) {
-                return null
-            }            
-            extraAnimations.clearAnimations(this.cards[index], true)
-            return this.isLocked
-                ? this.replaceCardWithBlankAt(index)
+        removeCardAt(index: number): Card {
+            return this._locked
+                ? this.replaceWithEmptyAt(index)
                 : super.removeCardAt(index)
         }
 
-        moveCursorToIndex(index: number) {
-            if (this.cards.length === 0) {
-                return
-            }
-            if (index < 0 || index >= this.cards.length) {
-                index = 0
-            }
-            this.scrollToLine = this.firstLine
-            if(this.isScrollingLeftRight) {
-                if(index < this.firstLine * this.rows) {
-                    this.scrollToLine = Math.floor(index / this.rows)
-                } else if(index > (this.firstLine + this.columns - 1) * this.rows) {
-                    this.scrollToLine = Math.floor(index / this.rows - (this.columns - 1))
-                }
-            } else {
-                if(index < this.firstLine * this.columns) {
-                    this.scrollToLine = Math.floor(index / this.columns)
-                } else if(index > (this.firstLine + this.rows - 1) * this.columns) {
-                    this.scrollToLine = Math.floor(index / this.columns - (this.rows - 1))
-                }
-            }
-            if(this.firstLine !== this.scrollToLine) {
-                this.reposition()
-            }
-            pointCursorAt(this.cards[index])
-        }
+        // moveCursorToIndex(index: number) {
+        //     if (this.cards.length === 0) {
+        //         return
+        //     }
+        //     if (index < 0 || index >= this.cards.length) {
+        //         index = 0
+        //     }
+        //     this.scrollLine = this.startLine
+        //     if(this.scrollLeftRight) {
+        //         if(index < this.startLine * this.rows) {
+        //             this.scrollLine = Math.floor(index / this.rows)
+        //         } else if(index > (this.startLine + this.columns - 1) * this.rows) {
+        //             this.scrollLine = Math.floor(index / this.rows - (this.columns - 1))
+        //         }
+        //     } else {
+        //         if(index < this.startLine * this.columns) {
+        //             this.scrollLine = Math.floor(index / this.columns)
+        //         } else if(index > (this.startLine + this.rows - 1) * this.columns) {
+        //             this.scrollLine = Math.floor(index / this.columns - (this.rows - 1))
+        //         }
+        //     }
+        //     if(this.startLine !== this.scrollLine) {
+        //         this.refresh()
+        //     }
+        //     pointCursorAt(this.cards[index])
+        // }
         
-        private moveCursorIndexByOffset(rowOffset: number, columnOffset: number) {
-            let index = this.getCursorIndex()
-            if (index < 0) {
-                this.moveCursorToIndex(0)
-                return
-            }
+        // private moveCursorIndexByOffset(rowOffset: number, columnOffset: number) {
+        //     let index = this.getCursorIndex()
+        //     if (index < 0) {
+        //         this.moveCursorToIndex(0)
+        //         return
+        //     }
 
-            let row = this.isScrollingLeftRight
-                ? index % this.rows
-                : Math.floor(index / this.columns)
-            let column = this.isScrollingLeftRight
-                ? Math.floor(index / this.rows)
-                : index % this.columns
-            let maxRow = this.isScrollingLeftRight
-                ? this.rows
-                : Math.ceil(this.cards.length / this.columns)
-            let maxColumn = this.isScrollingLeftRight
-                ? Math.ceil(this.cards.length / this.rows)
-                : this.columns
-            row += rowOffset
-            column += columnOffset
+        //     let row = this.scrollLeftRight
+        //         ? index % this.rows
+        //         : Math.floor(index / this.columns)
+        //     let column = this.scrollLeftRight
+        //         ? Math.floor(index / this.rows)
+        //         : index % this.columns
+        //     let maxRow = this.scrollLeftRight
+        //         ? this.rows
+        //         : Math.ceil(this.cards.length / this.columns)
+        //     let maxColumn = this.scrollLeftRight
+        //         ? Math.ceil(this.cards.length / this.rows)
+        //         : this.columns
+        //     row += rowOffset
+        //     column += columnOffset
 
-            if (this.isWrappingSelection) {
-                if (row < 0) {
-                    row = maxRow + row
-                } else if (row >= maxRow) {
-                    row -= maxRow
-                }
-                if (column < 0) {
-                    column = maxColumn + column
-                } else if (column >= maxColumn) {
-                    column -= maxColumn
-                }
-            } else {
-                row = Math.max(0, Math.min(row, maxRow - 1))
-                column = Math.max(0, Math.min(column, maxColumn - 1))
-            }
+        //     if (this.isWrappingSelection) {
+        //         if (row < 0) {
+        //             row = maxRow + row
+        //         } else if (row >= maxRow) {
+        //             row -= maxRow
+        //         }
+        //         if (column < 0) {
+        //             column = maxColumn + column
+        //         } else if (column >= maxColumn) {
+        //             column -= maxColumn
+        //         }
+        //     } else {
+        //         row = Math.max(0, Math.min(row, maxRow - 1))
+        //         column = Math.max(0, Math.min(column, maxColumn - 1))
+        //     }
 
-            index = this.isScrollingLeftRight
-                ? column * this.rows + row
-                : row * this.columns + column            
-            if (index >= this.cards.length) {
-                index = this.cards.length - 1
-            }
-            this.moveCursorToIndex(index)
-        }
+        //     index = this.scrollLeftRight
+        //         ? column * this.rows + row
+        //         : row * this.columns + column            
+        //     if (index >= this.cards.length) {
+        //         index = this.cards.length - 1
+        //     }
+        //     this.moveCursorToIndex(index)
+        // }
 
-        moveCursorLeft() {
-            this.moveCursorIndexByOffset(0, -1)
-        }
+        // moveCursorLeft() {
+        //     this.moveCursorIndexByOffset(0, -1)
+        // }
 
-        moveCursorRight() {
-            this.moveCursorIndexByOffset(0, 1)
-        }
+        // moveCursorRight() {
+        //     this.moveCursorIndexByOffset(0, 1)
+        // }
 
-        moveCursorUp() {
-            this.moveCursorIndexByOffset(-1, 0)
-        }
+        // moveCursorUp() {
+        //     this.moveCursorIndexByOffset(-1, 0)
+        // }
 
-        moveCursorDown() {
-            this.moveCursorIndexByOffset(1, 0)
-        }
+        // moveCursorDown() {
+        //     this.moveCursorIndexByOffset(1, 0)
+        // }
     }
+}
 
+namespace cardCore {
     let cursorAnchor: CardCursorAnchors = CardCursorAnchors.Bottom
     let cursorExtraOffsetX = 0
     let cursorExtraOffsetY = 0
@@ -1301,7 +1243,7 @@ namespace cardCore {
 
     export function selectCursorCard() {
         if(!!cursorTarget && cursorTarget instanceof Card) {
-            resolveCardSelect(cursorTarget)
+            triggerCardSelectEvents(cursorTarget)
         }
     }
 }

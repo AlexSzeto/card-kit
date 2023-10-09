@@ -402,7 +402,7 @@ namespace cardDesign {
     export function addCardVariantsToStack(deck: cardCore.CardStack, variations: CardAttributeVariation[], copies: number = 1) {
         const insertData: cardCore.CardData[] = []
         __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
-        deck.insertCardData(insertData)
+        deck.insertData(insertData)
     }
 }
 
@@ -443,7 +443,7 @@ namespace cardKit {
     export function createEmptyHand(
         kind: number,
         spreadDirection: CardLayoutSpreadDirections,
-        alignment: CardLayoutSpreadAlignments,
+        alignment: CardLayoutDirections,
     ): cardCore.CardSpread {
         const spread = new cardCore.CardSpread(
             scene.screenWidth() / 2, scene.screenHeight() / 2, 1,
@@ -524,21 +524,6 @@ namespace cardKit {
                 : sprites.create(DEFAULT_SCROLL_DOWN, SpriteKind.Cursor)
         )
         return grid
-    }
-
-    //% group="Create" blockSetVariable="myCard"
-    //% block="view of $card using $design"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function createCardView(card: cardCore.Card, design: cardCore.CardDesign): cardCore.Card {
-        return card.createView(design)
-    }
-    
-    //% group="Create" blockSetVariable="myCard"
-    //% block="clone of $card"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function createCardClone(card: cardCore.Card): cardCore.Card {
-        return card.clone()
     }
     
     //% group="Card"
@@ -665,7 +650,7 @@ namespace cardKit {
     //% group="Cursor"
     //% block="move cursor between cards in $container with buttons"
     //% container.shadow="variables_get" container.defl="myContainer"
-    export function moveCursorInsideLayoutWithButtons(container: cardCore.LayoutContainer) {
+    export function moveCursorInsideLayoutWithButtons(container: cardCore.CardContainer) {
         cardCore.preselectCursorContainer(container)
         container.moveCursorIntoContainer()
         autoLayoutControl = true
@@ -741,7 +726,7 @@ namespace cardKit {
     //% block="add $card to $container at $position position $facing"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% card.shadow="variables_get" card.defl="myCard"
-    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFacingModifiers) {
+    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFaces) {
         const index = getPositionIndex(container, position)
         if (index == null) {
             return
@@ -759,7 +744,7 @@ namespace cardKit {
         startPosition: CardContainerPositions,
         destination: cardCore.CardContainer,
         endPosition: CardContainerPositions,
-        facing: CardFacingModifiers
+        facing: CardFaces
     ) {
         const start = getPositionIndex(origin, startPosition)
         if (start == null) {
@@ -776,14 +761,14 @@ namespace cardKit {
     //% block="$container $position card"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getContainerCardAtPosition(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {        
-        return container.getCardCopyAt(getPositionIndex(container, position))
+        return container.getCard(getPositionIndex(container, position))
     }
 
     //% group="Card List"
     //% block="$container card at $index"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getContainerCardAtIndex(container: cardCore.CardContainer, index: number): cardCore.Card {
-        return container.getCardCopyAt(index)
+        return container.getCard(index)
     }
 
     //% color="#ff9008"
@@ -791,7 +776,7 @@ namespace cardKit {
     //% block="$container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
-        return container.getCardsCopy()
+        return container.getCards()
     }
 
     //% color="#ff9008"
@@ -801,7 +786,7 @@ namespace cardKit {
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
     export function filterCardListWithCondition(container: cardCore.CardContainer, attribute: number, text: string): cardCore.Card[] {
-        return container.getCardsCopy().filter(card => {
+        return container.getCards().filter(card => {
             const data = card.cardData
             return !!data && data.attributeEquals(attribute, text)
         })
@@ -991,8 +976,8 @@ namespace cardKit {
     //% block="destroy spread or grid $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% spacing.defl=1
-    export function destroyCardLayoutCards(container: cardCore.LayoutContainer) {
-        container.destroyCards()
+    export function destroyCardLayoutCards(container: cardCore.CardContainer) {
+        container.destroy()
     }
 
     //% group="Spread Operations"
@@ -1035,6 +1020,6 @@ namespace cardKit {
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"
     //% scrollForward.shadow="variables_get" scrollForward.defl="mySprite"
     export function setGridScrollSprites(grid: cardCore.CardGrid, scrollBack: Sprite, scrollForward: Sprite) {
-        grid.setScrollSprites(scrollBack, scrollForward)
+        grid.setIndicators(scrollBack, scrollForward)
     }    
 }

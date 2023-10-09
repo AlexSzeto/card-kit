@@ -55,13 +55,13 @@ function FlipCards () {
             DiscardPile,
             FirstCard,
             CardContainerPositions.First,
-            CardFacingModifiers.Unchanged
+            CardFaces.Unchanged
             )
             cardKit.addCardTo(
             DiscardPile,
             SecondCard,
             CardContainerPositions.First,
-            CardFacingModifiers.Unchanged
+            CardFaces.Unchanged
             )
             if (cardKit.getContainerCardCount(PlayGrid) == 0) {
                 pause(1000)
@@ -96,7 +96,7 @@ function SetupPlayField () {
     cardKit.setContainerPosition(DiscardPile, 140, 60)
     cardKit.lockGridCardPositions(PlayGrid)
     while (cardKit.getContainerCardCount(CardDeck) > 0) {
-        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFacingModifiers.Unchanged)
+        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFaces.Unchanged)
         pause(200)
     }
     info.setLife(16)

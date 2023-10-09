@@ -182,7 +182,7 @@ namespace cardCore {
         }
 
         private getStackImage(cardStackSize: number, isFaceUp: boolean): Image {
-            const stackHeight = this.getStackHeight(cardStackSize)
+            const stackHeight = this.getStackThickness(cardStackSize) + this.height
             if (isFaceUp) {
                 this.frontStackResizableImage.resize(this.width, stackHeight, this.frontStackFrame)
                 return this.frontStackResizableImage.image
@@ -193,11 +193,7 @@ namespace cardCore {
         }
 
         getStackThickness(cardStackSize: number): number {
-            return Math.floor(Math.min(this.maxStackHeight, Math.max(1, cardStackSize / this.cardsPerPixel)))
-        }
-        
-        getStackHeight(cardStackSize: number): number {
-            return this.getStackThickness(cardStackSize) + this.height
+            return Math.floor(Math.min(this.maxStackHeight, Math.max(0, cardStackSize / this.cardsPerPixel)))
         }
 
         createCardBaseImage(): Image {
@@ -385,24 +381,11 @@ namespace cardCore {
             }
         }
     
-        drawCardStack(image: Image, x: number, y: number, cardCount: number, topCardData: CardData, isStackFaceUp: boolean, isTopCardFaceUp: boolean, isEmptyCardInvisible: boolean) {
+        drawCardStack(image: Image, x: number, y: number, cardCount: number, faceUp: boolean) {
             if (cardCount > 1) {
-                const stackImage = this.getStackImage(cardCount, isStackFaceUp)
+                const stackImage = this.getStackImage(cardCount, faceUp)
                 y = y + this.getStackImageFullHeight() - stackImage.height
                 image.drawTransparentImage(stackImage, x, y)
-            } else if (cardCount === 1) {
-                y = y + this.getStackImageFullHeight() - this.height
-            } else if (isEmptyCardInvisible) {
-                return
-            } else {
-                y = y + this.getStackImageFullHeight() - this.height
-                image.drawTransparentImage(this.blankImage, x, y)
-                return
-            }
-            if (isTopCardFaceUp) {
-                this.drawCardFront(image, x, y, topCardData)
-            } else {
-                this.drawCardBack(image, x, y)
             }
         }
     }
