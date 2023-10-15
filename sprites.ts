@@ -50,6 +50,7 @@ enum CardFaces {
     Down,
 }
 
+// Card
 namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
     const DEFAULT_FLIP_DURATION = 300
@@ -207,6 +208,7 @@ namespace cardCore {
     })
 }
 
+// CardEvent
 namespace cardCore {
     export type CardEventCondition = cardCore.CardAttribute
     export type CardEventHandler = (container: CardContainer, card: Card) => void
@@ -240,6 +242,7 @@ namespace cardCore {
     }
 }
 
+// CardContainer
 namespace cardCore {
     export const DEFAULT_CONTAINER_Z = 0
     export const DEFAULT_TRANSITION_Z_OFFSET = 100
@@ -260,6 +263,7 @@ namespace cardCore {
 
         protected empty: Card
         protected cards: Card[]
+        protected transition: Card[]
 
         constructor(
             design: CardDesign,
@@ -278,6 +282,7 @@ namespace cardCore {
 
             this.empty = new Card(this._design, EMPTY_CARD_DATA, this, true)
             this.cards = []
+            this.transition = []
         }
 
         get isCardContainer(): boolean {
@@ -397,11 +402,18 @@ namespace cardCore {
             } else {
                 this.cards.insertAt(index, card)
             }
+            this.transition.push(card)
             this.refresh()
-            card.z += DEFAULT_TRANSITION_Z_OFFSET
 
             if (this.slots === 1 && cardCursor.selectedContainer() === this) {
                 cardCursor.select(card)
+            }
+        }
+
+        protected completeTransition(card: Card) {
+            const transitionIndex = this.transition.indexOf(card)
+            if(transitionIndex >= 0) {
+                this.transition.splice(transitionIndex, 1)
             }
         }
 
@@ -413,9 +425,14 @@ namespace cardCore {
 
             this.deselect(index)
 
-            extraAnimations.clearAnimations(card, true)
+            extraAnimations.clearFixedFrameAnimation(card, true)
             card.resetTransforms()
             this.cards.splice(index, 1)
+
+            const transitionIndex = this.transition.indexOf(card)
+            if (transitionIndex >= 0) {
+                this.transition.splice(transitionIndex, 1)
+            }
 
             this.refresh()
             return card
@@ -438,6 +455,8 @@ namespace cardCore {
             const blank = new Card(card.design, EMPTY_CARD_DATA, this, true)
             this.cards.insertAt(index, blank)
             this.refresh()
+            this.completeTransition(blank)
+            extraAnimations.clearSlideAnimation(blank, true)
 
             this.deselect(index)
             cardCursor.select(blank)
@@ -515,11 +534,11 @@ namespace cardCore {
     }
 }
 
+// CardStack
 namespace cardCore {
 
     export class CardStack extends CardContainer {
         private stack: Sprite
-        private stackedCards: Card[]
         private _topIsFaceUp: boolean
         private _stackIsFaceUp: boolean
 
@@ -532,7 +551,6 @@ namespace cardCore {
         ) {
             super(design, x, y, kind)
             this.stack = sprites.create(design.createStackBaseimage(), SpriteKind.CardContainer)
-            this.stackedCards = []
             this._stackIsFaceUp = stackIsFaceUp
             this._topIsFaceUp = this._stackIsFaceUp
         }
@@ -564,21 +582,9 @@ namespace cardCore {
             }
             super.insertCard(card, index, this._stackIsFaceUp ? CardFaces.Up : CardFaces.Down)
         }
-
-        removeCardAt(index: number): Card {
-            const card = this.getCard(index)
-            const stackIndex = this.stackedCards.indexOf(card)
-            if (stackIndex >= 0) {
-                this.stackedCards.splice(stackIndex, 1)
-            }
-
-            super.removeCardAt(index)
-            return card
-        }
         
         destroy(): void {
             super.destroy()
-            this.stackedCards = []
             this.refresh()
         }
 
@@ -589,23 +595,24 @@ namespace cardCore {
                 return
             }
 
+            const stackCount = this.cards.length - this.transition.length
             this.stack.setFlag(SpriteFlag.Invisible, false)
             this.stack.image.fill(0)
             this.design.drawCardStack(
                 this.stack.image,
                 0, 0,
-                this.stackedCards.length,
+                stackCount,
                 this._stackIsFaceUp,
             )
             this.stack.setPosition(this.x, this.y - this.stack.image.height / 2 + this.design.height / 2)
             this.stack.z = this._z
 
-            const topY = this.y - this.design.getStackThickness(this.stackedCards.length)
+            const topY = this.y - this.design.getStackThickness(stackCount)
 
             let findingTopCard = true
             for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
-                if (this.stackedCards.indexOf(card) >= 0) {
+                if (this.transition.indexOf(card) < 0) {
                     card.setPosition(this.x, topY)
                     card.z = this._z + this.count - i
                     if (findingTopCard) {
@@ -616,9 +623,9 @@ namespace cardCore {
                         card.visible = false
                     }
                 } else {
-                    console.log(`slide #${i} stack@${this.stackedCards.length}`)
+                    console.log(`slide #${i} stack@${this.count}`)
                     card.visible = true
-                    card.z = this._z + this.count - i
+                    card.z = this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET
                     extraAnimations.slide(
                         card,
                         this.x,
@@ -626,11 +633,8 @@ namespace cardCore {
                         this._z + this.count - i,
                         DEFAULT_SLIDE_DURATION,
                         () => {
-                            if (this.cards.indexOf(card) >= 0) {
-                                this.stackedCards.push(card)
-                                console.log(this.stackedCards.length)
-                                // this.refresh()
-                            }
+                            this.completeTransition(card)
+                            this.refresh()
                         }
                     )
                 }
@@ -642,7 +646,6 @@ namespace cardCore {
                 const insert = data
                     .map(cardData => new Card(this.design, cardData, this, this._stackIsFaceUp))
                 this.cards = insert.slice().concat(this.cards)
-                this.stackedCards = insert.concat(this.stackedCards)
                 this.refresh()
                 this.startSelection()
             }
@@ -650,6 +653,7 @@ namespace cardCore {
     }
 }
 
+// CardSpread
 namespace cardCore {
 
     export class CardSpread extends CardContainer {
@@ -721,12 +725,12 @@ namespace cardCore {
 
             for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
-                card.z = this._z + this._spacing >= 0 ? 0 : i + DEFAULT_TRANSITION_Z_OFFSET
+                card.z = this._z + i + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
                 extraAnimations.slide(
                     card, x, y,
                     this.z + this._spacing >= 0 ? 0 : i,
                     DEFAULT_SLIDE_DURATION,
-                    null
+                    () => this.completeTransition(card)
                 )
                 x += offsetX
                 y += offsetY
@@ -772,6 +776,7 @@ namespace cardCore {
     }
 }
 
+// CardGrid
 namespace cardCore {
     const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
     const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
@@ -943,7 +948,7 @@ namespace cardCore {
             for (let card of this.cards) {
                 extraAnimations.clearFixedFrameAnimation(card, true)
                 card.resetTransforms()
-                card.z = this._z
+                card.z = this._z + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
             }
 
             // Hide and collapse previously visible cards
@@ -1010,8 +1015,9 @@ namespace cardCore {
                         )
                     }
                 } else {
-                    extraAnimations.clearSlideAnimation(card, false)
-                    extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION, null)
+                    extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION,
+                        () => this.completeTransition(card)
+                    )
                 }
                 nextShown.push(card)
 
@@ -1218,6 +1224,7 @@ namespace cardCursor {
     }
 
     export function select(next: any) {
+        console.log('select new target ' + next)
         const prev = target
 
         if (next instanceof cardCore.Card) {

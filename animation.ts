@@ -114,6 +114,14 @@ namespace extraAnimations {
         timeInMs: number,
         onComplete: (sprite: Sprite) => void
     ) {
+        const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
+        if (!!oldTracker) {
+            if (oldTracker.x === x && oldTracker.y === y && oldTracker.z === z) {
+                return
+            } else {
+                slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
+            }
+        }
         const t = timeInMs / 1000
         const v = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y)) / t
         if (v > 250) {
