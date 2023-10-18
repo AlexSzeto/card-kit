@@ -623,7 +623,6 @@ namespace cardCore {
                         card.visible = false
                     }
                 } else {
-                    console.log(`slide #${i} stack@${this.count}`)
                     card.visible = true
                     card.z = this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET
                     extraAnimations.slide(
@@ -778,7 +777,7 @@ namespace cardCore {
 
 // CardGrid
 namespace cardCore {
-    const COLLAPSE_SCALE = [1.0, 0.3, 0.1, 0.1]
+    const COLLAPSE_SCALE = [0.7, 0.3, 0.1, 0.1]
     const EXPAND_SCALE = [0.1, 0.7, 0.9, 1.0]
 
     export class CardGrid extends CardContainer {
@@ -787,7 +786,7 @@ namespace cardCore {
 
         private _locked: boolean
 
-        private lastShown: Card[]
+        private justInserted: Card
         private collapse: number[]
         private expand: number[]
 
@@ -808,7 +807,6 @@ namespace cardCore {
             this._spacing = 1
             this._locked = false
             this._wrapSelection = false
-            this.lastShown = []
         }
 
         setIndicators(back: Sprite, forward: Sprite) {
@@ -902,10 +900,10 @@ namespace cardCore {
             } else {
                 this.scrollLine = Math.min(this.scrollLine, Math.max(0, Math.ceil(this.slots / this.rows) - this.columns))
             }
-            const scrolling: boolean = Math.abs(this.startLine - this.scrollLine) == 1
+            const scrolling: boolean = Math.abs(this.startLine - this.scrollLine) <= 1
             const scrollDirection = this.scrollLine - this.startLine
             this.startLine = this.scrollLine
-            
+
             const createPositionLookup = (scales: number[], center: number, size: number, direction: number): number[] => scales.map(scale =>
                 center + (size / 2 * direction) - (size * scale / 2 * direction)
             )
@@ -933,6 +931,7 @@ namespace cardCore {
                 ? this.startLine * this.columns
                 : this.startLine * this.rows
             const lastIndex = firstIndex + this.rows * this.columns
+            const insertReferesh = this.justInserted !== null
 
             // Update cursor
             const cursorIndex = this.cursorIndex
@@ -946,16 +945,21 @@ namespace cardCore {
 
             // Reset animations
             for (let card of this.cards) {
-                extraAnimations.clearFixedFrameAnimation(card, true)
-                card.resetTransforms()
-                card.z = this._z + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
+                if (!insertReferesh || card === this.justInserted) {
+                    extraAnimations.clearFixedFrameAnimation(card, true)
+                    card.z = this._z
+                }
             }
 
             // Hide and collapse previously visible cards
             this.cards.forEach((card, i) => {
+                if (insertReferesh && card != this.justInserted) {
+                    return
+                }
                 if (i < index || i >= index + this.rows * this.columns) {
-                    if (scrolling && this.lastShown.indexOf(card) >= 0) {
-                        extraAnimations.clearSlideAnimation(card, true)
+                    extraAnimations.clearSlideAnimation(card, true)
+                    this.completeTransition(card)
+                    if (scrolling && card.visible && card != this.justInserted) {
                         if (this.scrollUpDown) {
                             extraAnimations.fixedFrameAnimate(
                                 card,
@@ -983,43 +987,55 @@ namespace cardCore {
             })
 
             // Slide and expand visible cards
-            const nextShown: Card[] = []
             do {
-                const x = left + column * (cardWidth + this._spacing)
-                const y = top + row * (cardHeight + this._spacing)
-                const card = this.cards[index]
-
-                if (scrolling && this.lastShown.indexOf(card) < 0) {
-                    extraAnimations.clearSlideAnimation(card, true)
-                    card.x = x
-                    card.y = y
-                    if (this.scrollUpDown) {
-                        extraAnimations.fixedFrameAnimate(
-                            card,
-                            DEFAULT_SLIDE_DURATION,
-                            this.expand.length,
-                            null, this.expand,
-                            null, EXPAND_SCALE,
-                            null,
-                            null
-                        )
+                if (!insertReferesh || this.justInserted === this.cards[index]) {
+                    const x = left + column * (cardWidth + this._spacing)
+                    const y = top + row * (cardHeight + this._spacing)
+                    const card = this.cards[index]
+                    card.z += index - firstIndex + 1
+    
+                    if (!scrolling) {
+                        card.resetTransforms()
+                        card.x = x
+                        card.y = y
+                        card.visible = true
+                    } else if (!card.visible) {
+                        extraAnimations.clearSlideAnimation(card, true)
+                        card.resetTransforms()
+                        card.x = x
+                        card.y = y
+                        if (this.scrollUpDown) {
+                            extraAnimations.fixedFrameAnimate(
+                                card,
+                                DEFAULT_SLIDE_DURATION,
+                                this.expand.length,
+                                null, this.expand,
+                                null, EXPAND_SCALE,
+                                null,
+                                null
+                            )
+                        } else {
+                            extraAnimations.fixedFrameAnimate(
+                                card,
+                                DEFAULT_SLIDE_DURATION,
+                                this.expand.length,
+                                this.expand, null,
+                                EXPAND_SCALE, null,
+                                null,
+                                null
+                            )
+                        }
                     } else {
-                        extraAnimations.fixedFrameAnimate(
-                            card,
-                            DEFAULT_SLIDE_DURATION,
-                            this.expand.length,
-                            this.expand, null,
-                            EXPAND_SCALE, null,
-                            null,
-                            null
+                        if (this.transition.indexOf(card) >= 0) {
+                            card.z += DEFAULT_TRANSITION_Z_OFFSET
+                        } else {
+                            extraAnimations.clearSlideAnimation(card, true)
+                        }
+                        extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION,
+                            () => this.completeTransition(card)
                         )
                     }
-                } else {
-                    extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION,
-                        () => this.completeTransition(card)
-                    )
                 }
-                nextShown.push(card)
 
                 if (this.scrollUpDown) {
                     column++
@@ -1036,7 +1052,6 @@ namespace cardCore {
                 }
                 index++
             } while (index < this.slots && index < lastIndex)
-            this.lastShown = nextShown
             
             // Update indicators visibility
             if (!!this.back) {
@@ -1048,6 +1063,13 @@ namespace cardCore {
                     : this.startLine + this.columns >= Math.ceil(this.slots / this.rows)
                 )
             }
+
+            this.justInserted = null
+        }
+
+        insertCard(card: Card, index?: number, facing?: CardFaces): void {
+            this.justInserted = card
+            super.insertCard(card, index, facing)
         }
 
         removeCardAt(index: number): Card {
@@ -1224,7 +1246,6 @@ namespace cardCursor {
     }
 
     export function select(next: any) {
-        console.log('select new target ' + next)
         const prev = target
 
         if (next instanceof cardCore.Card) {

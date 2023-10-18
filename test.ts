@@ -94,28 +94,28 @@ function SetupPlayField () {
     DiscardPile = cardKit.createEmptyPile(CardContainerKinds.Discard)
     cardKit.setContainerPosition(DiscardPile, 140, 60)
     cardKit.lockGridCardPositions(PlayGrid)
+    cardKit.moveCursorInsideLayoutWithButtons(PlayGrid)
     while (cardKit.getContainerCardCount(CardDeck) > 0) {
-        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFaces.Unchanged)
+        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFaces.Up)
         pause(200)
     }
     info.setLife(16)
-    cardKit.moveCursorInsideLayoutWithButtons(PlayGrid)
 }
 function SetupDeck () {
     CardDeck = cardKit.createPlayingCards()
     CardDeck.setPosition(20, 60)
     DeleteCardsList = cardKit.getLayoutCardListCopy(CardDeck)
-    for (let Card of DeleteCardsList) {
-        if (cardKit.getCardNumberAttribute(Card, CardAttributes.Rank) > 9) {
-            sprites.destroy(Card)
-        } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "clubs") {
-            sprites.destroy(Card)
-        } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "diamonds") {
-            sprites.destroy(Card)
-        }
-    }
-    pause(400)
-    cardKit.shuffleCards(CardDeck)
+    // for (let Card of DeleteCardsList) {
+    //     if (cardKit.getCardNumberAttribute(Card, CardAttributes.Rank) > 9) {
+    //         sprites.destroy(Card)
+    //     } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "clubs") {
+    //         sprites.destroy(Card)
+    //     } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "diamonds") {
+    //         sprites.destroy(Card)
+    //     }
+    // }
+    // pause(400)
+    // cardKit.shuffleCards(CardDeck)
 }
 let DeleteCardsList: cardCore.Card[] = []
 let CardDeck: cardCore.CardStack = null
