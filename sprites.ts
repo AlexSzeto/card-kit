@@ -106,6 +106,10 @@ namespace cardCore {
             this.refreshImage()
         }
 
+        get stamp(): string {
+            return this._stamp
+        }
+
         set design(value: CardDesign) {
             if (!!value && this._design != value) {
                 this._design = value
@@ -135,7 +139,9 @@ namespace cardCore {
             }
         }
 
-        get showEmpty(): boolean { return this._showEmpty }
+        get showEmpty(): boolean {
+            return this._showEmpty 
+        }
 
         set isFaceUp(value: boolean) {
             extraAnimations.clearFixedFrameAnimation(this, true)
@@ -312,6 +318,10 @@ namespace cardCore {
             this.refresh()
         }
 
+        get z(): number {
+            return this._z
+        }
+
         set spacing(value: number) {
             if (this._spacing !== value) {
                 this._spacing = value
@@ -349,6 +359,8 @@ namespace cardCore {
                 card.showEmpty = value
             }
         }
+
+        get showEmpty(): boolean { return this._showEmpty }
 
         set visible(value: boolean) {
             this._visible = value
@@ -576,6 +588,10 @@ namespace cardCore {
             }
         }
 
+        get topIsFaceUp(): boolean {
+            return this._topIsFaceUp
+        }
+
         insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
             if (!card) {
                 return
@@ -727,7 +743,7 @@ namespace cardCore {
                 card.z = this._z + i + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
                 extraAnimations.slide(
                     card, x, y,
-                    this.z + this._spacing >= 0 ? 0 : i,
+                    this._z + this._spacing >= 0 ? 0 : i,
                     DEFAULT_SLIDE_DURATION,
                     () => this.completeTransition(card)
                 )

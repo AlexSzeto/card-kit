@@ -877,6 +877,7 @@ namespace cardKit {
         }
     })
     controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+        console.log('click')
         if (autoLayoutControl) {
             moveCursorInDirection(PointerDirections.Down)
         }
@@ -884,7 +885,9 @@ namespace cardKit {
 
     let cardSelectButton: CardSelectButtons = CardSelectButtons.A
     controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+        console.log('click2')
         if (autoLayoutControl && cardSelectButton === CardSelectButtons.A) {
+            console.log('activate')
             cardCursor.activateCard()
         }
     })        

@@ -80,15 +80,16 @@ function FlipCards () {
 cardKit.createSelectEvent(CardContainerKinds.Grid, (container, card) => {
     FlipCards()
 })
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (isOnTitleScreen) {
-        isOnTitleScreen = false
-        sprites.destroy(TitleCard, effects.blizzard, 500)
-        pause(1000)
-        SetupDeck()
-        // SetupPlayField()
-    }
-})
+// controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+//     console.log('over')
+//     if (isOnTitleScreen) {
+//         isOnTitleScreen = false
+//         sprites.destroy(TitleCard, effects.blizzard, 500)
+//         pause(1000)
+//         SetupDeck()
+//         // SetupPlayField()
+//     }
+// })
 function SetupPlayField () {
     PlayGrid = cardKit.createEmptyGrid(CardContainerKinds.Grid, 3, 6, CardGridScrollDirections.UpDown)
     cardKit.setCardLayoutWrapping(PlayGrid, true)
