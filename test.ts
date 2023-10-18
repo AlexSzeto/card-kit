@@ -77,6 +77,9 @@ function FlipCards () {
     }
 }
 
+cardKit.createSelectEvent(CardContainerKinds.Grid, (container, card) => {
+    FlipCards()
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (isOnTitleScreen) {
         isOnTitleScreen = false
@@ -84,8 +87,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         pause(1000)
         SetupDeck()
         // SetupPlayField()
-    } else {
-        FlipCards()
     }
 })
 function SetupPlayField () {
@@ -96,7 +97,7 @@ function SetupPlayField () {
     cardKit.lockGridCardPositions(PlayGrid)
     cardKit.moveCursorInsideLayoutWithButtons(PlayGrid)
     while (cardKit.getContainerCardCount(CardDeck) > 0) {
-        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFaces.Up)
+        cardKit.moveCardBetween(CardDeck, CardContainerPositions.First, PlayGrid, CardContainerPositions.Last, CardFaces.Down)
         pause(200)
     }
     info.setLife(16)
@@ -105,17 +106,17 @@ function SetupDeck () {
     CardDeck = cardKit.createPlayingCards()
     CardDeck.setPosition(20, 60)
     DeleteCardsList = cardKit.getLayoutCardListCopy(CardDeck)
-    // for (let Card of DeleteCardsList) {
-    //     if (cardKit.getCardNumberAttribute(Card, CardAttributes.Rank) > 9) {
-    //         sprites.destroy(Card)
-    //     } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "clubs") {
-    //         sprites.destroy(Card)
-    //     } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "diamonds") {
-    //         sprites.destroy(Card)
-    //     }
-    // }
-    // pause(400)
-    // cardKit.shuffleCards(CardDeck)
+    for (let Card of DeleteCardsList) {
+        if (cardKit.getCardNumberAttribute(Card, CardAttributes.Rank) > 9) {
+            sprites.destroy(Card)
+        } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "clubs") {
+            sprites.destroy(Card)
+        } else if (cardKit.getCardTextAttribute(Card, CardAttributes.Suit) == "diamonds") {
+            sprites.destroy(Card)
+        }
+    }
+    pause(400)
+    cardKit.shuffleCards(CardDeck)
 }
 let DeleteCardsList: cardCore.Card[] = []
 let CardDeck: cardCore.CardStack = null

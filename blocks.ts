@@ -35,6 +35,12 @@ enum PointerDirections {
     Right
 }
 
+enum CardSelectButtons {
+    A,
+    B,
+    Menu,
+}
+
 enum CardGridScrollDirections {
     //% block="up and down"
     UpDown,
@@ -688,6 +694,13 @@ namespace cardKit {
         autoLayoutControl = false
     }
 
+    //% color="#d54322"
+    //% group="Cursor"
+    //% block="set card select button to $button"
+    export function bindSelectButton(button: CardSelectButtons) {
+        cardSelectButton = button
+    }
+
     export function moveCursorInDirection(direction: PointerDirections) {
         const layer = getCursorContainer()
         if (!layer) {
@@ -866,6 +879,23 @@ namespace cardKit {
     controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         if (autoLayoutControl) {
             moveCursorInDirection(PointerDirections.Down)
+        }
+    })
+
+    let cardSelectButton: CardSelectButtons = CardSelectButtons.A
+    controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl && cardSelectButton === CardSelectButtons.A) {
+            cardCursor.activateCard()
+        }
+    })        
+    controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl && cardSelectButton === CardSelectButtons.B) {
+            cardCursor.activateCard()
+        }
+    })
+    controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+        if (autoLayoutControl && cardSelectButton === CardSelectButtons.Menu) {
+            cardCursor.activateCard()
         }
     })
 
