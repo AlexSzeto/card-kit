@@ -26,7 +26,7 @@ enum CardContainerPositions {
 
 enum PointerDirections {
     //% block="up"
-    Up,
+    Up = 1,
     //% block="down"
     Down,
     //% block="left"
@@ -35,9 +35,13 @@ enum PointerDirections {
     Right
 }
 
-enum CardSelectButtons {
+enum ControllerButtons {
     A,
     B,
+    Up,
+    Down,
+    Left,
+    Right,
     Menu,
 }
 
@@ -697,7 +701,7 @@ namespace cardKit {
     //% color="#d54322"
     //% group="Cursor"
     //% block="set card select button to $button"
-    export function bindSelectButton(button: CardSelectButtons) {
+    export function bindSelectButton(button: ControllerButtons) {
         cardSelectButton = button
     }
 
@@ -861,45 +865,35 @@ namespace cardKit {
     }
 
     let autoLayoutControl: boolean = true
-    controller.left.onEvent(ControllerButtonEvent.Pressed, function() {
-        if (autoLayoutControl) {
-            moveCursorInDirection(PointerDirections.Left)
-        }
-    })
-    controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-        if (autoLayoutControl) {
-            moveCursorInDirection(PointerDirections.Right)
-        }
-    })
-    controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-        if (autoLayoutControl) {
-            moveCursorInDirection(PointerDirections.Up)
-        }
-    })
-    controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-        console.log('click')
-        if (autoLayoutControl) {
-            moveCursorInDirection(PointerDirections.Down)
-        }
-    })
+    let cardSelectButton: ControllerButtons = ControllerButtons.A
 
-    let cardSelectButton: CardSelectButtons = CardSelectButtons.A
-    controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-        console.log('click2')
-        if (autoLayoutControl && cardSelectButton === CardSelectButtons.A) {
-            console.log('activate')
-            cardCursor.activateCard()
+    let isPressed = [false, false, false, false, false, false, false]
+    
+    function updateControl(button: controller.Button, index: ControllerButtons, direction?: PointerDirections) {
+        if (button.isPressed() && !isPressed[index]) {
+            isPressed[index] = true
+            if (autoLayoutControl) {
+                if (!!direction) {
+                    moveCursorInDirection(direction)
+                }
+                if (cardSelectButton === index) {
+                    cardCursor.activateCard()
+                }
+            }
         }
-    })        
-    controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-        if (autoLayoutControl && cardSelectButton === CardSelectButtons.B) {
-            cardCursor.activateCard()
+        if(!button.isPressed()) {
+            isPressed[index] = false
         }
-    })
-    controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-        if (autoLayoutControl && cardSelectButton === CardSelectButtons.Menu) {
-            cardCursor.activateCard()
-        }
+    }
+
+    forever(() => {
+        updateControl(controller.left, ControllerButtons.Left, PointerDirections.Left)
+        updateControl(controller.right, ControllerButtons.Right, PointerDirections.Right)
+        updateControl(controller.up, ControllerButtons.Up, PointerDirections.Up)
+        updateControl(controller.down, ControllerButtons.Down, PointerDirections.Down)
+        updateControl(controller.A, ControllerButtons.A)
+        updateControl(controller.B, ControllerButtons.B)
+        updateControl(controller.menu, ControllerButtons.Menu)
     })
 
     //% group="Stack/Spread/Grid Operations"
