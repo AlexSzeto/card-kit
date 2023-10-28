@@ -83,7 +83,7 @@ namespace cardCore {
             this._design = design
             this._faceUp = faceUp
             this._card = data
-            this._showEmpty = false
+            this._showEmpty = true
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
@@ -217,32 +217,44 @@ namespace cardCore {
 // CardEvent
 namespace cardCore {
     export type CardEventCondition = cardCore.CardAttribute
-    export type CardEventHandler = (container: CardContainer, card: Card) => void
 
     type CardEvent = {
         kind: number,
-        forEmpty: boolean
-        condition: CardEventCondition
-        handler: CardEventHandler
+        handler: (container: CardContainer, card: Card) => void
     }
 
-    export function addCardEvent(kind: number, handler: CardEventHandler, forEmpty: boolean, condition: CardEventCondition = null) {
-        cardEvents.push({ kind: kind, condition: condition, forEmpty: forEmpty, handler: handler })
+    type EmptyGridSlotEvent = {
+        kind: number,
+        handler: (container: CardContainer) => void
     }
 
     const cardEvents: CardEvent[] = []
+    export function addCardEvent(kind: number, handler: (container: CardContainer, card: Card) => void) {
+        cardEvents.push({ kind: kind, handler: handler })
+    }
+
+    const emptyGridSlotEvents: EmptyGridSlotEvent[] = []
+    export function addEmptyGridSlotEvent(kind: number, handler: (container: CardContainer) => void) {
+        emptyGridSlotEvents.push({ kind: kind, handler: handler })
+    }
+
     export function dispatchActivateEvents(card: Card) {
         const container = card.container
         if (!container) {
             return
         }
-        for (let event of cardEvents) {
-            if (
-                event.kind === container.kind
-                && (event.forEmpty === card.isEmpty)
-                && (!event.condition || card.cardData.attributeEquals(event.condition.attribute, event.condition.value))
-            ) {
-                event.handler(container, card)
+
+        if (!card.isEmpty) {
+            for (let event of cardEvents) {
+                if (event.kind === container.kind) {
+                    event.handler(container, card)
+                }
+            }
+        } else {
+            for (let event of emptyGridSlotEvents) {
+                if (event.kind === container.kind) {
+                    event.handler(container)
+                }
             }
         }
     }
@@ -264,8 +276,6 @@ namespace cardCore {
         protected _visible: boolean
 
         protected _spacing: number
-        protected _wrapSelection: boolean
-        protected _showEmpty: boolean
 
         protected empty: Card
         protected cards: Card[]
@@ -283,8 +293,6 @@ namespace cardCore {
             this._visible = true
 
             this._spacing = 1
-            this._wrapSelection = false
-            this._showEmpty = true
 
             this.empty = new Card(this._design, EMPTY_CARD_DATA, this, true)
             this.cards = []
@@ -329,8 +337,8 @@ namespace cardCore {
             }
         }
 
-        set wrapSelection(value: boolean) {
-            this._wrapSelection = value
+        get spacing(): number {
+            return this._spacing
         }
 
         protected setDesign(value: CardDesign) {
@@ -350,17 +358,6 @@ namespace cardCore {
         }
 
         get design(): CardDesign { return this._design }
-
-        set showEmpty(value: boolean) {
-            this._showEmpty = value
-            this.empty.showEmpty = value
-
-            for (let card of this.cards) {
-                card.showEmpty = value
-            }
-        }
-
-        get showEmpty(): boolean { return this._showEmpty }
 
         set visible(value: boolean) {
             this._visible = value
@@ -407,11 +404,13 @@ namespace cardCore {
             card.isFaceUp = facing != CardFaces.Unchanged
                 ? facing === CardFaces.Up
                 : card.isFaceUp
-            card.showEmpty = this._showEmpty
 
             if (index === LAST_CARD_INDEX) {
                 this.cards.push(card)
             } else {
+                if (this.cards[index].isEmpty) {
+                    sprites.destroy(this.cards[index])
+                }
                 this.cards.insertAt(index, card)
             }
             this.transition.push(card)
@@ -708,10 +707,8 @@ namespace cardCore {
             let offsetY: number = 0
 
             if (this.isHorizonal) {
-                x += this._design.width / 2
                 offsetX = this._design.width + this._spacing
             } else {
-                y += this._design.height / 2
                 offsetY = this._design.height + this._spacing
             }
 
@@ -724,17 +721,11 @@ namespace cardCore {
             const height = (this._design.height + this._spacing) * this.slots - this._spacing
             
             switch (this._direction) {
-                case CardLayoutDirections.RightToLeft:
-                    x -= width
-                    break
                 case CardLayoutDirections.CenteredLeftRight:
-                    x -= width / 2
-                    break
-                case CardLayoutDirections.BottomToTop:
-                    y -= height
+                    x -= width / 2 - this._design.width / 2
                     break
                 case CardLayoutDirections.CenteredUpDown:
-                    y -= height / 2
+                    y -= height / 2 - this._design.height / 2
                     break
             }
 
@@ -755,11 +746,7 @@ namespace cardCore {
         private selectByOffset(offset: number) {
             const index = this.cursorIndex
             if (index >= 0) {
-                if (this._wrapSelection) {
-                    this.cursorIndex = ((index + this.slots + offset) % this.slots)
-                } else {
-                    this.cursorIndex = (Math.min(this.slots - 1, Math.max(0, index + offset)))
-                }
+                this.cursorIndex = (Math.min(this.slots - 1, Math.max(0, index + offset)))
             } else {
                 this.startSelection()
             }
@@ -822,7 +809,6 @@ namespace cardCore {
             this.scrollLine = 0
             this._spacing = 1
             this._locked = false
-            this._wrapSelection = false
         }
 
         setIndicators(back: Sprite, forward: Sprite) {
@@ -837,7 +823,7 @@ namespace cardCore {
             this.refresh()
         }
 
-        lock() {
+        lock(minLines: number) {
             this._locked = true
 
             if ((this.scrollUpDown && this.count % this.columns === 0)
@@ -845,9 +831,10 @@ namespace cardCore {
                 return
             }
 
-            const filler = this.scrollUpDown
-                ? this.columns - (this.slots % this.columns)
-                : this.rows - (this.slots % this.rows)
+            const filler = (this.scrollUpDown
+                ? Math.max(minLines, Math.floor(this.slots / this.columns)) * this.columns
+                : Math.max(minLines, Math.floor(this.slots / this.rows)) * this.rows)
+                - this.slots
             
             for (let i = 0; i < filler; i++) {
                 this.cards.push(new Card(this._design, EMPTY_CARD_DATA, this, true))
@@ -1140,24 +1127,8 @@ namespace cardCore {
                 ? this.columns
                 : Math.ceil(this.slots / this.rows)
             
-            row += rowOffset
-            column += columnOffset
-
-            if (this._wrapSelection) {
-                if (row < 0) {
-                    row = bottom + row
-                } else if (row >= bottom) {
-                    row -= bottom
-                }
-                if (column < 0) {
-                    column = right + column
-                } else if (column >= right) {
-                    column -= right
-                }
-            } else {
-                row = Math.max(0, Math.min(row, bottom - 1))
-                column = Math.max(0, Math.min(column, right - 1))
-            }
+            row = Math.max(0, Math.min(row + rowOffset, bottom - 1))
+            column = Math.max(0, Math.min(column + columnOffset, right - 1))
 
             index = this.scrollUpDown
                 ? row * this.columns + column
