@@ -705,6 +705,93 @@ namespace cardKit {
         cardSelectButton = button
     }
 
+    type CardContainerLink = {
+        fromContainer: cardCore.CardContainer,
+        toContainer: cardCore.CardContainer,
+        direction: RelativeDirections
+    }
+    const containerLinks: CardContainerLink[] = []
+
+    function reverseRelativeDirection(direction: RelativeDirections) {
+        switch (direction) {
+            case RelativeDirections.Above: return RelativeDirections.Below
+            case RelativeDirections.Below: return RelativeDirections.Above
+            case RelativeDirections.LeftOf: return RelativeDirections.RightOf
+            case RelativeDirections.RightOf: return RelativeDirections.LeftOf
+        }
+    }
+
+    //% color="#d54322"
+    //% group="Cursor"
+    //% block="cursor link $toContainer $direction $fromContainer"
+    //% toContainer.shadow="variables_get" toContainer.defl="myContainer"
+    //% fromContainer.shadow="variables_get" fromContainer.defl="myContainer"
+    export function linkContainers(
+        toContainer: cardCore.CardContainer,
+        direction: RelativeDirections,
+        fromContainer: cardCore.CardContainer,
+    ) {
+        const forwardLink = containerLinks.indexOf(containerLinks.find(
+            link => link.fromContainer === fromContainer && link.direction === direction
+        ))
+        if(forwardLink >= 0) {
+            containerLinks.splice(forwardLink, 1)
+            containerLinks.splice(containerLinks.indexOf(containerLinks.find(
+                link => link.toContainer === fromContainer && link.direction === reverseRelativeDirection(direction)
+            )), 1)
+        }
+
+        containerLinks.push({
+            fromContainer: fromContainer,
+            toContainer: toContainer,
+            direction: direction
+        })
+        containerLinks.push({
+            fromContainer: toContainer,
+            toContainer: fromContainer,
+            direction: reverseRelativeDirection(direction)
+        })
+    }
+
+    type ContainerEntryPoint = {
+        container: cardCore.CardContainer,
+        position: CardContainerPositions,
+    }
+    const containerEntryPoints: ContainerEntryPoint[] = []
+
+    //% color="#d54322"
+    //% group="Cursor"
+    //% block="set $container link entry to $position card"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function setContainerEntryPoint(container: cardCore.CardContainer, position: CardContainerPositions) {
+        const entryPoint = containerEntryPoints.find(entry => entry.container === container)
+        if (!entryPoint) {
+            containerEntryPoints.push({
+                container: container,
+                position: position
+            })
+        } else {
+            entryPoint.position = position
+        }
+    }
+
+    cardCore.addExitContainerEvent((container: cardCore.CardContainer, direction: RelativeDirections) => {
+        const link = containerLinks.find(link => link.fromContainer === container && link.direction === direction)
+        if (!!link) {
+            const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
+            if (!!entryPoint) {
+                const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position))
+                if (card !== null) {
+                    cardCursor.select(card)
+                } else {
+                    cardCursor.select(link.toContainer)
+                }
+            } else {
+                cardCursor.select(link.toContainer)
+            }
+        }
+    })
+
     export function moveCursorInDirection(direction: PointerDirections) {
         const layer = getCursorContainer()
         if (!layer) {

@@ -41,6 +41,17 @@ enum CardLayoutDirections {
     BottomToTop,
 }
 
+enum RelativeDirections {
+    //% block="above"
+    Above = 1,
+    //% block="below"
+    Below,
+    //% block="left of"
+    LeftOf,
+    //% block="right of"
+    RightOf
+}
+
 enum CardFaces {
     //% block="face unchanged"
     Unchanged,
@@ -256,6 +267,20 @@ namespace cardCore {
                     event.handler(container)
                 }
             }
+        }
+    }
+
+
+    type ExitContainerEvent = (container: CardContainer, direction: RelativeDirections) => void
+    const exitContainerEvents: ExitContainerEvent[] = []
+
+    export function addExitContainerEvent(handler: ExitContainerEvent) {
+        exitContainerEvents.push(handler)
+    }
+
+    export function dispatchExitContainerEvent(container: CardContainer, direction: RelativeDirections) {
+        for (let event of exitContainerEvents) {
+            event(container, direction)
         }
     }
 }
@@ -664,6 +689,22 @@ namespace cardCore {
                 this.startSelection()
             }
         }
+
+        selectLeft(): void {
+            dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+        }
+
+        selectRight(): void {
+            dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+        }
+
+        selectUp(): void {
+            dispatchExitContainerEvent(this, RelativeDirections.Above)
+        }
+
+        selectDown(): void {
+            dispatchExitContainerEvent(this, RelativeDirections.Below)
+        }
     }
 }
 
@@ -754,25 +795,49 @@ namespace cardCore {
 
         selectLeft(): void {
             if (this.isHorizonal) {
-                this.selectByOffset(-1)
+                if (this.cursorIndex === 0) {
+                    dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                } else {
+                    this.selectByOffset(-1)
+                }
+            } else {
+                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
             }
         }
 
         selectRight(): void {
             if (this.isHorizonal) {
-                this.selectByOffset(1)
+                if (this.cursorIndex === this.slots - 1) {
+                    dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                } else {
+                    this.selectByOffset(1)
+                }
+            } else {
+                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
             }
         }
 
         selectUp(): void {
             if (!this.isHorizonal) {
-                this.selectByOffset(-1)
+                if (this.cursorIndex === 0) {
+                    dispatchExitContainerEvent(this, RelativeDirections.Above)
+                } else {
+                    this.selectByOffset(-1)
+                }
+            } else {
+                dispatchExitContainerEvent(this, RelativeDirections.Above)
             }
         }
 
         selectDown(): void {
             if (!this.isHorizonal) {
-                this.selectByOffset(1)
+                if (this.cursorIndex === this.slots - 1) {
+                    dispatchExitContainerEvent(this, RelativeDirections.Below)
+                } else {
+                    this.selectByOffset(1)
+                }
+            } else {
+                dispatchExitContainerEvent(this, RelativeDirections.Below)
             }
         }
     }
@@ -1126,6 +1191,20 @@ namespace cardCore {
             const right = this.scrollUpDown
                 ? this.columns
                 : Math.ceil(this.slots / this.rows)
+            
+            if (row + rowOffset < 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.Above)
+                return
+            } else if (row + rowOffset >= bottom) {
+                dispatchExitContainerEvent(this, RelativeDirections.Below)
+                return
+            } else if (column + columnOffset < 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                return
+            } else if (column + columnOffset >= right) {
+                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                return
+            }
             
             row = Math.max(0, Math.min(row + rowOffset, bottom - 1))
             column = Math.max(0, Math.min(column + columnOffset, right - 1))
