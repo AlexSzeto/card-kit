@@ -1205,7 +1205,7 @@ namespace cardCore {
                 dispatchExitContainerEvent(this, RelativeDirections.RightOf)
                 return
             }
-            
+
             row = Math.max(0, Math.min(row + rowOffset, bottom - 1))
             column = Math.max(0, Math.min(column + columnOffset, right - 1))
 
@@ -1240,7 +1240,7 @@ namespace cardCore {
 namespace cardCursor {
     const DEFAULT_CURSOR_Z = 1000
 
-    let anchor: CardCursorAnchors = CardCursorAnchors.Bottom
+    let anchorPoint: CardCursorAnchors = CardCursorAnchors.Bottom
     let targetOffsetX = 0
     let targetOffsetY = 0
     let extraOffsetX = 0
@@ -1270,7 +1270,7 @@ namespace cardCursor {
     }
 
     export function setAnchor(anchor: CardCursorAnchors, offsetX: number = 0, offsetY: number = 0) {
-        anchor = anchor
+        anchorPoint = anchor
         extraOffsetX = offsetX
         extraOffsetY = offsetY
     }
@@ -1279,7 +1279,7 @@ namespace cardCursor {
         if (!target) {
             return
         }
-        switch (anchor) {
+        switch (anchorPoint) {
             case CardCursorAnchors.Left:
             case CardCursorAnchors.TopLeft:
             case CardCursorAnchors.BottomLeft:
@@ -1288,12 +1288,12 @@ namespace cardCursor {
             case CardCursorAnchors.Right:
             case CardCursorAnchors.TopRight:
             case CardCursorAnchors.BottomRight:
-                targetOffsetX = target.height / 2
+                targetOffsetX = target.width / 2
                 break
             case CardCursorAnchors.Center:
                 targetOffsetX = 0
             }
-        switch (anchor) {
+        switch (anchorPoint) {
             case CardCursorAnchors.Top:
             case CardCursorAnchors.TopLeft:
             case CardCursorAnchors.TopRight:

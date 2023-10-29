@@ -34,6 +34,7 @@ for (let index = 0; index <= 3; index++) {
 }
 
 cardCursor.select(drawDeck)
+cardCursor.setAnchor(CardCursorAnchors.TopRight, -2, 8)
 
 for (let index = 0; index <= 13; index++) {
     cardKit.moveCardBetween(drawDeck, CardContainerPositions.First, scoringPile, CardContainerPositions.Last, CardFaces.Up)
