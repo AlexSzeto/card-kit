@@ -56,7 +56,7 @@ namespace cardKit {
         return playingCardsDesignTemplate
     }
 
-    //% group="Playing Cards Preset" blockSetVariable="myContainer"
+    //% group="Create" blockSetVariable="myContainer"
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardStack {
         let deck = cardDesign.createEmptyStack(0)

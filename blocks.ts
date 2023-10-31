@@ -105,7 +105,7 @@ namespace cardDesign {
 
     let current: CardDesignTemplate = createCardDesignTemplate()
 
-    //% group="Create"
+    //% group="Container Operations"
     //% block="set current design to $design"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function setCurrentDesign(design: CardDesignTemplate) {
@@ -116,7 +116,7 @@ namespace cardDesign {
         return current.export()
     }
 
-    //% group="Create" blockSetVariable="myDesign"
+    //% group="Container Operations" blockSetVariable="myDesign"
     //% block="blank design"
     export function createCardDesignTemplate(): CardDesignTemplate {
         return new CardDesignTemplate()
@@ -459,39 +459,7 @@ namespace cardKit {
         return arg;
     }    
 
-    //% group="Create" blockSetVariable="myContainer"
-    //% inlineInputMode=inline
-    //% block="empty $kind pile"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
-    export function createEmptyPile(
-        kind: number,
-    ): cardCore.CardStack {
-        return new cardCore.CardStack(
-            cardDesign.getCurrent(),
-            scene.screenWidth() / 2,
-            scene.screenHeight() / 2,
-            kind, true
-        )
-    }
 
-    //% group="Create" blockSetVariable="myContainer"
-    //% inlineInputMode=inline
-    //% block="empty $kind card spread $direction"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
-    //% direction.defl=CardLayoutDirections.CenteredLeftRight
-    export function createEmptyHand(
-        kind: number,
-        direction: CardLayoutDirections,
-    ): cardCore.CardSpread {
-        return new cardCore.CardSpread(
-            cardDesign.getCurrent(),
-            scene.screenWidth() / 2,
-            scene.screenHeight() / 2,
-            kind,
-            direction
-        )
-    }
 
     const DEFAULT_SCROLL_UP = img`
         . . . . . . . .
@@ -562,6 +530,357 @@ namespace cardKit {
         return grid
     }
     
+    //% group="Create" blockSetVariable="myContainer"
+    //% inlineInputMode=inline
+    //% block="empty $kind pile"
+    //% design.shadow="variables_get" design.defl="myDesign"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
+    export function createEmptyPile(
+        kind: number,
+    ): cardCore.CardStack {
+        return new cardCore.CardStack(
+            cardDesign.getCurrent(),
+            scene.screenWidth() / 2,
+            scene.screenHeight() / 2,
+            kind, true
+        )
+    }
+
+    //% group="Create" blockSetVariable="myContainer"
+    //% inlineInputMode=inline
+    //% block="empty $kind card spread $direction"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
+    //% direction.defl=CardLayoutDirections.CenteredLeftRight
+    export function createEmptyHand(
+        kind: number,
+        direction: CardLayoutDirections,
+    ): cardCore.CardSpread {
+        return new cardCore.CardSpread(
+            cardDesign.getCurrent(),
+            scene.screenWidth() / 2,
+            scene.screenHeight() / 2,
+            kind,
+            direction
+        )
+    }
+
+    //% color="#ff9008"
+    //% group="Container"
+    //% block="$container cards"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
+        return container.getCards()
+    }
+
+    //% group="Container"
+    //% block="$container is $kind"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function isContainerOfKind(
+        container: cardCore.CardContainer,
+        kind: number
+    ): boolean {
+        return !!container ? container.kind === kind : false
+    }
+
+    //% group="Container"
+    //% block="$container card count"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function getContainerCardCount(
+        container: cardCore.CardContainer
+    ): number {
+        return !! container ? container.count : -1
+    }    
+
+    //% group="Container"
+    //% block="shuffle $container cards"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function shuffleCards(container: cardCore.CardContainer) {
+        container.shuffle()
+    }
+    
+    //% group="Container"
+    //% block="destroy $container"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    //% spacing.defl=1
+    export function destroyCardLayoutCards(container: cardCore.CardContainer) {
+        container.destroy()
+    }
+    
+    //% group="Movement" blockSetVariable="myCard"
+    //% block="remove $position card from $container"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return null
+        }
+        const card = container.removeCardAt(index)
+        card.container = null
+        return card
+    }
+
+    //% group="Movement"
+    //% inlineInputMode=inline
+    //% block="move $card to $container $position position $facing"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFaces) {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return
+        }
+        container.insertCard(card, getPositionIndex(container, position), facing)
+    }
+
+    //% group="Movement"
+    //% inlineInputMode=inline
+    //% block="move $startPosition card from $origin to $destination $endPosition position $facing"
+    //% origin.shadow="variables_get" origin.defl="myContainer"
+    //% destination.shadow="variables_get" destination.defl="myContainer"    
+    export function moveCardBetween(
+        origin: cardCore.CardContainer,
+        startPosition: CardContainerPositions,
+        destination: cardCore.CardContainer,
+        endPosition: CardContainerPositions,
+        facing: CardFaces
+    ) {
+        const start = getPositionIndex(origin, startPosition)
+        if (start == null) {
+            return
+        }
+        const end = getPositionIndex(destination, endPosition)
+        if (end == null) {
+            return
+        }
+        destination.insertCard(origin.removeCardAt(start), end, facing)
+    }
+
+    //% group="Cursor"
+    //% block="cursor card"
+    export function getCursorCard(): cardCore.Card {
+        return cardCursor.selectedCard()
+    }
+
+    //% group="Cursor"
+    //% block="cursor container"
+    export function getCursorContainer(): cardCore.CardContainer {
+        return cardCursor.selectedContainer()
+    }
+
+    //% color="#d54322"
+    //% group="Controls"
+    //% block="move cursor between cards in $container with buttons"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function moveCursorInsideLayoutWithButtons(container: cardCore.CardContainer) {
+        cardCursor.select(container)
+        autoLayoutControl = true
+    }
+
+    //% color="#d54322"
+    //% group="Controls"
+    //% block="stop cursor controls"
+    export function disableLayoutButtonControl() {         
+        autoLayoutControl = false
+    }
+
+    //% color="#d54322"
+    //% group="Controls"
+    //% block="set card select button to $button"
+    export function bindSelectButton(button: ControllerButtons) {
+        cardSelectButton = button
+    }
+
+    type CardContainerLink = {
+        fromContainer: cardCore.CardContainer,
+        toContainer: cardCore.CardContainer,
+        direction: RelativeDirections
+    }
+    const containerLinks: CardContainerLink[] = []
+
+    function reverseRelativeDirection(direction: RelativeDirections) {
+        switch (direction) {
+            case RelativeDirections.Above: return RelativeDirections.Below
+            case RelativeDirections.Below: return RelativeDirections.Above
+            case RelativeDirections.LeftOf: return RelativeDirections.RightOf
+            case RelativeDirections.RightOf: return RelativeDirections.LeftOf
+        }
+    }
+
+    //% color="#d54322"
+    //% group="Controls"
+    //% block="cursor link $toContainer $direction $fromContainer"
+    //% toContainer.shadow="variables_get" toContainer.defl="myContainer"
+    //% fromContainer.shadow="variables_get" fromContainer.defl="myContainer"
+    export function linkContainers(
+        toContainer: cardCore.CardContainer,
+        direction: RelativeDirections,
+        fromContainer: cardCore.CardContainer,
+    ) {
+        const forwardLink = containerLinks.indexOf(containerLinks.find(
+            link => link.fromContainer === fromContainer && link.direction === direction
+        ))
+        if(forwardLink >= 0) {
+            containerLinks.splice(forwardLink, 1)
+            containerLinks.splice(containerLinks.indexOf(containerLinks.find(
+                link => link.toContainer === fromContainer && link.direction === reverseRelativeDirection(direction)
+            )), 1)
+        }
+
+        containerLinks.push({
+            fromContainer: fromContainer,
+            toContainer: toContainer,
+            direction: direction
+        })
+        containerLinks.push({
+            fromContainer: toContainer,
+            toContainer: fromContainer,
+            direction: reverseRelativeDirection(direction)
+        })
+    }
+
+    type ContainerEntryPoint = {
+        container: cardCore.CardContainer,
+        position: CardContainerPositions,
+    }
+    const containerEntryPoints: ContainerEntryPoint[] = []
+
+    //% color="#d54322"
+    //% group="Controls"
+    //% block="set $container link entry to $position card"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function setContainerEntryPoint(container: cardCore.CardContainer, position: CardContainerPositions) {
+        const entryPoint = containerEntryPoints.find(entry => entry.container === container)
+        if (!entryPoint) {
+            containerEntryPoints.push({
+                container: container,
+                position: position
+            })
+        } else {
+            entryPoint.position = position
+        }
+    }
+
+    cardCore.addExitContainerEvent((container: cardCore.CardContainer, direction: RelativeDirections) => {
+        const link = containerLinks.find(link => link.fromContainer === container && link.direction === direction)
+        if (!!link) {
+            const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
+            if (!!entryPoint) {
+                const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position))
+                if (card !== null) {
+                    cardCursor.select(card)
+                } else {
+                    cardCursor.select(link.toContainer)
+                }
+            } else {
+                cardCursor.select(link.toContainer)
+            }
+        }
+    })
+
+    export function moveCursorInDirection(direction: PointerDirections) {
+        const layer = getCursorContainer()
+        if (!layer) {
+            return
+        }
+        switch (direction) {
+            case PointerDirections.Up: layer.selectUp(); break
+            case PointerDirections.Down: layer.selectDown(); break
+            case PointerDirections.Left: layer.selectLeft(); break
+            case PointerDirections.Right: layer.selectRight(); break
+        }
+    }
+
+    //% group="Events"
+    //% draggableParameters="reporter"
+    //% expandableArgumentMode="toggle"
+    //% block="on selected $card in $kind $container || where $attribute is $text"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    //% attribute.shadow="attributePicker"
+    //% text.shadowOptions.toString=true
+    export function createSelectEvent(
+        kind: number,
+        handler: (container: cardCore.CardContainer, card: cardCore.Card) => void,
+        attribute: number = null,
+        text: string = null,
+    ) {
+        cardCore.addCardEvent(
+            kind,
+            handler,
+        )
+    }
+    
+    //% group="Events"
+    //% draggableParameters="reporter"
+    //% expandableArgumentMode="toggle"
+    //% block="on selected empty $kind $container"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function createSelectEmptyGridSlotEvent(
+        kind: number,
+        handler: (container: cardCore.CardContainer) => void,
+    ) {
+        cardCore.addEmptyGridSlotEvent(
+            kind,
+            handler,
+        )
+    }
+
+    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
+        switch (position) {
+            case CardContainerPositions.First: return 0
+            case CardContainerPositions.Middle: return Math.floor(container.slots / 2)
+            case CardContainerPositions.Last: return cardCore.LAST_CARD_INDEX
+            case CardContainerPositions.Random: return Math.randomRange(0, container.slots - 1)
+            case CardContainerPositions.Cursor: return container.cursorIndex
+        }
+    }
+
+    let autoLayoutControl: boolean = true
+    let cardSelectButton: ControllerButtons = ControllerButtons.A
+
+    let isPressed = [false, false, false, false, false, false, false]
+    
+    function updateControl(button: controller.Button, index: ControllerButtons, direction?: PointerDirections) {
+        if (button.isPressed() && !isPressed[index]) {
+            isPressed[index] = true
+            if (autoLayoutControl) {
+                if (!!direction) {
+                    moveCursorInDirection(direction)
+                }
+                if (cardSelectButton === index) {
+                    cardCursor.activateCard()
+                }
+            }
+        }
+        if(!button.isPressed()) {
+            isPressed[index] = false
+        }
+    }
+
+    forever(() => {
+        updateControl(controller.left, ControllerButtons.Left, PointerDirections.Left)
+        updateControl(controller.right, ControllerButtons.Right, PointerDirections.Right)
+        updateControl(controller.up, ControllerButtons.Up, PointerDirections.Up)
+        updateControl(controller.down, ControllerButtons.Down, PointerDirections.Down)
+        updateControl(controller.A, ControllerButtons.A)
+        updateControl(controller.B, ControllerButtons.B)
+        updateControl(controller.menu, ControllerButtons.Menu)
+    })
+
+
+    //% group="Cursor"
+    //% block="point cursor at $sprite"
+    //% sprite.shadow="variables_get" sprite.defl="mySprite"
+    export function pointCursorAt(sprite: Sprite) {
+        cardCursor.select(sprite)
+    }
+
+    //% group="Cursor"
+    //% block="hide cursor"
+    export function removeCursor() {
+        cardCursor.deselect()
+    }
+
     //% group="Card"
     //% block="$card is face up"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -651,327 +970,25 @@ namespace cardKit {
         return card.stamp
     }
 
-    //% group="Cursor"
+    /*****************************************/
+    /* Customization                         */
+    /*****************************************/
+
+    //% group="Customization"
     //% block="set cursor image to $image"
+    //% image.shadow="screen_image_picker"    
     export function setCursorImage(image: Image) {
         cardCursor.setImage(image)
     }
 
-    //% group="Cursor"
+    //% group="Customization"
     //% block="set cursor anchor to $anchor|| offset x $x y $y"
     //% x.defl=0 y.defl=0
     export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
         cardCursor.setAnchor(anchor, x, y)
     }
 
-    //% group="Cursor"
-    //% block="cursor target"
-    export function getCursorTarget(): Sprite {
-        return cardCursor.selectedSprite()
-    }
-
-    //% group="Cursor"
-    //% block="cursor card"
-    export function getCursorCard(): cardCore.Card {
-        return cardCursor.selectedCard()
-    }
-
-    //% group="Cursor"
-    //% block="cursor card container"
-    export function getCursorContainer(): cardCore.CardContainer {
-        return cardCursor.selectedContainer()
-    }
-
-    //% color="#d54322"
-    //% group="Cursor"
-    //% block="move cursor between cards in $container with buttons"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function moveCursorInsideLayoutWithButtons(container: cardCore.CardContainer) {
-        cardCursor.select(container)
-        autoLayoutControl = true
-    }
-
-    //% color="#d54322"
-    //% group="Cursor"
-    //% block="stop cursor controls"
-    export function disableLayoutButtonControl() {         
-        autoLayoutControl = false
-    }
-
-    //% color="#d54322"
-    //% group="Cursor"
-    //% block="set card select button to $button"
-    export function bindSelectButton(button: ControllerButtons) {
-        cardSelectButton = button
-    }
-
-    type CardContainerLink = {
-        fromContainer: cardCore.CardContainer,
-        toContainer: cardCore.CardContainer,
-        direction: RelativeDirections
-    }
-    const containerLinks: CardContainerLink[] = []
-
-    function reverseRelativeDirection(direction: RelativeDirections) {
-        switch (direction) {
-            case RelativeDirections.Above: return RelativeDirections.Below
-            case RelativeDirections.Below: return RelativeDirections.Above
-            case RelativeDirections.LeftOf: return RelativeDirections.RightOf
-            case RelativeDirections.RightOf: return RelativeDirections.LeftOf
-        }
-    }
-
-    //% color="#d54322"
-    //% group="Cursor"
-    //% block="cursor link $toContainer $direction $fromContainer"
-    //% toContainer.shadow="variables_get" toContainer.defl="myContainer"
-    //% fromContainer.shadow="variables_get" fromContainer.defl="myContainer"
-    export function linkContainers(
-        toContainer: cardCore.CardContainer,
-        direction: RelativeDirections,
-        fromContainer: cardCore.CardContainer,
-    ) {
-        const forwardLink = containerLinks.indexOf(containerLinks.find(
-            link => link.fromContainer === fromContainer && link.direction === direction
-        ))
-        if(forwardLink >= 0) {
-            containerLinks.splice(forwardLink, 1)
-            containerLinks.splice(containerLinks.indexOf(containerLinks.find(
-                link => link.toContainer === fromContainer && link.direction === reverseRelativeDirection(direction)
-            )), 1)
-        }
-
-        containerLinks.push({
-            fromContainer: fromContainer,
-            toContainer: toContainer,
-            direction: direction
-        })
-        containerLinks.push({
-            fromContainer: toContainer,
-            toContainer: fromContainer,
-            direction: reverseRelativeDirection(direction)
-        })
-    }
-
-    type ContainerEntryPoint = {
-        container: cardCore.CardContainer,
-        position: CardContainerPositions,
-    }
-    const containerEntryPoints: ContainerEntryPoint[] = []
-
-    //% color="#d54322"
-    //% group="Cursor"
-    //% block="set $container link entry to $position card"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function setContainerEntryPoint(container: cardCore.CardContainer, position: CardContainerPositions) {
-        const entryPoint = containerEntryPoints.find(entry => entry.container === container)
-        if (!entryPoint) {
-            containerEntryPoints.push({
-                container: container,
-                position: position
-            })
-        } else {
-            entryPoint.position = position
-        }
-    }
-
-    cardCore.addExitContainerEvent((container: cardCore.CardContainer, direction: RelativeDirections) => {
-        const link = containerLinks.find(link => link.fromContainer === container && link.direction === direction)
-        if (!!link) {
-            const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
-            if (!!entryPoint) {
-                const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position))
-                if (card !== null) {
-                    cardCursor.select(card)
-                } else {
-                    cardCursor.select(link.toContainer)
-                }
-            } else {
-                cardCursor.select(link.toContainer)
-            }
-        }
-    })
-
-    export function moveCursorInDirection(direction: PointerDirections) {
-        const layer = getCursorContainer()
-        if (!layer) {
-            return
-        }
-        switch (direction) {
-            case PointerDirections.Up: layer.selectUp(); break
-            case PointerDirections.Down: layer.selectDown(); break
-            case PointerDirections.Left: layer.selectLeft(); break
-            case PointerDirections.Right: layer.selectRight(); break
-        }
-    }
-
-    //% group="Cursor"
-    //% block="point cursor at $sprite"
-    //% sprite.shadow="variables_get" sprite.defl="mySprite"
-    export function pointCursorAt(sprite: Sprite) {
-        cardCursor.select(sprite)
-    }
-
-    //% group="Cursor"
-    //% block="hide cursor"
-    export function removeCursor() {
-        cardCursor.deselect()
-    }
-    
-    //% group="Move Card" blockSetVariable="myCard"
-    //% block="remove $position card from $container"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
-        const index = getPositionIndex(container, position)
-        if (index == null) {
-            return null
-        }
-        const card = container.removeCardAt(index)
-        card.container = null
-        return card
-    }
-
-    //% group="Move Card"
-    //% inlineInputMode=inline
-    //% block="move $card to $container $position position face $facing"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFaces) {
-        const index = getPositionIndex(container, position)
-        if (index == null) {
-            return
-        }
-        container.insertCard(card, getPositionIndex(container, position), facing)
-    }
-
-    //% group="Move Card"
-    //% inlineInputMode=inline
-    //% block="move $startPosition card from $origin to $destination $endPosition position face $facing"
-    //% origin.shadow="variables_get" origin.defl="myContainer"
-    //% destination.shadow="variables_get" destination.defl="myContainer"    
-    export function moveCardBetween(
-        origin: cardCore.CardContainer,
-        startPosition: CardContainerPositions,
-        destination: cardCore.CardContainer,
-        endPosition: CardContainerPositions,
-        facing: CardFaces
-    ) {
-        const start = getPositionIndex(origin, startPosition)
-        if (start == null) {
-            return
-        }
-        const end = getPositionIndex(destination, endPosition)
-        if (end == null) {
-            return
-        }
-        destination.insertCard(origin.removeCardAt(start), end, facing)
-    }
-
-    //% color="#ff9008"
-    //% group="Card List"
-    //% block="$container cards"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
-        return container.getCards()
-    }
-
-    //% group="Card List"
-    //% block="$container is $kind"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function isContainerOfKind(
-        container: cardCore.CardContainer,
-        kind: number
-    ): boolean {
-        return !!container ? container.kind === kind : false
-    }
-
-    //% group="Card List"
-    //% block="$container card count"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function getContainerCardCount(
-        container: cardCore.CardContainer
-    ): number {
-        return !! container ? container.count : -1
-    }    
-
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% expandableArgumentMode="toggle"
-    //% block="on selected $card in $kind $container || where $attribute is $text"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    //% attribute.shadow="attributePicker"
-    //% text.shadowOptions.toString=true
-    export function createSelectEvent(
-        kind: number,
-        handler: (container: cardCore.CardContainer, card: cardCore.Card) => void,
-        attribute: number = null,
-        text: string = null,
-    ) {
-        cardCore.addCardEvent(
-            kind,
-            handler,
-        )
-    }
-    
-    //% group="Card Events"
-    //% draggableParameters="reporter"
-    //% expandableArgumentMode="toggle"
-    //% block="on selected empty $kind $container"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createSelectEmptyGridSlotEvent(
-        kind: number,
-        handler: (container: cardCore.CardContainer) => void,
-    ) {
-        cardCore.addEmptyGridSlotEvent(
-            kind,
-            handler,
-        )
-    }
-
-    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
-        switch (position) {
-            case CardContainerPositions.First: return 0
-            case CardContainerPositions.Middle: return Math.floor(container.slots / 2)
-            case CardContainerPositions.Last: return cardCore.LAST_CARD_INDEX
-            case CardContainerPositions.Random: return Math.randomRange(0, container.slots - 1)
-            case CardContainerPositions.Cursor: return container.cursorIndex
-        }
-    }
-
-    let autoLayoutControl: boolean = true
-    let cardSelectButton: ControllerButtons = ControllerButtons.A
-
-    let isPressed = [false, false, false, false, false, false, false]
-    
-    function updateControl(button: controller.Button, index: ControllerButtons, direction?: PointerDirections) {
-        if (button.isPressed() && !isPressed[index]) {
-            isPressed[index] = true
-            if (autoLayoutControl) {
-                if (!!direction) {
-                    moveCursorInDirection(direction)
-                }
-                if (cardSelectButton === index) {
-                    cardCursor.activateCard()
-                }
-            }
-        }
-        if(!button.isPressed()) {
-            isPressed[index] = false
-        }
-    }
-
-    forever(() => {
-        updateControl(controller.left, ControllerButtons.Left, PointerDirections.Left)
-        updateControl(controller.right, ControllerButtons.Right, PointerDirections.Right)
-        updateControl(controller.up, ControllerButtons.Up, PointerDirections.Up)
-        updateControl(controller.down, ControllerButtons.Down, PointerDirections.Down)
-        updateControl(controller.A, ControllerButtons.A)
-        updateControl(controller.B, ControllerButtons.B)
-        updateControl(controller.menu, ControllerButtons.Menu)
-    })
-
-    //% group="Container Operations"
+    //% group="Customization"
     //% block="set $container position x $x y $y"
     //% x.shadow="positionPicker" x.defl=80
     //% y.shadow="positionPicker" y.defl=60
@@ -983,8 +1000,8 @@ namespace cardKit {
     ) { 
         container.setPosition(x, y)
     }
-
-    //% group="Container Operations"
+        
+    //% group="Customization"
     //% block="set $container z $layer"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function setContainerLayer(
@@ -994,7 +1011,7 @@ namespace cardKit {
         container.z = layer
     }
 
-    //% group="Container Operations"
+    //% group="Customization"
     //% block="set $container card design to $design"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% design.shadow="variables_get" design.defl="myDesign"
@@ -1005,15 +1022,8 @@ namespace cardKit {
         container.design = design.export()
     }
 
-    //% group="Container Operations"
-    //% block="shuffle $container cards"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    export function shuffleCards(container: cardCore.CardContainer) {
-        container.shuffle()
-    }
-        
-    //% group="Stack Operations"
-    //% block="flip stack $stack top card $face"
+    //% group="Customization"
+    //% block="set stack $stack top card $face"
     //% stack.shadow="variables_get" stack.defl="myContainer"
     export function flipStackTopCard(stack: cardCore.CardStack, face: CardFaces) {
         if(face !== CardFaces.Unchanged) {
@@ -1021,30 +1031,22 @@ namespace cardKit {
         }
     }
         
-    //% group="Container Operations"
-    //% block="set spread or grid $container card spacing to $spacing"
+    //% group="Customization"
+    //% block="set $container card spacing to $spacing"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% spacing.defl=1
     export function setCardLayoutSpacing(container: cardCore.CardContainer, spacing: number) {
         container.spacing = spacing
     }
 
-    //% group="Container Operations"
-    //% block="destroy $container"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    //% spacing.defl=1
-    export function destroyCardLayoutCards(container: cardCore.CardContainer) {
-        container.destroy()
-    }
-
-    //% group="Grid Operations"
+    //% group="Customization"
     //% block="freeze grid $grid|| min $lines lines"
     //% grid.shadow="variables_get" grid.defl="myContainer"
     export function lockGridCardPositions(grid: cardCore.CardGrid, lines: number) {
         grid.lock(lines)
     }
 
-    //% group="Grid Operations"
+    //% group="Customization"
     //% block="set grid $grid|scroll back sprite $scrollBack|scroll forward sprite $scrollForward"
     //% grid.shadow="variables_get" grid.defl="myContainer"
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"

@@ -336,6 +336,10 @@ namespace cardCore {
             return this.cards.reduce((count, card) => count + (card.isEmpty ? 0 : 1), 0)
         }
 
+        get inactive(): number {
+            return this.cards.reduce((count, card) => count + (card.isEmpty ? 0 : 1), 0) - this.transition.length
+        }
+
         get slots(): number {
             return this.cards.length
         }
@@ -450,6 +454,7 @@ namespace cardCore {
             const transitionIndex = this.transition.indexOf(card)
             if(transitionIndex >= 0) {
                 this.transition.splice(transitionIndex, 1)
+                this.refreshEmptyCard()
             }
         }
 
@@ -508,7 +513,7 @@ namespace cardCore {
         }        
 
         protected refreshEmptyCard(): void { 
-            if (this.count === 0) {
+            if (this.inactive === 0) {
                 this.empty.visible = true
                 this.empty.setPosition(this.x, this.y)
                 this.empty.z = this._z
