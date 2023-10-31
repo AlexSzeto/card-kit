@@ -502,6 +502,10 @@ namespace cardKit {
         . . f f . . . .
     `
 
+    /*****************************************/
+    /* Create                                */
+    /*****************************************/
+
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $kind card grid columns $columns rows $rows|| scroll $direction"
@@ -564,6 +568,10 @@ namespace cardKit {
         )
     }
 
+    /*****************************************/
+    /* Container Operations                  */
+    /*****************************************/
+
     //% color="#ff9008"
     //% group="Container"
     //% block="$container cards"
@@ -607,8 +615,12 @@ namespace cardKit {
         container.destroy()
     }
     
+    /*****************************************/
+    /* Movement                              */
+    /*****************************************/
+
     //% group="Movement" blockSetVariable="myCard"
-    //% block="remove $position card from $container"
+    //% block="take $position card from $container"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
         const index = getPositionIndex(container, position)
@@ -622,7 +634,7 @@ namespace cardKit {
 
     //% group="Movement"
     //% inlineInputMode=inline
-    //% block="move $card to $container $position position $facing"
+    //% block="put $card in $container $position position $facing"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% card.shadow="variables_get" card.defl="myCard"
     export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFaces) {
@@ -656,17 +668,9 @@ namespace cardKit {
         destination.insertCard(origin.removeCardAt(start), end, facing)
     }
 
-    //% group="Cursor"
-    //% block="cursor card"
-    export function getCursorCard(): cardCore.Card {
-        return cardCursor.selectedCard()
-    }
-
-    //% group="Cursor"
-    //% block="cursor container"
-    export function getCursorContainer(): cardCore.CardContainer {
-        return cardCursor.selectedContainer()
-    }
+    /*****************************************/
+    /* Controls                              */
+    /*****************************************/
 
     //% color="#d54322"
     //% group="Controls"
@@ -791,6 +795,10 @@ namespace cardKit {
         }
     }
 
+    /*****************************************/
+    /* Events                                */
+    /*****************************************/
+
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
@@ -868,6 +876,22 @@ namespace cardKit {
     })
 
 
+    /*****************************************/
+    /* Cursor                                */
+    /*****************************************/
+
+    //% group="Cursor"
+    //% block="cursor card"
+    export function getCursorCard(): cardCore.Card {
+        return cardCursor.selectedCard()
+    }
+
+    //% group="Cursor"
+    //% block="cursor container"
+    export function getCursorContainer(): cardCore.CardContainer {
+        return cardCursor.selectedContainer()
+    }
+
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
@@ -880,6 +904,10 @@ namespace cardKit {
     export function removeCursor() {
         cardCursor.deselect()
     }
+
+    /*****************************************/
+    /* Card                                  */
+    /*****************************************/
 
     //% group="Card"
     //% block="$card is face up"
