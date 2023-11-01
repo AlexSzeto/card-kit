@@ -290,7 +290,7 @@ namespace cardCore {
     export const DEFAULT_CONTAINER_Z = 0
     export const DEFAULT_TRANSITION_Z_OFFSET = 100
 
-    export const DEFAULT_SLIDE_DURATION = 1500
+    export const DEFAULT_SLIDE_DURATION = 500
 
     export const LAST_CARD_INDEX = -2
 
