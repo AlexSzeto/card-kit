@@ -539,10 +539,6 @@ namespace cardCore {
         }
 
         startSelection(): void {
-            if (cardCursor.selectedContainer() !== this) {
-                return
-            }
-
             if (this.cursorIndex >= 0) {
                 return
             }
@@ -552,6 +548,10 @@ namespace cardCore {
             } else {
                 cardCursor.select(this.cards[0])
             }
+        }
+
+        switchSelection(fromExit: RelativeDirections): void {
+            this.startSelection()
         }
 
         protected deselect(index: number): void {
@@ -789,6 +789,31 @@ namespace cardCore {
             }
         }
 
+        switchSelection(fromExit: RelativeDirections): void {
+            if (this.slots === 0) {
+                this.startSelection()
+                return
+            }
+
+            if (
+                (this.isHorizonal && !this.isReversed && fromExit === RelativeDirections.LeftOf)
+                || (this.isHorizonal && this.isReversed && fromExit === RelativeDirections.RightOf)
+                || (!this.isHorizonal && !this.isReversed && fromExit === RelativeDirections.Above)
+                || (!this.isHorizonal && this.isReversed && fromExit === RelativeDirections.Below)
+            ) {
+                cardCursor.select(this.cards[this.slots - 1])
+            } else if (
+                (this.isHorizonal && !this.isReversed && fromExit === RelativeDirections.RightOf)
+                || (this.isHorizonal && this.isReversed && fromExit === RelativeDirections.LeftOf)
+                || (!this.isHorizonal && !this.isReversed && fromExit === RelativeDirections.Below)
+                || (!this.isHorizonal && this.isReversed && fromExit === RelativeDirections.Above)
+            ) {
+                cardCursor.select(this.cards[0])
+            } else {
+                cardCursor.select(this.cards[Math.floor(this.slots / 2)])
+            }
+        }
+
         private selectByOffset(offset: number) {
             const index = this.cursorIndex
             if (index >= 0) {
@@ -799,6 +824,10 @@ namespace cardCore {
         }
 
         selectLeft(): void {
+            if (this.slots === 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                return
+            }
             if (this.isHorizonal) {
                 if (this.cursorIndex === 0) {
                     dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
@@ -811,6 +840,10 @@ namespace cardCore {
         }
 
         selectRight(): void {
+            if (this.slots === 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                return
+            }
             if (this.isHorizonal) {
                 if (this.cursorIndex === this.slots - 1) {
                     dispatchExitContainerEvent(this, RelativeDirections.RightOf)
@@ -823,6 +856,10 @@ namespace cardCore {
         }
 
         selectUp(): void {
+            if (this.slots === 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.Above)
+                return
+            }
             if (!this.isHorizonal) {
                 if (this.cursorIndex === 0) {
                     dispatchExitContainerEvent(this, RelativeDirections.Above)
@@ -835,6 +872,10 @@ namespace cardCore {
         }
 
         selectDown(): void {
+            if (this.slots === 0) {
+                dispatchExitContainerEvent(this, RelativeDirections.Below)
+                return
+            }
             if (!this.isHorizonal) {
                 if (this.cursorIndex === this.slots - 1) {
                     dispatchExitContainerEvent(this, RelativeDirections.Below)
@@ -1149,6 +1190,39 @@ namespace cardCore {
             return this._locked
                 ? this.replaceWithEmptyAt(index)
                 : super.removeCardAt(index)
+        }
+
+        switchSelection(fromExit: RelativeDirections): void {
+            if (this.slots === 0) {
+                this.startSelection()
+                return
+            }
+
+            const totalRows = this.scrollUpDown ? Math.ceil(this.slots / this.columns) : this.rows
+            const totalColumns = this.scrollUpDown ? this.columns : Math.ceil(this.slots / this.rows)
+            let selectedRow = Math.floor(totalRows / 2)
+            let selectedColumn = Math.floor(totalColumns / 2)
+
+            switch (fromExit) {
+                case RelativeDirections.LeftOf:
+                    selectedColumn = totalColumns - 1
+                    break
+                case RelativeDirections.RightOf:
+                    selectedColumn = 0
+                    break
+                case RelativeDirections.Above:
+                    selectedRow = totalRows - 1
+                    break
+                case RelativeDirections.Below:
+                    selectedRow = 0
+                    break
+            }
+
+            if (this.scrollUpDown) {
+                cardCursor.select(this.cards[Math.min(this.slots - 1, selectedRow * this.columns + selectedColumn)])
+            } else {
+                cardCursor.select(this.cards[Math.min(this.slots - 1, selectedColumn * this.rows + selectedRow)])
+            }
         }
 
         private scrollToSelect(index: number) {

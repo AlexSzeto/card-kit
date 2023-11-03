@@ -516,7 +516,7 @@ namespace cardKit {
         kind: number,
         rows: number, columns: number,
         direction: CardGridScrollDirections = CardGridScrollDirections.UpDown,
-    ): cardCore.CardGrid {
+    ): cardCore.CardContainer {
         const scrollVertical = direction == CardGridScrollDirections.UpDown
         const grid = new cardCore.CardGrid(
             cardDesign.getCurrent(),
@@ -541,7 +541,7 @@ namespace cardKit {
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
     export function createEmptyPile(
         kind: number,
-    ): cardCore.CardStack {
+    ): cardCore.CardContainer {
         return new cardCore.CardStack(
             cardDesign.getCurrent(),
             scene.screenWidth() / 2,
@@ -558,7 +558,7 @@ namespace cardKit {
     export function createEmptyHand(
         kind: number,
         direction: CardLayoutDirections,
-    ): cardCore.CardSpread {
+    ): cardCore.CardContainer {
         return new cardCore.CardSpread(
             cardDesign.getCurrent(),
             scene.screenWidth() / 2,
@@ -774,10 +774,10 @@ namespace cardKit {
                 if (card !== null) {
                     cardCursor.select(card)
                 } else {
-                    cardCursor.select(link.toContainer)
+                    link.toContainer.switchSelection(direction)
                 }
             } else {
-                cardCursor.select(link.toContainer)
+                link.toContainer.switchSelection(direction)
             }
         }
     })
