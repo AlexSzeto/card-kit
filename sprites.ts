@@ -659,7 +659,7 @@ namespace cardCore {
                 const card = this.cards[i]
                 if (this.transition.indexOf(card) < 0) {
                     card.setPosition(this.x, topY)
-                    card.z = this._z + this.count - i
+                    card.z = this._z + this.count - i + 1
                     if (findingTopCard) {
                         findingTopCard = false
                         card.visible = true
@@ -669,12 +669,12 @@ namespace cardCore {
                     }
                 } else {
                     card.visible = true
-                    card.z = this._z + this.count - i + DEFAULT_TRANSITION_Z_OFFSET
+                    card.z = this._z + this.slots - i + 1 + DEFAULT_TRANSITION_Z_OFFSET
                     extraAnimations.slide(
                         card,
                         this.x,
                         topY,
-                        this._z + this.count - i,
+                        this._z + this.slots - i + 1,
                         DEFAULT_SLIDE_DURATION,
                         () => {
                             this.completeTransition(card)
@@ -777,10 +777,10 @@ namespace cardCore {
 
             for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
-                card.z = this._z + i + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
+                card.z = this._z + i + 1 + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
                 extraAnimations.slide(
                     card, x, y,
-                    this._z + this._spacing >= 0 ? 0 : i,
+                    this._z + i + 1,
                     DEFAULT_SLIDE_DURATION,
                     () => this.completeTransition(card)
                 )
