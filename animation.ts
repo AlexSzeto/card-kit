@@ -6,9 +6,7 @@ namespace extraAnimations {
     }
 
     type SlideTracker = AnimationTracker & {
-        timeInMs: number
-        elapsed: number
-        linearMode: boolean
+        timer: number
         x: number
         y: number
         z: number
@@ -27,7 +25,6 @@ namespace extraAnimations {
         onAnimateStep: (sprite: Sprite, step: number) => void
     }
 
-    const SMOOTHING_THRESHOLD = 20
     const slideTrackers: SlideTracker[] = []
     const fixedFrameTrackers: FixedFrameTracker[] = []
 
@@ -52,30 +49,6 @@ namespace extraAnimations {
                     updateFixedFrameAnimation(tracker)
                     tracker.elapsed -= tracker.msPerFrame
                 }
-            }
-        }
-        for (let i = 0; i < slideTrackers.length; i++) {
-            const tracker = slideTrackers[i]
-            const sprite = tracker.sprite
-            tracker.elapsed += elapsed
-            if (tracker.elapsed >= tracker.timeInMs) {
-                clearSlideAnimation(tracker.sprite, true)
-                i--
-            } else if (
-                !tracker.linearMode
-                && (sprite.x - tracker.x) * (sprite.x - tracker.x)
-                + (sprite.y - tracker.y) * (sprite.y - tracker.y)
-                < SMOOTHING_THRESHOLD * SMOOTHING_THRESHOLD
-            ) {
-                const t = (tracker.timeInMs - tracker.elapsed) / 1000
-                const sprite = tracker.sprite
-                sprite.vx = (tracker.x - sprite.x) / t
-                sprite.vy = (tracker.y - sprite.y) / t
-                sprite.fx = 0
-                sprite.fy = 0
-                sprite.ax = 0
-                sprite.ay = 0
-                tracker.linearMode = true
             }
         }
     })
@@ -122,6 +95,7 @@ namespace extraAnimations {
             return
         }
         slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
+        clearTimeout(oldTracker.timer)
         if (jump) {
             oldTracker.sprite.setPosition(oldTracker.x, oldTracker.y)
             oldTracker.sprite.setVelocity(0, 0)
@@ -150,7 +124,6 @@ namespace extraAnimations {
         }
         const t = timeInMs / 1000
         const v = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y)) / t
-        let linearMode = false
         if (v > 250) {
             const t = timeInMs / 1000
             sprite.vx = (x - sprite.x) / t
@@ -159,7 +132,6 @@ namespace extraAnimations {
             sprite.fy = 0
             sprite.ax = 0
             sprite.ay = 0
-            linearMode = true
         } else {
             const t = timeInMs / 1000
             const ax = -2 * (x - sprite.x) / (t * t)
@@ -174,9 +146,7 @@ namespace extraAnimations {
         clearSlideAnimation(sprite)
         slideTrackers.push({
             sprite: sprite,
-            linearMode: linearMode,
-            timeInMs: timeInMs,
-            elapsed: 0,
+            timer: setTimeout(() => clearSlideAnimation(sprite, true), timeInMs),
             x: x,
             y: y,
             z: z,
