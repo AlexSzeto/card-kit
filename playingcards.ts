@@ -58,7 +58,7 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% block="deck of playing cards"
-    export function createPlayingCards(): cardCore.CardStack {
+    export function createPlayingCards(): cardCore.CardContainer {
         let deck = cardDesign.createEmptyStack(0)
         deck.design = getPlayingCardsDesign().export()
         cardDesign.addCardVariantsToStack(deck,

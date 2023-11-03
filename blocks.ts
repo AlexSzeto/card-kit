@@ -356,7 +356,7 @@ namespace cardDesign {
     //% inlineInputMode=inline
     //% block="empty $kind deck"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(kind: number): cardCore.CardStack {
+    export function createEmptyStack(kind: number): cardCore.CardContainer {
         const stack = new cardCore.CardStack(cardDesign.getCurrent(), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
         return stack
     }
@@ -435,10 +435,12 @@ namespace cardDesign {
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
     //% copies.defl=1
-    export function addCardVariantsToStack(deck: cardCore.CardStack, variations: CardAttributeVariation[], copies: number = 1) {
-        const insertData: cardCore.CardData[] = []
-        __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
-        deck.insertData(insertData)
+    export function addCardVariantsToStack(deck: cardCore.CardContainer, variations: CardAttributeVariation[], copies: number = 1) {
+        if (deck instanceof cardCore.CardStack) {
+            const insertData: cardCore.CardData[] = []
+            __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
+            deck.insertData(insertData)                
+        }
     }
 }
 
@@ -1053,8 +1055,8 @@ namespace cardKit {
     //% group="Customization"
     //% block="set stack $stack top card $face"
     //% stack.shadow="variables_get" stack.defl="myContainer"
-    export function flipStackTopCard(stack: cardCore.CardStack, face: CardFaces) {
-        if(face !== CardFaces.Unchanged) {
+    export function flipStackTopCard(stack: cardCore.CardContainer, face: CardFaces) {
+        if(stack instanceof cardCore.CardStack && face !== CardFaces.Unchanged) {
             stack.topIsFaceUp = face === CardFaces.Up
         }
     }
@@ -1070,8 +1072,10 @@ namespace cardKit {
     //% group="Customization"
     //% block="freeze grid $grid|| min $lines lines"
     //% grid.shadow="variables_get" grid.defl="myContainer"
-    export function lockGridCardPositions(grid: cardCore.CardGrid, lines: number) {
-        grid.lock(lines)
+    export function lockGridCardPositions(grid: cardCore.CardContainer, lines: number) {
+        if (grid instanceof cardCore.CardGrid) {
+            grid.lock(lines)
+        }
     }
 
     //% group="Customization"
@@ -1079,7 +1083,9 @@ namespace cardKit {
     //% grid.shadow="variables_get" grid.defl="myContainer"
     //% scrollBack.shadow="variables_get" scrollBack.defl="mySprite"
     //% scrollForward.shadow="variables_get" scrollForward.defl="mySprite"
-    export function setGridScrollSprites(grid: cardCore.CardGrid, scrollBack: Sprite, scrollForward: Sprite) {
-        grid.setIndicators(scrollBack, scrollForward)
+    export function setGridScrollSprites(grid: cardCore.CardContainer, scrollBack: Sprite, scrollForward: Sprite) {
+        if (grid instanceof cardCore.CardGrid) {
+            grid.setIndicators(scrollBack, scrollForward)
+        }
     }    
 }
