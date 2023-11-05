@@ -767,7 +767,7 @@ namespace cardKit {
         }
     }
 
-    cardCore.addExitContainerEvent((container: cardCore.CardContainer, direction: RelativeDirections) => {
+    function setEntryPoint(container: cardCore.CardContainer, direction: RelativeDirections) {
         const link = containerLinks.find(link => link.fromContainer === container && link.direction === direction)
         if (!!link) {
             const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
@@ -782,7 +782,8 @@ namespace cardKit {
                 link.toContainer.switchSelection(direction)
             }
         }
-    })
+    }
+    cardCore.addExitContainerEvent(setEntryPoint)
 
     export function moveCursorInDirection(direction: PointerDirections) {
         const layer = getCursorContainer()
