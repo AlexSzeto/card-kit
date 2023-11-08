@@ -423,22 +423,23 @@ namespace cardCore {
             this.refresh()
         }
 
-        insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
+        insertCard(card: Card, index: number, facing: CardFaces): void {
             if (!card) {
                 return
             }
 
             card.detachFromContainer()
             card.container = this
-            card.isFaceUp = facing != CardFaces.Unchanged
+            card.isFaceUp = facing !== CardFaces.Unchanged
                 ? facing === CardFaces.Up
                 : card.isFaceUp
 
             if (index === LAST_CARD_INDEX) {
                 this.cards.push(card)
             } else {
-                if (this.cards[index].isEmpty) {
-                    sprites.destroy(this.cards[index])
+                const slot = this.getCard(index)
+                if(!!slot && slot.isEmpty) {
+                    sprites.destroy(slot)
                 }
                 this.cards.insertAt(index, card)
             }
@@ -621,7 +622,7 @@ namespace cardCore {
             return this._topIsFaceUp
         }
 
-        insertCard(card: Card, index: number = LAST_CARD_INDEX, facing: CardFaces = CardFaces.Unchanged): void {
+        insertCard(card: Card, index: number, facing: CardFaces): void {
             if (!card) {
                 return
             }
@@ -1181,7 +1182,7 @@ namespace cardCore {
             this.justInserted = null
         }
 
-        insertCard(card: Card, index?: number, facing?: CardFaces): void {
+        insertCard(card: Card, index: number, facing: CardFaces): void {
             this.justInserted = card
             super.insertCard(card, index, facing)
         }
