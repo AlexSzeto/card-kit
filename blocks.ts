@@ -624,6 +624,17 @@ namespace cardKit {
     export function destroyCardLayoutCards(container: cardCore.CardContainer) {
         container.destroy()
     }
+
+    //% group="Container"
+    //% block="$container $position card"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function getCard(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
+        const index = getPositionIndex(container, position)
+        if (index == null) {
+            return null
+        }
+        return container.getCard(index)
+    }    
     
     /*****************************************/
     /* Movement                              */
