@@ -15,7 +15,7 @@ function setupGame () {
     let tableaus: cardCore.CardContainer[] = []
     drawDeck = cardKit.createPlayingCards()
     cardKit.setContainerPosition(drawDeck, 20, 36)
-    discardPile = cardKit.createEmptyPile(CardContainerKinds.Discard)
+    discardPile = cardKit.createEmptyPile(CardContainerKinds.Tableau)
     cardKit.setContainerPosition(discardPile, 34, 36)
     cardKit.linkContainers(discardPile, RelativeDirections.RightOf, drawDeck)
     previousContainer = discardPile
@@ -42,10 +42,11 @@ function setupGame () {
     cardKit.setCursorAnchor(CardCursorAnchors.TopRight, -2, 8)
 }
 cardKit.createSelectEvent(CardContainerKinds.Draw, function (container, card) {
-    if (cardKit.getContainerCardCount(container) == 0) {
-    	
-    } else {
-        cardKit.moveCardBetween(container, CardContainerPositions.First, discardPile, CardContainerPositions.First, CardFaces.Up)
+    cardKit.moveCardBetween(container, CardContainerPositions.First, discardPile, CardContainerPositions.First, CardFaces.Up)
+})
+cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Draw, function (container) {
+    while (cardKit.getContainerCardCount(container) > 0) {
+        cardKit.moveCardBetween(discardPile, CardContainerPositions.First, container, CardContainerPositions.First, CardFaces.Down)
     }
 })
 let scoringPile: cardCore.CardContainer = null

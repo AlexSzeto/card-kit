@@ -294,6 +294,12 @@ namespace cardCore {
 
     export const LAST_CARD_INDEX = -2
 
+    const containerList: CardContainer[] = []
+
+    export function getCardContainersOfKind(kind: number): CardContainer[] {
+        return containerList.filter(container => container.kind === kind)
+    }
+
     export class CardContainer {        
         private _kind: number
         protected _design: CardDesign
@@ -322,6 +328,8 @@ namespace cardCore {
             this.empty = new Card(this._design, EMPTY_CARD_DATA, this, true)
             this.cards = []
             this.transition = []
+
+            containerList.push(this)
         }
 
         get isCardContainer(): boolean {
@@ -382,6 +390,17 @@ namespace cardCore {
             }
         }
 
+        set showEmpty(value: boolean) {
+            this.empty.showEmpty = value
+            for (let card of this.cards) {
+                card.showEmpty = value
+            }
+        }
+
+        get showEmpty(): boolean {
+            return this.empty.showEmpty
+        }
+
         set design(value: CardDesign) {
             this.setDesign(value)
         }
@@ -430,6 +449,7 @@ namespace cardCore {
 
             card.detachFromContainer()
             card.container = this
+            card.showEmpty = this.showEmpty
             card.isFaceUp = facing !== CardFaces.Unchanged
                 ? facing === CardFaces.Up
                 : card.isFaceUp
@@ -495,6 +515,7 @@ namespace cardCore {
             this.cards.splice(index, 1)
 
             const blank = new Card(card.design, EMPTY_CARD_DATA, this, true)
+            blank.showEmpty = this.showEmpty
             this.cards.insertAt(index, blank)
             this.refresh()
             this.completeTransition(blank)
@@ -511,6 +532,7 @@ namespace cardCore {
                 card.destroy()
             }
             this.cards = []
+            containerList.removeElement(this)
         }        
 
         protected refreshEmptyCard(): void { 
@@ -1329,7 +1351,7 @@ namespace cardCursor {
     let container: cardCore.CardContainer = null
     let target: Sprite = null
 
-    const cursor = sprites.create(image.create(1, 1), SpriteKind.Cursor)
+    export const cursor = sprites.create(image.create(1, 1), SpriteKind.Cursor)
     cursor.z = DEFAULT_CURSOR_Z
     cursor.setFlag(SpriteFlag.Invisible, true)
 

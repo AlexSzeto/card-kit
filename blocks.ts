@@ -576,6 +576,14 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Container"
+    //% block="array of all $kind containers"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function getContainerKindList(kind: number): cardCore.CardContainer[] {
+        return cardCore.getCardContainersOfKind(kind)
+    }
+
+    //% color="#ff9008"
+    //% group="Container"
     //% block="$container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
@@ -908,6 +916,12 @@ namespace cardKit {
         cardCursor.deselect()
     }
 
+    //% group="Cursor"
+    //% block="cursor sprite"
+    export function getCursorSprite(): Sprite {
+        return cardCursor.cursor
+    }
+
     /*****************************************/
     /* Card                                  */
     /*****************************************/
@@ -1006,13 +1020,6 @@ namespace cardKit {
     /*****************************************/
 
     //% group="Customization"
-    //% block="set cursor image to $image"
-    //% image.shadow="screen_image_picker"    
-    export function setCursorImage(image: Image) {
-        cardCursor.setImage(image)
-    }
-
-    //% group="Customization"
     //% block="set cursor anchor to $anchor|| offset x $x y $y"
     //% x.defl=0 y.defl=0
     export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
@@ -1042,6 +1049,15 @@ namespace cardKit {
         container.z = layer
     }
 
+    //% group="Customization"
+    //% block="hide $container empty slots"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function hideEmptySlots(
+        container: cardCore.CardContainer,
+    ) {
+        container.showEmpty = false
+    }
+    
     //% group="Customization"
     //% block="set $container card design to $design"
     //% container.shadow="variables_get" container.defl="myContainer"
