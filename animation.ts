@@ -137,9 +137,11 @@ namespace extraAnimations {
         x: number,
         y: number,
         z: number,
-        timeInMs: number,
+        v: number,
         onComplete: (sprite: Sprite) => void
     ) {
+        const distance = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y))
+        const t = distance / v
         const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
         if (!!oldTracker) {
             if (oldTracker.x === x && oldTracker.y === y && oldTracker.z === z) {
@@ -148,11 +150,8 @@ namespace extraAnimations {
                 slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
             }
         }
-        const t = timeInMs / 1000
-        const v = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y)) / t
         let linearMode = false
         if (v > 250) {
-            const t = timeInMs / 1000
             sprite.vx = (x - sprite.x) / t
             sprite.vy = (y - sprite.y) / t
             sprite.fx = 0
@@ -161,7 +160,6 @@ namespace extraAnimations {
             sprite.ay = 0
             linearMode = true
         } else {
-            const t = timeInMs / 1000
             const ax = -2 * (x - sprite.x) / (t * t)
             sprite.vx = -Math.floor(ax * t)
             sprite.fx = Math.ceil(Math.abs(ax))
@@ -175,7 +173,7 @@ namespace extraAnimations {
         slideTrackers.push({
             sprite: sprite,
             linearMode: linearMode,
-            timeInMs: timeInMs,
+            timeInMs: Math.floor(t * 1000),
             elapsed: 0,
             x: x,
             y: y,

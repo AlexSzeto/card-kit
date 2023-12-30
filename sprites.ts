@@ -290,7 +290,7 @@ namespace cardCore {
     export const DEFAULT_CONTAINER_Z = 0
     export const DEFAULT_TRANSITION_Z_OFFSET = 100
 
-    export const DEFAULT_SLIDE_DURATION = 500
+    export const DEFAULT_SLIDE_SPEED = 125
 
     export const LAST_CARD_INDEX = -2
 
@@ -698,7 +698,7 @@ namespace cardCore {
                         this.x,
                         topY,
                         this._z + this.slots - i + 1,
-                        DEFAULT_SLIDE_DURATION,
+                        DEFAULT_SLIDE_SPEED,
                         () => {
                             this.completeTransition(card)
                             this.refresh()
@@ -804,7 +804,7 @@ namespace cardCore {
                 extraAnimations.slide(
                     card, x, y,
                     this._z + i + 1,
-                    DEFAULT_SLIDE_DURATION,
+                    DEFAULT_SLIDE_SPEED,
                     () => this.completeTransition(card)
                 )
                 x += offsetX
@@ -1100,7 +1100,7 @@ namespace cardCore {
                         if (this.scrollUpDown) {
                             extraAnimations.fixedFrameAnimate(
                                 card,
-                                DEFAULT_SLIDE_DURATION,
+                                DEFAULT_SLIDE_SPEED,
                                 this.collapse.length,
                                 null, this.collapse,
                                 null, COLLAPSE_SCALE,
@@ -1110,7 +1110,7 @@ namespace cardCore {
                         } else {
                             extraAnimations.fixedFrameAnimate(
                                 card,
-                                DEFAULT_SLIDE_DURATION,
+                                DEFAULT_SLIDE_SPEED,
                                 this.collapse.length,
                                 this.collapse, null,
                                 COLLAPSE_SCALE, null,
@@ -1144,7 +1144,7 @@ namespace cardCore {
                         if (this.scrollUpDown) {
                             extraAnimations.fixedFrameAnimate(
                                 card,
-                                DEFAULT_SLIDE_DURATION,
+                                DEFAULT_SLIDE_SPEED,
                                 this.expand.length,
                                 null, this.expand,
                                 null, EXPAND_SCALE,
@@ -1154,7 +1154,7 @@ namespace cardCore {
                         } else {
                             extraAnimations.fixedFrameAnimate(
                                 card,
-                                DEFAULT_SLIDE_DURATION,
+                                DEFAULT_SLIDE_SPEED,
                                 this.expand.length,
                                 this.expand, null,
                                 EXPAND_SCALE, null,
@@ -1168,7 +1168,7 @@ namespace cardCore {
                         } else {
                             extraAnimations.clearSlideAnimation(card, true)
                         }
-                        extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_DURATION,
+                        extraAnimations.slide(card, x, y, this._z, DEFAULT_SLIDE_SPEED,
                             () => this.completeTransition(card)
                         )
                     }
