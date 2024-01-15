@@ -141,6 +141,16 @@ namespace extraAnimations {
         onComplete: (sprite: Sprite) => void
     ) {
         const distance = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y))
+        if (distance == 0) {
+            sprite.vx = 0
+            sprite.vy = 0
+            sprite.fx = 0
+            sprite.fy = 0
+            sprite.ax = 0
+            sprite.ay = 0
+            sprite.z = z
+            return
+        }
         const t = distance / v
         const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
         if (!!oldTracker) {

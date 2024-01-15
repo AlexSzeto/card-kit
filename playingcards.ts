@@ -37,7 +37,7 @@ namespace cardKit {
             . f f f .
             f f f f f
             f f f f f
-            f f f f f
+            f f . f f
             . . f . .
             . f f f .
             `),

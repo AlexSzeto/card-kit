@@ -86,7 +86,7 @@ namespace cardCore {
 
         constructor(
             design: CardDesign,
-            public data: CardData,
+            data: CardData,
             public container: CardContainer,
             faceUp: boolean
         ) {
@@ -680,7 +680,7 @@ namespace cardCore {
             let findingTopCard = true
             for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
-                if (this.transition.indexOf(card) < 0) {
+                                if (this.transition.indexOf(card) < 0) {
                     card.setPosition(this.x, topY)
                     card.z = this._z + this.count - i + 1
                     if (findingTopCard) {
@@ -692,7 +692,7 @@ namespace cardCore {
                     }
                 } else {
                     card.visible = true
-                    card.z = this._z + this.slots - i + 1 + DEFAULT_TRANSITION_Z_OFFSET
+                   card.z = this._z + this.slots - i + 1 + DEFAULT_TRANSITION_Z_OFFSET
                     extraAnimations.slide(
                         card,
                         this.x,
@@ -800,7 +800,7 @@ namespace cardCore {
 
             for (let i = 0; i < this.slots; i++) {
                 const card = this.cards[i]
-                card.z = this._z + i + 1 + this.transition.indexOf(card) > 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0
+                card.z = this._z + i + 1 + (this.transition.indexOf(card) >= 0 ? DEFAULT_TRANSITION_Z_OFFSET : 0)
                 extraAnimations.slide(
                     card, x, y,
                     this._z + i + 1,
