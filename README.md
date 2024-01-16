@@ -20,12 +20,14 @@ To edit this repository in MakeCode.
 * click on **Import** then click on **Import URL**
 * paste **https://github.com/alexszeto/card-kit** and click import
 
-## Blocks preview
+## Known Bugs
 
-This image shows the blocks code from the last commit in master.
-This image may take a few minutes to refresh.
+* cursor card not updating after adding/deleting cards at the top of a stack it is pointed at
 
-![A rendered view of the blocks](https://github.com/alexszeto/card-kit/raw/master/.github/makecode/blocks.png)
+## Planned Features for 1.0 Release
+
+* custom card move speed (global and per-container)
+* warp speed card movement (no animation)
 
 #### Metadata (used for search, rendering)
 
