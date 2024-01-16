@@ -28,7 +28,7 @@ function returnPickedUpCards () {
     }
     pickUpSourceContainer = pickedUpCards
 }
-cardKit.createSelectEvent(CardContainerKinds.Tableau, function (container, card) {
+cardKit.createSelectEvent(CardContainerKinds.Tableau, SelectionButtons.A, function (container, card) {
     if (hasPickedUpCards()) {
         if (pickUpSourceContainer == container && cardKit.getContainerCardCount(pickedUpCards) == 1) {
             tryScoreSingleCard()
@@ -52,7 +52,7 @@ cardKit.createSelectEvent(CardContainerKinds.Tableau, function (container, card)
         }
     }
 })
-cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Tableau, function (container) {
+cardKit.createSelectEmptySlotEvent(CardContainerKinds.Tableau, SelectionButtons.A, function (container) {
     if (pickUpSourceContainer == container && cardKit.getContainerCardCount(pickedUpCards) == 1) {
         tryScoreSingleCard()
     } else if (hasPickedUpCards() && cardKit.getCardNumberAttribute(cardKit.getCard(pickedUpCards, CardContainerPositions.First), CardAttributes.Rank) == 13) {
@@ -62,7 +62,7 @@ cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Tableau, function (con
     }
     returnPickedUpCards()
 })
-cardKit.createSelectEvent(CardContainerKinds.Score, function (container, card) {
+cardKit.createSelectEvent(CardContainerKinds.Score, SelectionButtons.A, function (container, card) {
     if (hasPickedUpCards()) {
         returnPickedUpCards()
     } else {
@@ -97,7 +97,7 @@ function setupGame () {
         cardKit.linkContainers(cardKit.getContainerKindList(CardContainerKinds.Tableau)[index], RelativeDirections.Below, scoringPile)
     }
 }
-cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Discard, function (container) {
+cardKit.createSelectEmptySlotEvent(CardContainerKinds.Discard, SelectionButtons.A, function (container) {
     tryScoreSingleCard()
     returnPickedUpCards()
 })
@@ -121,7 +121,7 @@ function tryScoreSingleCard () {
         }
     }
 }
-cardKit.createSelectEvent(CardContainerKinds.Discard, function (container, card) {
+cardKit.createSelectEvent(CardContainerKinds.Discard, SelectionButtons.A, function (container, card) {
     if (hasPickedUpCards()) {
         if (pickUpSourceContainer == container) {
             tryScoreSingleCard()
@@ -132,7 +132,7 @@ cardKit.createSelectEvent(CardContainerKinds.Discard, function (container, card)
         cardKit.moveCardBetween(container, CardContainerPositions.First, pickedUpCards, CardContainerPositions.Last, CardFaces.Unchanged)
     }
 })
-cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Score, function (container) {
+cardKit.createSelectEmptySlotEvent(CardContainerKinds.Score, SelectionButtons.A, function (container) {
     if (cardKit.getContainerCardCount(pickedUpCards) == 1) {
         if (cardKit.getCardNumberAttribute(cardKit.getCard(pickedUpCards, CardContainerPositions.First), CardAttributes.Rank) == 1) {
             cardKit.moveCardBetween(pickedUpCards, CardContainerPositions.First, container, CardContainerPositions.First, CardFaces.Unchanged)
@@ -141,14 +141,14 @@ cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Score, function (conta
     }
     returnPickedUpCards()
 })
-cardKit.createSelectEvent(CardContainerKinds.Draw, function (container, card) {
+cardKit.createSelectEvent(CardContainerKinds.Draw, SelectionButtons.A, function (container, card) {
     if (hasPickedUpCards()) {
         returnPickedUpCards()
     } else {
         cardKit.moveCardBetween(container, CardContainerPositions.First, discardPile, CardContainerPositions.First, CardFaces.Up)
     }
 })
-cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Draw, function (container) {
+cardKit.createSelectEmptySlotEvent(CardContainerKinds.Draw, SelectionButtons.A, function (container) {
     if (hasPickedUpCards()) {
         returnPickedUpCards()
     } else {
@@ -164,7 +164,7 @@ function setupTableau () {
         tableauStack = cardKit.getContainerKindList(CardContainerKinds.Tableau)[index]
         for (let index2 = 0; index2 < index + 0; index2++) {
             cardKit.moveCardBetween(drawDeck, CardContainerPositions.First, tableauStack, CardContainerPositions.Last, CardFaces.Up)
-            pause(150)
+            pause(50)
         }
         if (index > 0) {
             cardKit.setCardFaceUp(cardKit.getCard(tableauStack, CardContainerPositions.Last), true)

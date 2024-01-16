@@ -227,29 +227,29 @@ namespace cardCore {
 
 // CardEvent
 namespace cardCore {
-    export type CardEventCondition = cardCore.CardAttribute
-
     type CardEvent = {
         kind: number,
+        button: SelectionButtons,
         handler: (container: CardContainer, card: Card) => void
     }
 
-    type EmptyGridSlotEvent = {
+    type EmptySlotEvent = {
         kind: number,
+        button: SelectionButtons,
         handler: (container: CardContainer) => void
     }
 
     const cardEvents: CardEvent[] = []
-    export function addCardEvent(kind: number, handler: (container: CardContainer, card: Card) => void) {
-        cardEvents.push({ kind: kind, handler: handler })
+    export function addCardEvent(kind: number, button: SelectionButtons, handler: (container: CardContainer, card: Card) => void) {
+        cardEvents.push({ kind: kind, button: button, handler: handler })
     }
 
-    const emptyGridSlotEvents: EmptyGridSlotEvent[] = []
-    export function addEmptyGridSlotEvent(kind: number, handler: (container: CardContainer) => void) {
-        emptyGridSlotEvents.push({ kind: kind, handler: handler })
+    const emptySlotEvents: EmptySlotEvent[] = []
+    export function addEmptySlotEvent(kind: number, button: SelectionButtons, handler: (container: CardContainer) => void) {
+        emptySlotEvents.push({ kind: kind, button: button, handler: handler })
     }
 
-    export function dispatchActivateEvents(card: Card) {
+    export function dispatchActivateEvents(card: Card, button: SelectionButtons) {
         const container = card.container
         if (!container) {
             return
@@ -257,13 +257,13 @@ namespace cardCore {
 
         if (!card.isEmpty) {
             for (let event of cardEvents) {
-                if (event.kind === container.kind) {
+                if (event.kind === container.kind && event.button === button) {
                     event.handler(container, card)
                 }
             }
         } else {
-            for (let event of emptyGridSlotEvents) {
-                if (event.kind === container.kind) {
+            for (let event of emptySlotEvents) {
+                if (event.kind === container.kind && event.button === button) {
                     event.handler(container)
                 }
             }
@@ -1460,11 +1460,11 @@ namespace cardCursor {
         return container
     }
 
-    export function activateCard() {
+    export function activateCard(button: SelectionButtons) {
         const card = selectedCard()
         if (!card) {
             return
         }
-        cardCore.dispatchActivateEvents(card)
+        cardCore.dispatchActivateEvents(card, button)
     }
 }

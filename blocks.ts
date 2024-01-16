@@ -45,6 +45,12 @@ enum ControllerButtons {
     Menu,
 }
 
+enum SelectionButtons {
+    A,
+    B,
+    Menu,
+}
+
 enum CardGridScrollDirections {
     //% block="up and down"
     UpDown,
@@ -584,7 +590,7 @@ namespace cardKit {
 
     //% color="#ff9008"
     //% group="Container"
-    //% block="$container cards"
+    //% block="array of $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getLayoutCardListCopy(container: cardCore.CardContainer): cardCore.Card[] {
         return container.getCards()
@@ -718,13 +724,6 @@ namespace cardKit {
         autoLayoutControl = false
     }
 
-    //% color="#d54322"
-    //% group="Controls"
-    //% block="set card select button to $button"
-    export function bindSelectButton(button: ControllerButtons) {
-        cardSelectButton = button
-    }
-
     type CardContainerLink = {
         fromContainer: cardCore.CardContainer,
         toContainer: cardCore.CardContainer,
@@ -833,18 +832,16 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on select $card in $kind $container || where $attribute is $text"
+    //% block="on select $card in $kind $container with $button"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    //% attribute.shadow="attributePicker"
-    //% text.shadowOptions.toString=true
     export function createSelectEvent(
         kind: number,
+        button: SelectionButtons,
         handler: (container: cardCore.CardContainer, card: cardCore.Card) => void,
-        attribute: number = null,
-        text: string = null,
     ) {
         cardCore.addCardEvent(
             kind,
+            button,
             handler,
         )
     }
@@ -852,14 +849,16 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on select empty $kind $container"
+    //% block="on select empty $kind $container with $button"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createSelectEmptyGridSlotEvent(
+    export function createSelectEmptySlotEvent(
         kind: number,
+        button: SelectionButtons,
         handler: (container: cardCore.CardContainer) => void,
     ) {
-        cardCore.addEmptyGridSlotEvent(
+        cardCore.addEmptySlotEvent(
             kind,
+            button,
             handler,
         )
     }
@@ -875,19 +874,18 @@ namespace cardKit {
     }
 
     let autoLayoutControl: boolean = true
-    let cardSelectButton: ControllerButtons = ControllerButtons.A
 
     let isPressed = [false, false, false, false, false, false, false]
     
-    function updateControl(button: controller.Button, index: ControllerButtons, direction?: PointerDirections) {
+    function updateControl(button: controller.Button, index: ControllerButtons, selection?: SelectionButtons, direction?: PointerDirections) {
         if (button.isPressed() && !isPressed[index]) {
             isPressed[index] = true
             if (autoLayoutControl) {
-                if (!!direction) {
+                if (direction != null) {
                     moveCursorInDirection(direction)
                 }
-                if (cardSelectButton === index) {
-                    cardCursor.activateCard()
+                if (selection != null) {
+                    cardCursor.activateCard(selection)
                 }
             }
         }
@@ -897,13 +895,13 @@ namespace cardKit {
     }
 
     forever(() => {
-        updateControl(controller.left, ControllerButtons.Left, PointerDirections.Left)
-        updateControl(controller.right, ControllerButtons.Right, PointerDirections.Right)
-        updateControl(controller.up, ControllerButtons.Up, PointerDirections.Up)
-        updateControl(controller.down, ControllerButtons.Down, PointerDirections.Down)
-        updateControl(controller.A, ControllerButtons.A)
-        updateControl(controller.B, ControllerButtons.B)
-        updateControl(controller.menu, ControllerButtons.Menu)
+        updateControl(controller.left, ControllerButtons.Left, null, PointerDirections.Left)
+        updateControl(controller.right, ControllerButtons.Right, null, PointerDirections.Right)
+        updateControl(controller.up, ControllerButtons.Up, null, PointerDirections.Up)
+        updateControl(controller.down, ControllerButtons.Down, null, PointerDirections.Down)
+        updateControl(controller.A, ControllerButtons.A, SelectionButtons.A)
+        updateControl(controller.B, ControllerButtons.B, SelectionButtons.B)
+        updateControl(controller.menu, ControllerButtons.Menu, SelectionButtons.Menu)
     })
 
 
