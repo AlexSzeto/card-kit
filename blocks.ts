@@ -611,6 +611,15 @@ namespace cardKit {
     }    
 
     //% group="Container"
+    //% block="$container has cards"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    export function containerHasCards(
+        container: cardCore.CardContainer
+    ): boolean {
+        return !! container ? container.count > 0 : false
+    }
+    
+    //% group="Container"
     //% block="shuffle $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function shuffleCards(container: cardCore.CardContainer) {
@@ -824,7 +833,7 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on selected $card in $kind $container || where $attribute is $text"
+    //% block="on select $card in $kind $container || where $attribute is $text"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     //% attribute.shadow="attributePicker"
     //% text.shadowOptions.toString=true
@@ -843,7 +852,7 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on selected empty $kind $container"
+    //% block="on select empty $kind $container"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createSelectEmptyGridSlotEvent(
         kind: number,
@@ -948,14 +957,18 @@ namespace cardKit {
     //% block="set $card face up to $isFaceUp"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardFaceUp(card: cardCore.Card, isFaceUp: boolean) {
-        card.isFaceUp = isFaceUp
+        if (!!card) {
+            card.isFaceUp = isFaceUp            
+        }
     }
 
     //% group="Card"
     //% block="flip $card"
     //% card.shadow="variables_get" card.defl="myCard"
     export function flipCard(card: cardCore.Card) {
-        card.flip()
+        if (!!card) {
+            card.flip()            
+        }
     }
 
     //% group="Card Attributes"
