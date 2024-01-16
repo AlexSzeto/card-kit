@@ -832,7 +832,7 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on select $card in $kind $container with $button"
+    //% block="on select $card in $kind $container with $button button"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createSelectEvent(
         kind: number,
@@ -849,7 +849,7 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on select empty $kind $container with $button"
+    //% block="on select empty $kind $container with $button button"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createSelectEmptySlotEvent(
         kind: number,
