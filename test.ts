@@ -96,7 +96,6 @@ function setupGame () {
         previousContainer = scoringPile
         cardKit.linkContainers(cardKit.getContainerKindList(CardContainerKinds.Tableau)[index], RelativeDirections.Below, scoringPile)
     }
-    cardKit.moveCursorInsideLayoutWithButtons(drawDeck)
 }
 cardKit.createSelectEmptyGridSlotEvent(CardContainerKinds.Discard, function (container) {
     tryScoreSingleCard()
@@ -165,6 +164,7 @@ function setupTableau () {
         tableauStack = cardKit.getContainerKindList(CardContainerKinds.Tableau)[index]
         for (let index2 = 0; index2 < index + 0; index2++) {
             cardKit.moveCardBetween(drawDeck, CardContainerPositions.First, tableauStack, CardContainerPositions.Last, CardFaces.Up)
+            pause(150)
         }
         if (index > 0) {
             cardKit.setCardFaceUp(cardKit.getCard(tableauStack, CardContainerPositions.Last), true)
@@ -185,6 +185,8 @@ isWinning = false
 scene.setBackgroundImage(assets.image`background`)
 setupGame()
 setupTableau()
+cardKit.moveCursorInsideLayoutWithButtons(drawDeck)
+
 // This is a workaround for having a card stack follow a sprite without being able to use sprite follow.
 game.onUpdate(function () {
     cardKit.setContainerPosition(pickedUpCards, cardKit.getCursorSprite().x - 4, cardKit.getCursorSprite().y + 2)

@@ -714,7 +714,6 @@ namespace cardCore {
                     .map(cardData => new Card(this.design, cardData, this, this._stackIsFaceUp))
                 this.cards = insert.slice().concat(this.cards)
                 this.refresh()
-                this.startSelection()
             }
         }
 
