@@ -959,6 +959,10 @@ namespace cardCore {
         lock(minLines: number) {
             this._locked = true
 
+            if (minLines < 1) {
+                minLines = this.scrollUpDown ? this.rows : this.columns
+            }
+
             if ((this.scrollUpDown && this.count % this.columns === 0)
                 || (!this.scrollUpDown && this.count % this.rows === 0)) {
                 return

@@ -1111,6 +1111,7 @@ namespace cardKit {
     //% group="Customization"
     //% block="freeze grid $grid|| min $lines lines"
     //% grid.shadow="variables_get" grid.defl="myContainer"
+    //% lines.defl=-1
     export function lockGridCardPositions(grid: cardCore.CardContainer, lines: number) {
         if (grid instanceof cardCore.CardGrid) {
             grid.lock(lines)
