@@ -28,6 +28,7 @@ To edit this repository in MakeCode.
 
 ## Planned Features for 1.0 Release
 
+* card container visibility
 * custom card move speed (global and per-container)
 * warp speed card movement (no animation)
 * card select event without specifying type

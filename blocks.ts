@@ -436,8 +436,8 @@ namespace cardDesign {
 
     //% weight=99
     //% group="Deck Builder"
-    //% block="add to $stack cards combinations of $variations|| make $copies copies each"
-    //% deck.shadow="variables_get" deck.defl="myStack"
+    //% block="add to $deck cards combinations of $variations|| make $copies copies each"
+    //% deck.shadow="variables_get" deck.defl="myDeck"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
     //% copies.defl=1
