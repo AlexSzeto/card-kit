@@ -12,11 +12,11 @@ namespace cardKit {
             2 4 d d 4 2
             . 2 2 2 2 .
             `
-            cardDesign.addAttributeIndexText(design, CardZoneAlignments.Center, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
+            cardDesign.addAttributeIndexText(design, DrawableAlignments.Center, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
             cardDesign.modifyColumnWithAttributeTextColor(design, 2)
-            cardDesign.addEmptySpace(design, CardZoneAlignments.Center, 2, 0)
+            cardDesign.addEmptySpace(design, DrawableAlignments.Center, 2, 0)
             cardDesign.editNextRow(design)
-            cardDesign.addAttributeTextToImage(design, CardZoneAlignments.Center, 1, [
+            cardDesign.addAttributeTextToImage(design, DrawableAlignments.Center, 1, [
                 cardDesign.createTextToImageLookupPair('spades', img`
             . . f . .
             . f f f .
@@ -50,7 +50,7 @@ namespace cardKit {
             . . 2 . .
             `),
             ])
-            cardDesign.addEmptySpace(design, CardZoneAlignments.Center, 2, 0)
+            cardDesign.addEmptySpace(design, DrawableAlignments.Center, 2, 0)
             playingCardsDesignTemplate = design
         }
         return playingCardsDesignTemplate

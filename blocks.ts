@@ -105,7 +105,7 @@ namespace cardDesign {
     //% blockHidden=true
     //% block="text $text to image $image"
     //% image.shadow="screen_image_picker"
-    export function createTextToImageLookupPair(text: string, image: Image): cardCore.DesignLookup {
+    export function createTextToImageLookupPair(text: string, image: Image): cardCore.AttributeLookup {
         return { value: text, drawable: image }
     }
 
@@ -226,11 +226,11 @@ namespace cardDesign {
         design.rows.push([])
     }
 
-    function addDesignColumn(design: CardDesignTemplate, column: cardCore.DesignColumn) {
+    function addDesignColumn(design: CardDesignTemplate, column: cardCore.DrawableSubject) {
         design.rows[design.rows.length - 1].push(column)
     }
 
-    function getMostRecentColumn(design: CardDesignTemplate): cardCore.DesignColumn {
+    function getMostRecentColumn(design: CardDesignTemplate): cardCore.DrawableSubject {
         const row = design.rows[design.rows.length - 1]
         return row.length > 0 ? row[row.length - 1] : null
     }
@@ -243,7 +243,7 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=0 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addStaticText(design: CardDesignTemplate, align: CardZoneAlignments, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
+    export function addStaticText(design: CardDesignTemplate, align: DrawableAlignments, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
         addDesignColumn(design, cardCore.createTextColumn(align, text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
     }
 
@@ -256,7 +256,7 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addAttributeText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+    export function addAttributeText(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
         addDesignColumn(design, cardCore.createAttributeAsPlainTextColumn(align, attribute, color, charsPerLine, maxLines, !isFixedSize))
     }
 
@@ -268,7 +268,7 @@ namespace cardDesign {
     //% color.shadow="colorindexpicker" color.defl=15
     //% charsPerLine.defl=5 maxLines.defl=1
     //% isFixedSize.defl=false
-    export function addAttributeIndexText(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
+    export function addAttributeIndexText(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
         addDesignColumn(design, cardCore.createAttributeAsLookupTextColumn(align, attribute, cardCore.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
     }
 
@@ -289,7 +289,7 @@ namespace cardDesign {
     //% block="add to current row in $design align $align image $image"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% image.shadow="screen_image_picker"
-    export function addStaticImage(design: CardDesignTemplate, align: CardZoneAlignments, image: Image) {
+    export function addStaticImage(design: CardDesignTemplate, align: DrawableAlignments, image: Image) {
         addDesignColumn(design, cardCore.createImageColumn(align, image))
     }
 
@@ -300,7 +300,7 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myDesign"
     //% attribute.shadow="attributePicker"
     //% image.shadow="screen_image_picker"
-    export function addRepeatImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, image: Image) {
+    export function addRepeatImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, image: Image) {
         addDesignColumn(design, cardCore.createAttributeAsRepeatImageColumn(align, attribute, image))
     }
 
@@ -310,7 +310,7 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myDesign"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
-    export function addAttributeIndexImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, imageLookupTable: Image[]) {
+    export function addAttributeIndexImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, imageLookupTable: Image[]) {
         addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, cardCore.createNumberToImageLookupTable(imageLookupTable)))
     }
 
@@ -320,14 +320,14 @@ namespace cardDesign {
     //% design.shadow="variables_get" design.defl="myDesign"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function addAttributeTextToImage(design: CardDesignTemplate, align: CardZoneAlignments, attribute: number, lookupTable: cardCore.DesignLookup[]) {
+    export function addAttributeTextToImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, lookupTable: cardCore.AttributeLookup[]) {
         addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, lookupTable))
     }
 
     //% group="Add Misc"
     //% block="add to current row in $design align $align empty space width $width height $height"
     //% design.shadow="variables_get" design.defl="myDesign"
-    export function addEmptySpace(design: CardDesignTemplate, align: CardZoneAlignments, width: number, height: number) {
+    export function addEmptySpace(design: CardDesignTemplate, align: DrawableAlignments, width: number, height: number) {
         addDesignColumn(design, cardCore.createEmptySpaceColumn(align, width, height))
     }
 
