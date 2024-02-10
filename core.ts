@@ -144,6 +144,18 @@ namespace cardCore {
         }
     }
 
+    export function createStaticValue(value: DynamicValueOutputs): DynamicValue {
+        return new DynamicValue(DynamicValueSources.Static, value, -1, null)
+    }
+
+    export function createAttributeAsValue(attribute: number): DynamicValue {
+        return new DynamicValue(DynamicValueSources.FromAttribute, null, attribute, null)
+    }
+
+    export function createLookupValue(attribute: number, lookupTable: AttributeLookup[]): DynamicValue {
+        return new DynamicValue(DynamicValueSources.FromLookup, null, attribute, lookupTable)
+    }
+
     /*****************************************/
     /* Drawable Data                         */
     /*****************************************/
@@ -155,19 +167,42 @@ namespace cardCore {
 
     type DrawSubject = {
         drawableType: DrawableTypes
-        width?: number
-        height?: number
         repeats: DynamicValue
         drawable: DynamicValue
-        color?: DynamicValue
+        color: DynamicValue
+        width?: number
+        height?: number
     }
 
-    type DrawSequence = {
-        align: DrawableAlignments
-        x?: number
-        y?: number
-        horizontal: boolean
-        subjects: DrawSubject[]
+    export function createImageSubject(image: Image): DrawSubject {
+        return {
+            drawableType: DrawableTypes.Image,
+            repeats: createStaticValue(1),
+            drawable: createStaticValue(image),
+            color: createStaticValue(-1),
+        }
+    }
+
+    export function createTextSubject(text: string, width: number, height: number): DrawSubject {
+        return {
+            drawableType: DrawableTypes.Text,
+            repeats: createStaticValue(1),
+            drawable: createStaticValue(text),
+            color: createStaticValue(0),
+            width: width,
+            height: height
+        }
+    }
+
+    export class DrawSequence {
+        public subjects: DrawSubject[] = []
+
+        public constructor(
+            public align: DrawableAlignments,
+            public horizontal: boolean = true,
+            offsetX: number = 0,
+            offsetY: number = 0,
+        ) { }
     }
 
     type DrawZone = {
@@ -273,7 +308,7 @@ namespace cardCore {
                 }
             }
         
-            function createImageZone(image: Image): DrawZone {
+            function createImageZone(image: Image, color: number): DrawZone {
                 if (!image) {
                     return null
                 }
@@ -283,7 +318,7 @@ namespace cardCore {
                     height: image.height,
                     image: image,
                     lines: null,
-                    color: 0
+                    color: color
                 }
             }
     
@@ -298,7 +333,7 @@ namespace cardCore {
                             zone = createTextZone(subject.width, subject.height, subject.drawable.getString(card), subject.color.getNumber(card))
                             break
                         case DrawableTypes.Image:
-                            zone = createImageZone(subject.drawable.getImage(card))
+                            zone = createImageZone(subject.drawable.getImage(card), subject.color.getNumber(card))
                             break
                     }
                     if (!!zone) {
@@ -317,6 +352,8 @@ namespace cardCore {
                 
                 let anchorX: number
                 let anchorY: number
+                let alignRight: boolean
+                let alignBottom: boolean
 
                 switch (sequence.align) {
                     case DrawableAlignments.TopLeft:
@@ -324,15 +361,16 @@ namespace cardCore {
                     case DrawableAlignments.BottomLeft:
                         anchorX = x
                         break
-                    case DrawableAlignments.TopRight:
-                    case DrawableAlignments.Right:
-                    case DrawableAlignments.BottomRight:
-                        anchorX = x + this.width
-                        break
                     case DrawableAlignments.Top:
                     case DrawableAlignments.Center:
                     case DrawableAlignments.Bottom:
-                        anchorX = x + this.width / 2
+                        anchorX = x + (this.width - (sequence.horizontal ? fullWidth : 0)) / 2 
+                        break
+                    case DrawableAlignments.TopRight:
+                    case DrawableAlignments.Right:
+                    case DrawableAlignments.BottomRight:
+                        anchorX = x + this.width - (sequence.horizontal ? fullWidth : 0)
+                        alignRight = !sequence.horizontal
                         break
                 }
                 switch (sequence.align) {
@@ -344,132 +382,31 @@ namespace cardCore {
                     case DrawableAlignments.Left:
                     case DrawableAlignments.Center:
                     case DrawableAlignments.Right:
-                        anchorY = y + this.height / 2
+                        anchorY = y + (this.height - (sequence.horizontal ? 0 : fullHeight)) / 2
                         break
                     case DrawableAlignments.BottomLeft:
                     case DrawableAlignments.Bottom:
                     case DrawableAlignments.BottomRight:
-                        anchorY = y + this.height
+                        anchorY = y + this.height - (sequence.horizontal ? 0 : fullHeight)
+                        alignBottom = sequence.horizontal
                         break
                 }
+
+                zones.forEach(zone => {
+                    const drawX = anchorX - (alignRight ? zone.width : 0)
+                    const drawY = anchorY - (alignBottom ? zone.height : 0)
+
+                    if (!!zone.image) {
+                        image.drawTransparentImage(zone.image, drawX, drawY)
+                    } else {
+                        zone.lines.forEach((text, line) => {
+                            tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, zone.color)
+                        })
+                    }
+                    anchorX += sequence.horizontal ? zone.width + this.spacing : 0
+                    anchorY += sequence.horizontal ? 0 : zone.height + this.spacing
+                })
             })
-
-            // this.zones.forEach(zone => {
-            //     skip = false
-
-            //     color = zone.color.getNumber(card)
-
-            //     switch (zone.zoneType) {
-            //         case DrawableTypes.Text:
-            //             prepareDrawText(zone.text, zone.width, zone.height)
-            //             break
-                    
-            //         case DrawableTypes.AttributeText:
-            //             attribute = card.getAttribute(zone.attribute)
-            //             if (typeof attribute === 'number') {
-            //                 prepareDrawText(attribute.toString(), zone.width, zone.height)
-            //             } else if (attribute != null) {
-            //                 prepareDrawText(attribute, zone.width, zone.height)
-            //             } else {
-            //                 skip = true
-            //             }
-            //             break
-
-            //         case DrawableTypes.LookupAttributeAsText:
-            //             attribute = card.getAttribute(zone.attribute)
-            //             lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
-            //             if (!!lookupValue && typeof lookupValue.drawable === 'string') {
-            //                 prepareDrawText(lookupValue.drawable, zone.width, zone.height)
-            //             } else {
-            //                 skip = true
-            //             }
-            //             break
-                    
-            //         case DrawableTypes.Image:
-            //             prepareDrawImage(zone.image, true, 1)
-            //             break
-                    
-            //         case DrawableTypes.RepeatImage:
-            //             attribute = card.getAttribute(zone.attribute)
-            //             if (typeof attribute === 'number') {
-            //                 prepareDrawImage(zone.image, zone.horizontalRepeat, attribute)
-            //             } else {
-            //                 skip = true
-            //             }
-            //             break
-
-            //         case DrawableTypes.LookupAttributeAsImage:
-            //             attribute = card.getAttribute(zone.attribute)
-            //             lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
-            //             if (!!lookupValue) {
-            //                 prepareDrawImage(lookupValue.drawable as Image, true, 1)
-            //             } else {
-            //                 skip = true
-            //             }
-            //             break
-            //     }
-
-            //     switch (zone.align) {
-            //         case DrawableAlignments.TopLeft:
-            //         case DrawableAlignments.Left:
-            //         case DrawableAlignments.BottomLeft:
-            //             drawLeft = x
-            //             break
-            //         case DrawableAlignments.TopRight:
-            //         case DrawableAlignments.Right:
-            //         case DrawableAlignments.BottomRight:
-            //             drawLeft = x + this.width - drawWidth
-            //             break
-            //         case DrawableAlignments.Top:
-            //         case DrawableAlignments.Center:
-            //         case DrawableAlignments.Bottom:
-            //             drawLeft = x + (this.width - drawWidth) / 2
-            //             break
-            //     }
-            //     switch (zone.align) {
-            //         case DrawableAlignments.TopLeft:
-            //         case DrawableAlignments.Top:
-            //         case DrawableAlignments.TopRight:
-            //             drawTop = y
-            //             break
-            //         case DrawableAlignments.Left:
-            //         case DrawableAlignments.Center:
-            //         case DrawableAlignments.Right:
-            //             drawTop = y + (this.height - drawHeight) / 2
-            //             break
-            //         case DrawableAlignments.BottomLeft:
-            //         case DrawableAlignments.Bottom:
-            //         case DrawableAlignments.BottomRight:
-            //             drawTop = y + this.height - drawHeight
-            //             break
-            //     }
-
-            //     switch (zone.zoneType) {
-            //         case DrawableTypes.Text:
-            //         case DrawableTypes.AttributeText:
-            //         case DrawableTypes.LookupAttributeAsText:
-            //             if (!skip) {
-            //                 lines.forEach((text, line) => {
-            //                     tinyFont.print(image, drawLeft, drawTop + line * tinyFont.charHeight(), text, color)
-            //                 })
-            //             }
-            //             break
-            //         case DrawableTypes.Image:
-            //         case DrawableTypes.RepeatImage:
-            //         case DrawableTypes.LookupAttributeAsImage:
-            //             if (!skip) {
-            //                 for (let repeat = 0; repeat < drawRepeats; repeat++) {
-            //                     image.drawTransparentImage(drawImage, drawLeft, drawTop)
-            //                     if (zone.horizontalRepeat) {
-            //                         drawLeft += drawImage.width
-            //                     } else {
-            //                         drawTop += drawImage.height
-            //                     }
-            //                 }
-            //             }
-            //             break
-            //     }
-            // })
         }       
 
         drawCardBack(image: Image, x: number, y: number) {
@@ -489,68 +426,5 @@ namespace cardCore {
                 image.drawTransparentImage(stackImage, x, y)
             }
         }
-    }
-
-    export function createTextColumn(align: DrawableAlignments, text: string, color: number, width: number, height: number): DrawSubject {
-        return {
-            drawableType: DrawableTypes.Text,
-            align: align,
-            text: text,
-            color: color,
-            colorAttribute: -1,
-            width: width,
-            height: height,
-        }
-    }
-    export function createAttributeAsPlainTextColumn(align: DrawableAlignments, attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DrawSubject {
-        return {
-            drawableType: DrawableTypes.AttributeText,
-            align: align,
-            attribute: attribute,
-            color: color,
-            colorAttribute: -1,
-            width: columns,
-            height: rows,
-            isDynamic: isDynamic,
-        }
-    }
-    export function createAttributeAsLookupTextColumn(align: DrawableAlignments, attribute: number, lookupTable: AttributeLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DrawSubject {
-        return {
-            drawableType: DrawableTypes.LookupAttributeAsText,
-            align: align,
-            attribute: attribute,
-            color: color,
-            colorAttribute: -1,
-            width: columns,
-            height: rows,
-            isDynamic: isDynamic,
-            lookupTable: lookupTable
-        }
-    }
-    export function createImageColumn(align: DrawableAlignments, image: Image): DrawSubject {
-        return {
-            drawableType: DrawableTypes.Image,
-            align: align,
-            image: image,
-        }
-    }
-    export function createAttributeAsRepeatImageColumn(align: DrawableAlignments, attribute: number, image: Image): DrawSubject {
-        return {
-            drawableType: DrawableTypes.RepeatImage,
-            align: align,
-            attribute: attribute,
-            image: image,            
-        }
-    }
-    export function createAttributeAsLookupImageColumn(align: DrawableAlignments, attribute: number, lookupTable: AttributeLookup[]): DrawSubject {
-        return {
-            drawableType: DrawableTypes.LookupAttributeAsImage,
-            align: align,
-            attribute: attribute,
-            lookupTable: lookupTable
-        }
-    }
-    export function modifyTextColumnWithAttributeColorLookup(column: DrawSubject, colorAttribute: number): void {
-        column.colorAttribute = colorAttribute
     }
 }
