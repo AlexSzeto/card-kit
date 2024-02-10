@@ -15,7 +15,7 @@ namespace cardKit {
             cardDesign.addAttributeIndexText(design, DrawableAlignments.Center, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
             cardDesign.modifyColumnWithAttributeTextColor(design, 2)
             cardDesign.addEmptySpace(design, DrawableAlignments.Center, 2, 0)
-            cardDesign.editNextRow(design)
+            cardDesign.editNextSection(design)
             cardDesign.addAttributeTextToImage(design, DrawableAlignments.Center, 1, [
                 cardDesign.createTextToImageLookupPair('spades', img`
             . . f . .

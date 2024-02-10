@@ -75,7 +75,7 @@ namespace cardCore {
     /*****************************************/
 
     type AttributeLookupDrawables = string | Image
-    type AttributeLookup = {
+    export type AttributeLookup = {
         value: CardAttributeValues
         drawable: AttributeLookupDrawables
     }
@@ -194,7 +194,7 @@ namespace cardCore {
         }
     }
 
-    export class DrawSequence {
+    export class DrawSection {
         public subjects: DrawSubject[] = []
 
         public constructor(
@@ -205,7 +205,7 @@ namespace cardCore {
         ) { }
     }
 
-    type DrawZone = {
+    type FinalDrawable = {
         width: number
         height: number
         image: Image
@@ -230,7 +230,7 @@ namespace cardCore {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
-            public sequences: DrawSequence[],
+            public sections: DrawSection[],
             public spacing: number,
         ) {
             let frame = new game.BaseDialog(width, height, frontFrame)
@@ -285,7 +285,7 @@ namespace cardCore {
         }
 
         drawCardFront(image: Image, x: number, y: number, card: CardData) {
-            function createTextZone(width: number, height: number, text: string, color: number): DrawZone {
+            function createTextZone(width: number, height: number, text: string, color: number): FinalDrawable {
                 if (text.length === 0) {
                     return null
                 }
@@ -308,7 +308,7 @@ namespace cardCore {
                 }
             }
         
-            function createImageZone(image: Image, color: number): DrawZone {
+            function createImageZone(image: Image, color: number): FinalDrawable {
                 if (!image) {
                     return null
                 }
@@ -324,31 +324,31 @@ namespace cardCore {
     
             image.drawTransparentImage(this.frontImage, x, y)
             
-            this.sequences.forEach(sequence => {
-                const zones: DrawZone[] = []
+            this.sections.forEach(sequence => {
+                const drawables: FinalDrawable[] = []
                 sequence.subjects.forEach(subject => {
-                    let zone: DrawZone = null
+                    let drawable: FinalDrawable = null
                     switch (subject.drawableType) {
                         case DrawableTypes.Text:
-                            zone = createTextZone(subject.width, subject.height, subject.drawable.getString(card), subject.color.getNumber(card))
+                            drawable = createTextZone(subject.width, subject.height, subject.drawable.getString(card), subject.color.getNumber(card))
                             break
                         case DrawableTypes.Image:
-                            zone = createImageZone(subject.drawable.getImage(card), subject.color.getNumber(card))
+                            drawable = createImageZone(subject.drawable.getImage(card), subject.color.getNumber(card))
                             break
                     }
-                    if (!!zone) {
+                    if (!!drawable) {
                         for (let repeat = 0; repeat < subject.repeats.getNumber(card); repeat++) {
-                            zones.push(zone)
+                            drawables.push(drawable)
                         }                            
                     }
                 })
 
                 let fullWidth = sequence.horizontal
-                    ? zones.reduce((sum, zone) => sum + zone.width + this.spacing, -this.spacing)
-                    : zones.reduce((max, zone) => Math.max(max, zone.width), 0)
+                    ? drawables.reduce((sum, drawable) => sum + drawable.width + this.spacing, -this.spacing)
+                    : drawables.reduce((max, drawable) => Math.max(max, drawable.width), 0)
                 let fullHeight = sequence.horizontal
-                    ? zones.reduce((max, zone) => Math.max(max, zone.height), 0)
-                    : zones.reduce((sum, zone) => sum + zone.height + this.spacing, -this.spacing)
+                    ? drawables.reduce((max, drawable) => Math.max(max, drawable.height), 0)
+                    : drawables.reduce((sum, drawable) => sum + drawable.height + this.spacing, -this.spacing)
                 
                 let anchorX: number
                 let anchorY: number
@@ -392,19 +392,19 @@ namespace cardCore {
                         break
                 }
 
-                zones.forEach(zone => {
-                    const drawX = anchorX - (alignRight ? zone.width : 0)
-                    const drawY = anchorY - (alignBottom ? zone.height : 0)
+                drawables.forEach(drawable => {
+                    const drawX = anchorX - (alignRight ? drawable.width : 0)
+                    const drawY = anchorY - (alignBottom ? drawable.height : 0)
 
-                    if (!!zone.image) {
-                        image.drawTransparentImage(zone.image, drawX, drawY)
+                    if (!!drawable.image) {
+                        image.drawTransparentImage(drawable.image, drawX, drawY)
                     } else {
-                        zone.lines.forEach((text, line) => {
-                            tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, zone.color)
+                        drawable.lines.forEach((text, line) => {
+                            tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, drawable.color)
                         })
                     }
-                    anchorX += sequence.horizontal ? zone.width + this.spacing : 0
-                    anchorY += sequence.horizontal ? 0 : zone.height + this.spacing
+                    anchorX += sequence.horizontal ? drawable.width + this.spacing : 0
+                    anchorY += sequence.horizontal ? 0 : drawable.height + this.spacing
                 })
             })
         }       

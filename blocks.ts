@@ -58,6 +58,13 @@ enum CardGridScrollDirections {
     LeftRight,
 }
 
+enum DrawDirections {
+    //% block="left to right"
+    LeftToRight,
+    //% block="top to bottom"
+    TopToBottom,
+}
+
 cardCursor.setImage(img`
 . . . f f . . . .
 . . f 1 1 f . . .
@@ -136,9 +143,6 @@ namespace cardDesign {
         //% blockCombine block="height"
         height: number
         //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="margin"
-        margin: number
-        //% group="Dimensions" blockSetVariable="myDesign"
         //% blockCombine block="spacing"
         spacing: number
         //% group="Dimensions" blockSetVariable="myDesign"
@@ -154,8 +158,7 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        rows: cardCore.DesignRow[]
-        stamps: cardCore.StampLookup[]
+        sections: cardCore.DrawSection[] = []
         
         constructor() {
             this.width = 12
@@ -169,11 +172,9 @@ namespace cardDesign {
             this.cardThickness = 0.2
             this.maxStackSize = 60
 
-            this.margin = 2
             this.spacing = 1
 
-            this.stamps = []
-            resetDesignZones(this)
+            resetDesign(this)
         }
 
         export(): cardCore.CardDesign {
@@ -187,9 +188,7 @@ namespace cardDesign {
                 this.backStackFrame,
                 Math.ceil(1.0 / this.cardThickness),
                 Math.floor(this.maxStackSize * this.cardThickness),
-                this.rows,
-                this.stamps,
-                this.margin,
+                this.sections,
                 this.spacing
             )
         }
@@ -209,21 +208,25 @@ namespace cardDesign {
         }
     }
 
-    //% group="Add Row"
+    //% group="Sections"
     //% weight=100
-    //% block="reset $design zones"
+    //% block="reset $design"
     //% design.shadow="variables_get" design.defl="myDesign"
-    export function resetDesignZones(design: CardDesignTemplate) {
-        design.rows = []
-        editNextRow(design)
+    export function resetDesign(design: CardDesignTemplate) {
+        design.sections = []
     }
 
-    //% group="Add Row"
+    //% group="Sections"
     //% weight=99
-    //% block="edit $design next row"
+    //% block="edit $design next section pinned to card $align|| "
     //% design.shadow="variables_get" design.defl="myDesign"
-    export function editNextRow(design: CardDesignTemplate) {
-        design.rows.push([])
+    export function editNextSection(design: CardDesignTemplate, align: DrawableAlignments, horizontal: boolean = true, offsetX: number = 0, offsetY: number = 0) {
+        design.sections.push(new cardCore.DrawSection(
+            align,
+            horizontal,
+            offsetX,
+            offsetY,
+        ))
     }
 
     function addDesignColumn(design: CardDesignTemplate, column: cardCore.DrawableSubject) {
