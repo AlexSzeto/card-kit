@@ -184,7 +184,6 @@ namespace cardCore {
                 this._design.drawEmptyCard(this.image, 0, 0)                    
             } else if (this._faceUp) {
                 this._design.drawCardFront(this.image, 0, 0, this._card)
-                this._design.drawStamp(this.image, this._stamp)
             } else {
                 this._design.drawCardBack(this.image, 0, 0)
             }

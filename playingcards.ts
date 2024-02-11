@@ -1,10 +1,11 @@
 namespace cardKit {
     let playingCardsDesignTemplate: cardDesign.CardDesignTemplate = null
     
-    export function getPlayingCardsDesign(): cardDesign.CardDesignTemplate {
+    export function createPlayingCardsDesign() {
+        const previousDesign = cardDesign.getCurrentTemplate()
         if (!playingCardsDesignTemplate) {
-            let design = cardDesign.createCardDesignTemplate()
-            design.backFrame = img`
+            cardDesign.resetCardDesignTemplate()
+            cardDesign.getCurrentTemplate().backFrame = img`
             . 2 2 2 2 .
             2 4 d d 4 2
             2 d 2 3 d 2
@@ -12,11 +13,10 @@ namespace cardKit {
             2 4 d d 4 2
             . 2 2 2 2 .
             `
-            cardDesign.addAttributeIndexText(design, DrawableAlignments.Center, 0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
-            cardDesign.modifyColumnWithAttributeTextColor(design, 2)
-            cardDesign.addEmptySpace(design, DrawableAlignments.Center, 2, 0)
-            cardDesign.editNextSection(design)
-            cardDesign.addAttributeTextToImage(design, DrawableAlignments.Center, 1, [
+            cardDesign.createNewSection(DrawableAlignments.TopLeft, DrawDirections.TopToBottom)
+            cardDesign.addAttributeIndexText(0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
+            cardDesign.setSubjectColorToAttribute(2)
+            cardDesign.addAttributeTextToImage(1, [
                 cardDesign.createTextToImageLookupPair('spades', img`
             . . f . .
             . f f f .
@@ -50,8 +50,8 @@ namespace cardKit {
             . . 2 . .
             `),
             ])
-            cardDesign.addEmptySpace(design, DrawableAlignments.Center, 2, 0)
-            playingCardsDesignTemplate = design
+            playingCardsDesignTemplate = cardDesign.getCurrentTemplate()
+            cardDesign.setCurrentTemplate(previousDesign)
         }
         return playingCardsDesignTemplate
     }
@@ -60,7 +60,7 @@ namespace cardKit {
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardContainer {
         let deck = cardDesign.createEmptyStack(0)
-        deck.design = getPlayingCardsDesign().export()
+        deck.design = playingCardsDesignTemplate.export()
         cardDesign.addCardVariantsToStack(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 15, 15),

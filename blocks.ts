@@ -116,25 +116,6 @@ namespace cardDesign {
         return { value: text, drawable: image }
     }
 
-    let current: CardDesignTemplate = createCardDesignTemplate()
-
-    //% group="Container Operations"
-    //% block="set current design to $design"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function setCurrentDesign(design: CardDesignTemplate) {
-        current = design
-    }
-
-    export function getCurrent(): cardCore.CardDesign {
-        return current.export()
-    }
-
-    //% group="Container Operations" blockSetVariable="myDesign"
-    //% block="blank design"
-    export function createCardDesignTemplate(): CardDesignTemplate {
-        return new CardDesignTemplate()
-    }
-
     export class CardDesignTemplate {
         //% group="Dimensions" blockSetVariable="myDesign"
         //% blockCombine block="width"
@@ -158,7 +139,7 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        sections: cardCore.DrawSection[] = []
+        sections: cardCore.DrawSection[]
         
         constructor() {
             this.width = 12
@@ -173,8 +154,7 @@ namespace cardDesign {
             this.maxStackSize = 60
 
             this.spacing = 1
-
-            resetDesign(this)
+            this.sections = []
         }
 
         export(): cardCore.CardDesign {
@@ -194,154 +174,183 @@ namespace cardDesign {
         }
     }
 
-    //% group="Graphics"
-    //% block="set $design $frameType frame to $image"
+    let current: CardDesignTemplate = new CardDesignTemplate()
+
+    //% group="Container Operations"
+    //% block="set current design to current design"
     //% design.shadow="variables_get" design.defl="myDesign"
+    export function setCurrentTemplate(design: CardDesignTemplate) {
+        current = design
+    }
+
+    //% group="Container Operations"
+    //% block="current design" blockSetVariable="myDesign"
+    export function getCurrentTemplate(): CardDesignTemplate {
+        return current
+    }
+
+    export function getCurrentDesign(): cardCore.CardDesign {
+        console.log(current.export())
+        return current.export()
+    }
+
+    //% group="Container Operations"
+    //% block="reset current design to default"
+    export function resetCardDesignTemplate() {
+        current = new CardDesignTemplate()
+    }
+
+    //% group="Graphics"
+    //% block="set current design $frameType frame to $image"
     //% image.shadow="screen_image_picker"
-    export function setDesignGraphics(design: CardDesignTemplate, frameType: CardDesignFrameTypes, image: Image) {
+    export function setDesignGraphics(frameType: CardDesignFrameTypes, image: Image) {
         switch (frameType) {
-            case CardDesignFrameTypes.Front: design.frontFrame = image; break;
-            case CardDesignFrameTypes.Back: design.backFrame = image; break;
-            case CardDesignFrameTypes.Empty: design.emptyFrame = image; break;
-            case CardDesignFrameTypes.FrontStack: design.frontStackFrame = image; break;
-            case CardDesignFrameTypes.BackStack: design.backStackFrame = image; break;
+            case CardDesignFrameTypes.Front: current.frontFrame = image; break;
+            case CardDesignFrameTypes.Back: current.backFrame = image; break;
+            case CardDesignFrameTypes.Empty: current.emptyFrame = image; break;
+            case CardDesignFrameTypes.FrontStack: current.frontStackFrame = image; break;
+            case CardDesignFrameTypes.BackStack: current.backStackFrame = image; break;
         }
     }
 
     //% group="Sections"
     //% weight=100
-    //% block="reset $design"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function resetDesign(design: CardDesignTemplate) {
-        design.sections = []
+    //% block="reset current design"
+    export function resetDesign() {
+        current.sections = []
     }
 
     //% group="Sections"
     //% weight=99
-    //% block="edit $design next section pinned to card $align|| "
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function editNextSection(design: CardDesignTemplate, align: DrawableAlignments, horizontal: boolean = true, offsetX: number = 0, offsetY: number = 0) {
-        design.sections.push(new cardCore.DrawSection(
+    //% block="edit current design next section pinned $align|| drawn $direction offset x $offsetX y $offsetY"
+    //% direction.defl=0 
+    //% offsetX.defl = 0 offsetY.defl = 0
+    export function createNewSection(align: DrawableAlignments, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
+        current.sections.push(new cardCore.DrawSection(
             align,
-            horizontal,
+            direction === DrawDirections.LeftToRight,
             offsetX,
             offsetY,
         ))
     }
 
-    function addDesignColumn(design: CardDesignTemplate, column: cardCore.DrawableSubject) {
-        design.rows[design.rows.length - 1].push(column)
+    function addSubjectToCurrentSection(subject: cardCore.DrawSubject) {
+        current.sections[current.sections.length - 1].subjects.push(subject)
     }
 
-    function getMostRecentColumn(design: CardDesignTemplate): cardCore.DrawableSubject {
-        const row = design.rows[design.rows.length - 1]
-        return row.length > 0 ? row[row.length - 1] : null
+    function getCurrentSubject(current: CardDesignTemplate): cardCore.DrawSubject {
+        if (current.sections.length === 0) {
+            return null
+        }
+        const section = current.sections[current.sections.length - 1]
+        if (section.subjects.length === 0) {
+            return null
+        }
+        return section.subjects[section.subjects.length - 1]
     }
 
-    //% group="Add Text"
+    //% group="Add Text Subject"
     //% weight=100
     //% inlineInputMode=inline
-    //% block="add to current row in $design align $align text $text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    //% color.shadow="colorindexpicker" color.defl=15
-    //% charsPerLine.defl=0 maxLines.defl=1
-    //% isFixedSize.defl=false
-    export function addStaticText(design: CardDesignTemplate, align: DrawableAlignments, text: string, color: number = 15, charsPerLine: number = 0, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardCore.createTextColumn(align, text, color, charsPerLine <= 0 ? text.length : charsPerLine, maxLines, !isFixedSize))
+    //% block="add to current section text $text"
+    export function addStaticText(text: string) {
+        addSubjectToCurrentSection(cardCore.createTextSubject(text))
     }
 
-    //% group="Add Text"
+    //% group="Add Text Subject"
     //% weight=99
     //% inlineInputMode="inline"
-    //% block="add to current row in $design align $align $attribute as text|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% block="add to current section $attribute as text"
     //% attribute.shadow="attributePicker"
-    //% color.shadow="colorindexpicker" color.defl=15
-    //% charsPerLine.defl=5 maxLines.defl=1
-    //% isFixedSize.defl=false
-    export function addAttributeText(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardCore.createAttributeAsPlainTextColumn(align, attribute, color, charsPerLine, maxLines, !isFixedSize))
+    export function addAttributeText(attribute: number) {
+        const subject = cardCore.createTextSubject('')
+        subject.drawable = cardCore.createAttributeAsValue(attribute)
+        addSubjectToCurrentSection(subject)
     }
 
-    //% group="Add Text"
+    //% group="Add Text Subject"
     //% weight=98
-    //% block="add to current row in $design align $align index $attribute text from $textLookupTable|| in $color limit line length $charsPerLine max lines $maxLines fixed size $isFixedSize"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% block="add to current section index $attribute text from $textLookupTable"
     //% attribute.shadow="attributePicker"
-    //% color.shadow="colorindexpicker" color.defl=15
-    //% charsPerLine.defl=5 maxLines.defl=1
-    //% isFixedSize.defl=false
-    export function addAttributeIndexText(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, textLookupTable: string[], color: number = 15, charsPerLine: number = 5, maxLines: number = 1, isFixedSize: boolean = false) {
-        addDesignColumn(design, cardCore.createAttributeAsLookupTextColumn(align, attribute, cardCore.createNumberToTextLookupTable(textLookupTable), color, charsPerLine, maxLines, !isFixedSize))
+    export function addAttributeIndexText(attribute: number, textLookupTable: string[]) {
+        const subject = cardCore.createTextSubject('')
+        subject.drawable = cardCore.createIndexedLookupValue(attribute, textLookupTable)
+        addSubjectToCurrentSection(subject)
     }
 
-    //% group="Add Text"
-    //% weight=97
-    //% block="modify current text column in $design set text color index to $attribute value"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% group="Add Image Subject"
+    //% weight=100
+    //% block="add to current section image $image"
+    //% image.shadow="screen_image_picker"
+    export function addStaticImage(image: Image) {
+        addSubjectToCurrentSection(cardCore.createImageSubject(image))
+    }
+
+    //% group="Add Image Subject"
+    //% weight=98
+    //% block="add to current section index $attribute image from $imageLookupTable"
     //% attribute.shadow="attributePicker"
-    export function modifyColumnWithAttributeTextColor(design: CardDesignTemplate, attribute: number) {
-        const column = getMostRecentColumn(design)
-        if (!!column) {
-            cardCore.modifyTextColumnWithAttributeColorLookup(column, attribute)
+    //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
+    export function addAttributeIndexImage(attribute: number, imageLookupTable: Image[]) {
+        const subject = cardCore.createImageSubject(null)
+        subject.drawable = cardCore.createIndexedLookupValue(attribute, imageLookupTable)
+        addSubjectToCurrentSection(subject)
+    }
+
+    //% group="Add Image Subject"
+    //% weight=97
+    //% block="add to current section take $attribute and change $lookupTable"
+    //% attribute.shadow="attributePicker"
+    //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
+    export function addAttributeTextToImage(attribute: number, lookupTable: cardCore.AttributeLookup[]) {
+        const subject = cardCore.createImageSubject(null)
+        subject.drawable = cardCore.createLookupValue(attribute, lookupTable)        
+        addSubjectToCurrentSection(subject)
+    }
+
+    //% group="Edit Subject"
+    //% weight=100
+    //% block="set current subject color to $color"
+    //% color.shadow="colorindexpicker"
+    export function setSubjectColor(color: number) {
+        const subject = getCurrentSubject(current)
+        if (!!subject) {
+            subject.color = cardCore.createStaticValue(color)
         }
     }
 
-    //% group="Add Image"
-    //% weight=100
-    //% block="add to current row in $design align $align image $image"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    //% image.shadow="screen_image_picker"
-    export function addStaticImage(design: CardDesignTemplate, align: DrawableAlignments, image: Image) {
-        addDesignColumn(design, cardCore.createImageColumn(align, image))
-    }
-
-    //% group="Add Image"
+    //% group="Edit Subject"
     //% weight=99
-    //% inlineInputMode="inline"
-    //% block="add to current row in $design align $align image $image repeat $attribute times"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% block="set current subject color index to $attribute value"
     //% attribute.shadow="attributePicker"
-    //% image.shadow="screen_image_picker"
-    export function addRepeatImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, image: Image) {
-        addDesignColumn(design, cardCore.createAttributeAsRepeatImageColumn(align, attribute, image))
+    export function setSubjectColorToAttribute(attribute: number) {
+        const subject = getCurrentSubject(current)
+        if (!!subject) {
+            subject.color = cardCore.createAttributeAsValue(attribute)
+        }
     }
 
-    //% group="Add Image"
+    //% group="Edit Subject"
     //% weight=98
-    //% block="add to current row in $design align $align index $attribute image from $imageLookupTable"
-    //% design.shadow="variables_get" design.defl="myDesign"
+    //% block="redraw current subject $attribute times"
     //% attribute.shadow="attributePicker"
-    //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
-    export function addAttributeIndexImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, imageLookupTable: Image[]) {
-        addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, cardCore.createNumberToImageLookupTable(imageLookupTable)))
+    export function setSubjectRepeatToAttribute(attribute: number) {
+        const subject = getCurrentSubject(current)
+        if (!!subject) {
+            subject.repeats = cardCore.createAttributeAsValue(attribute)
+        }
     }
 
-    //% group="Add Image"
+    //% group="Edit Subject"
     //% weight=97
-    //% block="add to current row in $design align $align take $attribute and change $lookupTable"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    //% attribute.shadow="attributePicker"
-    //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function addAttributeTextToImage(design: CardDesignTemplate, align: DrawableAlignments, attribute: number, lookupTable: cardCore.AttributeLookup[]) {
-        addDesignColumn(design, cardCore.createAttributeAsLookupImageColumn(align, attribute, lookupTable))
+    //% block="set current subject width $width height $height"
+    export function setSubjectSize(width: number, height: number) {
+        const subject = getCurrentSubject(current)
+        if (!!subject) {
+            subject.width = width
+            subject.height = height
+        }
     }
-
-    //% group="Add Misc"
-    //% block="add to current row in $design align $align empty space width $width height $height"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function addEmptySpace(design: CardDesignTemplate, align: DrawableAlignments, width: number, height: number) {
-        addDesignColumn(design, cardCore.createEmptySpaceColumn(align, width, height))
-    }
-
-    //% group="Add Misc"
-    //% block="set $design stamp collection to $lookupTable"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
-    export function setStampImages(design: CardDesignTemplate, lookupTable: cardCore.StampLookup[]) {
-        design.stamps = lookupTable
-    }    
-
 }
 
 namespace cardDesign {
@@ -366,7 +375,7 @@ namespace cardDesign {
     //% block="empty $kind deck"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
     export function createEmptyStack(kind: number): cardCore.CardContainer {
-        const stack = new cardCore.CardStack(cardDesign.getCurrent(), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
+        const stack = new cardCore.CardStack(cardDesign.getCurrentDesign(), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
         return stack
     }
 
@@ -530,7 +539,7 @@ namespace cardKit {
     ): cardCore.CardContainer {
         const scrollVertical = direction == CardGridScrollDirections.UpDown
         const grid = new cardCore.CardGrid(
-            cardDesign.getCurrent(),
+            cardDesign.getCurrentDesign(),
             scene.screenWidth() / 2, scene.screenHeight() / 2,
             kind,
             rows, columns,
@@ -554,7 +563,7 @@ namespace cardKit {
         kind: number,
     ): cardCore.CardContainer {
         return new cardCore.CardStack(
-            cardDesign.getCurrent(),
+            cardDesign.getCurrentDesign(),
             scene.screenWidth() / 2,
             scene.screenHeight() / 2,
             kind, true
@@ -571,7 +580,7 @@ namespace cardKit {
         direction: CardLayoutDirections,
     ): cardCore.CardContainer {
         return new cardCore.CardSpread(
-            cardDesign.getCurrent(),
+            cardDesign.getCurrentDesign(),
             scene.screenWidth() / 2,
             scene.screenHeight() / 2,
             kind,
@@ -1084,7 +1093,7 @@ namespace cardKit {
     }
     
     //% group="Customization"
-    //% block="set $container card design to $design"
+    //% block="set $container card design to current design"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function setContainerDesign(

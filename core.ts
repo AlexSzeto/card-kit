@@ -80,14 +80,6 @@ namespace cardCore {
         drawable: AttributeLookupDrawables
     }
 
-    function createLookupTable(drawables: AttributeLookupDrawables[]): AttributeLookup[] {
-        const lookupTable: AttributeLookup[] = []
-        drawables.forEach((drawable, index) => {
-            lookupTable.push({ value: index, drawable: drawable })
-        })
-        return lookupTable
-    }
-
     enum DynamicValueSources {
         Static,
         FromAttribute,
@@ -152,6 +144,14 @@ namespace cardCore {
         return new DynamicValue(DynamicValueSources.FromAttribute, null, attribute, null)
     }
 
+    export function createIndexedLookupValue(attribute: number, drawables: AttributeLookupDrawables[]): DynamicValue {
+        const lookupTable: AttributeLookup[] = []
+        drawables.forEach((drawable, index) => {
+            lookupTable.push({ value: index, drawable: drawable })
+        })
+        return new DynamicValue(DynamicValueSources.FromLookup, null, attribute, lookupTable)
+    }
+
     export function createLookupValue(attribute: number, lookupTable: AttributeLookup[]): DynamicValue {
         return new DynamicValue(DynamicValueSources.FromLookup, null, attribute, lookupTable)
     }
@@ -165,7 +165,7 @@ namespace cardCore {
         Image,
     }
 
-    type DrawSubject = {
+    export type DrawSubject = {
         drawableType: DrawableTypes
         repeats: DynamicValue
         drawable: DynamicValue
@@ -183,12 +183,12 @@ namespace cardCore {
         }
     }
 
-    export function createTextSubject(text: string, width: number, height: number): DrawSubject {
+    export function createTextSubject(text: string, width: number = 0, height: number = 0): DrawSubject {
         return {
             drawableType: DrawableTypes.Text,
             repeats: createStaticValue(1),
             drawable: createStaticValue(text),
-            color: createStaticValue(0),
+            color: createStaticValue(15),
             width: width,
             height: height
         }
@@ -292,8 +292,8 @@ namespace cardCore {
 
                 let lines = []
                 let index = 0
-                const columnLimit = width / tinyFont.charWidth()
-                const rowLimit = height / tinyFont.charHeight()
+                const columnLimit = width > 0 ? width / tinyFont.charWidth() : text.length
+                const rowLimit = height > 0 ? height / tinyFont.charHeight() : 1
                 while (index < text.length && lines.length < rowLimit) {
                     lines.push(text.substr(index, columnLimit))
                     index += columnLimit
