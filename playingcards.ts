@@ -13,7 +13,7 @@ namespace cardKit {
             2 4 d d 4 2
             . 2 2 2 2 .
             `
-            cardDesign.createNewSection(DrawableAlignments.TopLeft, DrawDirections.TopToBottom)
+            cardDesign.createNewSection(AnchorPositions.Left, DrawDirections.TopToBottom, 0, 0)
             cardDesign.addAttributeIndexText(0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
             cardDesign.setSubjectColorToAttribute(2)
             cardDesign.addAttributeTextToImage(1, [
@@ -60,7 +60,7 @@ namespace cardKit {
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardContainer {
         let deck = cardDesign.createEmptyStack(0)
-        deck.design = playingCardsDesignTemplate.export()
+        deck.design = createPlayingCardsDesign().export()
         cardDesign.addCardVariantsToStack(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 15, 15),

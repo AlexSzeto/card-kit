@@ -1,13 +1,22 @@
-enum DrawableAlignments {
+enum AnchorPositions {
+    //% block="top left"
     TopLeft,
+    //% block="top"
     Top,
+    //% block="top right"
     TopRight,
+    //% block="left"
     Left,
+    //% block="center"
     Center,
+    //% block="right"
     Right,
+    //% block="bottom left"
     BottomLeft,
+    //% block="bottom"
     Bottom,
-    BottomRight,
+    //% block="bottom right"
+    BottomRight
 }
 
 namespace cardCore {
@@ -194,15 +203,64 @@ namespace cardCore {
         }
     }
 
+    enum HorizontalAlignments {
+        Left,
+        Center,
+        Right,
+    }
+
+    enum VerticalAlignments {
+        Top,
+        Center,
+        Bottom,
+    }
+
     export class DrawSection {
         public subjects: DrawSubject[] = []
+        public horizontalAlign: HorizontalAlignments
+        public verticalAlign: VerticalAlignments
 
         public constructor(
-            public align: DrawableAlignments,
+            align: AnchorPositions,
             public horizontal: boolean = true,
-            offsetX: number = 0,
-            offsetY: number = 0,
-        ) { }
+            public offsetX: number = 0,
+            public offsetY: number = 0,
+        ) {
+            switch (align) {
+                case AnchorPositions.TopLeft:
+                case AnchorPositions.Left:
+                case AnchorPositions.BottomLeft:
+                    this.horizontalAlign = HorizontalAlignments.Left
+                    break
+                case AnchorPositions.Top:
+                case AnchorPositions.Center:
+                case AnchorPositions.Bottom:
+                    this.horizontalAlign = HorizontalAlignments.Center
+                    break
+                case AnchorPositions.TopRight:
+                case AnchorPositions.Right:
+                case AnchorPositions.BottomRight:
+                    this.horizontalAlign = HorizontalAlignments.Right
+                    break
+            }
+            switch (align) {
+                case AnchorPositions.TopLeft:
+                case AnchorPositions.Top:
+                case AnchorPositions.TopRight:
+                    this.verticalAlign = VerticalAlignments.Top
+                    break
+                case AnchorPositions.Left:
+                case AnchorPositions.Center:
+                case AnchorPositions.Right:
+                    this.verticalAlign = VerticalAlignments.Center
+                    break
+                case AnchorPositions.BottomLeft:
+                case AnchorPositions.Bottom:
+                case AnchorPositions.BottomRight:
+                    this.verticalAlign = VerticalAlignments.Bottom
+                    break
+            }
+        }
     }
 
     type FinalDrawable = {
@@ -324,9 +382,9 @@ namespace cardCore {
     
             image.drawTransparentImage(this.frontImage, x, y)
             
-            this.sections.forEach(sequence => {
+            this.sections.forEach(section => {
                 const drawables: FinalDrawable[] = []
-                sequence.subjects.forEach(subject => {
+                section.subjects.forEach(subject => {
                     let drawable: FinalDrawable = null
                     switch (subject.drawableType) {
                         case DrawableTypes.Text:
@@ -343,58 +401,66 @@ namespace cardCore {
                     }
                 })
 
-                let fullWidth = sequence.horizontal
+                let fullWidth = section.horizontal
                     ? drawables.reduce((sum, drawable) => sum + drawable.width + this.spacing, -this.spacing)
                     : drawables.reduce((max, drawable) => Math.max(max, drawable.width), 0)
-                let fullHeight = sequence.horizontal
+                let fullHeight = section.horizontal
                     ? drawables.reduce((max, drawable) => Math.max(max, drawable.height), 0)
                     : drawables.reduce((sum, drawable) => sum + drawable.height + this.spacing, -this.spacing)
                 
                 let anchorX: number
                 let anchorY: number
-                let alignRight: boolean
-                let alignBottom: boolean
 
-                switch (sequence.align) {
-                    case DrawableAlignments.TopLeft:
-                    case DrawableAlignments.Left:
-                    case DrawableAlignments.BottomLeft:
-                        anchorX = x
+                switch (section.horizontalAlign) {
+                    case HorizontalAlignments.Left:
+                        anchorX = x + section.offsetX
                         break
-                    case DrawableAlignments.Top:
-                    case DrawableAlignments.Center:
-                    case DrawableAlignments.Bottom:
-                        anchorX = x + (this.width - (sequence.horizontal ? fullWidth : 0)) / 2 
+                    case HorizontalAlignments.Center:
+                        anchorX = x + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
                         break
-                    case DrawableAlignments.TopRight:
-                    case DrawableAlignments.Right:
-                    case DrawableAlignments.BottomRight:
-                        anchorX = x + this.width - (sequence.horizontal ? fullWidth : 0)
-                        alignRight = !sequence.horizontal
+                    case HorizontalAlignments.Right:
+                        anchorX = x - section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
                         break
                 }
-                switch (sequence.align) {
-                    case DrawableAlignments.TopLeft:
-                    case DrawableAlignments.Top:
-                    case DrawableAlignments.TopRight:
-                        anchorY = y
+                switch (section.verticalAlign) {
+                    case VerticalAlignments.Top:
+                        anchorY = y + section.offsetY
                         break
-                    case DrawableAlignments.Left:
-                    case DrawableAlignments.Center:
-                    case DrawableAlignments.Right:
-                        anchorY = y + (this.height - (sequence.horizontal ? 0 : fullHeight)) / 2
+                    case VerticalAlignments.Center:
+                        anchorY = y + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
                         break
-                    case DrawableAlignments.BottomLeft:
-                    case DrawableAlignments.Bottom:
-                    case DrawableAlignments.BottomRight:
-                        anchorY = y + this.height - (sequence.horizontal ? 0 : fullHeight)
-                        alignBottom = sequence.horizontal
+                    case VerticalAlignments.Bottom:
+                        anchorY = y - section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
                         break
                 }
 
                 drawables.forEach(drawable => {
-                    const drawX = anchorX - (alignRight ? drawable.width : 0)
-                    const drawY = anchorY - (alignBottom ? drawable.height : 0)
+                    let drawX: number
+                    let drawY: number
+
+                    switch (section.horizontalAlign) {
+                        case HorizontalAlignments.Left:
+                            drawX = anchorX
+                            break
+                        case HorizontalAlignments.Center:
+                            drawX = anchorX - drawable.width / 2
+                            break
+                        case HorizontalAlignments.Right:
+                            drawX = anchorX - drawable.width
+                            break
+                    }
+
+                    switch (section.verticalAlign) {
+                        case VerticalAlignments.Top:
+                            drawY = anchorY
+                            break
+                        case VerticalAlignments.Center:
+                            drawY = anchorY - drawable.height / 2
+                            break
+                        case VerticalAlignments.Bottom:
+                            drawY = anchorY - drawable.height
+                            break
+                    }
 
                     if (!!drawable.image) {
                         image.drawTransparentImage(drawable.image, drawX, drawY)
@@ -403,8 +469,8 @@ namespace cardCore {
                             tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, drawable.color)
                         })
                     }
-                    anchorX += sequence.horizontal ? drawable.width + this.spacing : 0
-                    anchorY += sequence.horizontal ? 0 : drawable.height + this.spacing
+                    anchorX += section.horizontal ? drawable.width + this.spacing : 0
+                    anchorY += section.horizontal ? 0 : drawable.height + this.spacing
                 })
             })
         }       

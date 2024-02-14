@@ -4,27 +4,6 @@ namespace SpriteKind {
     export const Cursor = SpriteKind.create()
 }
 
-enum CardCursorAnchors {
-    //% block="top left"
-    TopLeft,
-    //% block="top"
-    Top,
-    //% block="top right"
-    TopRight,
-    //% block="left"
-    Left,
-    //% block="center"
-    Center,
-    //% block="right"
-    Right,
-    //% block="bottom left"
-    BottomLeft,
-    //% block="bottom"
-    Bottom,
-    //% block="bottom right"
-    BottomRight
-}
-
 enum CardLayoutDirections {
     //% block="left and right from center"
     CenteredLeftRight,
@@ -1344,7 +1323,7 @@ namespace cardCore {
 namespace cardCursor {
     const DEFAULT_CURSOR_Z = 1000
 
-    let anchorPoint: CardCursorAnchors = CardCursorAnchors.Bottom
+    let anchorPoint: AnchorPositions = AnchorPositions.Bottom
     let targetOffsetX = 0
     let targetOffsetY = 0
     let extraOffsetX = 0
@@ -1373,7 +1352,7 @@ namespace cardCursor {
         cursor._y = Fx8(Fx.toFloat(cursor._y) - image.height / 2)
     }
 
-    export function setAnchor(anchor: CardCursorAnchors, offsetX: number = 0, offsetY: number = 0) {
+    export function setAnchor(anchor: AnchorPositions, offsetX: number = 0, offsetY: number = 0) {
         anchorPoint = anchor
         extraOffsetX = offsetX
         extraOffsetY = offsetY
@@ -1384,31 +1363,31 @@ namespace cardCursor {
             return
         }
         switch (anchorPoint) {
-            case CardCursorAnchors.Left:
-            case CardCursorAnchors.TopLeft:
-            case CardCursorAnchors.BottomLeft:
+            case AnchorPositions.Left:
+            case AnchorPositions.TopLeft:
+            case AnchorPositions.BottomLeft:
                 targetOffsetX = -target.width / 2
                 break
-            case CardCursorAnchors.Right:
-            case CardCursorAnchors.TopRight:
-            case CardCursorAnchors.BottomRight:
+            case AnchorPositions.Right:
+            case AnchorPositions.TopRight:
+            case AnchorPositions.BottomRight:
                 targetOffsetX = target.width / 2
                 break
-            case CardCursorAnchors.Center:
+            case AnchorPositions.Center:
                 targetOffsetX = 0
             }
         switch (anchorPoint) {
-            case CardCursorAnchors.Top:
-            case CardCursorAnchors.TopLeft:
-            case CardCursorAnchors.TopRight:
+            case AnchorPositions.Top:
+            case AnchorPositions.TopLeft:
+            case AnchorPositions.TopRight:
                 targetOffsetY = -target.height / 2
                 break
-            case CardCursorAnchors.Bottom:
-            case CardCursorAnchors.BottomLeft:
-            case CardCursorAnchors.BottomRight:
+            case AnchorPositions.Bottom:
+            case AnchorPositions.BottomLeft:
+            case AnchorPositions.BottomRight:
                 targetOffsetY = target.height / 2
                 break
-            case CardCursorAnchors.Center:
+            case AnchorPositions.Center:
                 targetOffsetY = 0
         }
         targetOffsetX += extraOffsetX

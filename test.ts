@@ -191,9 +191,9 @@ cardKit.moveCursorInsideLayoutWithButtons(drawDeck)
 game.onUpdate(function () {
     cardKit.setContainerPosition(pickedUpCards, cardKit.getCursorSprite().x - 4, cardKit.getCursorSprite().y + 2)
     if (hasPickedUpCards()) {
-        cardKit.setCursorAnchor(CardCursorAnchors.TopRight, -2, 18)
+        cardKit.setCursorAnchor(AnchorPositions.TopRight, -2, 18)
     } else {
-        cardKit.setCursorAnchor(CardCursorAnchors.TopRight, -2, 8)
+        cardKit.setCursorAnchor(AnchorPositions.TopRight, -2, 8)
     }
 })
 game.onUpdateInterval(1000, function () {

@@ -139,7 +139,7 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        sections: cardCore.DrawSection[]
+        sections: cardCore.DrawSection[] = []
         
         constructor() {
             this.width = 12
@@ -154,7 +154,6 @@ namespace cardDesign {
             this.maxStackSize = 60
 
             this.spacing = 1
-            this.sections = []
         }
 
         export(): cardCore.CardDesign {
@@ -190,7 +189,6 @@ namespace cardDesign {
     }
 
     export function getCurrentDesign(): cardCore.CardDesign {
-        console.log(current.export())
         return current.export()
     }
 
@@ -225,7 +223,7 @@ namespace cardDesign {
     //% block="edit current design next section pinned $align|| drawn $direction offset x $offsetX y $offsetY"
     //% direction.defl=0 
     //% offsetX.defl = 0 offsetY.defl = 0
-    export function createNewSection(align: DrawableAlignments, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
+    export function createNewSection(align: AnchorPositions, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
         current.sections.push(new cardCore.DrawSection(
             align,
             direction === DrawDirections.LeftToRight,
@@ -1056,7 +1054,7 @@ namespace cardKit {
     //% group="Customization"
     //% block="set cursor anchor to $anchor|| offset x $x y $y"
     //% x.defl=0 y.defl=0
-    export function setCursorAnchor(anchor: CardCursorAnchors, x: number = 0, y: number = 0) {
+    export function setCursorAnchor(anchor: AnchorPositions, x: number = 0, y: number = 0) {
         cardCursor.setAnchor(anchor, x, y)
     }
 
