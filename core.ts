@@ -416,10 +416,10 @@ namespace cardCore {
                         anchorX = x + section.offsetX
                         break
                     case HorizontalAlignments.Center:
-                        anchorX = x + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
+                        anchorX = x + section.offsetX + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
                         break
                     case HorizontalAlignments.Right:
-                        anchorX = x - section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
+                        anchorX = x + section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
                         break
                 }
                 switch (section.verticalAlign) {
@@ -427,10 +427,10 @@ namespace cardCore {
                         anchorY = y + section.offsetY
                         break
                     case VerticalAlignments.Center:
-                        anchorY = y + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
+                        anchorY = y + section.offsetY + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
                         break
                     case VerticalAlignments.Bottom:
-                        anchorY = y - section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
+                        anchorY = y + section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
                         break
                 }
 
@@ -443,10 +443,10 @@ namespace cardCore {
                             drawX = anchorX
                             break
                         case HorizontalAlignments.Center:
-                            drawX = anchorX - drawable.width / 2
+                            drawX = anchorX - (section.horizontal ? 0 : drawable.width / 2)
                             break
                         case HorizontalAlignments.Right:
-                            drawX = anchorX - drawable.width
+                            drawX = anchorX - (section.horizontal ? 0 : drawable.width)
                             break
                     }
 
@@ -455,10 +455,10 @@ namespace cardCore {
                             drawY = anchorY
                             break
                         case VerticalAlignments.Center:
-                            drawY = anchorY - drawable.height / 2
+                            drawY = anchorY - (section.horizontal ? drawable.height / 2 : 0)
                             break
                         case VerticalAlignments.Bottom:
-                            drawY = anchorY - drawable.height
+                            drawY = anchorY - (section.horizontal ? drawable.height : 0)
                             break
                     }
 

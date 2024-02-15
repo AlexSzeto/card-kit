@@ -13,7 +13,7 @@ namespace cardKit {
             2 4 d d 4 2
             . 2 2 2 2 .
             `
-            cardDesign.createNewSection(AnchorPositions.Left, DrawDirections.TopToBottom, 0, 0)
+            cardDesign.createNewSection(AnchorPositions.Top, DrawDirections.TopToBottom, -1, 2)
             cardDesign.addAttributeIndexText(0, ['JK', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
             cardDesign.setSubjectColorToAttribute(2)
             cardDesign.addAttributeTextToImage(1, [
