@@ -240,13 +240,6 @@ namespace cardDesign {
     }
 
     //% group="Groups"
-    //% weight=100
-    //% block="reset current design"
-    export function resetDesign() {
-        current.groups = []
-    }
-
-    //% group="Groups"
     //% weight=99
     //% inlineInputMode=inline
     //% block="create group in current design anchor $align|| drawn $direction offset x $offsetX y $offsetY"
