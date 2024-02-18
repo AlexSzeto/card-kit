@@ -239,7 +239,7 @@ namespace cardDesign {
         }
     }
 
-    //% group="Groups"
+    //% group="Draw Groups"
     //% weight=99
     //% inlineInputMode=inline
     //% block="create group in current design anchor $align|| drawn $direction offset x $offsetX y $offsetY"
@@ -269,7 +269,7 @@ namespace cardDesign {
         return group.items[group.items.length - 1]
     }
 
-    //% group="Add Text Item"
+    //% group="Add Draw Text"
     //% weight=100
     //% inlineInputMode=inline
     //% block="add to current group text $text"
@@ -277,7 +277,7 @@ namespace cardDesign {
         addItemToCurrentGroup(cardCore.createTextItem(text))
     }
 
-    //% group="Add Text Item"
+    //% group="Add Draw Text"
     //% weight=99
     //% inlineInputMode="inline"
     //% block="add to current group $attribute as text"
@@ -288,7 +288,7 @@ namespace cardDesign {
         addItemToCurrentGroup(item)
     }
 
-    //% group="Add Text Item"
+    //% group="Add Draw Text"
     //% weight=98
     //% block="add to current group index $attribute text from $textLookupTable"
     //% attribute.shadow="attributePicker"
@@ -298,7 +298,7 @@ namespace cardDesign {
         addItemToCurrentGroup(item)
     }
 
-    //% group="Add Image Item"
+    //% group="Add Draw Image"
     //% weight=100
     //% block="add to current group image $image"
     //% image.shadow="screen_image_picker"
@@ -306,7 +306,7 @@ namespace cardDesign {
         addItemToCurrentGroup(cardCore.createImageItem(image))
     }
 
-    //% group="Add Image Item"
+    //% group="Add Draw Image"
     //% weight=98
     //% block="add to current group index $attribute image from $imageLookupTable"
     //% attribute.shadow="attributePicker"
@@ -317,7 +317,7 @@ namespace cardDesign {
         addItemToCurrentGroup(item)
     }
 
-    //% group="Add Image Item"
+    //% group="Add Draw Image"
     //% weight=97
     //% block="add to current group take $attribute and change $lookupTable"
     //% attribute.shadow="attributePicker"
@@ -328,7 +328,7 @@ namespace cardDesign {
         addItemToCurrentGroup(item)
     }
 
-    //% group="Edit Item"
+    //% group="Edit Draw"
     //% weight=100
     //% block="set current item color to $color"
     //% color.shadow="colorindexpicker"
@@ -339,7 +339,7 @@ namespace cardDesign {
         }
     }
 
-    //% group="Edit Item"
+    //% group="Edit Draw"
     //% weight=99
     //% block="set current item color index to $attribute value"
     //% attribute.shadow="attributePicker"
@@ -350,7 +350,7 @@ namespace cardDesign {
         }
     }
 
-    //% group="Edit Item"
+    //% group="Edit Draw"
     //% weight=98
     //% block="redraw current item $attribute times"
     //% attribute.shadow="attributePicker"
@@ -361,7 +361,7 @@ namespace cardDesign {
         }
     }
 
-    //% group="Edit Item"
+    //% group="Edit Draw"
     //% weight=97
     //% block="set current item width $width height $height"
     export function setItemSize(width: number, height: number) {
