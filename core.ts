@@ -183,12 +183,14 @@ namespace cardCore {
         height?: number
     }
 
-    export function createImageItem(image: Image): DrawItem {
+    export function createImageItem(image: Image, width: number = 0, height: number = 0): DrawItem {
         return {
             drawableType: DrawableTypes.Image,
             repeats: createStaticValue(1),
             drawable: createStaticValue(image),
             color: createStaticValue(-1),
+            width: width,
+            height: height
         }
     }
 
@@ -366,16 +368,24 @@ namespace cardCore {
                     color: color
                 }
             }
-        
-            function createImageZone(image: Image, color: number): FinalDrawable {
+
+            function createFlatColorImage(image: Image, color: number): Image {
+                const result = image.clone()
+                for (let c = 1; c < 16; c++) {
+                    result.replace(c, color)
+                }
+                return result
+            }     
+            
+            function createImageZone(width: number, height: number, image: Image, color: number): FinalDrawable {
                 if (!image) {
                     return null
                 }
 
                 return {
-                    width: image.width,
-                    height: image.height,
-                    image: image,
+                    width: width > 0 ? width : image.width,
+                    height: height > 0 ? height : image.height,
+                    image: color >= 0 ? createFlatColorImage(image, color) : image,
                     lines: null,
                     color: color
                 }
@@ -392,7 +402,7 @@ namespace cardCore {
                             drawable = createTextZone(item.width, item.height, item.drawable.getString(card), item.color.getNumber(card))
                             break
                         case DrawableTypes.Image:
-                            drawable = createImageZone(item.drawable.getImage(card), item.color.getNumber(card))
+                            drawable = createImageZone(item.width, item.height, item.drawable.getImage(card), item.color.getNumber(card))
                             break
                     }
                     if (!!drawable) {
@@ -464,7 +474,11 @@ namespace cardCore {
                     }
 
                     if (!!drawable.image) {
-                        image.drawTransparentImage(drawable.image, drawX, drawY)
+                        image.drawTransparentImage(
+                            drawable.image,
+                            drawX + (drawable.width - drawable.image.width) / 2,
+                            drawY + (drawable.height - drawable.image.height) / 2
+                        )
                     } else {
                         drawable.lines.forEach((text, line) => {
                             tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, drawable.color)
