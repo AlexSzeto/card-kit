@@ -213,8 +213,8 @@ namespace cardDesign {
     }
 
     //% group="Create"
-    //% block="create $template as current design"
-    //% template.shadow="designTemplatePicker"
+    //% block="create $id as current design"
+    //% id.shadow="designTemplatePicker"
     export function createCardDesignTemplate(id: number) {
         let template = designTemplateStore.find(t => t.id === id)
         if (!template) {
@@ -224,12 +224,6 @@ namespace cardDesign {
             template.design.reset()
         }
         current = template.design
-    }
-
-    //% group="Create"
-    //% block="create new $id"
-    export function resetCardDesignTemplate() {
-        current = new CardDesignTemplate()
     }
 
     //% group="Graphics"
