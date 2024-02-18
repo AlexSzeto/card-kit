@@ -11,11 +11,11 @@
         "README.md",
         "assets.json",
         "tinyfont.ts",
+        "animation.ts",
         "core.ts",
         "sprites.ts",
-        "animation.ts",
-        "playingcards.ts",
-        "blocks.ts"
+        "blocks.ts",
+        "playingcards.ts"
     ],
     "testFiles": [
         "test.ts"

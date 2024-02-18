@@ -11,6 +11,10 @@ enum CardContainerKinds {
     Score,
     Tableau
 }
+enum DesignTemplates {
+    PlayingCards
+}
+
 function checkWinCondition () {
     scoredCardCount = 0
     for (let scoringPile of cardKit.getContainerKindList(CardContainerKinds.Score)) {
@@ -71,18 +75,18 @@ cardKit.createSelectEvent(CardContainerKinds.Score, SelectionButtons.A, function
     }
 })
 function setupGame () {
-    pickedUpCards = cardKit.createEmptyHand(CardContainerKinds.Player, CardLayoutDirections.TopToBottom)
+    pickedUpCards = cardKit.createEmptyHand(DesignTemplates.PlayingCards, CardContainerKinds.Player, CardLayoutDirections.TopToBottom)
     cardKit.setCardLayoutSpacing(pickedUpCards, -14)
     cardKit.setContainerLayer(pickedUpCards, 500)
     cardKit.hideEmptySlots(pickedUpCards)
     drawDeck = cardKit.createPlayingCards()
     cardKit.setContainerPosition(drawDeck, 20, 36)
-    discardPile = cardKit.createEmptyPile(CardContainerKinds.Discard)
+    discardPile = cardKit.createEmptyPile(DesignTemplates.PlayingCards, CardContainerKinds.Discard)
     cardKit.setContainerPosition(discardPile, 34, 36)
     cardKit.linkContainers(discardPile, RelativeDirections.RightOf, drawDeck)
     previousContainer = discardPile
     for (let index = 0; index <= 6; index++) {
-        tableauStack = cardKit.createEmptyHand(CardContainerKinds.Tableau, CardLayoutDirections.TopToBottom)
+        tableauStack = cardKit.createEmptyHand(DesignTemplates.PlayingCards, CardContainerKinds.Tableau, CardLayoutDirections.TopToBottom)
         cardKit.setCardLayoutSpacing(tableauStack, -14)
         cardKit.setContainerPosition(tableauStack, 55 + 14 * index, 36)
         cardKit.linkContainers(tableauStack, RelativeDirections.RightOf, previousContainer)
@@ -90,7 +94,7 @@ function setupGame () {
         previousContainer = tableauStack
     }
     for (let index = 0; index <= 3; index++) {
-        scoringPile = cardKit.createEmptyPile(CardContainerKinds.Score)
+        scoringPile = cardKit.createEmptyPile(DesignTemplates.PlayingCards, CardContainerKinds.Score)
         cardKit.setContainerPosition(scoringPile, 55 + 14 * index, 14)
         cardKit.linkContainers(scoringPile, RelativeDirections.RightOf, previousContainer)
         previousContainer = scoringPile

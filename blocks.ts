@@ -142,9 +142,13 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        groups: cardCore.DrawGroup[] = []
+        groups: cardCore.DrawGroup[]
         
         constructor() {
+            this.reset()
+        }
+
+        reset() {
             this.width = 12
             this.height = 20
 
@@ -158,6 +162,8 @@ namespace cardDesign {
 
             this.margin = 2
             this.spacing = 1
+
+            this.groups = []
         }
 
         export(): cardCore.CardDesign {
@@ -180,25 +186,48 @@ namespace cardDesign {
 
     let current: CardDesignTemplate = new CardDesignTemplate()
 
-    //% group="Create"
-    //% block="set current design to $design"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function setCurrentTemplate(design: CardDesignTemplate) {
-        current = design
+
+    //% shim=ENUM_GET
+    //% blockId="designTemplatePicker"
+    //% blockHidden=true
+    //% block="$id Design"
+    //% enumName="DesignTemplates"
+    //% enumMemberName="design"
+    //% enumPromptHint="e.g. Playing Cards, etc..."
+    //% enumInitialMembers="PlayingCards"
+    export function _cardDesignTemplateEnumShim(arg: number) {
+        // This function should do nothing, but must take in a single
+        // argument of type number and return a number value.
+        return arg;
+    }
+
+    type IndexedCardDesignTemplate = {
+        id: number
+        design: CardDesignTemplate
+    }
+
+    let designTemplateStore: IndexedCardDesignTemplate[] = []
+
+    export function getDesignTemplateExport(id: number): cardCore.CardDesign {
+        return designTemplateStore.find(t => t.id === id).design.export()
     }
 
     //% group="Create"
-    //% block="current design" blockSetVariable="myDesign"
-    export function getCurrentTemplate(): CardDesignTemplate {
-        return current
-    }
-
-    export function getCurrentDesign(): cardCore.CardDesign {
-        return current.export()
+    //% block="create $template as current design"
+    //% template.shadow="designTemplatePicker"
+    export function createCardDesignTemplate(id: number) {
+        let template = designTemplateStore.find(t => t.id === id)
+        if (!template) {
+            template = { id: id, design: new CardDesignTemplate() }
+            designTemplateStore.push(template)
+        } else {
+            template.design.reset()
+        }
+        current = template.design
     }
 
     //% group="Create"
-    //% block="reset current design to default"
+    //% block="create new $id"
     export function resetCardDesignTemplate() {
         current = new CardDesignTemplate()
     }
@@ -376,10 +405,11 @@ namespace cardDesign {
     //% weight=100
     //% group="Deck Builder" blockSetVariable="myDeck"
     //% inlineInputMode=inline
-    //% block="empty $kind deck"
+    //% block="empty $template $kind deck"
+    //% template.shadow="designTemplatePicker"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(kind: number): cardCore.CardContainer {
-        const stack = new cardCore.CardStack(cardDesign.getCurrentDesign(), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
+    export function createEmptyStack(template: number, kind: number): cardCore.CardContainer {
+        const stack = new cardCore.CardStack(cardDesign.getDesignTemplateExport(template), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
         return stack
     }
 
@@ -532,18 +562,20 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card grid columns $columns rows $rows|| scroll $direction"
+    //% block="empty $template $kind card grid columns $columns rows $rows|| scroll $direction"
+    //% template.shadow="designTemplatePicker"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Puzzle
     //% columns.defl=6 rows.defl=4
     //% direction.defl=CardGridScrollDirections.UpDown
     export function createEmptyGrid(
+        template: number,
         kind: number,
         rows: number, columns: number,
         direction: CardGridScrollDirections = CardGridScrollDirections.UpDown,
     ): cardCore.CardContainer {
         const scrollVertical = direction == CardGridScrollDirections.UpDown
         const grid = new cardCore.CardGrid(
-            cardDesign.getCurrentDesign(),
+            cardDesign.getDesignTemplateExport(template),
             scene.screenWidth() / 2, scene.screenHeight() / 2,
             kind,
             rows, columns,
@@ -560,14 +592,16 @@ namespace cardKit {
     
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind pile"
+    //% block="empty $template $kind pile"
+    //% template.shadow="designTemplatePicker"
     //% design.shadow="variables_get" design.defl="myDesign"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Discard
     export function createEmptyPile(
+        template: number,
         kind: number,
     ): cardCore.CardContainer {
         return new cardCore.CardStack(
-            cardDesign.getCurrentDesign(),
+            cardDesign.getDesignTemplateExport(template),
             scene.screenWidth() / 2,
             scene.screenHeight() / 2,
             kind, true
@@ -576,15 +610,17 @@ namespace cardKit {
 
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
-    //% block="empty $kind card spread $direction"
+    //% block="empty $template $kind card spread $direction"
+    //% template.shadow="designTemplatePicker"
     //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Player
     //% direction.defl=CardLayoutDirections.CenteredLeftRight
     export function createEmptyHand(
+        template: number,
         kind: number,
         direction: CardLayoutDirections,
     ): cardCore.CardContainer {
         return new cardCore.CardSpread(
-            cardDesign.getCurrentDesign(),
+            cardDesign.getDesignTemplateExport(template),
             scene.screenWidth() / 2,
             scene.screenHeight() / 2,
             kind,
@@ -593,7 +629,7 @@ namespace cardKit {
     }
 
     /*****************************************/
-    /* Create                  */
+    /* Create                                */
     /*****************************************/
 
     //% color="#ff9008"
@@ -1094,17 +1130,6 @@ namespace cardKit {
         container: cardCore.CardContainer,
     ) {
         container.showEmpty = false
-    }
-    
-    //% group="Customization"
-    //% block="set $container card design to $design"
-    //% container.shadow="variables_get" container.defl="myContainer"
-    //% design.shadow="variables_get" design.defl="myDesign"
-    export function setContainerDesign(
-        container: cardCore.CardContainer,
-        design: cardDesign.CardDesignTemplate
-    ) {
-        container.design = design.export()
     }
 
     //% group="Customization"
