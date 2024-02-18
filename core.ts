@@ -289,6 +289,7 @@ namespace cardCore {
             private cardsPerPixel: number,
             private maxStackHeight: number,
             public sections: DrawSection[],
+            public margin: number,
             public spacing: number,
         ) {
             let frame = new game.BaseDialog(width, height, frontFrame)
@@ -413,24 +414,24 @@ namespace cardCore {
 
                 switch (section.horizontalAlign) {
                     case HorizontalAlignments.Left:
-                        anchorX = x + section.offsetX
+                        anchorX = x + this.margin + section.offsetX
                         break
                     case HorizontalAlignments.Center:
                         anchorX = x + section.offsetX + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
                         break
                     case HorizontalAlignments.Right:
-                        anchorX = x + section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
+                        anchorX = x - this.margin + section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
                         break
                 }
                 switch (section.verticalAlign) {
                     case VerticalAlignments.Top:
-                        anchorY = y + section.offsetY
+                        anchorY = y + this.margin + section.offsetY
                         break
                     case VerticalAlignments.Center:
                         anchorY = y + section.offsetY + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
                         break
                     case VerticalAlignments.Bottom:
-                        anchorY = y + section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
+                        anchorY = y - this.margin + section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
                         break
                 }
 

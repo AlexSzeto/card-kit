@@ -124,6 +124,9 @@ namespace cardDesign {
         //% blockCombine block="height"
         height: number
         //% group="Dimensions" blockSetVariable="myDesign"
+        //% blockCombine block="margin"
+        margin: number
+        //% group="Dimensions" blockSetVariable="myDesign"
         //% blockCombine block="spacing"
         spacing: number
         //% group="Dimensions" blockSetVariable="myDesign"
@@ -153,6 +156,7 @@ namespace cardDesign {
             this.cardThickness = 0.2
             this.maxStackSize = 60
 
+            this.margin = 2
             this.spacing = 1
         }
 
@@ -168,6 +172,7 @@ namespace cardDesign {
                 Math.ceil(1.0 / this.cardThickness),
                 Math.floor(this.maxStackSize * this.cardThickness),
                 this.sections,
+                this.margin,
                 this.spacing
             )
         }
