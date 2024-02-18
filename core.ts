@@ -174,7 +174,7 @@ namespace cardCore {
         Image,
     }
 
-    export type DrawSubject = {
+    export type DrawItem = {
         drawableType: DrawableTypes
         repeats: DynamicValue
         drawable: DynamicValue
@@ -183,7 +183,7 @@ namespace cardCore {
         height?: number
     }
 
-    export function createImageSubject(image: Image): DrawSubject {
+    export function createImageItem(image: Image): DrawItem {
         return {
             drawableType: DrawableTypes.Image,
             repeats: createStaticValue(1),
@@ -192,7 +192,7 @@ namespace cardCore {
         }
     }
 
-    export function createTextSubject(text: string, width: number = 0, height: number = 0): DrawSubject {
+    export function createTextItem(text: string, width: number = 0, height: number = 0): DrawItem {
         return {
             drawableType: DrawableTypes.Text,
             repeats: createStaticValue(1),
@@ -215,8 +215,8 @@ namespace cardCore {
         Bottom,
     }
 
-    export class DrawSection {
-        public subjects: DrawSubject[] = []
+    export class DrawGroup {
+        public items: DrawItem[] = []
         public horizontalAlign: HorizontalAlignments
         public verticalAlign: VerticalAlignments
 
@@ -288,7 +288,7 @@ namespace cardCore {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
-            public sections: DrawSection[],
+            public groups: DrawGroup[],
             public margin: number,
             public spacing: number,
         ) {
@@ -383,55 +383,55 @@ namespace cardCore {
     
             image.drawTransparentImage(this.frontImage, x, y)
             
-            this.sections.forEach(section => {
+            this.groups.forEach(group => {
                 const drawables: FinalDrawable[] = []
-                section.subjects.forEach(subject => {
+                group.items.forEach(item => {
                     let drawable: FinalDrawable = null
-                    switch (subject.drawableType) {
+                    switch (item.drawableType) {
                         case DrawableTypes.Text:
-                            drawable = createTextZone(subject.width, subject.height, subject.drawable.getString(card), subject.color.getNumber(card))
+                            drawable = createTextZone(item.width, item.height, item.drawable.getString(card), item.color.getNumber(card))
                             break
                         case DrawableTypes.Image:
-                            drawable = createImageZone(subject.drawable.getImage(card), subject.color.getNumber(card))
+                            drawable = createImageZone(item.drawable.getImage(card), item.color.getNumber(card))
                             break
                     }
                     if (!!drawable) {
-                        for (let repeat = 0; repeat < subject.repeats.getNumber(card); repeat++) {
+                        for (let repeat = 0; repeat < item.repeats.getNumber(card); repeat++) {
                             drawables.push(drawable)
                         }                            
                     }
                 })
 
-                let fullWidth = section.horizontal
+                let fullWidth = group.horizontal
                     ? drawables.reduce((sum, drawable) => sum + drawable.width + this.spacing, -this.spacing)
                     : drawables.reduce((max, drawable) => Math.max(max, drawable.width), 0)
-                let fullHeight = section.horizontal
+                let fullHeight = group.horizontal
                     ? drawables.reduce((max, drawable) => Math.max(max, drawable.height), 0)
                     : drawables.reduce((sum, drawable) => sum + drawable.height + this.spacing, -this.spacing)
                 
                 let anchorX: number
                 let anchorY: number
 
-                switch (section.horizontalAlign) {
+                switch (group.horizontalAlign) {
                     case HorizontalAlignments.Left:
-                        anchorX = x + this.margin + section.offsetX
+                        anchorX = x + this.margin + group.offsetX
                         break
                     case HorizontalAlignments.Center:
-                        anchorX = x + section.offsetX + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
+                        anchorX = x + group.offsetX + (this.width - (group.horizontal ? fullWidth : 0)) / 2 
                         break
                     case HorizontalAlignments.Right:
-                        anchorX = x - this.margin + section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
+                        anchorX = x - this.margin + group.offsetX + this.width - (group.horizontal ? fullWidth : 0)
                         break
                 }
-                switch (section.verticalAlign) {
+                switch (group.verticalAlign) {
                     case VerticalAlignments.Top:
-                        anchorY = y + this.margin + section.offsetY
+                        anchorY = y + this.margin + group.offsetY
                         break
                     case VerticalAlignments.Center:
-                        anchorY = y + section.offsetY + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
+                        anchorY = y + group.offsetY + (this.height - (group.horizontal ? 0 : fullHeight)) / 2
                         break
                     case VerticalAlignments.Bottom:
-                        anchorY = y - this.margin + section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
+                        anchorY = y - this.margin + group.offsetY + this.height - (group.horizontal ? 0 : fullHeight)
                         break
                 }
 
@@ -439,27 +439,27 @@ namespace cardCore {
                     let drawX: number
                     let drawY: number
 
-                    switch (section.horizontalAlign) {
+                    switch (group.horizontalAlign) {
                         case HorizontalAlignments.Left:
                             drawX = anchorX
                             break
                         case HorizontalAlignments.Center:
-                            drawX = anchorX - (section.horizontal ? 0 : drawable.width / 2)
+                            drawX = anchorX - (group.horizontal ? 0 : drawable.width / 2)
                             break
                         case HorizontalAlignments.Right:
-                            drawX = anchorX - (section.horizontal ? 0 : drawable.width)
+                            drawX = anchorX - (group.horizontal ? 0 : drawable.width)
                             break
                     }
 
-                    switch (section.verticalAlign) {
+                    switch (group.verticalAlign) {
                         case VerticalAlignments.Top:
                             drawY = anchorY
                             break
                         case VerticalAlignments.Center:
-                            drawY = anchorY - (section.horizontal ? drawable.height / 2 : 0)
+                            drawY = anchorY - (group.horizontal ? drawable.height / 2 : 0)
                             break
                         case VerticalAlignments.Bottom:
-                            drawY = anchorY - (section.horizontal ? drawable.height : 0)
+                            drawY = anchorY - (group.horizontal ? drawable.height : 0)
                             break
                     }
 
@@ -470,8 +470,8 @@ namespace cardCore {
                             tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, drawable.color)
                         })
                     }
-                    anchorX += section.horizontal ? drawable.width + this.spacing : 0
-                    anchorY += section.horizontal ? 0 : drawable.height + this.spacing
+                    anchorX += group.horizontal ? drawable.width + this.spacing : 0
+                    anchorY += group.horizontal ? 0 : drawable.height + this.spacing
                 })
             })
         }       

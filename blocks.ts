@@ -142,7 +142,7 @@ namespace cardDesign {
         frontStackFrame: Image
         backStackFrame: Image
 
-        sections: cardCore.DrawSection[] = []
+        groups: cardCore.DrawGroup[] = []
         
         constructor() {
             this.width = 12
@@ -171,7 +171,7 @@ namespace cardDesign {
                 this.backStackFrame,
                 Math.ceil(1.0 / this.cardThickness),
                 Math.floor(this.maxStackSize * this.cardThickness),
-                this.sections,
+                this.groups,
                 this.margin,
                 this.spacing
             )
@@ -180,14 +180,14 @@ namespace cardDesign {
 
     let current: CardDesignTemplate = new CardDesignTemplate()
 
-    //% group="Container Operations"
-    //% block="set current design to current design"
+    //% group="Create"
+    //% block="set current design to $design"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function setCurrentTemplate(design: CardDesignTemplate) {
         current = design
     }
 
-    //% group="Container Operations"
+    //% group="Create"
     //% block="current design" blockSetVariable="myDesign"
     export function getCurrentTemplate(): CardDesignTemplate {
         return current
@@ -197,7 +197,7 @@ namespace cardDesign {
         return current.export()
     }
 
-    //% group="Container Operations"
+    //% group="Create"
     //% block="reset current design to default"
     export function resetCardDesignTemplate() {
         current = new CardDesignTemplate()
@@ -216,20 +216,21 @@ namespace cardDesign {
         }
     }
 
-    //% group="Sections"
+    //% group="Groups"
     //% weight=100
     //% block="reset current design"
     export function resetDesign() {
-        current.sections = []
+        current.groups = []
     }
 
-    //% group="Sections"
+    //% group="Groups"
     //% weight=99
-    //% block="edit current design next section pinned $align|| drawn $direction offset x $offsetX y $offsetY"
+    //% inlineInputMode=inline
+    //% block="create group in current design anchor $align|| drawn $direction offset x $offsetX y $offsetY"
     //% direction.defl=0 
-    //% offsetX.defl = 0 offsetY.defl = 0
-    export function createNewSection(align: AnchorPositions, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
-        current.sections.push(new cardCore.DrawSection(
+    //% offsetX.defl=0 offsetY.defl=0
+    export function createNewGroup(align: AnchorPositions, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
+        current.groups.push(new cardCore.DrawGroup(
             align,
             direction === DrawDirections.LeftToRight,
             offsetX,
@@ -237,121 +238,121 @@ namespace cardDesign {
         ))
     }
 
-    function addSubjectToCurrentSection(subject: cardCore.DrawSubject) {
-        current.sections[current.sections.length - 1].subjects.push(subject)
+    function addItemToCurrentGroup(item: cardCore.DrawItem) {
+        current.groups[current.groups.length - 1].items.push(item)
     }
 
-    function getCurrentSubject(current: CardDesignTemplate): cardCore.DrawSubject {
-        if (current.sections.length === 0) {
+    function getCurrentItem(current: CardDesignTemplate): cardCore.DrawItem {
+        if (current.groups.length === 0) {
             return null
         }
-        const section = current.sections[current.sections.length - 1]
-        if (section.subjects.length === 0) {
+        const group = current.groups[current.groups.length - 1]
+        if (group.items.length === 0) {
             return null
         }
-        return section.subjects[section.subjects.length - 1]
+        return group.items[group.items.length - 1]
     }
 
-    //% group="Add Text Subject"
+    //% group="Add Text Item"
     //% weight=100
     //% inlineInputMode=inline
-    //% block="add to current section text $text"
+    //% block="add to current group text $text"
     export function addStaticText(text: string) {
-        addSubjectToCurrentSection(cardCore.createTextSubject(text))
+        addItemToCurrentGroup(cardCore.createTextItem(text))
     }
 
-    //% group="Add Text Subject"
+    //% group="Add Text Item"
     //% weight=99
     //% inlineInputMode="inline"
-    //% block="add to current section $attribute as text"
+    //% block="add to current group $attribute as text"
     //% attribute.shadow="attributePicker"
     export function addAttributeText(attribute: number) {
-        const subject = cardCore.createTextSubject('')
-        subject.drawable = cardCore.createAttributeAsValue(attribute)
-        addSubjectToCurrentSection(subject)
+        const item = cardCore.createTextItem('')
+        item.drawable = cardCore.createAttributeAsValue(attribute)
+        addItemToCurrentGroup(item)
     }
 
-    //% group="Add Text Subject"
+    //% group="Add Text Item"
     //% weight=98
-    //% block="add to current section index $attribute text from $textLookupTable"
+    //% block="add to current group index $attribute text from $textLookupTable"
     //% attribute.shadow="attributePicker"
     export function addAttributeIndexText(attribute: number, textLookupTable: string[]) {
-        const subject = cardCore.createTextSubject('')
-        subject.drawable = cardCore.createIndexedLookupValue(attribute, textLookupTable)
-        addSubjectToCurrentSection(subject)
+        const item = cardCore.createTextItem('')
+        item.drawable = cardCore.createIndexedLookupValue(attribute, textLookupTable)
+        addItemToCurrentGroup(item)
     }
 
-    //% group="Add Image Subject"
+    //% group="Add Image Item"
     //% weight=100
-    //% block="add to current section image $image"
+    //% block="add to current group image $image"
     //% image.shadow="screen_image_picker"
     export function addStaticImage(image: Image) {
-        addSubjectToCurrentSection(cardCore.createImageSubject(image))
+        addItemToCurrentGroup(cardCore.createImageItem(image))
     }
 
-    //% group="Add Image Subject"
+    //% group="Add Image Item"
     //% weight=98
-    //% block="add to current section index $attribute image from $imageLookupTable"
+    //% block="add to current group index $attribute image from $imageLookupTable"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function addAttributeIndexImage(attribute: number, imageLookupTable: Image[]) {
-        const subject = cardCore.createImageSubject(null)
-        subject.drawable = cardCore.createIndexedLookupValue(attribute, imageLookupTable)
-        addSubjectToCurrentSection(subject)
+        const item = cardCore.createImageItem(null)
+        item.drawable = cardCore.createIndexedLookupValue(attribute, imageLookupTable)
+        addItemToCurrentGroup(item)
     }
 
-    //% group="Add Image Subject"
+    //% group="Add Image Item"
     //% weight=97
-    //% block="add to current section take $attribute and change $lookupTable"
+    //% block="add to current group take $attribute and change $lookupTable"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
     export function addAttributeTextToImage(attribute: number, lookupTable: cardCore.AttributeLookup[]) {
-        const subject = cardCore.createImageSubject(null)
-        subject.drawable = cardCore.createLookupValue(attribute, lookupTable)        
-        addSubjectToCurrentSection(subject)
+        const item = cardCore.createImageItem(null)
+        item.drawable = cardCore.createLookupValue(attribute, lookupTable)        
+        addItemToCurrentGroup(item)
     }
 
-    //% group="Edit Subject"
+    //% group="Edit Item"
     //% weight=100
-    //% block="set current subject color to $color"
+    //% block="set current item color to $color"
     //% color.shadow="colorindexpicker"
-    export function setSubjectColor(color: number) {
-        const subject = getCurrentSubject(current)
-        if (!!subject) {
-            subject.color = cardCore.createStaticValue(color)
+    export function setItemColor(color: number) {
+        const item = getCurrentItem(current)
+        if (!!item) {
+            item.color = cardCore.createStaticValue(color)
         }
     }
 
-    //% group="Edit Subject"
+    //% group="Edit Item"
     //% weight=99
-    //% block="set current subject color index to $attribute value"
+    //% block="set current item color index to $attribute value"
     //% attribute.shadow="attributePicker"
-    export function setSubjectColorToAttribute(attribute: number) {
-        const subject = getCurrentSubject(current)
-        if (!!subject) {
-            subject.color = cardCore.createAttributeAsValue(attribute)
+    export function setItemColorToAttribute(attribute: number) {
+        const item = getCurrentItem(current)
+        if (!!item) {
+            item.color = cardCore.createAttributeAsValue(attribute)
         }
     }
 
-    //% group="Edit Subject"
+    //% group="Edit Item"
     //% weight=98
-    //% block="redraw current subject $attribute times"
+    //% block="redraw current item $attribute times"
     //% attribute.shadow="attributePicker"
-    export function setSubjectRepeatToAttribute(attribute: number) {
-        const subject = getCurrentSubject(current)
-        if (!!subject) {
-            subject.repeats = cardCore.createAttributeAsValue(attribute)
+    export function setItemRepeatToAttribute(attribute: number) {
+        const item = getCurrentItem(current)
+        if (!!item) {
+            item.repeats = cardCore.createAttributeAsValue(attribute)
         }
     }
 
-    //% group="Edit Subject"
+    //% group="Edit Item"
     //% weight=97
-    //% block="set current subject width $width height $height"
-    export function setSubjectSize(width: number, height: number) {
-        const subject = getCurrentSubject(current)
-        if (!!subject) {
-            subject.width = width
-            subject.height = height
+    //% block="set current item width $width height $height"
+    export function setItemSize(width: number, height: number) {
+        const item = getCurrentItem(current)
+        if (!!item) {
+            item.width = width
+            item.height = height
         }
     }
 }
@@ -592,7 +593,7 @@ namespace cardKit {
     }
 
     /*****************************************/
-    /* Container Operations                  */
+    /* Create                  */
     /*****************************************/
 
     //% color="#ff9008"
@@ -1096,7 +1097,7 @@ namespace cardKit {
     }
     
     //% group="Customization"
-    //% block="set $container card design to current design"
+    //% block="set $container card design to $design"
     //% container.shadow="variables_get" container.defl="myContainer"
     //% design.shadow="variables_get" design.defl="myDesign"
     export function setContainerDesign(
