@@ -1,10 +1,29 @@
-enum CardZoneAlignments {
+enum AnchorPositions {
+    //% block="top left"
+    TopLeft,
+    //% block="top"
+    Top,
+    //% block="top right"
+    TopRight,
+    //% block="left"
     Left,
+    //% block="center"
     Center,
-    Right
+    //% block="right"
+    Right,
+    //% block="bottom left"
+    BottomLeft,
+    //% block="bottom"
+    Bottom,
+    //% block="bottom right"
+    BottomRight
 }
 
 namespace cardCore {
+    
+    /*****************************************/
+    /* Card Data                             */
+    /*****************************************/
 
     export type CardAttributeValues = string | number
     export type CardAttribute = {
@@ -60,71 +79,194 @@ namespace cardCore {
         }
     }
 
-    enum ZoneTypes {
-        EmptySpace,
+    /*****************************************/
+    /* Card Data Look Up                     */
+    /*****************************************/
 
-        Text,
-        AttributeText,
-        LookupAttributeAsText,
-
-        Image,
-        RepeatImage,
-        LookupAttributeAsImage,
-    }
-        
     type AttributeLookupDrawables = string | Image
-    export type DesignLookup = {
+    export type AttributeLookup = {
         value: CardAttributeValues
         drawable: AttributeLookupDrawables
     }
 
-    export function createNumberToTextLookupTable(texts: string[]): DesignLookup[] {
-        const lookupTable: DesignLookup[] = []
-        texts.forEach((text, index) => {
-            lookupTable.push({ value: index, drawable: text })
+    enum DynamicValueSources {
+        Static,
+        FromAttribute,
+        FromLookup,
+    }
+
+    type DynamicValueOutputs = number | string | Image
+
+    class DynamicValue {
+        constructor(
+            private source: DynamicValueSources,
+            private staticValue: DynamicValueOutputs,
+            private attribute: number,
+            private lookupTable: AttributeLookup[]
+        ) {}
+
+        private getOutput(data: CardData) {
+            switch (this.source) {
+                case DynamicValueSources.Static:
+                    return this.staticValue
+                case DynamicValueSources.FromAttribute:
+                    return data.getAttribute(this.attribute)
+                case DynamicValueSources.FromLookup:
+                    const value = data.getAttribute(this.attribute)
+                    const lookup = this.lookupTable.find(lookup => lookup.value === value)
+                    return !!lookup ? lookup.drawable : null
+            }
+        }
+
+        getNumber(data: CardData): number {
+            const value = this.getOutput(data)
+            if (typeof value === 'number') {
+                return value
+            } else if (typeof value === 'string') {
+                return parseInt(value)
+            } else {
+                return 0
+            }
+        }
+
+        getString(data: CardData): string {
+            const value = this.getOutput(data)
+            if (typeof value === 'number') {
+                return value.toString()
+            } else if (typeof value === 'string') {
+                return value
+            } else {
+                return ''
+            }
+        }
+
+        getImage(data: CardData): Image {
+            return this.getOutput(data) as Image
+        }
+    }
+
+    export function createStaticValue(value: DynamicValueOutputs): DynamicValue {
+        return new DynamicValue(DynamicValueSources.Static, value, -1, null)
+    }
+
+    export function createAttributeAsValue(attribute: number): DynamicValue {
+        return new DynamicValue(DynamicValueSources.FromAttribute, null, attribute, null)
+    }
+
+    export function createIndexedLookupValue(attribute: number, drawables: AttributeLookupDrawables[]): DynamicValue {
+        const lookupTable: AttributeLookup[] = []
+        drawables.forEach((drawable, index) => {
+            lookupTable.push({ value: index, drawable: drawable })
         })
-        return lookupTable
+        return new DynamicValue(DynamicValueSources.FromLookup, null, attribute, lookupTable)
     }
 
-    export function createNumberToImageLookupTable(images: Image[]): DesignLookup[] {
-        const lookupTable: DesignLookup[] = []
-        images.forEach((image, index) => {
-            lookupTable.push({ value: index, drawable: image })
-        })
-        return lookupTable
+    export function createLookupValue(attribute: number, lookupTable: AttributeLookup[]): DynamicValue {
+        return new DynamicValue(DynamicValueSources.FromLookup, null, attribute, lookupTable)
     }
 
-    export type StampLookup = {
-        value: string
-        image: Image
+    /*****************************************/
+    /* Drawable Data                         */
+    /*****************************************/
+
+    enum DrawableTypes {
+        Text,
+        Image,
     }
 
-    export type DesignColumn = {
-        zoneType: ZoneTypes
-        align: CardZoneAlignments
-        attribute?: number
-        text?: string
-        color?: number
-        colorAttribute?: number
+    export type DrawSubject = {
+        drawableType: DrawableTypes
+        repeats: DynamicValue
+        drawable: DynamicValue
+        color: DynamicValue
         width?: number
         height?: number
-        isDynamic?: boolean
-        image?: Image
-        lookupTable?: DesignLookup[]
-    }
-    export type DesignRow = DesignColumn[]
-
-    type DrawRowSection = {
-        align: CardZoneAlignments
-        width: number
-        zones: DrawZone[]
     }
 
-    type DrawZone = {
+    export function createImageSubject(image: Image): DrawSubject {
+        return {
+            drawableType: DrawableTypes.Image,
+            repeats: createStaticValue(1),
+            drawable: createStaticValue(image),
+            color: createStaticValue(-1),
+        }
+    }
+
+    export function createTextSubject(text: string, width: number = 0, height: number = 0): DrawSubject {
+        return {
+            drawableType: DrawableTypes.Text,
+            repeats: createStaticValue(1),
+            drawable: createStaticValue(text),
+            color: createStaticValue(15),
+            width: width,
+            height: height
+        }
+    }
+
+    enum HorizontalAlignments {
+        Left,
+        Center,
+        Right,
+    }
+
+    enum VerticalAlignments {
+        Top,
+        Center,
+        Bottom,
+    }
+
+    export class DrawSection {
+        public subjects: DrawSubject[] = []
+        public horizontalAlign: HorizontalAlignments
+        public verticalAlign: VerticalAlignments
+
+        public constructor(
+            align: AnchorPositions,
+            public horizontal: boolean = true,
+            public offsetX: number = 0,
+            public offsetY: number = 0,
+        ) {
+            switch (align) {
+                case AnchorPositions.TopLeft:
+                case AnchorPositions.Left:
+                case AnchorPositions.BottomLeft:
+                    this.horizontalAlign = HorizontalAlignments.Left
+                    break
+                case AnchorPositions.Top:
+                case AnchorPositions.Center:
+                case AnchorPositions.Bottom:
+                    this.horizontalAlign = HorizontalAlignments.Center
+                    break
+                case AnchorPositions.TopRight:
+                case AnchorPositions.Right:
+                case AnchorPositions.BottomRight:
+                    this.horizontalAlign = HorizontalAlignments.Right
+                    break
+            }
+            switch (align) {
+                case AnchorPositions.TopLeft:
+                case AnchorPositions.Top:
+                case AnchorPositions.TopRight:
+                    this.verticalAlign = VerticalAlignments.Top
+                    break
+                case AnchorPositions.Left:
+                case AnchorPositions.Center:
+                case AnchorPositions.Right:
+                    this.verticalAlign = VerticalAlignments.Center
+                    break
+                case AnchorPositions.BottomLeft:
+                case AnchorPositions.Bottom:
+                case AnchorPositions.BottomRight:
+                    this.verticalAlign = VerticalAlignments.Bottom
+                    break
+            }
+        }
+    }
+
+    type FinalDrawable = {
         width: number
         height: number
         image: Image
-        repeats: number
         lines: string[]
         color: number
     }
@@ -146,8 +288,7 @@ namespace cardCore {
             private backStackFrame: Image,
             private cardsPerPixel: number,
             private maxStackHeight: number,
-            public rows: DesignRow[],
-            public stamps: StampLookup[],
+            public sections: DrawSection[],
             public margin: number,
             public spacing: number,
         ) {
@@ -202,172 +343,138 @@ namespace cardCore {
             return image.create(this.width, this.getStackImageFullHeight())
         }
 
-        drawStamp(image: Image, value: CardAttributeValues) {
-            const match = this.stamps.find(stamp => value === stamp.value)
-            if (!!match) {
-                image.drawTransparentImage(match.image, (this.width - match.image.width) / 2, (this.height - match.image.height) / 2)
-            }
-        }
-
         drawCardFront(image: Image, x: number, y: number, card: CardData) {
-            function createTextDrawZone(text: string, color: number, rowLimit: number, columnLimit: number, isDynamic: boolean): DrawZone {
+            function createTextZone(width: number, height: number, text: string, color: number): FinalDrawable {
+                if (text.length === 0) {
+                    return null
+                }
+
                 let lines = []
                 let index = 0
-        
+                const columnLimit = width > 0 ? width / tinyFont.charWidth() : text.length
+                const rowLimit = height > 0 ? height / tinyFont.charHeight() : 1
                 while (index < text.length && lines.length < rowLimit) {
                     lines.push(text.substr(index, columnLimit))
                     index += columnLimit
                 }
-        
+
                 return {
-                    width: isDynamic
-                        ? (lines.length > 1 ? columnLimit : text.length) * tinyFont.charWidth() - 1
-                        : columnLimit * tinyFont.charWidth() - 1,
-                    height: isDynamic
-                        ? lines.length * tinyFont.charHeight() - 1
-                        : rowLimit * tinyFont.charHeight() - 1,
+                    width: lines.length > 1 ? width : tinyFont.charWidth() * text.length,
+                    height: lines.length * tinyFont.charHeight(),
                     image: null,
-                    repeats: 0,
                     lines: lines,
-                    color: color,
+                    color: color
                 }
             }
         
-            function createImageDrawZone(image: Image, repeats: number): DrawZone {
-                if (!!image) {
-                    return {
-                        width: image.width * repeats,
-                        height: image.height,
-                        image: image,
-                        repeats: repeats,
-                        lines: null,
-                        color: 0,
-                    }
-                } else {
+            function createImageZone(image: Image, color: number): FinalDrawable {
+                if (!image) {
                     return null
                 }
-            }
-        
-            function createSpaceDrawZone(width: number, height: number): DrawZone {
+
                 return {
-                    width: width,
-                    height: height,
-                    image: null,
-                    repeats: 0,
+                    width: image.width,
+                    height: image.height,
+                    image: image,
                     lines: null,
-                    color: 0
+                    color: color
                 }
             }
     
             image.drawTransparentImage(this.frontImage, x, y)
-            let top = y + this.margin
-            this.rows.forEach(row => {
-                let sections: DrawRowSection[] = []
-                for (let align = 0; align < 3; align++) {                    
-                    sections.push({
-                        align: align,
-                        width: 0,
-                        zones: []
-                    })
+            
+            this.sections.forEach(section => {
+                const drawables: FinalDrawable[] = []
+                section.subjects.forEach(subject => {
+                    let drawable: FinalDrawable = null
+                    switch (subject.drawableType) {
+                        case DrawableTypes.Text:
+                            drawable = createTextZone(subject.width, subject.height, subject.drawable.getString(card), subject.color.getNumber(card))
+                            break
+                        case DrawableTypes.Image:
+                            drawable = createImageZone(subject.drawable.getImage(card), subject.color.getNumber(card))
+                            break
+                    }
+                    if (!!drawable) {
+                        for (let repeat = 0; repeat < subject.repeats.getNumber(card); repeat++) {
+                            drawables.push(drawable)
+                        }                            
+                    }
+                })
+
+                let fullWidth = section.horizontal
+                    ? drawables.reduce((sum, drawable) => sum + drawable.width + this.spacing, -this.spacing)
+                    : drawables.reduce((max, drawable) => Math.max(max, drawable.width), 0)
+                let fullHeight = section.horizontal
+                    ? drawables.reduce((max, drawable) => Math.max(max, drawable.height), 0)
+                    : drawables.reduce((sum, drawable) => sum + drawable.height + this.spacing, -this.spacing)
+                
+                let anchorX: number
+                let anchorY: number
+
+                switch (section.horizontalAlign) {
+                    case HorizontalAlignments.Left:
+                        anchorX = x + this.margin + section.offsetX
+                        break
+                    case HorizontalAlignments.Center:
+                        anchorX = x + section.offsetX + (this.width - (section.horizontal ? fullWidth : 0)) / 2 
+                        break
+                    case HorizontalAlignments.Right:
+                        anchorX = x - this.margin + section.offsetX + this.width - (section.horizontal ? fullWidth : 0)
+                        break
                 }
-                let drawZone: DrawZone
-                let rowHeight: number = 0
-                let attribute: CardAttributeValues
-                let color: number = 0
-                row.forEach(zone => {
-                    drawZone = null
+                switch (section.verticalAlign) {
+                    case VerticalAlignments.Top:
+                        anchorY = y + this.margin + section.offsetY
+                        break
+                    case VerticalAlignments.Center:
+                        anchorY = y + section.offsetY + (this.height - (section.horizontal ? 0 : fullHeight)) / 2
+                        break
+                    case VerticalAlignments.Bottom:
+                        anchorY = y - this.margin + section.offsetY + this.height - (section.horizontal ? 0 : fullHeight)
+                        break
+                }
 
-                    color = zone.color
-                    if (zone.colorAttribute != null) {
-                        const lookupColor = card.getAttribute(zone.colorAttribute)
-                        if (typeof lookupColor === 'number') {
-                            color = lookupColor
-                        } else {
-                            const lookupTextColor = parseInt(lookupColor)
-                            if (!isNaN(lookupTextColor)) {
-                                color = lookupTextColor
-                            }
-                        }
-                    }
-                        
-                    switch (zone.zoneType) {
-                        case ZoneTypes.Text:
-                            drawZone = createTextDrawZone(zone.text, color, zone.height, zone.width, zone.isDynamic)
+                drawables.forEach(drawable => {
+                    let drawX: number
+                    let drawY: number
+
+                    switch (section.horizontalAlign) {
+                        case HorizontalAlignments.Left:
+                            drawX = anchorX
                             break
-                        case ZoneTypes.Image:
-                            drawZone = createImageDrawZone(zone.image, 1)
+                        case HorizontalAlignments.Center:
+                            drawX = anchorX - (section.horizontal ? 0 : drawable.width / 2)
                             break
-                        case ZoneTypes.EmptySpace:
-                            drawZone = createSpaceDrawZone(zone.width - this.spacing, zone.height - this.spacing)
-                            break
-                        case ZoneTypes.AttributeText:
-                            attribute = card.getAttribute(zone.attribute)
-                            if (typeof attribute === 'number') {
-                                drawZone = createTextDrawZone(attribute.toString(), color, zone.height, zone.width, zone.isDynamic)
-                            } else if (attribute != null) {
-                                drawZone = createTextDrawZone(attribute, color, zone.height, zone.width, zone.isDynamic)
-                            }
-                            break
-                        case ZoneTypes.RepeatImage:
-                            attribute = card.getAttribute(zone.attribute)
-                            if (typeof attribute === 'number') {
-                                drawZone = createImageDrawZone(zone.image, attribute)
-                            }
-                            break
-                        case ZoneTypes.LookupAttributeAsText:
-                        case ZoneTypes.LookupAttributeAsImage:
-                            attribute = card.getAttribute(zone.attribute)
-                            const lookupValue = zone.lookupTable.find(lookup => lookup.value === attribute)
-                            if (!!lookupValue) {
-                                if (typeof lookupValue.drawable === 'string' && zone.zoneType === ZoneTypes.LookupAttributeAsText) {
-                                    drawZone = createTextDrawZone(lookupValue.drawable, color, zone.height, zone.width, zone.isDynamic)
-                                } else if (zone.zoneType === ZoneTypes.LookupAttributeAsImage) {
-                                    drawZone = createImageDrawZone(lookupValue.drawable as Image, 1)
-                                }
-                            }
+                        case HorizontalAlignments.Right:
+                            drawX = anchorX - (section.horizontal ? 0 : drawable.width)
                             break
                     }
-                    if (drawZone == null) {
-                        drawZone = createSpaceDrawZone(-this.spacing, 0)                    
+
+                    switch (section.verticalAlign) {
+                        case VerticalAlignments.Top:
+                            drawY = anchorY
+                            break
+                        case VerticalAlignments.Center:
+                            drawY = anchorY - (section.horizontal ? drawable.height / 2 : 0)
+                            break
+                        case VerticalAlignments.Bottom:
+                            drawY = anchorY - (section.horizontal ? drawable.height : 0)
+                            break
                     }
-                    sections[zone.align].width += drawZone.width + this.spacing
-                    rowHeight = Math.max(drawZone.height, rowHeight)
-                    sections[zone.align].zones.push(drawZone)
+
+                    if (!!drawable.image) {
+                        image.drawTransparentImage(drawable.image, drawX, drawY)
+                    } else {
+                        drawable.lines.forEach((text, line) => {
+                            tinyFont.print(image, drawX, drawY + line * tinyFont.charHeight(), text, drawable.color)
+                        })
+                    }
+                    anchorX += section.horizontal ? drawable.width + this.spacing : 0
+                    anchorY += section.horizontal ? 0 : drawable.height + this.spacing
                 })
-
-                sections.forEach(section => {
-                    let left = x
-                    switch (section.align) {
-                        case CardZoneAlignments.Left:
-                            left += this.margin
-                            break
-                        case CardZoneAlignments.Center:
-                            left += (this.width - section.width) / 2
-                            break
-                        case CardZoneAlignments.Right:
-                            left += this.width - this.margin - section.width
-                            break
-                    }
-        
-                    section.zones.forEach(drawZone => {
-                        if (!!drawZone.image) {
-                            for (let repeat = 0; repeat < drawZone.repeats; repeat++) {
-                                image.drawTransparentImage(drawZone.image, left, top)
-                                left += drawZone.image.width
-                            }
-                        } else if (!!drawZone.lines) {
-                            drawZone.lines.forEach((text, line) => {
-                                tinyFont.print(image, left, top + line * tinyFont.charHeight(), text, drawZone.color)
-                            })
-                            left += drawZone.width
-                        }
-                        left += this.spacing
-                    })
-                })
-
-                top += rowHeight + this.spacing
             })
-        }        
+        }       
 
         drawCardBack(image: Image, x: number, y: number) {
             image.drawTransparentImage(this.backImage, x, y)
@@ -386,77 +493,5 @@ namespace cardCore {
                 image.drawTransparentImage(stackImage, x, y)
             }
         }
-    }
-
-    export function createEmptySpaceColumn(align: CardZoneAlignments, width: number, height: number): DesignColumn {
-        return {
-            zoneType: ZoneTypes.EmptySpace,
-            align: align,
-            width: width,
-            height: height,
-        }
-    }
-    export function createTextColumn(align: CardZoneAlignments, text: string, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return {
-            zoneType: ZoneTypes.Text,
-            align: align,
-            text: text,
-            color: color,
-            colorAttribute: -1,
-            width: columns,
-            height: rows,
-            isDynamic: isDynamic,
-        }
-    }
-    export function createAttributeAsPlainTextColumn(align: CardZoneAlignments, attribute: number, color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return {
-            zoneType: ZoneTypes.AttributeText,
-            align: align,
-            attribute: attribute,
-            color: color,
-            colorAttribute: -1,
-            width: columns,
-            height: rows,
-            isDynamic: isDynamic,
-        }
-    }
-    export function createAttributeAsLookupTextColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[], color: number, columns: number, rows: number, isDynamic: boolean): DesignColumn {
-        return {
-            zoneType: ZoneTypes.LookupAttributeAsText,
-            align: align,
-            attribute: attribute,
-            color: color,
-            colorAttribute: -1,
-            width: columns,
-            height: rows,
-            isDynamic: isDynamic,
-            lookupTable: lookupTable
-        }
-    }
-    export function createImageColumn(align: CardZoneAlignments, image: Image): DesignColumn {
-        return {
-            zoneType: ZoneTypes.Image,
-            align: align,
-            image: image,
-        }
-    }
-    export function createAttributeAsRepeatImageColumn(align: CardZoneAlignments, attribute: number, image: Image): DesignColumn {
-        return {
-            zoneType: ZoneTypes.RepeatImage,
-            align: align,
-            attribute: attribute,
-            image: image,            
-        }
-    }
-    export function createAttributeAsLookupImageColumn(align: CardZoneAlignments, attribute: number, lookupTable: DesignLookup[]): DesignColumn {
-        return {
-            zoneType: ZoneTypes.LookupAttributeAsImage,
-            align: align,
-            attribute: attribute,
-            lookupTable: lookupTable
-        }
-    }
-    export function modifyTextColumnWithAttributeColorLookup(column: DesignColumn, colorAttribute: number): void {
-        column.colorAttribute = colorAttribute
     }
 }
