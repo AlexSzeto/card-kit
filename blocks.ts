@@ -1,3 +1,12 @@
+enum CardDesignDimensionProperties {
+    Width,
+    Height,
+    Margin,
+    Spacing,
+    Thickness,
+    MaxStackSize,
+}
+
 enum CardDesignFrameTypes {
     //% block="front"
     Front,
@@ -117,23 +126,11 @@ namespace cardDesign {
     }
 
     export class CardDesignTemplate {
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="width"
         width: number
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="height"
         height: number
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="margin"
         margin: number
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="spacing"
         spacing: number
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="card thickness"
         cardThickness: number
-        //% group="Dimensions" blockSetVariable="myDesign"
-        //% blockCombine block="max stack size"
         maxStackSize: number
 
         frontFrame: Image
@@ -224,6 +221,20 @@ namespace cardDesign {
             template.design.reset()
         }
         current = template.design
+    }
+
+    //% group="Sizing"
+    //% block="set current design $property to $value"
+    //% value.defl=0
+    export function setDesignDimensionProperty(property: CardDesignDimensionProperties, value: number) {
+        switch (property) {
+            case CardDesignDimensionProperties.Width: current.width = value; break;
+            case CardDesignDimensionProperties.Height: current.height = value; break;
+            case CardDesignDimensionProperties.Margin: current.margin = value; break;
+            case CardDesignDimensionProperties.Spacing: current.spacing = value; break;
+            case CardDesignDimensionProperties.Thickness: current.cardThickness = value; break;
+            case CardDesignDimensionProperties.MaxStackSize: current.maxStackSize = value; break;
+        }
     }
 
     //% group="Graphics"
