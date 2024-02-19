@@ -1,9 +1,15 @@
 enum CardDesignDimensionProperties {
+    //% block="width"
     Width,
+    //% block="height"
     Height,
+    //% block="margin"
     Margin,
+    //% block="spacing"
     Spacing,
+    //% block="thickness"
     Thickness,
+    //% block="max stack size"
     MaxStackSize,
 }
 
