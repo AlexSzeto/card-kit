@@ -51,28 +51,28 @@ namespace cardKit {
     //% block="deck of playing cards"
     export function createPlayingCards(): cardCore.CardContainer {
         let deck = cardDesign.createEmptyStack(0, 0)
-        cardDesign.addCardVariantsToStack(deck,
+        cardDesign.addCardVariantsToContainer(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 15, 15),
                 cardDesign.createTextAttributeVariations(1, ['spades']),
                 cardDesign.createNumberAttributeVariations(0, 1, 13)
             ]
         )
-        cardDesign.addCardVariantsToStack(deck,
+        cardDesign.addCardVariantsToContainer(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 2, 2),
                 cardDesign.createTextAttributeVariations(1, ['diamonds']),
                 cardDesign.createNumberAttributeVariations(0, 1, 13)
             ]
         )
-        cardDesign.addCardVariantsToStack(deck,
+        cardDesign.addCardVariantsToContainer(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 15, 15),
                 cardDesign.createTextAttributeVariations(1, ['clubs']),
                 cardDesign.createNumberAttributeVariations(0, 1, 13)
             ]
         )
-        cardDesign.addCardVariantsToStack(deck,
+        cardDesign.addCardVariantsToContainer(deck,
             [
                 cardDesign.createNumberAttributeVariations(2, 2, 2),
                 cardDesign.createTextAttributeVariations(1, ['hearts']),

@@ -486,16 +486,22 @@ namespace cardDesign {
 
     //% weight=99
     //% group="Deck Builder"
-    //% block="add to $deck cards combinations of $variations|| make $copies copies each"
+    //% inlineInputMode=inline
+    //% block="add to $deck cards combinations of $variations face up $faceUp || make $copies copies each"
     //% deck.shadow="variables_get" deck.defl="myDeck"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
+    //% faceUp.defl=true
     //% copies.defl=1
-    export function addCardVariantsToStack(deck: cardCore.CardContainer, variations: CardAttributeVariation[], copies: number = 1) {
-        if (deck instanceof cardCore.CardStack) {
-            const insertData: cardCore.CardData[] = []
-            __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
-            deck.insertData(insertData)                
+    export function addCardVariantsToContainer(container: cardCore.CardContainer, variations: CardAttributeVariation[], faceUp: boolean = true, copies: number = 1) {
+        const insertData: cardCore.CardData[] = []
+        __addCardVariationsFromIndex(insertData, new cardCore.CardData(), variations, 0, copies)
+        if (container instanceof cardCore.CardStack) {
+            container.insertData(insertData)                
+        } else if (container instanceof cardCore.CardSpread) {
+            container.insertData(insertData, faceUp)
+        } else if (container instanceof cardCore.CardGrid) {
+            container.insertData(insertData, faceUp)
         }
     }
 }

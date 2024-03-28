@@ -741,6 +741,17 @@ namespace cardCore {
                 || this._direction === CardLayoutDirections.BottomToTop
         }
 
+        insertData(data: CardData[], faceUp: boolean) {
+            if (!!this.design) {
+                data.forEach(cardData => {
+                    const card = new Card(this.design, cardData, this, faceUp)
+                    card.x = this.x
+                    card.y = this.y
+                    this.insertCard(card, LAST_CARD_INDEX, faceUp ? CardFaces.Up : CardFaces.Down)
+                })
+            }
+        }
+
         refresh() {
             super.refreshEmptyCard()
             if (this.count === 0) {
@@ -969,6 +980,17 @@ namespace cardCore {
                 }
             }
             this.refresh()
+        }
+
+        insertData(data: CardData[], faceUp: boolean) {
+            if (!!this.design) {
+                data.forEach(cardData => {
+                    const card = new Card(this.design, cardData, this, faceUp)
+                    card.x = this.x
+                    card.y = this.y
+                    this.insertCard(card, LAST_CARD_INDEX, faceUp ? CardFaces.Up : CardFaces.Down)
+                })
+            }
         }
 
         refresh() {
