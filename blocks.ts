@@ -406,17 +406,6 @@ namespace cardDesign {
         return arg;
     }
 
-    //% weight=100
-    //% group="Deck Builder" blockSetVariable="myDeck"
-    //% inlineInputMode=inline
-    //% block="empty $template $kind deck"
-    //% template.shadow="designTemplatePicker"
-    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
-    export function createEmptyStack(template: number, kind: number): cardCore.CardContainer {
-        const stack = new cardCore.CardStack(cardDesign.getDesignTemplateExport(template), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
-        return stack
-    }
-
     class CardAttributeVariation {
         constructor(
             public attribute: number,
@@ -487,8 +476,8 @@ namespace cardDesign {
     //% weight=99
     //% group="Deck Builder"
     //% inlineInputMode=inline
-    //% block="add to $deck cards combinations of $variations face up $faceUp || make $copies copies each"
-    //% deck.shadow="variables_get" deck.defl="myDeck"
+    //% block="add to $container cards combinations of $variations face up $faceUp || make $copies copies each"
+    //% container.shadow="variables_get" container.defl="myDeck"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
     //% faceUp.defl=true
@@ -570,6 +559,16 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
+    //% group="Create" blockSetVariable="myContainer"
+    //% inlineInputMode=inline
+    //% block="empty $template $kind deck"
+    //% template.shadow="designTemplatePicker"
+    //% kind.shadow="containerKindPicker" kind.defl=CardContainerKinds.Draw
+    export function createEmptyStack(template: number, kind: number): cardCore.CardContainer {
+        const stack = new cardCore.CardStack(cardDesign.getDesignTemplateExport(template), scene.screenWidth() / 2, scene.screenHeight() / 2, kind, false)
+        return stack
+    }
+    
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind card grid columns $columns rows $rows|| scroll $direction"
