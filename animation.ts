@@ -141,6 +141,18 @@ namespace extraAnimations {
         onComplete: (sprite: Sprite) => void
     ) {
         const distance = Math.sqrt((x - sprite.x) * (x - sprite.x) + (y - sprite.y) * (y - sprite.y))
+
+        // erase old tracker if it exists without calling onComplete
+        const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
+        if (!!oldTracker) {
+            if (oldTracker.x === x && oldTracker.y === y && oldTracker.z === z) {
+                return
+            } else {
+                slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
+            }
+        }
+
+        // if the sprite is already at the target position, do nothing
         if (distance == 0) {
             sprite.vx = 0
             sprite.vy = 0
@@ -151,17 +163,11 @@ namespace extraAnimations {
             sprite.z = z
             return
         }
+
         const t = distance / v
-        const oldTracker = slideTrackers.find(tracker => tracker.sprite === sprite)
-        if (!!oldTracker) {
-            if (oldTracker.x === x && oldTracker.y === y && oldTracker.z === z) {
-                return
-            } else {
-                slideTrackers.splice(slideTrackers.indexOf(oldTracker), 1)
-            }
-        }
         let linearMode = false
         if (v > 250) {
+            // use linear mode for high speeds
             sprite.vx = (x - sprite.x) / t
             sprite.vy = (y - sprite.y) / t
             sprite.fx = 0
@@ -170,6 +176,7 @@ namespace extraAnimations {
             sprite.ay = 0
             linearMode = true
         } else {
+            // use quadratic mode for low speeds
             const ax = -2 * (x - sprite.x) / (t * t)
             sprite.vx = -Math.floor(ax * t)
             sprite.fx = Math.ceil(Math.abs(ax))
@@ -179,7 +186,6 @@ namespace extraAnimations {
             sprite.fy = Math.ceil(Math.abs(ay))
             sprite.ay = 0
         }
-        clearSlideAnimation(sprite)
         slideTrackers.push({
             sprite: sprite,
             linearMode: linearMode,
