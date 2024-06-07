@@ -1,3 +1,17 @@
+## Planned Features for 1.0 Release
+
+* add boolean card attribute
+* hide draw group if attribute is false
+* card container visibility
+* global card move speed - warp speed card movement if delay set to 0
+* uid for cards
+
+## Currently Known Bugs
+
+* cursor card not updating after adding/deleting cards at the top of a stack it is pointed at
+* when a card is sent to the top of a stack, it does not respect the facing of the top card
+* stack top card z-level may be incorrect
+
  
 
 
@@ -19,19 +33,6 @@ To edit this repository in MakeCode.
 * open [https://arcade.makecode.com/](https://arcade.makecode.com/)
 * click on **Import** then click on **Import URL**
 * paste **https://github.com/alexszeto/card-kit** and click import
-
-## Known Bugs
-
-* cursor card not updating after adding/deleting cards at the top of a stack it is pointed at
-* when a card is sent to the top of a stack, it does not respect the facing of the top card
-* stack top card z-level may be incorrect
-
-## Planned Features for 1.0 Release
-
-* card container visibility
-* custom card move speed (global and per-container)
-* warp speed card movement (no animation)
-* card select event without specifying type
 
 #### Metadata (used for search, rendering)
 
