@@ -45,6 +45,8 @@ namespace cardCore {
     const FLIP_SCALES = [1.0, 0.6, 0.3, 0.3, 0.6, 1.0]
     const DEFAULT_FLIP_DURATION = 300
 
+    let cardUID = 1
+
     function activate(sprite: Sprite, kind: number) {
         const scene = game.currentScene();
         sprite.setKind(kind);
@@ -62,6 +64,7 @@ namespace cardCore {
         private _showEmpty: boolean
         private _faceUp: boolean
         private _card: CardData
+        private _uid: number
 
         constructor(
             design: CardDesign,
@@ -74,10 +77,15 @@ namespace cardCore {
             this._faceUp = faceUp
             this._card = data
             this._showEmpty = true
+            this._uid = cardUID++
             this.refreshImage()
             activate(this, SpriteKind.Card)
         }
 
+        get uid(): number {
+            return this._uid
+        }
+        
         get isEmpty(): boolean {
             return this._card === EMPTY_CARD_DATA
         }
@@ -142,6 +150,17 @@ namespace cardCore {
         }
 
         get isFaceUp(): boolean { return this._faceUp }
+
+        getAttribute(attribute: number): CardAttributeValues {
+            return this.cardData.getAttribute(attribute)
+        }
+
+        setAttribute(attribute: number, value: CardAttributeValues) {
+            if (!this.cardData.attributeEquals(attribute, value)) {
+                this.cardData.setAttribute(attribute, value)
+                this.refreshImage()
+            }
+        }
 
         detachFromContainer() {
             if (this.container != null) {

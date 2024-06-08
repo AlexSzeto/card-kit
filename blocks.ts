@@ -477,7 +477,7 @@ namespace cardDesign {
     //% group="Deck Builder"
     //% inlineInputMode=inline
     //% block="add to $container cards combinations of $variations face up $faceUp || make $copies copies each"
-    //% container.shadow="variables_get" container.defl="myDeck"
+    //% container.shadow="variables_get" container.defl="myContainer"
     //% card.shadow="cardDataPicker"
     //% variations.shadow="lists_create_with" variations.defl="textAttributePicker"
     //% faceUp.defl=true
@@ -1005,6 +1005,32 @@ namespace cardKit {
     /* Card                                  */
     /*****************************************/
 
+    //% group="Card" blockSetVariable="id"
+    //% block="$card id"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardId(card: cardCore.Card): number {
+        return !!card ? card.id : -1
+    }
+
+    //% group="Card"
+    //% block="card with id $id"
+    //% id.shadow="variables_get" id.defl="id"
+    export function getCardById(id: number): cardCore.Card {
+        if (id < 1)
+            return null
+
+        const cardSprites = sprites.allOfKind(SpriteKind.Card)
+        cardSprites.forEach(sprite => {
+            if (sprite instanceof cardCore.Card) {
+                const card = (sprite as cardCore.Card)
+                if (card.id === id) {
+                    return card
+                }
+            }
+        })
+        return null
+    }
+
     //% group="Card"
     //% block="$card is face up"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1049,6 +1075,15 @@ namespace cardKit {
     }
 
     //% group="Card Attributes"
+    //% block="set $card $attribute to $bool"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardBooleanAttribute(card: cardCore.Card, attribute: number, bool: boolean) {
+        card.cardData.setAttribute(attribute, bool)
+        card.refreshImage()
+    }
+
+    //% group="Card Attributes"
     //% block="set $card stamp to $text"
     //% card.shadow="variables_get" card.defl="myCard"
     export function setCardStampText(card: cardCore.Card, text: string) {
@@ -1086,6 +1121,18 @@ namespace cardKit {
         } else {
             return value.toString()
         }
+    }
+
+    //% group="Card Attributes"
+    //% block="$card $attribute boolean"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardBooleanAttribute(card: cardCore.Card, attribute: number) {
+        if (!card) {
+            return false
+        }
+        const value = card.cardData.getAttribute(attribute)
+        return !!value
     }
     
     //% group="Card Attributes"

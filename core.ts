@@ -25,7 +25,7 @@ namespace cardCore {
     /* Card Data                             */
     /*****************************************/
 
-    export type CardAttributeValues = string | number
+    export type CardAttributeValues = string | number | boolean
     export type CardAttribute = {
         attribute: number
         value: CardAttributeValues
@@ -57,12 +57,21 @@ namespace cardCore {
         }
 
         attributeEquals(id: number, value: CardAttributeValues): boolean {
-            const valueText: string = (typeof value === 'number') ? value.toString() : value
+
+            const valueToString = (value: CardAttributeValues | undefined): string => {
+                switch (typeof value) {
+                    case 'number': return value.toString()
+                    case 'boolean': return value ? 'true' : 'false'
+                    case 'string': return value
+                    default: return null
+                }
+            }
+            const valueText: string = valueToString(value)
             const attribute = this._attributes.find(attr => attr.attribute === id)
             if (!attribute) {
-                return (valueText === '' || valueText === '0')
+                return (valueText === '' || valueText === '0' || valueText === 'false')
             }
-            const attrText: string = (typeof attribute.value === 'number') ? attribute.value.toString() : attribute.value
+            const attrText: string = valueToString(attribute.value)
             return attrText === valueText
         }
 
