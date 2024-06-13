@@ -946,6 +946,34 @@ namespace cardKit {
         )
     }
 
+    //% group="Events"
+    //% draggableParameters="reporter"
+    //% expandableArgumentMode="toggle"
+    //% block="on select $card with $button button"
+    export function createGenericSelectCardEvent(
+        button: SelectionButtons,
+        handler: (card: cardCore.Card) => void,
+    ) {
+        cardCore.addGenericCardEvent(
+            button,
+            handler,
+        )
+    }
+
+    //% group="Events"
+    //% draggableParameters="reporter"
+    //% expandableArgumentMode="toggle"
+    //% block="on select $sprite with $button button"
+    export function createSelectSpriteEvent(
+        button: SelectionButtons,
+        handler: (sprite: Sprite) => void,
+    ) {
+        cardCore.addSpriteEvent(
+            button,
+            handler,
+        )
+    }    
+
     function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
         switch (position) {
             case CardContainerPositions.First: return 0

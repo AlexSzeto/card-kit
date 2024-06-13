@@ -224,6 +224,17 @@ namespace cardCore {
 
 // CardEvent
 namespace cardCore {
+
+    type GenericSpriteEvent = {
+        button: SelectionButtons,
+        handler: (sprite: Sprite) => void
+    }
+
+    type GenericCardEvent = {
+        button: SelectionButtons,
+        handler: (card: Card) => void
+    }
+
     type CardEvent = {
         kind: number,
         button: SelectionButtons,
@@ -236,6 +247,16 @@ namespace cardCore {
         handler: (container: CardContainer) => void
     }
 
+    const genericSpriteEvents: GenericSpriteEvent[] = []
+    export function addSpriteEvent(button: SelectionButtons, handler: (sprite: Sprite) => void) {
+        genericSpriteEvents.push({ button: button, handler: handler })
+    }
+
+    const genericCardEvents: GenericCardEvent[] = []
+    export function addGenericCardEvent(button: SelectionButtons, handler: (card: Card) => void) {
+        genericCardEvents.push({ button: button, handler: handler })
+    }
+    
     const cardEvents: CardEvent[] = []
     export function addCardEvent(kind: number, button: SelectionButtons, handler: (container: CardContainer, card: Card) => void) {
         cardEvents.push({ kind: kind, button: button, handler: handler })
@@ -246,9 +267,24 @@ namespace cardCore {
         emptySlotEvents.push({ kind: kind, button: button, handler: handler })
     }
 
-    export function dispatchActivateEvents(card: Card, button: SelectionButtons) {
+    export function dispatchActivateEvents(sprite: Sprite, button: SelectionButtons) {
+        if (!(sprite instanceof Card)) {
+            for (let event of genericSpriteEvents) {
+                if (event.button === button) {
+                    event.handler(sprite)
+                }
+            }
+            return
+        }
+
+        const card = sprite as Card
         const container = card.container
         if (!container) {
+            for (let event of genericCardEvents) {
+                if (event.button === button) {
+                    event.handler(card)
+                }
+            }
             return
         }
 
@@ -256,6 +292,11 @@ namespace cardCore {
             for (let event of cardEvents) {
                 if (event.kind === container.kind && event.button === button) {
                     event.handler(container, card)
+                }
+            }
+            for (let event of genericCardEvents) {
+                if (event.button === button) {
+                    event.handler(card)
                 }
             }
         } else {
