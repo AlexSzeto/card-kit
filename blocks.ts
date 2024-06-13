@@ -1135,14 +1135,6 @@ namespace cardKit {
     }
 
     //% group="Card Attributes"
-    //% block="set $card stamp to $text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function setCardStampText(card: cardCore.Card, text: string) {
-        card.stamp = text
-        card.refreshImage()
-    }
-
-    //% group="Card Attributes"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
@@ -1184,16 +1176,6 @@ namespace cardKit {
         }
         const value = card.cardData.getAttribute(attribute)
         return !!value
-    }
-    
-    //% group="Card Attributes"
-    //% block="$card stamp"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardStampText(card: cardCore.Card) {
-        if (!card) {
-            return ""
-        }
-        return card.stamp
     }
 
     /*****************************************/

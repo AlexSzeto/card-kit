@@ -60,7 +60,6 @@ namespace cardCore {
     
     export class Card extends Sprite {
         private _design: CardDesign
-        private _stamp: string
         private _showEmpty: boolean
         private _faceUp: boolean
         private _card: CardData
@@ -97,15 +96,6 @@ namespace cardCore {
 
         get cardData(): CardData {
             return this._card
-        }
-        
-        set stamp(value: string) {
-            this._stamp = value
-            this.refreshImage()
-        }
-
-        get stamp(): string {
-            return this._stamp
         }
 
         set design(value: CardDesign) {
