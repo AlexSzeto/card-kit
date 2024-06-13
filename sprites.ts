@@ -1537,7 +1537,7 @@ namespace cardCursor {
             return
         } else if (next instanceof Sprite) {
             target = next
-            container = null
+            container = getContainerFromSprite(next)
         } else {
             deselect()
             return
@@ -1569,6 +1569,14 @@ namespace cardCursor {
         }
     }
 
+    export function selectedContainer(): SelectableContainer {
+        if (!!container) {
+            return container
+        } else {
+            return null
+        }
+    }
+
     export function selectedCardContainer(): cardCore.CardContainer {
         if (!!container && container instanceof cardCore.CardContainer) {
             return container
@@ -1577,11 +1585,11 @@ namespace cardCursor {
         }
     }
 
-    export function activateCard(button: SelectionButtons) {
-        const card = selectedCard()
-        if (!card) {
+    export function activateSprite(button: SelectionButtons) {
+        const sprite = selectedSprite()
+        if (!sprite) {
             return
         }
-        cardCore.dispatchActivateEvents(card, button)
+        cardCore.dispatchActivateEvents(sprite, button)
     }
 }

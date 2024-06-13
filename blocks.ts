@@ -896,7 +896,7 @@ namespace cardKit {
     cardCursor.addExitContainerEvent(setEntryPoint)
 
     export function moveCursorInDirection(direction: PointerDirections) {
-        const layer = getCursorContainer()
+        const layer = cardCursor.selectedContainer()
         if (!layer) {
             return
         }
@@ -996,7 +996,7 @@ namespace cardKit {
                     moveCursorInDirection(direction)
                 }
                 if (selection != null) {
-                    cardCursor.activateCard(selection)
+                    cardCursor.activateSprite(selection)
                 }
             }
         }
@@ -1032,7 +1032,6 @@ namespace cardKit {
         return cardCursor.selectedCardContainer()
     }
 
-    //% deprecated=true
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
