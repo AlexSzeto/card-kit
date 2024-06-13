@@ -266,20 +266,6 @@ namespace cardCore {
             }
         }
     }
-
-
-    type ExitContainerEvent = (container: CardContainer, direction: RelativeDirections) => void
-    const exitContainerEvents: ExitContainerEvent[] = []
-
-    export function addExitContainerEvent(handler: ExitContainerEvent) {
-        exitContainerEvents.push(handler)
-    }
-
-    export function dispatchExitContainerEvent(container: CardContainer, direction: RelativeDirections) {
-        for (let event of exitContainerEvents) {
-            event(container, direction)
-        }
-    }
 }
 
 // CardContainer
@@ -297,7 +283,7 @@ namespace cardCore {
         return containerList.filter(container => container.kind === kind)
     }
 
-    export class CardContainer {        
+    export class CardContainer implements cardCursor.SelectableContainer {        
         private _kind: number
         protected _design: CardDesign
         protected _z: number
@@ -463,7 +449,7 @@ namespace cardCore {
             this.transition.push(card)
             this.refresh()
 
-            if (this.slots === 1 && cardCursor.selectedContainer() === this) {
+            if (this.slots === 1 && cardCursor.selectedCardContainer() === this) {
                 cardCursor.select(card)
             }
         }
@@ -715,19 +701,19 @@ namespace cardCore {
         }
 
         selectLeft(): void {
-            dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+            cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
         }
 
         selectRight(): void {
-            dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+            cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
         }
 
         selectUp(): void {
-            dispatchExitContainerEvent(this, RelativeDirections.Above)
+            cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
         }
 
         selectDown(): void {
-            dispatchExitContainerEvent(this, RelativeDirections.Below)
+            cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
         }
     }
 }
@@ -855,65 +841,65 @@ namespace cardCore {
 
         selectLeft(): void {
             if (this.slots === 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
                 return
             }
             if (this.isHorizonal) {
                 if (this.cursorIndex === 0) {
-                    dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
                 } else {
                     this.selectByOffset(-1)
                 }
             } else {
-                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
             }
         }
 
         selectRight(): void {
             if (this.slots === 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
                 return
             }
             if (this.isHorizonal) {
                 if (this.cursorIndex === this.slots - 1) {
-                    dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
                 } else {
                     this.selectByOffset(1)
                 }
             } else {
-                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
             }
         }
 
         selectUp(): void {
             if (this.slots === 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.Above)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
                 return
             }
             if (!this.isHorizonal) {
                 if (this.cursorIndex === 0) {
-                    dispatchExitContainerEvent(this, RelativeDirections.Above)
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
                 } else {
                     this.selectByOffset(-1)
                 }
             } else {
-                dispatchExitContainerEvent(this, RelativeDirections.Above)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
             }
         }
 
         selectDown(): void {
             if (this.slots === 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.Below)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
                 return
             }
             if (!this.isHorizonal) {
                 if (this.cursorIndex === this.slots - 1) {
-                    dispatchExitContainerEvent(this, RelativeDirections.Below)
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
                 } else {
                     this.selectByOffset(1)
                 }
             } else {
-                dispatchExitContainerEvent(this, RelativeDirections.Below)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
             }
         }
     }
@@ -1317,16 +1303,16 @@ namespace cardCore {
                 : Math.ceil(this.slots / this.rows)
             
             if (row + rowOffset < 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.Above)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
                 return
             } else if (row + rowOffset >= bottom) {
-                dispatchExitContainerEvent(this, RelativeDirections.Below)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
                 return
             } else if (column + columnOffset < 0) {
-                dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
                 return
             } else if (column + columnOffset >= right) {
-                dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
                 return
             }
 
@@ -1362,6 +1348,69 @@ namespace cardCore {
 }
 
 namespace cardCursor {
+
+    export interface SelectableContainer {
+        startSelection(): void
+        switchSelection(fromExit: RelativeDirections): void 
+        selectLeft(): void
+        selectRight(): void
+        selectUp(): void
+        selectDown(): void
+    }
+
+    export class SelectableSpriteContainer implements SelectableContainer {
+        constructor(public sprite: Sprite) { }
+
+        startSelection() {
+            cardCursor.select(this.sprite)
+        }
+
+        switchSelection(fromExit: RelativeDirections) {
+            cardCursor.select(this.sprite)
+        }
+
+        selectLeft() {
+            dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+        }
+
+        selectRight() {
+            dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+        }
+
+        selectUp() {
+            dispatchExitContainerEvent(this, RelativeDirections.Above)
+        }
+
+        selectDown() {
+            dispatchExitContainerEvent(this, RelativeDirections.Below)
+        }
+    }
+
+    let spriteContainers: SelectableSpriteContainer[] = []
+    export function getContainerFromSprite(sprite: Sprite): SelectableSpriteContainer {
+        const container = spriteContainers.find(c => c.sprite === sprite)
+        if (!!container) {
+            return container
+        } else {
+            const newContainer = new SelectableSpriteContainer(sprite)
+            spriteContainers.push(newContainer)
+            return newContainer
+        }
+    }
+
+    type ExitContainerEvent = (container: SelectableContainer, direction: RelativeDirections) => void
+    const exitContainerEvents: ExitContainerEvent[] = []
+
+    export function addExitContainerEvent(handler: ExitContainerEvent) {
+        exitContainerEvents.push(handler)
+    }
+
+    export function dispatchExitContainerEvent(container: SelectableContainer, direction: RelativeDirections) {
+        for (let event of exitContainerEvents) {
+            event(container, direction)
+        }
+    }
+
     const DEFAULT_CURSOR_Z = 1000
 
     let anchorPoint: AnchorPositions = AnchorPositions.Bottom
@@ -1370,7 +1419,7 @@ namespace cardCursor {
     let extraOffsetX = 0
     let extraOffsetY = 0
     
-    let container: cardCore.CardContainer = null
+    let container: SelectableContainer = null
     let target: Sprite = null
 
     export const cursor = sprites.create(image.create(1, 1), SpriteKind.Cursor)
@@ -1479,8 +1528,12 @@ namespace cardCursor {
         }
     }
 
-    export function selectedContainer(): cardCore.CardContainer {
-        return container
+    export function selectedCardContainer(): cardCore.CardContainer {
+        if (!!container && container instanceof cardCore.CardContainer) {
+            return container
+        } else {
+            return null
+        }
     }
 
     export function activateCard(button: SelectionButtons) {

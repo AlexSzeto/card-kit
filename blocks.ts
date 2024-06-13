@@ -803,8 +803,8 @@ namespace cardKit {
     }
 
     type CardContainerLink = {
-        fromContainer: cardCore.CardContainer,
-        toContainer: cardCore.CardContainer,
+        fromContainer: cardCursor.SelectableContainer,
+        toContainer: cardCursor.SelectableContainer,
         direction: RelativeDirections
     }
     const containerLinks: CardContainerLink[] = []
@@ -818,16 +818,21 @@ namespace cardKit {
         }
     }
 
+    type LinkableObjects = cardCore.CardContainer | Sprite
+
     //% color="#d54322"
     //% group="Controls"
     //% block="cursor link $toContainer $direction $fromContainer"
     //% toContainer.shadow="variables_get" toContainer.defl="myContainer"
     //% fromContainer.shadow="variables_get" fromContainer.defl="myContainer"
     export function linkContainers(
-        toContainer: cardCore.CardContainer,
+        toContainer: LinkableObjects,
         direction: RelativeDirections,
-        fromContainer: cardCore.CardContainer,
+        fromContainer: LinkableObjects,
     ) {
+        const fromLinkable: cardCursor.SelectableContainer = (fromContainer instanceof Sprite) ? cardCursor.getContainerFromSprite(fromContainer) : fromContainer
+        const toLinkable: cardCursor.SelectableContainer = (toContainer instanceof Sprite) ? cardCursor.getContainerFromSprite(toContainer) : toContainer
+
         const forwardLink = containerLinks.indexOf(containerLinks.find(
             link => link.fromContainer === fromContainer && link.direction === direction
         ))
@@ -839,13 +844,13 @@ namespace cardKit {
         }
 
         containerLinks.push({
-            fromContainer: fromContainer,
-            toContainer: toContainer,
+            fromContainer: fromLinkable,
+            toContainer: toLinkable,
             direction: direction
         })
         containerLinks.push({
-            fromContainer: toContainer,
-            toContainer: fromContainer,
+            fromContainer: toLinkable,
+            toContainer: fromLinkable,
             direction: reverseRelativeDirection(direction)
         })
     }
@@ -876,7 +881,7 @@ namespace cardKit {
         const link = containerLinks.find(link => link.fromContainer === container && link.direction === direction)
         if (!!link) {
             const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
-            if (!!entryPoint) {
+            if (!!entryPoint && link.toContainer instanceof cardCore.CardContainer) {
                 const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position))
                 if (card !== null) {
                     cardCursor.select(card)
@@ -888,7 +893,7 @@ namespace cardKit {
             }
         }
     }
-    cardCore.addExitContainerEvent(setEntryPoint)
+    cardCursor.addExitContainerEvent(setEntryPoint)
 
     export function moveCursorInDirection(direction: PointerDirections) {
         const layer = getCursorContainer()
@@ -996,9 +1001,10 @@ namespace cardKit {
     //% group="Cursor"
     //% block="cursor container"
     export function getCursorContainer(): cardCore.CardContainer {
-        return cardCursor.selectedContainer()
+        return cardCursor.selectedCardContainer()
     }
 
+    //% deprecated=true
     //% group="Cursor"
     //% block="point cursor at $sprite"
     //% sprite.shadow="variables_get" sprite.defl="mySprite"
