@@ -949,20 +949,6 @@ namespace cardKit {
     //% group="Events"
     //% draggableParameters="reporter"
     //% expandableArgumentMode="toggle"
-    //% block="on select $card with $button button"
-    export function createGenericSelectCardEvent(
-        button: SelectionButtons,
-        handler: (card: cardCore.Card) => void,
-    ) {
-        cardCore.addGenericCardEvent(
-            button,
-            handler,
-        )
-    }
-
-    //% group="Events"
-    //% draggableParameters="reporter"
-    //% expandableArgumentMode="toggle"
     //% block="on select $sprite with $button button"
     export function createSelectSpriteEvent(
         button: SelectionButtons,
