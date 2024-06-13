@@ -230,7 +230,7 @@ namespace cardDesign {
     }
 
     //% group="Sizing"
-    //% block="set current design $property to $value"
+    //% block="set design $property to $value"
     //% value.defl=0
     export function setDesignDimensionProperty(property: CardDesignDimensionProperties, value: number) {
         switch (property) {
@@ -244,7 +244,7 @@ namespace cardDesign {
     }
 
     //% group="Graphics"
-    //% block="set current design $frameType frame to $image"
+    //% block="set design $frameType frame to $image"
     //% image.shadow="screen_image_picker"
     export function setDesignGraphics(frameType: CardDesignFrameTypes, image: Image) {
         switch (frameType) {
@@ -259,7 +259,7 @@ namespace cardDesign {
     //% group="Draw Groups"
     //% weight=99
     //% inlineInputMode=inline
-    //% block="create group in current design anchor $align|| drawn $direction offset x $offsetX y $offsetY"
+    //% block="add draw group in design anchor $align drawn $direction|| offset x $offsetX y $offsetY"
     //% direction.defl=0 
     //% offsetX.defl=0 offsetY.defl=0
     export function createNewGroup(align: AnchorPositions, direction: DrawDirections = DrawDirections.LeftToRight, offsetX: number = 0, offsetY: number = 0) {
@@ -271,7 +271,23 @@ namespace cardDesign {
         ))
     }
 
+    function addDefaultDrawGroup() {
+        if (current.groups.length == 0) {
+            createNewGroup(AnchorPositions.Center)
+        }
+    }
+
+    //% group="Draw Groups"
+    //% weight=98
+    //% block="link draw group visibility to $attribute"
+    //% attribute.shadow="attributePicker"
+    export function setGroupVisibilityAttribute(id: number) {
+        addDefaultDrawGroup()
+        current.groups[current.groups.length - 1].visibilityAttributeId = id
+    }
+
     function addItemToCurrentGroup(item: cardCore.DrawItem) {
+        addDefaultDrawGroup()
         current.groups[current.groups.length - 1].items.push(item)
     }
 
@@ -289,7 +305,7 @@ namespace cardDesign {
     //% group="Add Draw Text"
     //% weight=100
     //% inlineInputMode=inline
-    //% block="add to current group text $text"
+    //% block="draw to card text $text"
     export function addStaticText(text: string) {
         addItemToCurrentGroup(cardCore.createTextItem(text))
     }
@@ -297,7 +313,7 @@ namespace cardDesign {
     //% group="Add Draw Text"
     //% weight=99
     //% inlineInputMode="inline"
-    //% block="add to current group $attribute as text"
+    //% block="draw to card $attribute as text"
     //% attribute.shadow="attributePicker"
     export function addAttributeText(attribute: number) {
         const item = cardCore.createTextItem('')
@@ -307,7 +323,7 @@ namespace cardDesign {
 
     //% group="Add Draw Text"
     //% weight=98
-    //% block="add to current group index $attribute text from $textLookupTable"
+    //% block="draw to card index $attribute text from $textLookupTable"
     //% attribute.shadow="attributePicker"
     export function addAttributeIndexText(attribute: number, textLookupTable: string[]) {
         const item = cardCore.createTextItem('')
@@ -317,7 +333,7 @@ namespace cardDesign {
 
     //% group="Add Draw Image"
     //% weight=100
-    //% block="add to current group image $image"
+    //% block="draw to card image $image"
     //% image.shadow="screen_image_picker"
     export function addStaticImage(image: Image) {
         addItemToCurrentGroup(cardCore.createImageItem(image))
@@ -325,7 +341,7 @@ namespace cardDesign {
 
     //% group="Add Draw Image"
     //% weight=98
-    //% block="add to current group index $attribute image from $imageLookupTable"
+    //% block="draw to card index $attribute image from $imageLookupTable"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function addAttributeIndexImage(attribute: number, imageLookupTable: Image[]) {
@@ -336,7 +352,7 @@ namespace cardDesign {
 
     //% group="Add Draw Image"
     //% weight=97
-    //% block="add to current group take $attribute and change $lookupTable"
+    //% block="draw to card take $attribute and change $lookupTable"
     //% attribute.shadow="attributePicker"
     //% lookupTable.shadow="lists_create_with" lookupTable.defl="textToImageLookupPicker"
     export function addAttributeTextToImage(attribute: number, lookupTable: cardCore.AttributeLookup[]) {
@@ -347,7 +363,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=100
-    //% block="set current item color to $color"
+    //% block="set last drawing color to $color"
     //% color.shadow="colorindexpicker"
     export function setItemColor(color: number) {
         const item = getCurrentItem(current)
@@ -358,7 +374,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=99
-    //% block="set current item color index to $attribute value"
+    //% block="set last drawing color index to $attribute value"
     //% attribute.shadow="attributePicker"
     export function setItemColorToAttribute(attribute: number) {
         const item = getCurrentItem(current)
@@ -369,7 +385,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=98
-    //% block="redraw current item $attribute times"
+    //% block="repeat last drawing $attribute times"
     //% attribute.shadow="attributePicker"
     export function setItemRepeatToAttribute(attribute: number) {
         const item = getCurrentItem(current)
@@ -380,7 +396,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=97
-    //% block="set current item width $width height $height"
+    //% block="set last drawing width $width height $height"
     export function setItemSize(width: number, height: number) {
         const item = getCurrentItem(current)
         if (!!item) {

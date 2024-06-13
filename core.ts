@@ -236,6 +236,7 @@ namespace cardCore {
             public horizontal: boolean = true,
             public offsetX: number = 0,
             public offsetY: number = 0,
+            public visibilityAttributeId: number = -1
         ) {
             switch (align) {
                 case AnchorPositions.TopLeft:
@@ -403,6 +404,10 @@ namespace cardCore {
             image.drawTransparentImage(this.frontImage, x, y)
             
             this.groups.forEach(group => {
+                if (group.visibilityAttributeId >= 0 && card.attributeEquals(group.visibilityAttributeId, false)) {
+                    return
+                }
+
                 const drawables: FinalDrawable[] = []
                 group.items.forEach(item => {
                     let drawable: FinalDrawable = null
