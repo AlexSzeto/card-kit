@@ -268,6 +268,7 @@ namespace cardDesign {
             direction === DrawDirections.LeftToRight,
             offsetX,
             offsetY,
+            -1
         ))
     }
 
@@ -1036,15 +1037,16 @@ namespace cardKit {
             return null
 
         const cardSprites = sprites.allOfKind(SpriteKind.Card)
-        cardSprites.forEach(sprite => {
+        const card = cardSprites.find(sprite => {
             if (sprite instanceof cardCore.Card) {
                 const card = (sprite as cardCore.Card)
                 if (card.id === id) {
-                    return card
+                    return true
                 }
             }
+            return false
         })
-        return null
+        return !!card ? (card as cardCore.Card) : null
     }
 
     //% group="Card"

@@ -60,9 +60,9 @@ namespace cardCore {
 
             const valueToString = (value: CardAttributeValues | undefined): string => {
                 switch (typeof value) {
-                    case 'number': return value.toString()
+                    case 'number': return (value as number).toString()
                     case 'boolean': return value ? 'true' : 'false'
-                    case 'string': return value
+                    case 'string': return (value as string)
                     default: return null
                 }
             }
