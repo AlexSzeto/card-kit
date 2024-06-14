@@ -1373,11 +1373,13 @@ namespace cardCursor {
         constructor(public sprite: Sprite) { }
 
         startSelection() {
-            cardCursor.select(this.sprite)
+            if (!(!this.sprite || !!(this.sprite.flags & sprites.Flag.Destroyed))) {
+                cardCursor.select(this.sprite)
+            }
         }
 
         switchSelection(fromExit: RelativeDirections) {
-            cardCursor.select(this.sprite)
+            this.startSelection()
         }
 
         selectLeft() {
