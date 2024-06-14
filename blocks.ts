@@ -282,9 +282,9 @@ namespace cardDesign {
     //% weight=98
     //% block="link draw group visibility to $attribute"
     //% attribute.shadow="attributePicker"
-    export function setGroupVisibilityAttribute(id: number) {
+    export function setGroupVisibilityAttribute(attribute: number) {
         addDefaultDrawGroup()
-        current.groups[current.groups.length - 1].visibilityAttributeId = id
+        current.groups[current.groups.length - 1].visibilityAttributeId = attribute
     }
 
     function addItemToCurrentGroup(item: cardCore.DrawItem) {
