@@ -1003,41 +1003,6 @@ namespace cardKit {
 
 
     /*****************************************/
-    /* Cursor                                */
-    /*****************************************/
-
-    //% group="Cursor"
-    //% block="cursor card"
-    export function getCursorCard(): cardCore.Card {
-        return cardCursor.selectedCard()
-    }
-
-    //% group="Cursor"
-    //% block="cursor container"
-    export function getCursorContainer(): cardCore.CardContainer {
-        return cardCursor.selectedCardContainer()
-    }
-
-    //% group="Cursor"
-    //% block="point cursor at $sprite"
-    //% sprite.shadow="variables_get" sprite.defl="mySprite"
-    export function pointCursorAt(sprite: Sprite) {
-        cardCursor.select(sprite)
-    }
-
-    //% group="Cursor"
-    //% block="hide cursor"
-    export function removeCursor() {
-        cardCursor.deselect()
-    }
-
-    //% group="Cursor"
-    //% block="cursor sprite"
-    export function getCursorSprite(): Sprite {
-        return cardCursor.cursor
-    }
-
-    /*****************************************/
     /* Card                                  */
     /*****************************************/
 
@@ -1163,6 +1128,42 @@ namespace cardKit {
         const value = card.cardData.getAttribute(attribute)
         return !!value
     }
+
+    /*****************************************/
+    /* Cursor                                */
+    /*****************************************/
+
+    //% group="Cursor"
+    //% block="cursor card"
+    export function getCursorCard(): cardCore.Card {
+        return cardCursor.selectedCard()
+    }
+
+    //% group="Cursor"
+    //% block="cursor container"
+    export function getCursorContainer(): cardCore.CardContainer {
+        return cardCursor.selectedCardContainer()
+    }
+
+    //% group="Cursor"
+    //% block="point cursor at $sprite"
+    //% sprite.shadow="variables_get" sprite.defl="mySprite"
+    export function pointCursorAt(sprite: Sprite) {
+        cardCursor.select(sprite)
+    }
+
+    //% group="Cursor"
+    //% block="hide cursor"
+    export function removeCursor() {
+        cardCursor.deselect()
+    }
+
+    //% group="Cursor"
+    //% block="cursor sprite"
+    export function getCursorSprite(): Sprite {
+        return cardCursor.cursor
+    }
+
 
     /*****************************************/
     /* Customization                         */
