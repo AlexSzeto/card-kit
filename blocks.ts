@@ -364,7 +364,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=100
-    //% block="set last drawing color to $color"
+    //% block="change last draw color to $color"
     //% color.shadow="colorindexpicker"
     export function setItemColor(color: number) {
         const item = getCurrentItem(current)
@@ -375,7 +375,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=99
-    //% block="set last drawing color index to $attribute value"
+    //% block="change last draw color index to $attribute value"
     //% attribute.shadow="attributePicker"
     export function setItemColorToAttribute(attribute: number) {
         const item = getCurrentItem(current)
@@ -386,7 +386,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=98
-    //% block="repeat last drawing $attribute times"
+    //% block="repeat last draw $attribute times"
     //% attribute.shadow="attributePicker"
     export function setItemRepeatToAttribute(attribute: number) {
         const item = getCurrentItem(current)
@@ -397,7 +397,7 @@ namespace cardDesign {
 
     //% group="Edit Draw"
     //% weight=97
-    //% block="set last drawing width $width height $height"
+    //% block="change last draw width $width height $height"
     export function setItemSize(width: number, height: number) {
         const item = getCurrentItem(current)
         if (!!item) {
