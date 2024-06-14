@@ -216,7 +216,7 @@ namespace cardDesign {
     }
 
     //% group="Create"
-    //% block="create $id as current design"
+    //% block="create and edit new $id"
     //% id.shadow="designTemplatePicker"
     export function createCardDesignTemplate(id: number) {
         let template = designTemplateStore.find(t => t.id === id)
