@@ -1126,7 +1126,7 @@ namespace cardKit {
     }
 
     //% group="Card Attributes"
-    //% block="$card $attribute boolean"
+    //% block="$card $attribute is true"
     //% card.shadow="variables_get" card.defl="myCard"
     //% attribute.shadow="attributePicker"
     export function getCardBooleanAttribute(card: cardCore.Card, attribute: number) {
