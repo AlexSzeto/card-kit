@@ -447,6 +447,14 @@ namespace cardDesign {
     }
 
     //% group="Deck Builder"
+    //% blockId="booleanAttributePicker"
+    //% block="$attribute $value"
+    //% attribute.shadow="attributePicker"
+    export function createCardBooleanAttribute(attribute: number, value: boolean): CardAttributeVariation {
+        return new CardAttributeVariation(attribute, [value])
+    }
+
+    //% group="Deck Builder"
     //% blockId="numberVariationsPicker"
     //% block="$attribute each number from $startNumber to $endNumber"
     //% attribute.shadow="attributePicker"
