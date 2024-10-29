@@ -60,9 +60,10 @@ namespace cardCore {
 
             const valueToString = (value: CardAttributeValues | undefined): string => {
                 switch (typeof value) {
-                    case 'number': return (value as number).toString()
-                    case 'boolean': return value ? 'true' : 'false'
-                    case 'string': return (value as string)
+                    case 'number':
+                    case 'boolean':
+                    case 'string':
+                        return JSON.stringify(value)
                     default: return null
                 }
             }
@@ -140,10 +141,8 @@ namespace cardCore {
 
         getString(data: CardData): string {
             const value = this.getOutput(data)
-            if (typeof value === 'number') {
-                return value.toString()
-            } else if (typeof value === 'string') {
-                return value
+            if (typeof value === 'number'|| typeof value === 'string') {
+                return JSON.stringify(value)
             } else {
                 return ''
             }

@@ -1117,12 +1117,7 @@ namespace cardKit {
         if (!card) {
             return ""
         }
-        const value = card.cardData.getAttribute(attribute)
-        if (typeof value == "string") {
-            return value
-        } else {
-            return value.toString()
-        }
+        return JSON.stringify(card.cardData.getAttribute(attribute))
     }
 
     //% group="Card Attributes"
