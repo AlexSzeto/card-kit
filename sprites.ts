@@ -525,9 +525,6 @@ namespace cardCore {
             while (this.cards.length > 0) {
                 this.cards[0].destroy()
             }
-            while (this.transition.length > 0) {
-                this.transition[0].destroy()
-            }
             this.empty.destroy()
             containerList.removeElement(this)
         }        
@@ -646,10 +643,6 @@ namespace cardCore {
                 return
             }
             super.insertCard(card, index, this._stackIsFaceUp ? CardFaces.Up : CardFaces.Down)
-        }
-        
-        destroy(): void {
-            super.destroy()
         }
 
         public refresh() {
@@ -949,6 +942,7 @@ namespace cardCore {
             this.scrollLine = 0
             this._spacing = 1
             this._locked = false
+            this.refresh()
         }
 
         setIndicators(back: Sprite, forward: Sprite) {
@@ -1011,13 +1005,19 @@ namespace cardCore {
             }
         }
 
+        destroy(): void {
+            if (!!this.back) {
+                this.back.destroy()
+            }
+            if (!!this.forward) {
+                this.forward.destroy()
+            }
+            this.unlock()
+            super.destroy()
+        }
+
         refresh() {
             super.refreshEmptyCard()
-            if (this.slots === 0) {
-                this.back.setFlag(SpriteFlag.Invisible, true)
-                this.forward.setFlag(SpriteFlag.Invisible, true)
-                return
-            }
 
             // Calculate dimensions
             const cardWidth = this._design.width
@@ -1030,6 +1030,17 @@ namespace cardCore {
             const top = this.y - height / 2 + cardHeight / 2
             const right = left + (this.columns - 1) * (cardWidth + this._spacing)
             const bottom = top + (this.rows - 1) * (cardHeight + this._spacing)
+
+            if (this.inactive === 0) {
+                this.empty.x = left
+                this.empty.y = top
+            }
+
+            if (this.slots === 0) {
+                this.back.setFlag(SpriteFlag.Invisible, true)
+                this.forward.setFlag(SpriteFlag.Invisible, true)
+                return
+            }
 
             // Reposition indicators
             if (this.scrollUpDown) {
@@ -1151,7 +1162,7 @@ namespace cardCore {
                     const y = top + row * (cardHeight + this._spacing)
                     const card = this.cards[index]
                     card.z += index - firstIndex + 1
-    
+
                     if (!scrolling) {
                         card.resetTransforms()
                         card.x = x
