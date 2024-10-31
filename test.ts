@@ -47,12 +47,20 @@
 //   discardPile = cardKit.createEmptyPile(0, CardContainerKinds.Draw)
 //   cardKit.setContainerPosition(discardPile, 140, 60)
 //   cardKit.lockGridCardPositions(playGrid, 0)
-//   pause(2000)
+
 //   while (cardKit.containerHasCards(cardDeck)) {
 //       cardKit.moveCardBetween(cardDeck, CardContainerPositions.First, playGrid, CardContainerPositions.Last, CardFaces.Unchanged)
 //       pause(200)
 //   }
-//   info.setLife(16)
+//   deleteCardsList = cardKit.getLayoutCardListCopy(playGrid)
+//   let count = 0
+//   for (let card of deleteCardsList) {
+//     if (count < 8) {
+//       cardKit.addCardTo(discardPile, card, CardContainerPositions.Last, CardFaces.Unchanged)
+// count++      
+//     }
+//   }
+//     info.setLife(16)
 //   cardKit.moveCursorInsideLayoutWithButtons(playGrid)
 // }
 // function SetupDeck () {
@@ -80,6 +88,7 @@
 // SetupDeck()
 // SetupPlayField()
 // cardKit.hideEmptySlots(playGrid)
+// pause(500)
 // cardKit.destroyCardLayoutCards(cardDeck)
 // cardKit.destroyCardLayoutCards(playGrid)
 // cardKit.destroyCardLayoutCards(discardPile)

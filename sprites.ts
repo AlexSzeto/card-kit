@@ -523,8 +523,11 @@ namespace cardCore {
 
         destroy() {
             while (this.cards.length > 0) {
+                this.completeTransition(this.cards[0])
                 this.cards[0].destroy()
             }
+            this.cards = []
+            this.transition = []
             this.empty.destroy()
             containerList.removeElement(this)
         }        
@@ -1012,7 +1015,7 @@ namespace cardCore {
             if (!!this.forward) {
                 this.forward.destroy()
             }
-            this.unlock()
+            this._locked = false
             super.destroy()
         }
 
