@@ -191,6 +191,17 @@
 // setupTableau()
 // cardKit.moveCursorInsideLayoutWithButtons(drawDeck)
 
+// // Destroy all cards and containers test
+// cardKit.destroyCardLayoutCards(drawDeck)
+// cardKit.destroyCardLayoutCards(discardPile)
+// cardKit.destroyCardLayoutCards(pickedUpCards)
+// for (let tableauStack2 of cardKit.getContainerKindList(CardContainerKinds.Tableau)) {
+//     cardKit.destroyCardLayoutCards(tableauStack2)
+// }
+// for (let scoringPile2 of cardKit.getContainerKindList(CardContainerKinds.Score)) {
+//     cardKit.destroyCardLayoutCards(scoringPile2)
+// }
+
 // // This is a workaround for having a card stack follow a sprite without being able to use sprite follow.
 // game.onUpdate(function () {
 //     cardKit.setContainerPosition(pickedUpCards, cardKit.getCursorSprite().x - 4, cardKit.getCursorSprite().y + 2)

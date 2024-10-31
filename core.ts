@@ -25,6 +25,17 @@ namespace cardCore {
     /* Card Data                             */
     /*****************************************/
 
+    export function valueToString(value: any): string {
+        switch (typeof value) {
+            case 'number':
+            case 'boolean':
+                return JSON.stringify(value)
+            case 'string':
+                return value
+            default: return ''
+        }
+    }
+
     export type CardAttributeValues = string | number | boolean
     export type CardAttribute = {
         attribute: number
@@ -57,16 +68,6 @@ namespace cardCore {
         }
 
         attributeEquals(id: number, value: CardAttributeValues): boolean {
-
-            const valueToString = (value: CardAttributeValues | undefined): string => {
-                switch (typeof value) {
-                    case 'number':
-                    case 'boolean':
-                    case 'string':
-                        return JSON.stringify(value)
-                    default: return null
-                }
-            }
             const valueText: string = valueToString(value)
             const attribute = this._attributes.find(attr => attr.attribute === id)
             if (!attribute) {
@@ -142,7 +143,7 @@ namespace cardCore {
         getString(data: CardData): string {
             const value = this.getOutput(data)
             if (typeof value === 'number'|| typeof value === 'string') {
-                return JSON.stringify(value)
+                return valueToString(value)
             } else {
                 return ''
             }

@@ -723,6 +723,10 @@ namespace cardKit {
     //% container.shadow="variables_get" container.defl="myContainer"
     //% spacing.defl=1
     export function destroyCardLayoutCards(container: cardCore.CardContainer) {
+        unlinkContainer(container)
+        if (cardCursor.selectedContainer() === container) {
+            cardCursor.deselect()
+        }
         container.destroy()
     }
 
@@ -861,6 +865,15 @@ namespace cardKit {
             toContainer: fromLinkable,
             direction: reverseRelativeDirection(direction)
         })
+    }
+
+    function unlinkContainer(container: cardCore.CardContainer) {
+        for (let i = 0; i < containerLinks.length; i++) {
+            if (containerLinks[i].fromContainer === container || containerLinks[i].toContainer === container) {
+                containerLinks.splice(i, 1)
+                i--
+            }
+        }
     }
 
     type ContainerEntryPoint = {
@@ -1117,7 +1130,7 @@ namespace cardKit {
         if (!card) {
             return ""
         }
-        return JSON.stringify(card.cardData.getAttribute(attribute))
+        return cardCore.valueToString(card.getAttribute(attribute))
     }
 
     //% group="Card Attributes"

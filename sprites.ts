@@ -522,10 +522,13 @@ namespace cardCore {
         }
 
         destroy() {
-            for (let card of this.cards) {
-                card.destroy()
+            while (this.cards.length > 0) {
+                this.cards[0].destroy()
             }
-            this.cards = []
+            while (this.transition.length > 0) {
+                this.transition[0].destroy()
+            }
+            this.empty.destroy()
             containerList.removeElement(this)
         }        
 
@@ -647,7 +650,6 @@ namespace cardCore {
         
         destroy(): void {
             super.destroy()
-            this.refresh()
         }
 
         public refresh() {
