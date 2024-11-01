@@ -1,8 +1,6 @@
 // enum CardAttributes {
 //   Rank,
 //   Suit,
-//   Selected,
-//   Flipped,
 //   SuitColor
 // }
 // enum CardContainerKinds {
@@ -40,7 +38,7 @@
 //   for (let card of deleteCardsList) {
 //     if (count < 4) {
 //       cardKit.moveCardBetween(playGrid, CardContainerPositions.Last, discardPile, CardContainerPositions.Last, CardFaces.Up)
-// count++      
+// count++
 //     }
 //   }
 //     info.setLife(16)
@@ -81,3 +79,8 @@
 // cardKit.destroyCardLayoutCards(playGrid)
 // pause(500)
 // cardKit.destroyCardLayoutCards(discardPile)
+
+// let a = cardKit.createCard(0)
+// cardKit.setCardTextAttribute(a, CardAttributes.Suit, "diamonds")
+// cardKit.setCardNumberAttribute(a, CardAttributes.SuitColor, 2)
+// cardKit.setCardNumberAttribute(a, CardAttributes.Rank, 3)

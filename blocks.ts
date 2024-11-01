@@ -330,7 +330,7 @@ namespace cardDesign {
 
     //% group="Add Draw Text"
     //% weight=98
-    //% block="draw to card index $attribute text from $textLookupTable"
+    //% block="draw to card index $attribute text in $textLookupTable"
     //% attribute.shadow="attributePicker"
     export function addAttributeIndexText(attribute: number, textLookupTable: string[]) {
         const item = cardCore.createTextItem('')
@@ -348,7 +348,7 @@ namespace cardDesign {
 
     //% group="Add Draw Image"
     //% weight=98
-    //% block="draw to card index $attribute image from $imageLookupTable"
+    //% block="draw to card index $attribute image in $imageLookupTable"
     //% attribute.shadow="attributePicker"
     //% imageLookupTable.shadow="lists_create_with" imageLookupTable.defl="screen_image_picker"
     export function addAttributeIndexImage(attribute: number, imageLookupTable: Image[]) {
@@ -418,7 +418,7 @@ namespace cardDesign {
     //% shim=ENUM_GET
     //% blockId="attributePicker"
     //% blockHidden=true
-    //% block="Card $arg"
+    //% block="$arg Attribute"
     //% enumName="CardAttributes"
     //% enumMemberName="attribute"
     //% enumPromptHint="e.g. Name, Cost, Power..."
@@ -667,6 +667,18 @@ namespace cardKit {
             direction
         )
     }
+
+    //% group="Create" blockSetVariable="myCard"
+    //% block="new $template card"
+    //% template.shadow="designTemplatePicker"
+    export function createCard(template: number): cardCore.Card {
+        return new cardCore.Card(
+            cardDesign.getDesignTemplateExport(template),
+            new cardCore.CardData(),
+            null,
+            true
+        )
+    }    
 
     /*****************************************/
     /* Create                                */
