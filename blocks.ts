@@ -26,6 +26,12 @@ enum CardDesignFrameTypes {
     BackStack
 }
 
+enum CardContainerPositionTypes {
+    Filled,
+    Empty,
+    All
+}
+
 enum CardContainerPositions {
     //% block="first"
     First,
@@ -734,7 +740,7 @@ namespace cardKit {
     //% block="$container $position card"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function getCard(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
-        const index = getPositionIndex(container, position)
+        const index = getPositionIndex(container, position, CardContainerPositionTypes.Filled)
         if (index == null) {
             return null
         }
@@ -749,7 +755,7 @@ namespace cardKit {
     //% block="take $position card from $container"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function removeCardFrom(container: cardCore.CardContainer, position: CardContainerPositions): cardCore.Card {
-        const index = getPositionIndex(container, position)
+        const index = getPositionIndex(container, position, CardContainerPositionTypes.Filled)
         if (index == null) {
             return null
         }
@@ -764,11 +770,11 @@ namespace cardKit {
     //% container.shadow="variables_get" container.defl="myContainer"
     //% card.shadow="variables_get" card.defl="myCard"
     export function addCardTo(container: cardCore.CardContainer, card: cardCore.Card, position: CardContainerPositions, facing: CardFaces) {
-        const index = getPositionIndex(container, position)
+        const index = getPositionIndex(container, position, CardContainerPositionTypes.Empty)
         if (index == null) {
             return
         }
-        container.insertCard(card, getPositionIndex(container, position), facing)
+        container.insertCard(card, index, facing)
     }
 
     //% group="Movement"
@@ -783,11 +789,11 @@ namespace cardKit {
         endPosition: CardContainerPositions,
         facing: CardFaces
     ) {
-        const start = getPositionIndex(origin, startPosition)
+        const start = getPositionIndex(origin, startPosition, CardContainerPositionTypes.Filled)
         if (start == null) {
             return
         }
-        const end = getPositionIndex(destination, endPosition)
+        const end = getPositionIndex(destination, endPosition, CardContainerPositionTypes.Empty)
         if (end == null) {
             return
         }
@@ -903,7 +909,7 @@ namespace cardKit {
         if (!!link) {
             const entryPoint = containerEntryPoints.find(entry => entry.container === link.toContainer)
             if (!!entryPoint && link.toContainer instanceof cardCore.CardContainer) {
-                const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position))
+                const card = link.toContainer.getCard(getPositionIndex(link.toContainer, entryPoint.position, CardContainerPositionTypes.All))
                 if (card !== null) {
                     cardCursor.select(card)
                 } else {
@@ -981,7 +987,36 @@ namespace cardKit {
         )
     }    
 
-    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions): number {
+    function getPositionIndex(container: cardCore.CardContainer, position: CardContainerPositions, type: CardContainerPositionTypes): number {        
+        if (container instanceof cardCore.CardGrid) {
+            const grid = container as cardCore.CardGrid
+            if (grid.isLocked && type !== CardContainerPositionTypes.All) {
+                let positions = (type === CardContainerPositionTypes.Filled) ? grid.getCards() : grid.getEmptySlots()
+                if (positions.length == 0) {
+                    return cardCore.LAST_CARD_INDEX
+                }
+                let index = 0
+                switch (position) {
+                    case CardContainerPositions.First:
+                        index = 0
+                        break
+                    case CardContainerPositions.Middle:
+                        index = Math.floor(positions.length / 2)
+                        break
+                    case CardContainerPositions.Last:
+                        index = positions.length - 1
+                        break
+                    case CardContainerPositions.Random:
+                        index = Math.randomRange(0, positions.length - 1)
+                        break
+                    case CardContainerPositions.Cursor:
+                        index = grid.cursorIndex
+                        break
+                }
+                return grid.indexOf(positions[index])
+            }
+        }
+        
         switch (position) {
             case CardContainerPositions.First: return 0
             case CardContainerPositions.Middle: return Math.floor(container.slots / 2)

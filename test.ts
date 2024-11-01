@@ -13,50 +13,33 @@
 //   Player,
 //   Puzzle
 // }
+
+// cardKit.createSelectEvent(CardContainerKinds.Draw, SelectionButtons.A, function (container, card) {
+//   cardKit.moveCardBetween(playGrid, CardContainerPositions.Random, cardDeck, CardContainerPositions.Last, CardFaces.Unchanged)
+// })
+
+// cardKit.createSelectEvent(CardContainerKinds.Discard, SelectionButtons.A, function (container, card) {
+//   cardKit.moveCardBetween(discardPile, CardContainerPositions.First, playGrid, CardContainerPositions.Random, CardFaces.Unchanged)
+// })
+
 // cardKit.createSelectEvent(CardContainerKinds.Grid, SelectionButtons.A, function (container, card) {
-//   if (!(cardKit.getCardFaceUp(card))) {
-//       cardKit.flipCard(card)
-//       flipCount += 1
-//       if (flipCount == 1) {
-//           firstCard = card
-//       } else {
-//           secondCard = card
-//       }
-//   }
-//   if (flipCount == 2) {
-//       pause(500)
-//       if (cardKit.getCardNumberAttribute(firstCard, CardAttributes.Rank) == cardKit.getCardNumberAttribute(secondCard, CardAttributes.Rank)) {
-//           cardKit.addCardTo(discardPile, firstCard, CardContainerPositions.First, CardFaces.Unchanged)
-//           cardKit.addCardTo(discardPile, secondCard, CardContainerPositions.First, CardFaces.Unchanged)
-//           if (cardKit.getContainerCardCount(container) == 0) {
-//               pause(1000)
-//               game.setGameOverEffect(true, effects.blizzard)
-//               game.gameOver(true)
-//           }
-//       } else {
-//           info.changeLifeBy(-1)
-//           cardKit.flipCard(firstCard)
-//           cardKit.flipCard(secondCard)
-//       }
-//       flipCount = 0
-//   }
+//   cardKit.addCardTo(discardPile, card, CardContainerPositions.First, CardFaces.Unchanged)
 // })
 // function SetupPlayField () {
 //   cardDeck.setPosition(20, 60)
 //   playGrid = cardKit.createEmptyGrid(0, CardContainerKinds.Grid, 3, 6)
-//   discardPile = cardKit.createEmptyPile(0, CardContainerKinds.Draw)
+//   discardPile = cardKit.createEmptyPile(0, CardContainerKinds.Discard)
 //   cardKit.setContainerPosition(discardPile, 140, 60)
 //   cardKit.lockGridCardPositions(playGrid, 0)
 
-//   while (cardKit.containerHasCards(cardDeck)) {
-//       cardKit.moveCardBetween(cardDeck, CardContainerPositions.First, playGrid, CardContainerPositions.Last, CardFaces.Unchanged)
-//       pause(200)
+//   for(let i = 0; i < 8; i++) {
+//     cardKit.moveCardBetween(cardDeck, CardContainerPositions.First, playGrid, CardContainerPositions.Last, CardFaces.Up)
 //   }
 //   deleteCardsList = cardKit.getLayoutCardListCopy(playGrid)
 //   let count = 0
 //   for (let card of deleteCardsList) {
-//     if (count < 8) {
-//       cardKit.addCardTo(discardPile, card, CardContainerPositions.Last, CardFaces.Unchanged)
+//     if (count < 4) {
+//       cardKit.moveCardBetween(playGrid, CardContainerPositions.Last, discardPile, CardContainerPositions.Last, CardFaces.Up)
 // count++      
 //     }
 //   }
@@ -87,8 +70,14 @@
 
 // SetupDeck()
 // SetupPlayField()
-// cardKit.hideEmptySlots(playGrid)
+
+// cardKit.linkContainers(playGrid, RelativeDirections.RightOf, cardDeck)
+// cardKit.linkContainers(playGrid, RelativeDirections.LeftOf, discardPile)
+
+// // cardKit.hideEmptySlots(playGrid)
 // pause(500)
 // cardKit.destroyCardLayoutCards(cardDeck)
+// pause(500)
 // cardKit.destroyCardLayoutCards(playGrid)
+// pause(500)
 // cardKit.destroyCardLayoutCards(discardPile)

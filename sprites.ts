@@ -422,8 +422,16 @@ namespace cardCore {
             return this.cards[index]
         }
 
+        indexOf(card: Card): number {
+            return this.cards.indexOf(card)
+        }
+
         getCards(): Card[] {
             return this.cards.slice().filter(card => !card.isEmpty)
+        }
+
+        getEmptySlots(): Card[] {
+            return this.cards.slice().filter(card => card.isEmpty)
         }
 
         shuffle(): void {
@@ -437,7 +445,7 @@ namespace cardCore {
         }
 
         insertCard(card: Card, index: number, facing: CardFaces): void {
-            if (!card) {
+            if (!card || card.isEmpty) {
                 return
             }
 
@@ -452,8 +460,9 @@ namespace cardCore {
                 this.cards.push(card)
             } else {
                 const slot = this.getCard(index)
-                if(!!slot && slot.isEmpty) {
+                if (!!slot && slot.isEmpty) {
                     sprites.destroy(slot)
+                    this.cards.splice(index, 1)
                 }
                 this.cards.insertAt(index, card)
             }
@@ -476,7 +485,7 @@ namespace cardCore {
         removeCardAt(index: number): Card {
             const card = this.getCard(index)
             if (!card) {
-                return card
+                return null
             }
 
             this.deselect(index)
@@ -500,10 +509,11 @@ namespace cardCore {
 
         replaceWithEmptyAt(index: number): Card {
             const card = this.getCard(index)
-            if (!card) {
-                return card
+            if (!card || card.isEmpty) {
+                return null
             }
 
+            const selected = cardCursor.selectedCard() === card
             extraAnimations.clearAnimations(card, true)
             card.resetTransforms()
             this.cards.splice(index, 1)
@@ -516,7 +526,9 @@ namespace cardCore {
             extraAnimations.clearSlideAnimation(blank, true)
 
             this.deselect(index)
-            cardCursor.select(blank)
+            if (selected) {
+                cardCursor.select(blank)
+            }
 
             return card
         }
@@ -524,11 +536,11 @@ namespace cardCore {
         destroy() {
             while (this.cards.length > 0) {
                 this.completeTransition(this.cards[0])
-                this.cards[0].destroy()
+                sprites.destroy(this.cards[0])
             }
             this.cards = []
             this.transition = []
-            this.empty.destroy()
+            sprites.destroy(this.empty)
             containerList.removeElement(this)
         }        
 
@@ -950,14 +962,18 @@ namespace cardCore {
 
         setIndicators(back: Sprite, forward: Sprite) {
             if (!!this.back) {
-                this.back.destroy()
+                sprites.destroy(this.back)
             }
             if (!!this.forward) {
-                this.forward.destroy()
+                sprites.destroy(this.forward)
             }
             this.back = back
             this.forward = forward
             this.refresh()
+        }
+
+        get isLocked(): boolean {
+            return this._locked
         }
 
         lock(minLines: number) {
@@ -989,7 +1005,7 @@ namespace cardCore {
                 const card = this.cards[i]
                 if (card.isEmpty) {
                     this.deselect(i)
-                    card.destroy()
+                    sprites.destroy(card)
                     this.cards.splice(i, 1)
                     i--
                 }
@@ -1351,6 +1367,13 @@ namespace cardCore {
                 : column * this.rows + row
             if (index >= this.slots) {
                 index = this.slots - 1
+                if (this.scrollUpDown) {
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                    return
+                } else {
+                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
+                    return
+                }
             }
 
             this.scrollToSelect(index)
