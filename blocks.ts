@@ -590,6 +590,18 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
+    //% group="Create" blockSetVariable="myCard"
+    //% block="empty $template card"
+    //% template.shadow="designTemplatePicker"
+    export function createCard(template: number): cardCore.Card {
+        return new cardCore.Card(
+            cardDesign.getDesignTemplateExport(template),
+            new cardCore.CardData(),
+            null,
+            true
+        )
+    }    
+
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind deck"
@@ -667,18 +679,6 @@ namespace cardKit {
             direction
         )
     }
-
-    //% group="Create" blockSetVariable="myCard"
-    //% block="new $template card"
-    //% template.shadow="designTemplatePicker"
-    export function createCard(template: number): cardCore.Card {
-        return new cardCore.Card(
-            cardDesign.getDesignTemplateExport(template),
-            new cardCore.CardData(),
-            null,
-            true
-        )
-    }    
 
     /*****************************************/
     /* Create                                */
