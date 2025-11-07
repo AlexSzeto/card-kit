@@ -590,6 +590,7 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
+    //% weight=1000
     //% group="Create" blockSetVariable="myCard"
     //% block="empty $template card"
     //% template.shadow="designTemplatePicker"
@@ -602,6 +603,7 @@ namespace cardKit {
         )
     }    
 
+    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind deck"
@@ -612,6 +614,7 @@ namespace cardKit {
         return stack
     }
     
+    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind card grid columns $columns rows $rows|| scroll $direction"
@@ -642,6 +645,7 @@ namespace cardKit {
         return grid
     }
     
+    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind pile"
@@ -660,6 +664,7 @@ namespace cardKit {
         )
     }
 
+    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind card spread $direction"
@@ -684,6 +689,7 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
+    //% weight=900
     //% color="#ff9008"
     //% group="Container"
     //% block="array of all $kind containers"
@@ -692,6 +698,7 @@ namespace cardKit {
         return cardCore.getCardContainersOfKind(kind)
     }
 
+    //% weight=900
     //% color="#ff9008"
     //% group="Container"
     //% block="array of $container cards"
@@ -700,6 +707,7 @@ namespace cardKit {
         return container.getCards()
     }
 
+    //% weight=900
     //% group="Container"
     //% block="$container is $kind"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -711,6 +719,7 @@ namespace cardKit {
         return !!container ? container.kind === kind : false
     }
 
+    //% weight=900
     //% group="Container"
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -720,6 +729,7 @@ namespace cardKit {
         return !! container ? container.count : -1
     }    
 
+    //% weight=900
     //% group="Container"
     //% block="$container has cards"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -729,6 +739,7 @@ namespace cardKit {
         return !! container ? container.count > 0 : false
     }
     
+    //% weight=900
     //% group="Container"
     //% block="shuffle $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -736,6 +747,7 @@ namespace cardKit {
         container.shuffle()
     }
     
+    //% weight=900
     //% group="Container"
     //% block="destroy $container"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -748,6 +760,7 @@ namespace cardKit {
         container.destroy()
     }
 
+    //% weight=900
     //% group="Container"
     //% block="$container $position card"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -763,6 +776,7 @@ namespace cardKit {
     /* Movement                              */
     /*****************************************/
 
+    //% weight=600
     //% group="Movement" blockSetVariable="myCard"
     //% block="take $position card from $container"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -776,6 +790,7 @@ namespace cardKit {
         return card
     }
 
+    //% weight=600
     //% group="Movement"
     //% inlineInputMode=inline
     //% block="put $card in $container $position position $facing"
@@ -789,6 +804,7 @@ namespace cardKit {
         container.insertCard(card, index, facing)
     }
 
+    //% weight=600
     //% group="Movement"
     //% inlineInputMode=inline
     //% block="move $startPosition card from $origin to $destination $endPosition position $facing"
@@ -1074,6 +1090,7 @@ namespace cardKit {
     /* Card                                  */
     /*****************************************/
 
+    //% weight=700
     //% group="Card" blockSetVariable="id"
     //% block="$card id"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1081,6 +1098,7 @@ namespace cardKit {
         return !!card ? card.id : -1
     }
 
+    //% weight=700
     //% group="Card"
     //% block="card with id $id"
     //% id.shadow="variables_get" id.defl="id"
@@ -1101,6 +1119,7 @@ namespace cardKit {
         return !!card ? (card as cardCore.Card) : null
     }
 
+    //% weight=700
     //% group="Card"
     //% block="$card is face up"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1108,6 +1127,7 @@ namespace cardKit {
         return !!card ? card.isFaceUp : false
     }
 
+    //% weight=700
     //% group="Card"
     //% block="set $card face up to $isFaceUp"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1117,6 +1137,7 @@ namespace cardKit {
         }
     }
 
+    //% weight=700
     //% group="Card"
     //% block="flip $card"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1126,6 +1147,7 @@ namespace cardKit {
         }
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="set $card $attribute to $value"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1135,6 +1157,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="set $card $attribute to $text"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1144,6 +1167,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="set $card $attribute to $bool"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1153,6 +1177,7 @@ namespace cardKit {
         card.refreshImage()
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="$card $attribute number"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1169,6 +1194,7 @@ namespace cardKit {
         }
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="$card $attribute text"
     //% card.shadow="variables_get" card.defl="myCard"
@@ -1180,6 +1206,7 @@ namespace cardKit {
         return cardCore.valueToString(card.getAttribute(attribute))
     }
 
+    //% weight=800
     //% group="Card Attributes"
     //% block="$card $attribute is true"
     //% card.shadow="variables_get" card.defl="myCard"
