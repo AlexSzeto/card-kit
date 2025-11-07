@@ -880,10 +880,18 @@ namespace cardCore {
                 return
             }
             if (this.isHorizonal) {
-                if (this.cursorIndex === 0) {
-                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                if (this.isReversed) {
+                    if (this.cursorIndex === this.slots - 1) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                    } else {
+                        this.selectByOffset(1)
+                    }
                 } else {
-                    this.selectByOffset(-1)
+                    if (this.cursorIndex === 0) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
+                    } else {
+                        this.selectByOffset(-1)
+                    }
                 }
             } else {
                 cardCursor.dispatchExitContainerEvent(this, RelativeDirections.LeftOf)
@@ -896,10 +904,18 @@ namespace cardCore {
                 return
             }
             if (this.isHorizonal) {
-                if (this.cursorIndex === this.slots - 1) {
-                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                if (this.isReversed) {
+                    if (this.cursorIndex === 0) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                    } else {
+                        this.selectByOffset(-1)
+                    }
                 } else {
-                    this.selectByOffset(1)
+                    if (this.cursorIndex === this.slots - 1) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
+                    } else {
+                        this.selectByOffset(1)
+                    }
                 }
             } else {
                 cardCursor.dispatchExitContainerEvent(this, RelativeDirections.RightOf)
@@ -911,11 +927,19 @@ namespace cardCore {
                 cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
                 return
             }
-            if (!this.isHorizonal) {
-                if (this.cursorIndex === 0) {
-                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
+            if (!this.isHorizonal) {                
+                if (this.isReversed) {
+                    if (this.cursorIndex === this.slots - 1) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
+                    } else {
+                        this.selectByOffset(1)
+                    }
                 } else {
-                    this.selectByOffset(-1)
+                    if (this.cursorIndex === 0) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
+                    } else {
+                        this.selectByOffset(-1)
+                    }
                 }
             } else {
                 cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Above)
@@ -928,10 +952,18 @@ namespace cardCore {
                 return
             }
             if (!this.isHorizonal) {
-                if (this.cursorIndex === this.slots - 1) {
-                    cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
+                if (this.isReversed) {
+                    if (this.cursorIndex === 0) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
+                    } else {
+                        this.selectByOffset(-1)
+                    }
                 } else {
-                    this.selectByOffset(1)
+                    if (this.cursorIndex === this.slots - 1) {
+                        cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
+                    } else {
+                        this.selectByOffset(1)
+                    }
                 }
             } else {
                 cardCursor.dispatchExitContainerEvent(this, RelativeDirections.Below)
