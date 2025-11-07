@@ -444,6 +444,20 @@ namespace cardCore {
             this.refresh()
         }
 
+        sortByAttribute(attribute: number, ascending: boolean): void {
+            this.cards.sort((a, b) => {
+                const aValue = a.getAttribute(attribute)
+                const bValue = b.getAttribute(attribute)
+                if (aValue < bValue) {
+                    return ascending ? -1 : 1
+                } else if (aValue > bValue) {
+                    return ascending ? 1 : -1
+                }
+                return 0
+            })
+            this.refresh()
+        }
+
         insertCard(card: Card, index: number, facing: CardFaces): void {
             if (!card || card.isEmpty) {
                 return

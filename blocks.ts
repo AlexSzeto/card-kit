@@ -86,6 +86,13 @@ enum DrawDirections {
     TopToBottom,
 }
 
+enum SortDirections {
+    //% block="ascending"
+    Ascending,
+    //% block="descending"
+    Descending,
+}
+
 cardCursor.setImage(img`
 . . . f f . . . .
 . . f 1 1 f . . .
@@ -590,7 +597,6 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
-    //% weight=1000
     //% group="Create" blockSetVariable="myCard"
     //% block="empty $template card"
     //% template.shadow="designTemplatePicker"
@@ -603,7 +609,6 @@ namespace cardKit {
         )
     }    
 
-    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind deck"
@@ -614,7 +619,6 @@ namespace cardKit {
         return stack
     }
     
-    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind card grid columns $columns rows $rows|| scroll $direction"
@@ -645,7 +649,6 @@ namespace cardKit {
         return grid
     }
     
-    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind pile"
@@ -664,7 +667,6 @@ namespace cardKit {
         )
     }
 
-    //% weight=1000
     //% group="Create" blockSetVariable="myContainer"
     //% inlineInputMode=inline
     //% block="empty $template $kind card spread $direction"
@@ -689,7 +691,6 @@ namespace cardKit {
     /* Create                                */
     /*****************************************/
 
-    //% weight=900
     //% color="#ff9008"
     //% group="Container"
     //% block="array of all $kind containers"
@@ -698,7 +699,6 @@ namespace cardKit {
         return cardCore.getCardContainersOfKind(kind)
     }
 
-    //% weight=900
     //% color="#ff9008"
     //% group="Container"
     //% block="array of $container cards"
@@ -707,7 +707,6 @@ namespace cardKit {
         return container.getCards()
     }
 
-    //% weight=900
     //% group="Container"
     //% block="$container is $kind"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -719,7 +718,6 @@ namespace cardKit {
         return !!container ? container.kind === kind : false
     }
 
-    //% weight=900
     //% group="Container"
     //% block="$container card count"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -729,7 +727,6 @@ namespace cardKit {
         return !! container ? container.count : -1
     }    
 
-    //% weight=900
     //% group="Container"
     //% block="$container has cards"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -739,15 +736,25 @@ namespace cardKit {
         return !! container ? container.count > 0 : false
     }
     
-    //% weight=900
     //% group="Container"
     //% block="shuffle $container cards"
     //% container.shadow="variables_get" container.defl="myContainer"
     export function shuffleCards(container: cardCore.CardContainer) {
         container.shuffle()
     }
+
+    //% group="Container"
+    //% block="sort $container cards by $attribute|| in $direction order"
+    //% container.shadow="variables_get" container.defl="myContainer"
+    //% attribute.shadow="attributePicker"
+    export function sortCardsByAttribute(
+        container: cardCore.CardContainer,
+        attribute: number,
+        direction: SortDirections
+    ) {
+        container.sortByAttribute(attribute, direction === SortDirections.Ascending)
+    }
     
-    //% weight=900
     //% group="Container"
     //% block="destroy $container"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -760,7 +767,6 @@ namespace cardKit {
         container.destroy()
     }
 
-    //% weight=900
     //% group="Container"
     //% block="$container $position card"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -776,7 +782,6 @@ namespace cardKit {
     /* Movement                              */
     /*****************************************/
 
-    //% weight=600
     //% group="Movement" blockSetVariable="myCard"
     //% block="take $position card from $container"
     //% container.shadow="variables_get" container.defl="myContainer"
@@ -790,7 +795,6 @@ namespace cardKit {
         return card
     }
 
-    //% weight=600
     //% group="Movement"
     //% inlineInputMode=inline
     //% block="put $card in $container $position position $facing"
@@ -804,7 +808,6 @@ namespace cardKit {
         container.insertCard(card, index, facing)
     }
 
-    //% weight=600
     //% group="Movement"
     //% inlineInputMode=inline
     //% block="move $startPosition card from $origin to $destination $endPosition position $facing"
@@ -827,6 +830,128 @@ namespace cardKit {
         }
         destination.insertCard(origin.removeCardAt(start), end, facing)
     }
+
+    /*****************************************/
+    /* Card                                  */
+    /*****************************************/
+
+    //% group="Card Attributes"
+    //% block="set $card $attribute to $value"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardNumberAttribute(card: cardCore.Card, attribute: number, value: number) {
+        card.cardData.setAttribute(attribute, value)
+        card.refreshImage()
+    }
+
+    //% group="Card Attributes"
+    //% block="set $card $attribute to $text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardTextAttribute(card: cardCore.Card, attribute: number, text: string) {
+        card.cardData.setAttribute(attribute, text)
+        card.refreshImage()
+    }
+
+    //% group="Card Attributes"
+    //% block="set $card $attribute to $bool"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function setCardBooleanAttribute(card: cardCore.Card, attribute: number, bool: boolean) {
+        card.cardData.setAttribute(attribute, bool)
+        card.refreshImage()
+    }
+
+    //% group="Card Attributes"
+    //% block="$card $attribute number"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardNumberAttribute(card: cardCore.Card, attribute: number) {
+        if (!card) {
+            return 0
+        }
+        const value = card.cardData.getAttribute(attribute)
+        if(typeof value == "number") {
+            return value
+        } else {
+            return 0
+        }
+    }
+
+    //% group="Card Attributes"
+    //% block="$card $attribute text"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardTextAttribute(card: cardCore.Card, attribute: number) {
+        if (!card) {
+            return ""
+        }
+        return cardCore.valueToString(card.getAttribute(attribute))
+    }
+
+    //% group="Card Attributes"
+    //% block="$card $attribute is true"
+    //% card.shadow="variables_get" card.defl="myCard"
+    //% attribute.shadow="attributePicker"
+    export function getCardBooleanAttribute(card: cardCore.Card, attribute: number) {
+        if (!card) {
+            return false
+        }
+        const value = card.cardData.getAttribute(attribute)
+        return !!value
+    }
+
+    //% group="Card" blockSetVariable="id"
+    //% block="$card id"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardId(card: cardCore.Card): number {
+        return !!card ? card.id : -1
+    }
+
+    //% group="Card"
+    //% block="card with id $id"
+    //% id.shadow="variables_get" id.defl="id"
+    export function getCardById(id: number): cardCore.Card {
+        if (id < 1)
+            return null
+
+        const cardSprites = sprites.allOfKind(SpriteKind.Card)
+        const card = cardSprites.find(sprite => {
+            if (sprite instanceof cardCore.Card) {
+                const card = (sprite as cardCore.Card)
+                if (card.id === id) {
+                    return true
+                }
+            }
+            return false
+        })
+        return !!card ? (card as cardCore.Card) : null
+    }
+
+    //% group="Card"
+    //% block="$card is face up"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function getCardFaceUp(card: cardCore.Card) {
+        return !!card ? card.isFaceUp : false
+    }
+
+    //% group="Card"
+    //% block="set $card face up to $isFaceUp"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function setCardFaceUp(card: cardCore.Card, isFaceUp: boolean) {
+        if (!!card) {
+            card.isFaceUp = isFaceUp            
+        }
+    }
+
+    //% group="Card"
+    //% block="flip $card"
+    //% card.shadow="variables_get" card.defl="myCard"
+    export function flipCard(card: cardCore.Card) {
+        if (!!card) {
+            card.flip()            
+        }
+    }    
 
     /*****************************************/
     /* Controls                              */
@@ -1084,140 +1209,6 @@ namespace cardKit {
         updateControl(controller.B, ControllerButtons.B, SelectionButtons.B)
         updateControl(controller.menu, ControllerButtons.Menu, SelectionButtons.Menu)
     })
-
-
-    /*****************************************/
-    /* Card                                  */
-    /*****************************************/
-
-    //% weight=700
-    //% group="Card" blockSetVariable="id"
-    //% block="$card id"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardId(card: cardCore.Card): number {
-        return !!card ? card.id : -1
-    }
-
-    //% weight=700
-    //% group="Card"
-    //% block="card with id $id"
-    //% id.shadow="variables_get" id.defl="id"
-    export function getCardById(id: number): cardCore.Card {
-        if (id < 1)
-            return null
-
-        const cardSprites = sprites.allOfKind(SpriteKind.Card)
-        const card = cardSprites.find(sprite => {
-            if (sprite instanceof cardCore.Card) {
-                const card = (sprite as cardCore.Card)
-                if (card.id === id) {
-                    return true
-                }
-            }
-            return false
-        })
-        return !!card ? (card as cardCore.Card) : null
-    }
-
-    //% weight=700
-    //% group="Card"
-    //% block="$card is face up"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function getCardFaceUp(card: cardCore.Card) {
-        return !!card ? card.isFaceUp : false
-    }
-
-    //% weight=700
-    //% group="Card"
-    //% block="set $card face up to $isFaceUp"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function setCardFaceUp(card: cardCore.Card, isFaceUp: boolean) {
-        if (!!card) {
-            card.isFaceUp = isFaceUp            
-        }
-    }
-
-    //% weight=700
-    //% group="Card"
-    //% block="flip $card"
-    //% card.shadow="variables_get" card.defl="myCard"
-    export function flipCard(card: cardCore.Card) {
-        if (!!card) {
-            card.flip()            
-        }
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="set $card $attribute to $value"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function setCardNumberAttribute(card: cardCore.Card, attribute: number, value: number) {
-        card.cardData.setAttribute(attribute, value)
-        card.refreshImage()
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="set $card $attribute to $text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function setCardTextAttribute(card: cardCore.Card, attribute: number, text: string) {
-        card.cardData.setAttribute(attribute, text)
-        card.refreshImage()
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="set $card $attribute to $bool"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function setCardBooleanAttribute(card: cardCore.Card, attribute: number, bool: boolean) {
-        card.cardData.setAttribute(attribute, bool)
-        card.refreshImage()
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="$card $attribute number"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardNumberAttribute(card: cardCore.Card, attribute: number) {
-        if (!card) {
-            return 0
-        }
-        const value = card.cardData.getAttribute(attribute)
-        if(typeof value == "number") {
-            return value
-        } else {
-            return 0
-        }
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="$card $attribute text"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardTextAttribute(card: cardCore.Card, attribute: number) {
-        if (!card) {
-            return ""
-        }
-        return cardCore.valueToString(card.getAttribute(attribute))
-    }
-
-    //% weight=800
-    //% group="Card Attributes"
-    //% block="$card $attribute is true"
-    //% card.shadow="variables_get" card.defl="myCard"
-    //% attribute.shadow="attributePicker"
-    export function getCardBooleanAttribute(card: cardCore.Card, attribute: number) {
-        if (!card) {
-            return false
-        }
-        const value = card.cardData.getAttribute(attribute)
-        return !!value
-    }
 
     /*****************************************/
     /* Cursor                                */
