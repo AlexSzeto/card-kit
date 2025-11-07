@@ -750,7 +750,7 @@ namespace cardKit {
     export function sortCardsByAttribute(
         container: cardCore.CardContainer,
         attribute: number,
-        direction: SortDirections
+        direction: SortDirections = SortDirections.Ascending
     ) {
         container.sortByAttribute(attribute, direction === SortDirections.Ascending)
     }
